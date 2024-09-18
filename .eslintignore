@@ -1,0 +1,7 @@
+node_modules
+.next
+.cache
+public
+yarn.lock
+.gitignore
+package.json

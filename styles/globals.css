@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer components {
+    .contract-preview
+} */
+
+.border-gradient,
+.border-gradient-desktop {
+  border: 1px solid #0000;
+  border-radius: 32px;
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(to left, #00ffe5 0%, #ff30f7 100%) border-box;
+  backdrop-filter: blur(10px);
+}
+
+.card-border-gradient {
+  border: 1px solid #0000;
+  border-radius: 32px;
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(to right, #ff30fa 0%, #00ffe5 50%, #ffffff 100%) border-box;
+  backdrop-filter: blur(10px);
+}
+
+@media only screen and (max-width: 768px) {
+  .border-gradient {
+    background:
+      linear-gradient(black, black) padding-box,
+      linear-gradient(to bottom, #00ffe5 0%, #ff30f7 100%) border-box;
+  }
+}
+
+input {
+  outline: none;
+}
+
+.productItem-checkbox {
+  @apply h-[20px] w-[20px] shrink-0 cursor-pointer appearance-none bg-[url("/images/checkout/unchecked.svg")] bg-cover bg-no-repeat checked:bg-[url("/images/checkout/checked.svg")] md:h-[32px] md:w-[32px];
+}
+
+.term-checkbox {
+  @apply h-[12px] w-[12px] shrink-0 cursor-pointer appearance-none bg-[url("/images/checkout/term_unchecked.svg")] bg-cover bg-no-repeat checked:bg-[url("/images/checkout/term_checked.svg")];
+}
+
+.clip-text {
+  @apply bg-clip-text text-transparent;
+}
+
+.slick-dots .slick-active div {
+  background-image: linear-gradient(180deg, #00ffe5 0%, #ff30f7 100%);
+}

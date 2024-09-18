@@ -1,0 +1,53 @@
+{
+  "plugins": ["@typescript-eslint", "simple-import-sort", "unused-imports"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@next/next/no-img-element": "off",
+    "sort-imports": "off",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // Packages. `react` related packages come first.
+          [
+            "^react",
+            "^next",
+            "@heroicons|clsx|tailwind-merge|chart.js|highcharts|@emotion|@nextui-org/react",
+            "^(lodash|@headlessui/react|zustand|cookies|formik|axios|yup|lottie-web|mixpanel-browser|@react-oauth/google|typewriter-effect|crypto-js|@stripe/stripe-j|url-regex|tailwind-variants|rc-upload|framer-motion|@tanstack/react-query|wagmi|viem|@rainbow-me/rainbowkit)"
+          ],
+          // Internal packages.
+          ["^@?\\w"],
+          // Parent imports. Put `..` last.
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          // Style imports.
+          ["^.+\\.s?css$"],
+          // Side effect imports.
+          ["^\\u0000"]
+        ]
+      }
+    ],
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
+}
