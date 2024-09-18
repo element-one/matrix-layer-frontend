@@ -55,7 +55,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
     )}>
       <div className=''>
         <Link href='/'>
-          <img src='/images/svg/logo.svg' alt='wphone' className='h-[22px] md:h-[33px]' />
+          logo
         </Link>
       </div>
       <div className='hidden md:flex items-center justify-center gap-[80px]'>
@@ -90,8 +90,6 @@ const Header: FC<HeaderProps> = ({ className }) => {
           </PopoverTrigger>
           <PopoverContent className='w-screen left-0'>
             <div className='border-gradient w-full h-full flex flex-col gap-7 items-center justify-start py-[30px] px-[25px]'>
-              <img src='/images/svg/logo.svg' alt='logo' height={37} />
-
               <div className='flex flex-col items-center justify-center gap-4'>
                 {MenuList.map(({ key, label, href }) => {
                   return (

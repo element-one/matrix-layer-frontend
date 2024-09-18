@@ -20,14 +20,4 @@ export const defaultNetworks: NetworkObject[] = [
     nativeCoin: 'ETH',
     type: 'mainnet'
   }
-  // {
-  //   name: 'Polygon',
-  //   chainId: 137,
-  //   logoUrl: '/images/svg/polygon-logo.svg',
-  //   rpcUrl: 'https://polygon-rpc.com/',
-  //   explorerUrl: 'https://explorer-mainnet.maticvigil.com/',
-  //   explorerName: 'PolygonScan',
-  //   nativeCoin: 'MATIC',
-  //   type: 'mainnet'
-  // }
 ]
