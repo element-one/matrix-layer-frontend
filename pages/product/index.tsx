@@ -222,14 +222,15 @@ const ProductPage = () => {
         </Content>
       </Container>
       <Container className='pb-32'>
-        <ImagesField>
+        <Content className='relative'>
           <img
-            className='absolute top-[260px] w-[156px] -right-[20px] -rotate-[20deg]'
+            className='rotate-[276deg] absolute top-[140px] left-[28px] w-[156px] h-[156px]'
+            style={{
+              filter: 'blur(4.6px)'
+            }}
             src='/images/product/product-dot.png'
             alt='dot'
           />
-        </ImagesField>
-        <Content>
           <div className='pt-[58px] flex flex-col items-center'>
             <Text
               className='text-[64px] text-center'
