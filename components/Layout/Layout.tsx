@@ -13,7 +13,10 @@ const Layout: FC<LayoutProps> = ({ children, className }) => {
   return (
     <div className='w-full bg-co-bg-1 overflow-auto overflow-x-hidden'>
       <main className={twMerge(clsx('mx-auto w-screen'))}>
-        <div className='min-h-screen h-fit relative flex flex-col bg-co-bg-1 w-full font-poppins font-normal'>
+        <div
+          className='min-h-screen h-fit relative flex flex-col bg-co-bg-1 w-full font-chakraPetch
+            font-normal'
+        >
           <div
             className='px-2 md:px-10 fixed left-1/2 translate-x-[-50%] top-4 md:top-8 w-full z-50
               max-w-[1440px]'
@@ -23,7 +26,8 @@ const Layout: FC<LayoutProps> = ({ children, className }) => {
           <div
             className={twMerge(
               clsx(
-                'h-fit text-co-text-1 bg-co-bg-1 w-screen mx-auto overflow-x-hidden max-w-[1440px]',
+                `h-fit text-co-text-1 bg-co-bg-1 w-screen mx-auto overflow-x-hidden
+                  max-w-[1440px]`,
                 className
               )
             )}
