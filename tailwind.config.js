@@ -25,6 +25,8 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-poppins)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui'],
         poppins: ['var(--font-poppins)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui'],
+        pressStart2P: ['var(--font-press-start-2p)', 'ui-sans-serif', 'system-ui'],
+        chakraPetch: ['var(--font-chakra-petch)', 'ui-sans-serif', 'system-ui'],
       },
       maxHeight: {
         'edit-preview': 'calc(100vh - 180px)'
