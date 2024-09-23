@@ -30,21 +30,11 @@ module.exports = {
         'edit-preview': 'calc(100vh - 180px)'
       },
       backgroundImage: {
-        'gradient-text-1': 'linear-gradient(271deg, #FF30FA 0.53%, #00FFE5 54.14%, #FFF 89.7%)',
-        'gradient-text-2': 'linear-gradient(270deg, #FFF 14.4%, #00FFE5 34.61%, #FF30FA 56.46%)',
-        'gradient-text-3': 'linear-gradient(264deg, #FFF 31.15%, #00FFE5 73.52%, #FF30FA 119.33%)',
-        'gradient-text-4': 'linear-gradient(270deg, #FFF 62.34%, #00FFE5 83.47%, #FF30FA 106.32%)',
-        'radial-gradient-1': 'radial-gradient(transparent 0%, #000000 70%, #000000 100%)',
-        'radial-gradient-2': 'radial-gradient(transparent 0%, #000000 90%, #000000 100%)',
-        'gradient-title-1': 'linear-gradient(264deg, #FFF 20.97%, #00FFE5 62.96%, #FF30FA 126.25%)',
-        'gradient-title-2': 'linear-gradient(91deg, #FF30FA 25.29%, #00FFE5 47.06%, #FFF 100%)',
-        'gradient-payment-btn': 'linear-gradient(269deg, #00FFE5 2.62%, #FF30F7 76.4%)',
+        'gradient-text-1': 'linear-gradient(to bottom, #E789FF, #9299FF)',
         'gradient-home-text-1': 'linear-gradient(271deg, #FFF 26.71%, #00FFE5 55.54%, #FF30FA 86.7%)',
         'gradient-home-text-2': 'linear-gradient(271deg, #FF30FA 0.53%, #00FFE5 54.14%, #FFF 89.7%)',
         'gradient-home-text-3': 'linear-gradient(271deg, #FFF 19.75%, #00FFE5 58.88%, #FF30FA 101.18%)',
-        'gradient-home-line-1': 'linear-gradient(269deg, #00443D -7.57%, #FFF 27.09%, #00AA98 60.42%, #00443D 96.93%)',  
-        'gradient-home-circle-1': 'radial-gradient(50% 50% at 50% 50%, #92008C 0%, rgba(0, 0, 0, 0.00) 100%)',
-        'gradient-home-circle-2': 'radial-gradient(50% 50% at 50% 50%, #00C7B3 0%, rgba(0, 0, 0, 0.00) 100%)'
+        'gradient-button-1': 'linear-gradient(to bottom, #e789ff 0%, #9299ff 100%)'
       },
       fontWeight: {
         light: '200',
@@ -135,7 +125,7 @@ module.exports = {
             'gradient-from': '#FE37F1',
           },
           'co-border': {
-            1: '#FF30F7',
+            1: '#A2A2A2',
             gray: '#787878'
           },
           'co-bg-gradient-to': '#57F1BC',

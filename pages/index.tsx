@@ -118,25 +118,13 @@ const HomePage = () => {
               className='text-[14px] text-center lg:text-left lg:text-[32px] clip-text
                 bg-gradient-home-text-3 mb-[20px] leading-[1.7] lg:leading-[52px] font-semibold'
             >
-              xxx is a top-secret application network infrastructure specially
-              developed for the xxx system.
+              xxxasdasdasd
             </Text>
             <Text
               className='text-[12px] text-co-text-3 font-normal lg:text-[16px] lg:leading-[24px]
                 text-center lg:text-left'
             >
-              Through xxx&apos;s AI data engine, the maximum networking and
-              computing advantages of the xxx system are fully leveraged,
-              serving the development of all application ecosystems and
-              providing robust computing power.
-              <br />
-              <br />
-              With the technology of xxx, developers and entrepreneurs can
-              better utilize the xxx network to build a future blockchain
-              ecosystem oriented towards large-scale commercial applications.
-              The AI technology enables resource allocation and automatic task
-              processing, truly compatible with the needs of future development,
-              including a variety of applications such as DePin and RWA.
+              asdasd
             </Text>
           </div>
         </Content>
