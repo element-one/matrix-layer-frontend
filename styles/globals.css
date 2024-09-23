@@ -8,11 +8,18 @@
 
 .border-gradient,
 .border-gradient-desktop {
-  border: 1px solid #0000;
-  border-radius: 32px;
+  border: 1px solid transparent;
   background:
     linear-gradient(black, black) padding-box,
-    linear-gradient(to left, #00ffe5 0%, #ff30f7 100%) border-box;
+    linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box;
+  backdrop-filter: blur(10px);
+}
+
+.border-header-gradient {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(to left, #4d4d4d 0%, #a2a2a2 50%, #2f2f2f 100%) border-box;
   backdrop-filter: blur(10px);
 }
 

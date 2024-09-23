@@ -3,8 +3,7 @@ import { Button as NextButton, extendVariants } from '@nextui-org/react'
 const Button = extendVariants(NextButton, {
   variants: {
     color: {
-      primary: `text-co-button-primary-text bg-gradient-to-r from-co-button-gradient-from 
-        to-co-button-gradient-to disabled:opacity-80 focus:bg-gradient-to-r
+      primary: `bg-gradient-button-1 text-black disabled:opacity-80 focus:bg-gradient-to-r
          disabled:cursor-not-allowed`,
       default: `text-co-button-default-text bg-co-button-default-bg 
         hover:bg-co-gray-4 disabled:bg-co-gray-4 border-1 border-co-gray-4`,
