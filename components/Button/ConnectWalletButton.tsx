@@ -11,6 +11,7 @@ import {
 import clsx from 'clsx'
 import { useAccount, useSignMessage } from 'wagmi'
 
+import { BtnArrowIcon } from '@components/Icon/BtnArrow'
 import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
 import { useDisconnect } from '@hooks/useDisconnect'
@@ -48,43 +49,40 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
 
-  useEffect(
-    () => {
-      if (
-        isConnected &&
-        !isAuthenticated &&
-        nonceData?.nonce &&
-        address &&
-        !hasSignSuccess
-      ) {
-        signMessage(
-          {
-            message: `Login to Wphone with one-time nonce: ${nonceData.nonce}`
+  useEffect(() => {
+    if (
+      isConnected &&
+      !isAuthenticated &&
+      nonceData?.nonce &&
+      address &&
+      !hasSignSuccess
+    ) {
+      signMessage(
+        {
+          message: `Login to Wphone with one-time nonce: ${nonceData.nonce}`
+        },
+        {
+          onSuccess() {
+            setHasSignSuccess(true)
           },
-          {
-            onSuccess() {
-              setHasSignSuccess(true)
-            },
-            onError(err) {
-              console.log('sign error: ', err)
-              toast.error('signature error:' + (err as Error).message)
-              disconnect()
-            }
+          onError(err) {
+            console.log('sign error: ', err)
+            toast.error('signature error:' + (err as Error).message)
+            disconnect()
           }
-        )
-      }
-    },
-    [
-      nonceData?.nonce,
-      address,
-      isConnected,
-      isAuthenticated,
-      signMessage,
-      hasSignSuccess,
-      setHasSignSuccess,
-      disconnect
-    ]
-  )
+        }
+      )
+    }
+  }, [
+    nonceData?.nonce,
+    address,
+    isConnected,
+    isAuthenticated,
+    signMessage,
+    hasSignSuccess,
+    setHasSignSuccess,
+    disconnect
+  ])
 
   useEffect(() => {
     if (address && signData && hasSignSuccess && !isAuthenticated) {
@@ -154,8 +152,12 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
             onAction={handleDropdownAction}
             className='bg-co-bg-1 text-co-text-1 py-2 border rounded-2xl border-co-border-gray'
           >
-            <DropdownItem key='myAccount' className='h-10'>My Account</DropdownItem>
-            <DropdownItem key='logout' className='h-10'>Log out</DropdownItem>
+            <DropdownItem key='myAccount' className='h-10'>
+              My Account
+            </DropdownItem>
+            <DropdownItem key='logout' className='h-10'>
+              Log out
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
         <div
@@ -180,14 +182,16 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
   return (
     <Button
       className={clsx(
-        'px-3 md:px-7 !rounded-2xl h-[28px] md:h-[42px] text-xs md:text-lg font-semibold',
+        `flex flex-row items-center justify-center px-3 md:px-7 !rounded-[35px] h-[28px]
+          md:h-[48px] text-base font-bold gap-x-1`,
         className
       )}
       color='primary'
       onClick={handleClick}
       isLoading={isGettingNonce || isLogging || isSigning}
     >
-      Connect Wallet
+      <BtnArrowIcon />
+      <span>Connect Wallet</span>
     </Button>
   )
 }

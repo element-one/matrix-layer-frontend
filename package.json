@@ -10,7 +10,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "prepare": "cd ../ && husky install ./client/.husky"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
@@ -65,6 +65,7 @@
     "eslint-plugin-storybook": "^0.6.15",
     "eslint-plugin-unused-imports": "^3.0.0",
     "husky": "^8.0.3",
+    "lint-staged": "^15.2.10",
     "postcss": "^8.4.33",
     "prettier": "^3.2.2",
     "prettier-plugin-classnames": "^0.3.2",

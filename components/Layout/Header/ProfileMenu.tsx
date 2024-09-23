@@ -10,4 +10,9 @@ export const MenuList: MenuItem[] = [
     href: '/',
     key: 'home'
   },
+  {
+    label: 'Presale',
+    href: '/presale',
+    key: 'presale'
+  }
 ]

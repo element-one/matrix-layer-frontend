@@ -5,7 +5,7 @@ import { tn } from '@utils/tn'
 
 const text = tv(
   {
-    base: 'font-poppins text-left leading-none',
+    base: 'font-chakraPetch text-left leading-none',
     variants: {
       color: {
         primary: 'text-white',

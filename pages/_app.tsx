@@ -1,7 +1,7 @@
 import React from 'react'
 import { ToastContainer } from 'react-toastify'
 import type { AppProps } from 'next/app'
-import { Inter, Poppins } from 'next/font/google'
+import { Chakra_Petch, Inter, Poppins, Press_Start_2P } from 'next/font/google'
 import Head from 'next/head'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { NextUIProvider } from '@nextui-org/react'
@@ -26,6 +26,18 @@ import 'react-toastify/dist/ReactToastify.css'
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter'
+})
+
+const pressStart2P = Press_Start_2P({
+  weight: ['400'],
+  subsets: ['latin'],
+  variable: '--font-press-start-2p'
+})
+
+const chakraPetch = Chakra_Petch({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-chakra-petch'
 })
 
 const poppins = Poppins({
@@ -59,6 +71,8 @@ export default function App({ Component, pageProps }: AppProps) {
         :root {
           --font-inter: ${inter.style.fontFamily};
           --font-poppins: ${poppins.style.fontFamily};
+          --font-press-start-2p: ${pressStart2P.style.fontFamily};
+          --font-chakra-petch: ${chakraPetch.style.fontFamily};
         }
       `}</style>
       <WagmiProvider config={config}>
