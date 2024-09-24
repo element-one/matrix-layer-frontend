@@ -1,3 +1,6 @@
+import { useEffect, useRef } from 'react'
+import { useInView } from 'react-intersection-observer'
+
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
@@ -36,103 +39,158 @@ const advantages = [
 ]
 
 const HomePage = () => {
+  const { ref: section1Ref, inView: section1InView } = useInView({
+    threshold: 0
+  })
+  const video1Ref = useRef<HTMLVideoElement | null>(null)
+
+  const { ref: section2Ref, inView: section2InView } = useInView({
+    threshold: 0
+  })
+  const video2Ref = useRef<HTMLVideoElement | null>(null)
+
+  const { ref: section3Ref, inView: section3InView } = useInView({
+    threshold: 0
+  })
+  const video3Ref = useRef<HTMLVideoElement | null>(null)
+
+  useEffect(() => {
+    if (!video1Ref.current) return
+    if (section1InView) {
+      video1Ref.current.play()
+    } else {
+      video1Ref.current.pause()
+    }
+  }, [section1InView])
+
+  useEffect(() => {
+    if (!video2Ref.current) return
+    if (section2InView) {
+      video2Ref.current.play()
+    } else {
+      video2Ref.current.pause()
+    }
+  }, [section2InView])
+
+  useEffect(() => {
+    if (!video3Ref.current) return
+    if (section3InView) {
+      video3Ref.current.play()
+    } else {
+      video3Ref.current.pause()
+    }
+  }, [section3InView])
+
   return (
     <Layout className='relative bg-black max-w-screen'>
       <Container>
-        <video
-          className='w-screen h-full object-cover max-h-[1200px] min-h-[1000px]'
-          autoPlay
-          muted
-          loop
-          playsInline
-        >
-          <source src='/images/home/home_video_1.mp4' type='video/mp4' />
-          your browser does not support video tag.
-        </video>
+        <div ref={section1Ref}>
+          <video
+            ref={video1Ref}
+            className='w-screen h-full object-cover max-h-[1200px] min-h-[1000px]'
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src='/images/home/home_video_1.mp4' type='video/mp4' />
+            your browser does not support video tag.
+          </video>
 
-        <ImagesField>
-          <img
-            className='absolute inset-0 w-full h-full object-cover'
-            src='/images/home/home_bg_1.webp'
-            alt='home-bg-1'
-          />
-          <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
-          <img
-            className='absolute w-[160px] object-cover left-0 top-0 lg:w-[245px] z-20'
-            src={'/images/home/home_float_1.webp'}
-            alt='home_float_1'
-          />
-        </ImagesField>
-        <Content
-          className='absolute left-1/2 top-[55%] translate-x-[-50%] translate-y-[-50%] flex
-            justify-center items-center'
-        >
-          <div className='flex flex-col lg:w-[1000px] relative mx-auto'>
+          <ImagesField>
             <img
-              className='w-[368px] h-[368px] object-cover absolute right-[120px] top-[-120px]'
-              src='/images/home/home_float_2.webp'
-              alt='home_float_2'
+              className='absolute inset-0 w-full h-full object-cover'
+              src='/images/home/home_bg_1.webp'
+              alt='home-bg-1'
             />
-            <div className='flex justify-center items-center'>
-              <Text className='relative z-10 text-[66px] text-white font-pressStart2P translate-x-[20px]'>
-                WORLD
-              </Text>
+            <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
+            <img
+              className='absolute w-[160px] object-cover left-0 top-0 lg:w-[245px] z-20'
+              src={'/images/home/home_float_1.webp'}
+              alt='home_float_1'
+            />
+          </ImagesField>
+          <Content
+            className='absolute left-1/2 top-[55%] translate-x-[-50%] translate-y-[-50%] flex
+              justify-center items-center'
+          >
+            <div className='flex flex-col lg:w-[1000px] relative mx-auto'>
               <img
-                className='w-[452px] h-[518px] object-cover relative z-20'
-                src='/images/home/home_image_1.webp'
-                alt='home_image_1'
+                className='w-[368px] h-[368px] object-cover absolute right-[120px] top-[-120px]'
+                src='/images/home/home_float_2.webp'
+                alt='home_float_2'
               />
-              <Text className='relative z-10 text-[66px] text-white font-pressStart2P translate-x-[-40px]'>
-                PHONE
-              </Text>
+              <div className='flex justify-center items-center'>
+                <Text className='relative z-10 text-[66px] text-white font-pressStart2P translate-x-[20px]'>
+                  WORLD
+                </Text>
+                <img
+                  className='w-[452px] h-[518px] object-cover relative z-20'
+                  src='/images/home/home_image_1.webp'
+                  alt='home_image_1'
+                />
+                <Text className='relative z-10 text-[66px] text-white font-pressStart2P translate-x-[-40px]'>
+                  PHONE
+                </Text>
+              </div>
+              <Button className='text-[32px] text-center p-[20px] rounded-[20px] translate-y-[-6px]'>
+                Unlock with Your Eyes, Connect with the Blockchain
+              </Button>
             </div>
-            <Button className='text-[32px] text-center p-[20px] rounded-[20px] translate-y-[-6px]'>
-              Unlock with Your Eyes, Connect with the Blockchain
-            </Button>
-          </div>
-        </Content>
+          </Content>
+        </div>
       </Container>
       <Container className='flex flex-col justify-end z-20 bg-gradient-home-bg-1 min-h-[800px] pt-[200px]'>
-        <img
-          className='w-screen z-10 object-cover'
-          src='/images/home/home_bg_2.webp'
-          alt='home-bg-2'
-        />
-        <ImagesField>
-          <div
-            className='absolute top-[-200px] right-[-30px] rounded-full w-[388px] h-[563px]
-              blur-[150px] bg-radial-gradient-1'
-          ></div>
-          <img
-            className='absolute w-[490px] right-0 top-[-200px] lg:w-[490px] z-20 object-cover'
-            src='/images/home/home_float_3.webp'
-            alt='home_float_3'
-          />
-        </ImagesField>
-        <Content className='absolute left-1/2 top-[50px] translate-x-[-50%]'>
-          <div className='flex flex-col gap-y-[30px] items-start lg:w-[920px]'>
-            <Text
-              className='text-[14px] text-center lg:text-left lg:text-[48px] clip-text
-                bg-gradient-home-text-1 font-bold'
-            >
-              The World&apos;s First Smartphone <br /> with Full-Chain Network
-              Integration
-            </Text>
-            <Text className='text-[12px] font-normal lg:text-[22px] text-center lg:text-left'>
-              World Phone is designed to break the limitations of traditional
-              mobile devices by deeply integrating blockchain technology into
-              smartphones through innovative hardware and software, simplifying
-              users&apos; access to Web3 and enhancing their overall experience.
-            </Text>
-            <div className='w-[65px] h-[1px] bg-white'></div>
-            <Text
-              className='text-[12px] font-normal lg:text-[28px] text-center lg:text-left uppercase
-                tracking-[2px]'
-            >
-              Redefining the Gateway to the Blockchain Ecosystem
-            </Text>
-          </div>
-        </Content>
+        <div ref={section2Ref}>
+          <video
+            ref={video2Ref}
+            className='w-screen h-full object-cover max-h-[1080px] rotate-[27.82deg]'
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src='/images/home/home_video_2.mp4' type='video/mp4' />
+            your browser does not support video tag.
+          </video>
+          <ImagesField>
+            <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
+            <div
+              className='absolute top-[-200px] right-[-30px] rounded-full w-[388px] h-[563px]
+                blur-[150px] bg-radial-gradient-1'
+            ></div>
+            <img
+              className='absolute w-[490px] right-0 top-[-200px] lg:w-[490px] z-20 object-cover'
+              src='/images/home/home_float_3.webp'
+              alt='home_float_3'
+            />
+          </ImagesField>
+          <Content className='absolute left-1/2 top-[50px] translate-x-[-50%]'>
+            <div className='flex flex-col gap-y-[30px] items-start lg:w-[920px]'>
+              <Text
+                className='text-[14px] text-center lg:text-left lg:text-[48px] clip-text
+                  bg-gradient-home-text-1 font-bold'
+              >
+                The World&apos;s First Smartphone <br /> with Full-Chain Network
+                Integration
+              </Text>
+              <Text className='text-[12px] font-normal lg:text-[22px] text-center lg:text-left'>
+                World Phone is designed to break the limitations of traditional
+                mobile devices by deeply integrating blockchain technology into
+                smartphones through innovative hardware and software,
+                simplifying users&apos; access to Web3 and enhancing their
+                overall experience.
+              </Text>
+              <div className='w-[65px] h-[1px] bg-white'></div>
+              <Text
+                className='text-[12px] font-normal lg:text-[28px] text-center lg:text-left uppercase
+                  tracking-[2px]'
+              >
+                Redefining the Gateway to the Blockchain Ecosystem
+              </Text>
+            </div>
+          </Content>
+        </div>
       </Container>
       <Container>
         <ImagesField>
@@ -207,41 +265,54 @@ const HomePage = () => {
           </div>
         </Content>
       </Container>
+
       <Container>
-        <ImagesField>
-          <img
-            className='absolute top-[-300px] max-h-[750px] left-0 w-screen z-10 object-cover'
-            src='/images/home/home_bg_3.webp'
-            alt='home-bg-3'
-          />
-          <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
-        </ImagesField>
-        <Content className='flex justify-center pb-[235px]'>
-          <div className='flex gap-x-[40px] justify-between items-center'>
-            <img
-              src='/images/home/home_image_5.webp'
-              alt='home_image_5'
-              className='w-[495px] object-cover'
-            />
-            <div className='grow'>
-              <img
-                src='/images/home/home_image_6.webp'
-                alt='home_image_6'
-                className='w-[425px] object-cover'
-              />
-              <Text className='text-[48px] font-bold text-white'>
-                smartphone assistant
-              </Text>
-              <div className='w-[65px] h-[1px] bg-white my-[20px]'></div>
-              <Text
-                className='text-[12px] lg:text-[28px] text-center lg:text-left uppercase clip-text
-                  bg-gradient-home-text-1 font-bold'
+        <div ref={section3Ref}>
+          <ImagesField>
+            <div className='absolute left-0 top-[-300px]'>
+              <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
+              <video
+                ref={video3Ref}
+                className='w-screen h-full object-cover max-h-[750px]'
+                autoPlay
+                muted
+                loop
+                playsInline
               >
-                Follow Sam Altman&apos;s thoughts and let technology serve life
-              </Text>
+                <source src='/images/home/home_video_3.mp4' type='video/mp4' />
+                your browser does not support video tag.
+              </video>
             </div>
-          </div>
-        </Content>
+            <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
+          </ImagesField>
+          <Content className='flex justify-center pb-[235px]'>
+            <div className='flex gap-x-[40px] justify-between items-center'>
+              <img
+                src='/images/home/home_image_5.webp'
+                alt='home_image_5'
+                className='w-[495px] object-cover'
+              />
+              <div className='grow'>
+                <img
+                  src='/images/home/home_image_6.webp'
+                  alt='home_image_6'
+                  className='w-[425px] object-cover'
+                />
+                <Text className='text-[48px] font-bold text-white'>
+                  smartphone assistant
+                </Text>
+                <div className='w-[65px] h-[1px] bg-white my-[20px]'></div>
+                <Text
+                  className='text-[12px] lg:text-[28px] text-center lg:text-left uppercase clip-text
+                    bg-gradient-home-text-1 font-bold'
+                >
+                  Follow Sam Altman&apos;s thoughts and let technology serve
+                  life
+                </Text>
+              </div>
+            </div>
+          </Content>
+        </div>
       </Container>
       <Container>
         <ImagesField>
