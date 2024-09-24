@@ -1,17 +1,7 @@
-import { Button } from '@nextui-org/react'
-
+import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
-
-const bgGradient =
-  'linear-gradient(to bottom, rgba(231, 137, 255, 1) 0%, rgba(146, 153, 255, 1) 100%)'
-const gradientTextStyle = {
-  background: 'linear-gradient(180deg, #E789FF 0%, #9299FF 100%)',
-  backgroundClip: 'text',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent'
-}
 
 const ProductPage = () => {
   return (
@@ -24,10 +14,8 @@ const ProductPage = () => {
             alt='product-top'
           />
           <img
-            className='rotate-[276deg] absolute top-[140px] -right-[28px] w-[156px] h-[156px]'
-            style={{
-              filter: 'blur(4.6px)'
-            }}
+            className='rotate-[276deg] absolute top-[140px] -right-[28px] w-[156px] h-[156px]
+              blur-[4.6px]'
             src='/images/product/product-dot.png'
             alt='product-dot'
           />
@@ -43,22 +31,14 @@ const ProductPage = () => {
               PRE-SALE
             </Text>
             <div
-              className='flex p-2 gap-[30px]'
-              style={{
-                border: '2px solid transparent',
-                borderRadius: '40px',
-                backgroundClip: 'padding-box, border-box',
-                backgroundOrigin: 'padding-box, border-box',
-                backgroundImage:
-                  'linear-gradient(to right, #000, #000), linear-gradient(to bottom, rgba(231, 137, 255, 1) 0%, rgba(146, 153, 255, 1) 100%)'
-              }}
+              className='flex p-2 gap-[30px] border-2 border-transparent rounded-[40px]
+                [background-clip:padding-box,border-box]
+                [background-origin:padding-box,border-box]
+                bg-[linear-gradient(to_right,#000,#000),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
             >
               <Button
                 color='primary'
-                className='rounded-[30px] w-[200px] h-12 text-black text-[22px] font-bold'
-                style={{
-                  backgroundImage: bgGradient
-                }}
+                className={`rounded-[30px] w-[200px] h-12 text-black text-[22px] font-bold`}
               >
                 PRODUCT
               </Button>
@@ -88,18 +68,14 @@ const ProductPage = () => {
                 tortor vulputate, sagittis suscipit massa.
               </Text>
               <Text
-                className='text-[98px]'
+                className={`text-[98px] bg-clip-text text-transparent bg-gradient-text-1`}
                 size='extrabold'
-                style={gradientTextStyle}
               >
                 $699
               </Text>
               <Button
                 color='primary'
-                className='rounded-[30px] w-[191px] h-12 text-black text-[22px] font-bold'
-                style={{
-                  backgroundImage: bgGradient
-                }}
+                className={`rounded-[30px] w-[191px] h-12 text-[22px] font-bold`}
               >
                 ORDER NOW
               </Button>
@@ -110,13 +86,7 @@ const ProductPage = () => {
                 src='/images/product/phone21.png'
                 alt='phone21'
               />
-              <div
-                className='absolute inset-0'
-                style={{
-                  background:
-                    'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .9) 100%)'
-                }}
-              ></div>
+              <div className='absolute inset-0 bg-gradient-to-b from-transparent to-black/90'></div>
             </div>
           </div>
         </Content>
@@ -135,12 +105,8 @@ const ProductPage = () => {
           />
           <div
             className='absolute -right-[350px] top-[200px] w-[780.298px] h-[563px] rotate-[-44.461deg]
-              flex-shrink-0 rounded-[780.298px] opacity-50'
-            style={{
-              background:
-                'radial-gradient(50% 50% at 50% 50%, #A2A2A2 0%, rgba(162, 162, 162, 0.50) 100%)',
-              filter: 'blur(150px)'
-            }}
+              flex-shrink-0 rounded-[780.298px] opacity-50 blur-[150px]
+              bg-[radial-gradient(50%_50%_at_50%_50%,_#A2A2A2_0%,_rgba(162,162,162,0.50)_100%)]'
           />
           <img
             className='absolute top-[260px] w-[156px] -right-[20px] -rotate-[20deg]'
@@ -167,9 +133,8 @@ const ProductPage = () => {
                 WORLD PHONE
               </Text>
               <Text
-                className='text-[64px]'
+                className={`text-[64px] bg-clip-text text-transparent bg-gradient-text-1`}
                 size='bold'
-                style={gradientTextStyle}
               >
                 Spesification
               </Text>
@@ -224,17 +189,14 @@ const ProductPage = () => {
       <Container className='pb-32'>
         <Content className='relative'>
           <img
-            className='rotate-[276deg] absolute top-[140px] left-[28px] w-[156px] h-[156px]'
-            style={{
-              filter: 'blur(4.6px)'
-            }}
+            className='rotate-[276deg] absolute top-[140px] left-[28px] w-[156px] h-[156px]
+              blur-[4.6px]'
             src='/images/product/product-dot.png'
             alt='dot'
           />
           <div className='pt-[58px] flex flex-col items-center'>
             <Text
-              className='text-[64px] text-center'
-              style={gradientTextStyle}
+              className={`text-[64px] text-center bg-clip-text text-transparent bg-gradient-text-1`}
               size='bold'
             >
               User Benefits
@@ -268,16 +230,10 @@ const ProductPage = () => {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className='bg-black flex gap-8 px-[20px] py-[10px] border border-[rgba(102,102,102,0.40)]
-                    rounded-[20px] items-center'
-                  style={{
-                    border: '1px solid transparent',
-                    borderRadius: '40px',
-                    backgroundClip: 'padding-box, border-box',
-                    backgroundOrigin: 'padding-box, border-box',
-                    backgroundImage:
-                      'linear-gradient(to right, #000, #000), linear-gradient(to bottom, rgba(231, 137, 255, 1) 0%, rgba(146, 153, 255, 1) 100%)'
-                  }}
+                  className='bg-black flex gap-8 px-[20px] py-[10px] rounded-[40px] items-center border-1
+                    border-transparent [background-clip:padding-box,border-box]
+                    [background-origin:padding-box,border-box]
+                    bg-[linear-gradient(to_right,#000,#000),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
                 >
                   <img
                     src={item.img}
@@ -286,8 +242,7 @@ const ProductPage = () => {
                   />
                   <div className='flex flex-col gap-[10px]'>
                     <Text
-                      style={gradientTextStyle}
-                      className='text-[22px]'
+                      className={`text-[22px] bg-clip-text text-transparent bg-gradient-text-1`}
                       size='extrabold'
                     >
                       {item.title}
@@ -300,8 +255,8 @@ const ProductPage = () => {
               ))}
             </div>
             <Text
-              className='text-center text-[22px] mt-10 max-w-[1107px]'
-              style={{ textShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}
+              className='text-center text-[22px] mt-10 max-w-[1107px]
+                shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'
               size='bold'
             >
               The actual specifications of the delivered product may differ from
