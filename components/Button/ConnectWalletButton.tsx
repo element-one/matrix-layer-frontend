@@ -58,7 +58,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
     ) {
       signMessage(
         {
-          message: `Login to Wphone with one-time nonce: ${nonceData.nonce}`
+          message: `Login to Matrix with one-time nonce: ${nonceData.nonce}`
         },
         {
           onSuccess() {

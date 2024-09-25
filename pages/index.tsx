@@ -273,7 +273,7 @@ const HomePage = () => {
               <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
               <video
                 ref={video3Ref}
-                className='w-screen h-full object-cover max-h-[750px]'
+                className='w-screen h-full object-cover max-h-[750px] opacity-30'
                 autoPlay
                 muted
                 loop

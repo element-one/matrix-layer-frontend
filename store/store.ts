@@ -19,7 +19,7 @@ export const useStore = create<StoreState>()(
       ...createCheckoutSlice(...a)
     }),
     {
-      name: 'wphone-App'
+      name: 'matrix-App'
     }
   )
 )

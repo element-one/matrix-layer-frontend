@@ -28,10 +28,10 @@ const items = [
   {
     title: 'AI AGENT ULTRA',
     count: 4,
-    icon: '/images/svg/rectangle-sm.svg'
+    icon: '/images/product/ai_agent_ultra.png'
   },
-  { title: 'AI AGENT ONE', count: 4, icon: '/images/svg/rectangle-sm.svg' },
-  { title: 'AI AGENT PRO', count: 3, icon: '/images/svg/rectangle-sm.svg' }
+  { title: 'AI AGENT ONE', count: 4, icon: '/images/product/ai_agent_one.png' },
+  { title: 'AI AGENT PRO', count: 3, icon: '/images/product/ai_agent_pro.png' }
 ]
 
 const orders = [
