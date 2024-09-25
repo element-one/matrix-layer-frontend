@@ -64,8 +64,8 @@ const Header: FC<HeaderProps> = ({ className }) => {
       <div className=''>
         <Link href='/'>
           <img
-            width={'w-[152px] h-[44px]'}
-            src='/images/svg/logo_worldphone.svg'
+            width={'w-[172px] h-[53px]'}
+            src='/images/svg/logo_matrix.svg'
             alt='worldphone'
           />
         </Link>

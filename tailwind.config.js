@@ -13,6 +13,7 @@ module.exports = {
       colors: {
         'black-17': '#171717',
         'black-25': '#2B2B2B',
+        'black-28': '#282828',
         'black-140': '#92008C',
         'gray-42': '#2A2A2A',
         'gray-57': '#575757',
@@ -64,6 +65,7 @@ module.exports = {
             4: '#EDEDED',
             5: '#F9FAFB',
             6: '#FFFFFF',
+            7: '#A5A5A5'
           },
           'co-purple': {
             1: '#4E46DC',
@@ -150,6 +152,7 @@ module.exports = {
             4: '#474747',
             5: '#333333',
             6: '#212121',
+            7: '#A5A5A5'
           },
           'co-purple': {
             1: '#4E46DC',

@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 import React, { SVGAttributes } from 'react'
 
 export const PlusIcon = ({
-  width = 30,
-  height = 30,
+  width = 24,
+  height = 24,
   className,
   ...props
 }: SVGAttributes<SVGElement>) => (
@@ -12,29 +13,12 @@ export const PlusIcon = ({
     width={width}
     {...props}
     className={className ?? ''}
-    viewBox='0 0 30 30'
-    fill='none'
+    viewBox='0 0 24 24'
   >
     <path
-      d='M15 27.5C21.9036 27.5 27.5 21.9036 27.5 15C27.5 8.09644 21.9036 2.5 15 2.5C8.09644 2.5 2.5 8.09644 2.5 15C2.5 21.9036 8.09644 27.5 15 27.5Z'
-      stroke='#00FFE5'
-      strokeWidth='2.5'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    />
-    <path
-      d='M15 10V20'
-      stroke='#00FFE5'
-      strokeWidth='2.5'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-    />
-    <path
-      d='M10 15H20'
-      stroke='#00FFE5'
-      strokeWidth='2.5'
-      strokeLinecap='round'
-      strokeLinejoin='round'
+      fillRule='evenodd'
+      clipRule='evenodd'
+      d='M19 11H13V5C13 4.447 12.552 4 12 4C11.448 4 11 4.447 11 5V11H5C4.448 11 4 11.447 4 12C4 12.553 4.448 13 5 13H11V19C11 19.553 11.448 20 12 20C12.552 20 13 19.553 13 19V13H19C19.552 13 20 12.553 20 12C20 11.447 19.552 11 19 11Z'
     />
   </svg>
 )
