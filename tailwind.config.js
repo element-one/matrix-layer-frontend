@@ -21,6 +21,7 @@ module.exports = {
         'gray-130': '#ACACAC',
         'gray-180': '#BCBCBC',
         'red-255': '#FF6363',
+        'purple-500': "#E789FF",
         'gray-a5': '#A5A5A5'
       },
       fontFamily: {
@@ -34,10 +35,11 @@ module.exports = {
       },
       backgroundImage: {
         'gradient-text-1': 'linear-gradient(to bottom, #E789FF, #9299FF)',
-        'gradient-home-text-1': 'linear-gradient(271deg, #FFF 26.71%, #00FFE5 55.54%, #FF30FA 86.7%)',
-        'gradient-home-text-2': 'linear-gradient(271deg, #FF30FA 0.53%, #00FFE5 54.14%, #FFF 89.7%)',
-        'gradient-home-text-3': 'linear-gradient(271deg, #FFF 19.75%, #00FFE5 58.88%, #FF30FA 101.18%)',
-        'gradient-button-1': 'linear-gradient(to bottom, #e789ff 0%, #9299ff 100%)'
+        'gradient-home-text-1': 'linear-gradient(180deg, #E789FF 0%, #9299FF 100%)',
+        'gradient-home-bg-1': 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 27.52%, #000 100%)',
+        'gradient-button-1': 'linear-gradient(180deg, #E789FF 0%, #9299FF 100%)',
+        'gradient-home-section-1': 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 27.52%, #000 100%)',
+        'radial-gradient-1': 'radial-gradient(50% 50% at 50% 50%, #A2A2A2 0%, rgba(162, 162, 162, 0.50) 100%)'
       },
       fontWeight: {
         light: '200',
