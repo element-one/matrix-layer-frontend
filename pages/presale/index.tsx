@@ -59,7 +59,7 @@ const ProductPage = () => {
       color={currentPage === page ? 'primary' : 'secondary'}
       variant={currentPage === page ? 'faded' : 'light'}
       className={`focus:bg-gradient-button-1 border-none rounded-[30px] w-[200px] h-12 text-[22px]
-        font-bold ${currentPage === page ? 'text-black' : 'text-white'}`}
+        font-semibold ${currentPage === page ? 'text-black' : 'text-white'}`}
       onClick={() => paginate(page)}
     >
       {page === 'product' ? 'PRODUCT' : 'AI AGENT NFT'}
@@ -91,14 +91,15 @@ const ProductPage = () => {
               <Container>
                 <Content>
                   <div className='flex justify-between items-center pt-[171px]'>
-                    <div className='flex flex-col gap-5 max-w-[563px]'>
+                    <div className='flex flex-col gap-5 max-w-[612px]'>
                       <Text className='text-white text-[28px] font-semibold leading-normal tracking-[2.8px] uppercase'>
                         mobile hardware
                       </Text>
-                      <Text className='text-white text-7xl font-bold'>
-                        WORLD PHONE
+                      <Text className='text-white text-7xl font-semibold'>
+                        MATRIX <br />
+                        LAYER PROTOCOL
                       </Text>
-                      <Text className='text-base font-bold text-gray-a5'>
+                      <Text className='text-base font-semibold text-gray-a5 pr-[20px]'>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Aenean ornare mattis risus, eget condimentum nibh
                         ultrices ut. Phasellus tempor accumsan eros. Proin odio
@@ -106,21 +107,21 @@ const ProductPage = () => {
                         massa.
                       </Text>
                       <Text
-                        className={`text-[98px] ${gradientTextClass}`}
+                        className={`text-[98px] leading-[1.2] ${gradientTextClass}`}
                         size='extrabold'
                       >
                         $699
                       </Text>
                       <Button
                         color='primary'
-                        className={`rounded-[30px] w-[191px] h-12 text-[22px] font-bold`}
+                        className={`rounded-[30px] w-[191px] h-12 text-[22px] font-semibold`}
                       >
                         ORDER NOW
                       </Button>
                     </div>
                     <div className='relative'>
                       <img
-                        className='w-[474px] h-[544px]'
+                        className='w-[456px] h-[521px]'
                         src='/images/product/phone21.png'
                         alt='phone21'
                       />
@@ -156,19 +157,19 @@ const ProductPage = () => {
                   <div className='flex justify-between items-center'>
                     <div className='flex gap-[54px]'>
                       <img
-                        className='h-[553px]'
+                        className='h-[554px]'
                         src='/images/product/phone4.png'
                         alt='phone4'
                       />
                       <img
-                        className='h-[553px]'
+                        className='h-[554px]'
                         src='/images/product/phone-side.png'
                         alt='phone-side'
                       />
                     </div>
                     <div className='flex flex-col'>
                       <Text className='text-[28px]' size='bold'>
-                        WORLD PHONE
+                        MATRIX LAYER PROTOCOL
                       </Text>
                       <Text
                         className={`text-[64px] ${gradientTextClass}`}
@@ -199,7 +200,7 @@ const ProductPage = () => {
                       >
                         {[
                           ['Battery Capacity', '5050mAh'],
-                          ['GPU', '5050mAh']
+                          ['GPU', 'Arm Mali-G57']
                         ].map((item) => (
                           <div key={item[0]} className='flex flex-col gap-5'>
                             <Text className='text-xl'>{item[0]}</Text>
@@ -211,7 +212,7 @@ const ProductPage = () => {
                         <div className='flex flex-col gap-5'>
                           <Text className='text-xl'>CPU</Text>
                           <Text className='text-base text-gray-a5'>
-                            MTK-G992 * 2A76 @ 2.0GHz + 6A55 @ 2.0GHz
+                            MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz
                           </Text>
                         </div>
                       </div>
@@ -236,7 +237,7 @@ const ProductPage = () => {
                     src='/images/product/product-dot.png'
                     alt='dot'
                   />
-                  <div className='pt-[58px] flex flex-col items-center'>
+                  <div className='relative z-20 pt-[58px] flex flex-col items-center'>
                     <Text
                       className={`text-[64px] ${gradientTextClass}`}
                       size='bold'
@@ -326,6 +327,7 @@ const ProductPage = () => {
                     {[
                       {
                         title: 'AI Agent One',
+                        img: '/images/product/ai_agent_one.png',
                         descriptionList: [
                           'Purchase $699 worth of $WPN to activate the NFT (the tokens will be burned after activation).',
                           'Unlocks basic pool mining',
@@ -335,6 +337,7 @@ const ProductPage = () => {
                       },
                       {
                         title: 'AI Agent Pro',
+                        img: '/images/product/ai_agent_pro.png',
                         descriptionList: [
                           'Purchase $899 worth of $WPN to activate the NFT (the tokens will be burned after activation).',
                           'Unlocks basic pool mining',
@@ -344,6 +347,7 @@ const ProductPage = () => {
                       },
                       {
                         title: 'AI Agent Ultra',
+                        img: '/images/product/ai_agent_ultra.png',
                         descriptionList: [
                           'Purchase $1299 worth of $WPN to activate the NFT (the tokens will be burned after activation).',
                           'Unlocks basic pool mining',
@@ -355,8 +359,8 @@ const ProductPage = () => {
                       <div key={item.title} className='flex items-center'>
                         <img
                           className='w-[250px] h-[250px] mr-10'
-                          src='/images/svg/rectangle.svg'
-                          alt='ai-agent-nft-1'
+                          src={item.img}
+                          alt={item.title}
                         />
                         <div className='grow w-[526px]'>
                           <Text
@@ -378,7 +382,7 @@ const ProductPage = () => {
                           >
                             {item.price}
                           </Text>
-                          <Button className='h-12 text-base font-semibold w-[218px]'>
+                          <Button className='rounded-[35px] h-12 text-base font-semibold w-[218px]'>
                             Connect Wallet to Order
                           </Button>
                         </div>

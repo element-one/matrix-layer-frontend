@@ -11,7 +11,6 @@ import {
 import clsx from 'clsx'
 import { useAccount, useSignMessage } from 'wagmi'
 
-import { BtnArrowIcon } from '@components/Icon/BtnArrow'
 import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
 import { useDisconnect } from '@hooks/useDisconnect'
@@ -59,7 +58,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
     ) {
       signMessage(
         {
-          message: `Login to Wphone with one-time nonce: ${nonceData.nonce}`
+          message: `Login to Matrix with one-time nonce: ${nonceData.nonce}`
         },
         {
           onSuccess() {
@@ -183,14 +182,13 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
     <Button
       className={clsx(
         `flex flex-row items-center justify-center px-3 md:px-7 !rounded-[35px] h-[28px]
-          md:h-[48px] text-base font-bold gap-x-1`,
+          md:h-[48px] text-base font-semibold gap-x-1 md:w-[190px]`,
         className
       )}
       color='primary'
       onClick={handleClick}
       isLoading={isGettingNonce || isLogging || isSigning}
     >
-      <BtnArrowIcon />
       <span>Connect Wallet</span>
     </Button>
   )
