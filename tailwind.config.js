@@ -21,7 +21,8 @@ module.exports = {
         'gray-130': '#ACACAC',
         'gray-180': '#BCBCBC',
         'red-255': '#FF6363',
-        'purple-500': "#E789FF"
+        'purple-500': "#E789FF",
+        'gray-a5': '#A5A5A5'
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui'],
