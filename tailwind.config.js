@@ -20,7 +20,8 @@ module.exports = {
         'gray-90': '#919090',
         'gray-130': '#ACACAC',
         'gray-180': '#BCBCBC',
-        'red-255': '#FF6363'
+        'red-255': '#FF6363',
+        'gray-a5': '#A5A5A5'
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui'],
