@@ -50,7 +50,7 @@ export const Content: FC<ContentProps> = ({
     <div
       className={twMerge(
         clsx(
-          'relative z-20 container mx-auto px-[30px] lg:px-[50px]',
+          'relative z-20 container mx-auto px-[30px] lg:px-[20px]',
           className
         )
       )}
