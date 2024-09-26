@@ -1,48 +1,105 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { toast } from 'react-toastify'
+import { Address } from 'viem'
+import {
+  useAccount,
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract
+} from 'wagmi'
 
+import PAYMENT_ABI from '@abis/Payment.json'
+import USDT_ABI from '@abis/USDT.json'
 import { Button } from '@components/Button'
 import PaymentField from '@components/Checkout/PaymentField'
-import ProductItem, { Product } from '@components/Checkout/ProductItem'
+import ProductItem, { IProduct } from '@components/Checkout/ProductItem'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { SelectItemSkeleton } from '@components/Skeleton/SelectItemSkeleton'
 import { Text } from '@components/Text'
+import { ModalType, useModal } from '@contexts/modal'
+import { useGetProducts } from '@services/api/product'
+import { convertTypeToInt, convertTypeToName } from '@utils/payment'
 
-const mock_products: Product[] = [
-  {
-    id: '0',
-    name: 'Matrix Lager Protocol',
-    price: 699,
-    img: '/images/checkout/product-1.png',
-    quantity: 10
-  },
-  {
-    id: '1',
-    name: 'Matrix Lager Protocol',
-    price: 699,
-    img: '/images/checkout/product-2.png',
-    quantity: 5
-  },
-  {
-    id: '2',
-    name: 'Matrix Lager Protocol',
-    price: 699,
-    img: '/images/checkout/product-3.png',
-    quantity: 2
-  },
-  {
-    id: '3',
-    name: 'Matrix Lager Protocol',
-    price: 699,
-    img: '/images/checkout/product-4.png',
-    quantity: 4
-  }
-]
+const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
+const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
 
 const CheckoutPage = () => {
+  const { isConnected, address } = useAccount()
+  const { showModal } = useModal()
+
   const [isCopied, setIsCopied] = useState(false)
-  const [products, setProducts] = useState(mock_products)
-  const [selectedProductId, setSelectedProductId] = useState('0')
+  const [products, setProducts] = useState<IProduct[]>([])
+  const [selectedProductType, setSelectedProductType] = useState('')
+
+  const { data = [] } = useGetProducts()
+
+  const [successModalHasShown, setSuccessModalHasShown] = useState(false)
+
+  const { data: accountBalance, refetch: refetchAccount } = useReadContract({
+    abi: USDT_ABI,
+    address: USDT_ADDRESS as Address,
+    functionName: 'balanceOf',
+    args: [address]
+  })
+
+  const {
+    data: approveHash,
+    writeContract: approveContract,
+    isPending: isApprovingContract
+  } = useWriteContract()
+
+  const {
+    data: txHash,
+    writeContract: payContract,
+    isPending: isPayingContract
+  } = useWriteContract()
+
+  const { data: txData, isLoading: isWaitingPayingReceipt } =
+    useWaitForTransactionReceipt({
+      hash: txHash,
+      query: {
+        enabled: txHash !== undefined,
+        initialData: undefined
+      }
+    })
+
+  const { data: approveData, isLoading: isWaitingApproveReceipt } =
+    useWaitForTransactionReceipt({
+      hash: approveHash,
+      query: {
+        enabled: approveHash !== undefined,
+        initialData: undefined
+      }
+    })
+
+  useEffect(() => {
+    if (txData && !successModalHasShown) {
+      showModal(ModalType.PAY_SUCCESS_MODAL)
+      setSuccessModalHasShown(true)
+    }
+  }, [txData, showModal, successModalHasShown])
+
+  const selectedProduct: IProduct | undefined = useMemo(
+    () => products.find((p) => p.type === selectedProductType) ?? undefined,
+    [products, selectedProductType]
+  )
+
+  useEffect(() => {
+    if (data.length) {
+      setProducts(() =>
+        data
+          .map((item) => ({
+            name: convertTypeToName(item.type),
+            price: item.price,
+            priceInUsdt: item.price / 1000000,
+            type: item.type,
+            quantity: 0
+          }))
+          .filter((v) => v.name)
+      )
+    }
+  }, [data])
 
   useEffect(() => {
     if (isCopied) {
@@ -61,6 +118,89 @@ const CheckoutPage = () => {
       }
     }
   }
+
+  const handleConnectButtonClick = () => {
+    showModal(ModalType.CONNECT_WALLET_MODAL)
+  }
+
+  const handlePayButtonClick = async () => {
+    if (!isConnected || !address) {
+      toast.info('Please connect your wallet first')
+      return
+    }
+
+    if (!selectedProduct) return
+
+    const amount = Number(selectedProduct.price) * selectedProduct.quantity
+
+    if (accountBalance && Number(accountBalance) >= amount) {
+      approveContract(
+        {
+          abi: USDT_ABI,
+          address: USDT_ADDRESS as Address,
+          functionName: 'approve',
+          args: [PAYMENT_ADDRESS, String(amount)]
+        },
+        {
+          onSuccess() {
+            console.log('approve success paid: ', String(amount))
+            refetchAccount()
+          },
+          onError(err: Error) {
+            console.log(err.message)
+            toast.error('Please try again')
+          }
+        }
+      )
+    } else {
+      toast.info('your account balance is not enough to pay')
+    }
+  }
+
+  const handlePay = useCallback(() => {
+    if (!selectedProduct) return
+
+    const amount = selectedProduct.price * selectedProduct.quantity
+
+    const type = convertTypeToInt(selectedProduct.type)
+    if (type === -1) return
+
+    console.log('going to pay: ', amount)
+    payContract(
+      {
+        abi: PAYMENT_ABI,
+        functionName: 'payPublicSale',
+        args: [
+          String(amount),
+          type,
+          selectedProduct.quantity,
+          '08b485c2-05b2-4321-924f-27b44fddc4e4'
+        ],
+        address: PAYMENT_ADDRESS as Address
+      },
+      {
+        onSuccess() {
+          console.log('pay contract success')
+        },
+        onError(err) {
+          console.log(err.message)
+          toast.error('pay: Please try again')
+        }
+      }
+    )
+  }, [selectedProduct, payContract])
+
+  useEffect(() => {
+    if (approveData) {
+      handlePay()
+    }
+  }, [approveData, handlePay])
+
+  const isPaying =
+    isApprovingContract ||
+    isPayingContract ||
+    isWaitingApproveReceipt ||
+    isWaitingPayingReceipt
 
   return (
     <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
@@ -108,12 +248,13 @@ const CheckoutPage = () => {
                 md:w-[582px] mt-2'
             >
               <span className='text-[12px] md:text-[18px] text-co-gray-7 bg-transparent'>
-                Wallet Address
+                {address ?? 'Wallet Address'}
               </span>
-              {!true ? (
+              {!isConnected ? (
                 <Button
                   color='primary'
                   className='text-[12px] md:text-[16px] py-[10px] px-[20px] rounded-[35px] font-semibold'
+                  onClick={handleConnectButtonClick}
                 >
                   Connect Wallet
                 </Button>
@@ -124,7 +265,7 @@ const CheckoutPage = () => {
                     font-semibold'
                   onClick={handleCopy}
                 >
-                  {isCopied ? 'Copied' : 'Copy Address'}
+                  {isCopied ? 'Copied' : 'Copy'}
                 </Button>
               )}
             </div>
@@ -156,11 +297,11 @@ const CheckoutPage = () => {
               ) : (
                 products.map((item) => (
                   <ProductItem
-                    key={item.id}
+                    key={item.type}
                     products={products}
                     product={item}
-                    selectedProductId={selectedProductId}
-                    onChangeProduct={setSelectedProductId}
+                    selectedProductType={selectedProductType}
+                    onChangeProduct={setSelectedProductType}
                     onChangeProductQuantity={setProducts}
                   />
                 ))
@@ -183,13 +324,19 @@ const CheckoutPage = () => {
                 className='text-[16px] md:text-[20px] text-gray-78 mb-[12px] font-normal md:font-medium
                   md:mb-[24px] leading-none text-right'
               >
-                123 USDT
+                {selectedProduct
+                  ? `${selectedProduct.quantity} x ${selectedProduct.priceInUsdt}`
+                  : 0}
+                &nbsp;USDT
               </Text>
               <Text
                 className='text-[24px] md:text-[32px] font-semibold md:font-semibold text-white
                   leading-none text-right'
               >
-                123 USDT
+                {selectedProduct
+                  ? selectedProduct.priceInUsdt * selectedProduct.quantity
+                  : 0}
+                &nbsp;USDT
               </Text>
             </div>
           </div>
@@ -222,7 +369,11 @@ const CheckoutPage = () => {
             <Text className='text-[20px] font-semibold text-co-gray-7'>
               Payment
             </Text>
-            <PaymentField />
+            <PaymentField
+              isPaying={isPaying}
+              selectedProduct={selectedProduct}
+              onPayButtonClick={handlePayButtonClick}
+            />
           </div>
         </Content>
       </Container>

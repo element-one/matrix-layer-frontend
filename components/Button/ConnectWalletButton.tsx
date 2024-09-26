@@ -58,7 +58,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
     ) {
       signMessage(
         {
-          message: `Login to Matrix with one-time nonce: ${nonceData.nonce}`
+          message: `Login to WPhone with one-time nonce: ${nonceData.nonce}`
         },
         {
           onSuccess() {
@@ -132,9 +132,9 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
               <div
                 color='primary'
                 className={clsx(
-                  `px-3 md:px-7 flex items-center md:text-lg text-xs justify-center gap-2
-                    !rounded-2xl h-[28px] md:h-[42px] leading-[42px] text-co-text-1 font-semibold
-                    bg-gradient-to-r from-co-button-gradient-from to-co-button-gradient-to`,
+                  `px-3 md:px-4 flex items-center md:text-[16px] text-xs justify-center gap-2
+                    rounded-[35px] h-[28px] md:h-[48px] text-black font-semibold
+                    bg-gradient-button-1`,
                   className
                 )}
               >
@@ -143,7 +143,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
                 )}
                 {formatWalletAddress(address)}
               </div>
-              <img src='/images/svg/user-icon.svg' alt='user' width={43} />
+              <img src='/images/svg/user-icon.svg' alt='user' width={48} />
             </div>
           </DropdownTrigger>
           <DropdownMenu
