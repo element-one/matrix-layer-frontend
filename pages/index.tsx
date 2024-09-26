@@ -116,7 +116,7 @@ const HomePage = () => {
           >
             <div className='flex flex-col lg:w-[1000px] relative mx-auto'>
               <img
-                className='w-[368px] h-[368px] object-cover absolute right-[120px] top-[-120px]'
+                className='w-[368px] h-[368px] object-cover absolute right-[80px] top-[100px]'
                 src='/images/home/home_float_2.webp'
                 alt='home_float_2'
               />

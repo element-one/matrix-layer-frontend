@@ -91,3 +91,14 @@ export type ApiPaymentAddressResponse = ApiResponse & {
 export type ApiProofResponse = {
   proof: string[]
 }
+
+export type ApiProduct = {
+  name: string
+  price: number
+  type: string
+}
+export type ApiProducts = {
+  data: ApiProduct[]
+}
+
+export type ApiProductsResponse = ApiProducts & ApiResponse
