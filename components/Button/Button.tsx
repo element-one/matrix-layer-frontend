@@ -16,7 +16,7 @@ const Button = extendVariants(NextButton, {
     size: {
       sm: `px-unit-4 py-unit-2 min-w-unit-20 text-sm font-normal 
         gap-unit-2 rounded-[8px]`,
-      md: `px-unit-4 py-unit-2 min-w-unit-20 text-[24px] font-bold 
+      md: `px-unit-4 py-unit-2 min-w-unit-20 text-[24px] font-semibold 
         gap-unit-2 rounded-[8px]`
     },
     radius: {

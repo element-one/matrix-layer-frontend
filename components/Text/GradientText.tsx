@@ -12,7 +12,7 @@ const GradientText: FC<GradientTextProps> = ({ children, className }) => {
     <Text
       as='span'
       className={clsx(
-        'text-[10px] bg-gradient-title-1 bg-clip-text text-transparent font-semibold',
+        `text-[12px] bg-gradient-text-1 bg-clip-text text-transparent`,
         className
       )}
     >

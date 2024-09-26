@@ -21,7 +21,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
           className='flex items-center justify-center gap-2'
         >
           <img src='/images/svg/x.svg' alt='x' width={18} />
-          <span>WorldPhone_WPN</span>
+          <span>MatrixLayerProtocol_MLP</span>
         </a>
         <a
           href='/'
@@ -29,11 +29,11 @@ const Footer: FC<FooterProps> = ({ className }) => {
           className='flex items-center justify-center gap-2'
         >
           <img src='/images/svg/telegram.svg' alt='x' width={18} />
-          <span>WorldPhoneCommunity</span>
+          <span>MatrixLayerCommunity</span>
         </a>
       </div>
       <div className='text-[10px] md:text-sm'>
-        Copyright © World Phone 2024 – All rights reserved.
+        Copyright © Matrix Layer Protocol 2024 – All rights reserved.
       </div>
     </div>
   )

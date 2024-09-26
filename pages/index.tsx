@@ -116,35 +116,36 @@ const HomePage = () => {
           >
             <div className='flex flex-col lg:w-[1000px] relative mx-auto'>
               <img
-                className='w-[368px] h-[368px] object-cover absolute right-[120px] top-[-120px]'
+                className='w-[368px] h-[368px] object-cover absolute right-[80px] top-[100px]'
                 src='/images/home/home_float_2.webp'
                 alt='home_float_2'
               />
-              <div className='flex justify-center items-center'>
-                <Text className='relative z-10 text-[66px] text-white font-pressStart2P translate-x-[20px]'>
-                  WORLD
+              <div className='flex flex-col justify-center items-center'>
+                <Text className='relative z-10 text-[52px] text-white font-pressStart2P text-center'>
+                  MATRIX LAYER <br />
+                  PROTOCOL
                 </Text>
                 <img
-                  className='w-[452px] h-[518px] object-cover relative z-20'
+                  className='w-[456px] h-[521px] object-cover relative z-20'
                   src='/images/home/home_image_1.webp'
                   alt='home_image_1'
                 />
-                <Text className='relative z-10 text-[66px] text-white font-pressStart2P translate-x-[-40px]'>
-                  PHONE
-                </Text>
               </div>
-              <Button className='text-[32px] text-center p-[20px] rounded-[20px] translate-y-[-6px]'>
+              <Button
+                className='relative z-20 bottom-[50px] text-[32px] text-center p-[20px] rounded-[20px]
+                  translate-y-[-6px]'
+              >
                 Unlock with Your Eyes, Connect with the Blockchain
               </Button>
             </div>
           </Content>
         </div>
       </Container>
-      <Container className='flex flex-col justify-end z-20 bg-gradient-home-bg-1 min-h-[800px] pt-[200px]'>
+      <Container className='flex flex-col justify-end bg-gradient-home-bg-1 min-h-[800px]'>
         <div ref={section2Ref}>
           <video
             ref={video2Ref}
-            className='w-screen h-full object-cover max-h-[1080px] rotate-[27.82deg]'
+            className='w-screen h-full object-cover max-h-[1080px] rotate-[27.82deg] opacity-30'
             autoPlay
             muted
             loop
@@ -169,17 +170,17 @@ const HomePage = () => {
             <div className='flex flex-col gap-y-[30px] items-start lg:w-[920px]'>
               <Text
                 className='text-[14px] text-center lg:text-left lg:text-[48px] clip-text
-                  bg-gradient-home-text-1 font-bold'
+                  bg-gradient-home-text-1 font-semibold'
               >
-                The World&apos;s First Smartphone <br /> with Full-Chain Network
-                Integration
+                The World&apos;s First Smartphone <br />
+                with Full-Chain Network Integration
               </Text>
               <Text className='text-[12px] font-normal lg:text-[22px] text-center lg:text-left'>
-                World Phone is designed to break the limitations of traditional
-                mobile devices by deeply integrating blockchain technology into
-                smartphones through innovative hardware and software,
-                simplifying users&apos; access to Web3 and enhancing their
-                overall experience.
+                Matrix Layer Protocol is designed to break the limitations of
+                traditional mobile devices by deeply integrating blockchain
+                technology into smartphones through innovative hardware and
+                software, simplifying users&apos; access to Web3 and enhancing
+                their overall experience.
               </Text>
               <div className='w-[65px] h-[1px] bg-white'></div>
               <Text
@@ -210,15 +211,15 @@ const HomePage = () => {
           ></div>
         </ImagesField>
         <Content className='pb-[70px]'>
-          <Text className='text-[24px] lg:text-[64px] mb-[12px] font-bold text-center'>
+          <Text className='text-[24px] lg:text-[64px] mb-[12px] font-semibold text-center'>
             <span className='clip-text bg-gradient-home-text-1'>
               Why choose
             </span>{' '}
-            <span className='#fff'>World Phone</span>
+            <span className='#fff'>Matrix Layer Protocol</span>
           </Text>
           <div className='flex justify-between items-center mb-[50px]'>
             <div className='w-[630px]'>
-              <Text className='text-[48px] mb-[40px] font-bold text-white'>
+              <Text className='text-[48px] mb-[40px] font-semibold text-white'>
                 The world&apos;s first mobile blockchain network node with iris
                 authentication.
               </Text>
@@ -239,7 +240,7 @@ const HomePage = () => {
               className='w-[550px] object-cover'
             />
             <div className='w-[630px]'>
-              <Text className='text-[48px] mb-[40px] font-bold text-white text-right'>
+              <Text className='text-[48px] mb-[40px] font-semibold text-white text-right'>
                 Ultimate privacy and industry-standard confidentiality.
               </Text>
               <Button className='w-full py-[10px]'>
@@ -248,12 +249,12 @@ const HomePage = () => {
             </div>
           </div>
           <div>
-            <Text className='text-[48px] mb-[20px] font-bold text-white text-center whitespace-nowrap'>
+            <Text className='text-[48px] mb-[20px] font-semibold text-white text-center whitespace-nowrap'>
               The first full-chain ecological Web3 mobile phone
             </Text>
             <Text
-              className='text-[28px] mb-[30px] font-bold clip-text bg-gradient-home-text-1 text-center
-                whitespace-nowrap'
+              className='text-[28px] mb-[30px] font-semibold clip-text bg-gradient-home-text-1
+                text-center whitespace-nowrap uppercase'
             >
               One device in hand, interacts with the global ecosystem.
             </Text>
@@ -265,7 +266,6 @@ const HomePage = () => {
           </div>
         </Content>
       </Container>
-
       <Container>
         <div ref={section3Ref}>
           <ImagesField>
@@ -273,7 +273,7 @@ const HomePage = () => {
               <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
               <video
                 ref={video3Ref}
-                className='w-screen h-full object-cover max-h-[750px]'
+                className='w-screen h-full object-cover max-h-[750px] opacity-30'
                 autoPlay
                 muted
                 loop
@@ -298,13 +298,13 @@ const HomePage = () => {
                   alt='home_image_6'
                   className='w-[425px] object-cover'
                 />
-                <Text className='text-[48px] font-bold text-white'>
+                <Text className='text-[48px] font-semibold text-white'>
                   smartphone assistant
                 </Text>
                 <div className='w-[65px] h-[1px] bg-white my-[20px]'></div>
                 <Text
                   className='text-[12px] lg:text-[28px] text-center lg:text-left uppercase clip-text
-                    bg-gradient-home-text-1 font-bold'
+                    bg-gradient-home-text-1 font-semibold'
                 >
                   Follow Sam Altman&apos;s thoughts and let technology serve
                   life
@@ -333,7 +333,7 @@ const HomePage = () => {
           ></div>
         </ImagesField>
         <Content className='pb-[185px]'>
-          <Text className='text-[24px] lg:text-[64px] mb-[40px] font-bold text-center'>
+          <Text className='text-[24px] lg:text-[64px] mb-[40px] font-semibold text-center'>
             <span className='#fff'>One Mobile Phone, </span>
             <span className='clip-text bg-gradient-home-text-1'>
               6 Benefits
@@ -361,10 +361,10 @@ const HomePage = () => {
           />
         </ImagesField>
         <Content className='pb-[185px]'>
-          <Text className='text-[24px] lg:text-[64px] mb-[40px] font-bold text-center'>
+          <Text className='text-[24px] lg:text-[64px] mb-[40px] font-semibold text-center'>
             <span className='#fff'>How to join</span>
             <span className='clip-text bg-gradient-home-text-1'>
-              &nbsp;World Phone&apos;s&nbsp;
+              &nbsp;Matrix Layer Protocol&nbsp;
             </span>
             <span className='#fff'>growth and maximize earnings? </span>
           </Text>
@@ -381,12 +381,12 @@ const HomePage = () => {
                 >
                   <Text
                     as='span'
-                    className='leading-none text-[20px] font-bold text-black'
+                    className='leading-none text-[20px] font-semibold text-black'
                   >
                     {item.title}
                   </Text>
                 </div>
-                <Text className='text-[20px] font-bold text-white text-center'>
+                <Text className='text-[20px] font-semibold text-white text-center'>
                   {item.description}
                 </Text>
               </div>
