@@ -107,10 +107,15 @@ const ProductPage = () => {
                         MATRIX <br />
                         LAYER PROTOCOL
                       </Text>
-                      <Text className='text-[12px] sm:text-base font-semibold text-gray-a5 pr-0 sm:pr-[20px]'>
+                      <Text
+                        className='text-[12px] sm:text-base font-semibold text-gray-a5 pr-0 sm:pr-[20px]
+                          line-clamp-3'
+                      >
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Aenean ornare mattis risus, eget condimentum nibh
-                        ultrices ut.
+                        ultrices ut. Phasellus tempor accumsan eros. Proin odio
+                        turpis, tristique eu tortor vulputate, sagittis suscipit
+                        massa.
                       </Text>
                       <Text
                         className={`text-[48px] sm:text-[98px] leading-[1.2] ${gradientTextClass}`}
@@ -371,15 +376,16 @@ const ProductPage = () => {
         {currentPage === 'ai-agent-nft' && (
           <PageContent key='ai-agent-nft'>
             <div>
-              <Container className='pt-[160px] pb-[200px]'>
+              <Container className='pt-6 sm:pt-[160px] pb-[200px]'>
                 <Content>
                   <Text
-                    className='mb-[78px] text-center text-white text-7xl'
+                    className='font-pressStart2P mb-[60px] sm:mb-[78px] text-center text-white text-[24px]
+                      sm:text-7xl'
                     size='bold'
                   >
                     AI AGENT
                   </Text>
-                  <div className='flex flex-col gap-12'>
+                  <div className='flex flex-col gap-5 sm:gap-12'>
                     {[
                       {
                         title: 'AI Agent One',
@@ -412,36 +418,59 @@ const ProductPage = () => {
                         price: '$1299'
                       }
                     ].map((item) => (
-                      <div key={item.title} className='flex items-center'>
-                        <img
-                          className='w-[250px] h-[250px] mr-10'
-                          src={item.img}
-                          alt={item.title}
-                        />
-                        <div className='grow w-[526px]'>
-                          <Text
-                            className={`mb-4 text-5xl font-semibold ${gradientTextClass} leading-tight`}
-                            size='semibold'
-                          >
-                            {item.title}
-                          </Text>
-                          <ul className='list-disc klist-outside pl-8 text-[22px] max-w-[526px]'>
-                            {item.descriptionList.map((description) => (
-                              <li key={description}>{description}</li>
-                            ))}
-                          </ul>
+                      <div key={item.title}>
+                        <div key={item.title} className='flex items-center'>
+                          <img
+                            className='w-[121px] h-[121px] sm:w-[250px] sm:h-[250px] mr-[11px] sm:mr-10'
+                            src={item.img}
+                            alt={item.title}
+                          />
+                          <div className='grow w-full sm:w-[526px]'>
+                            <Text
+                              className={`mb-2 sm:mb-4 text-[18px] sm:text-5xl font-semibold ${gradientTextClass}
+                                leading-tight`}
+                              size='semibold'
+                            >
+                              {item.title}
+                            </Text>
+                            {/* show smaller than sm */}
+                            <div className='sm:hidden flex-col items-start'>
+                              <Text
+                                className={`text-[24px] mb-2 ${gradientTextClass}`}
+                                size='bold'
+                              >
+                                {item.price}
+                              </Text>
+                              <Button className='rounded-[35px] w-[155px] h-7 text-[12px] font-semibold'>
+                                Connect Wallet to Order
+                              </Button>
+                            </div>
+                            {/* show larger than sm */}
+                            <ul className='hidden sm:block list-disc klist-outside pl-8 text-[22px] max-w-[526px]'>
+                              {item.descriptionList.map((description) => (
+                                <li key={description}>{description}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          {/* show larger than sm */}
+                          <div className='hidden sm:flex flex-col items-end'>
+                            <Text
+                              className={`text-[82px] ${gradientTextClass}`}
+                              size='bold'
+                            >
+                              {item.price}
+                            </Text>
+                            <Button className='rounded-[35px] h-12 text-base font-semibold w-[218px]'>
+                              Connect Wallet to Order
+                            </Button>
+                          </div>
                         </div>
-                        <div className='flex flex-col items-end'>
-                          <Text
-                            className={`text-[82px] ${gradientTextClass}`}
-                            size='bold'
-                          >
-                            {item.price}
-                          </Text>
-                          <Button className='rounded-[35px] h-12 text-base font-semibold w-[218px]'>
-                            Connect Wallet to Order
-                          </Button>
-                        </div>
+                        {/* show smaller than sm */}
+                        <ul className='mt-[15px] sm:hidden list-disc klist-outside pl-8 w-full text-[12px]'>
+                          {item.descriptionList.map((description) => (
+                            <li key={description}>{description}</li>
+                          ))}
+                        </ul>
                       </div>
                     ))}
                   </div>
