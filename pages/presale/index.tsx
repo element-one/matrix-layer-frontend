@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -56,34 +56,42 @@ const ProductPage = () => {
     }
   }
 
-  const paginate = (newPage: 'product' | 'ai-agent-nft') =>
-    setCurrentPage(newPage)
-
-  const PageContent = ({ children }: { children: React.ReactNode }) => (
-    <motion.div
-      custom={currentPage}
-      variants={pageVariants}
-      initial='enter'
-      animate='center'
-      exit='exit'
-      transition={pageTransition}
-    >
-      {children}
-    </motion.div>
+  const paginate = useCallback(
+    (newPage: 'product' | 'ai-agent-nft') => setCurrentPage(newPage),
+    []
   )
 
-  const TabButton = ({ page }: { page: 'product' | 'ai-agent-nft' }) => (
-    <Button
-      color={currentPage === page ? 'primary' : 'secondary'}
-      variant={currentPage === page ? 'faded' : 'light'}
-      className={`focus:bg-gradient-button-1 border-none rounded-[30px] flex-1 w-auto sm:w-[200px]
-        h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
-          currentPage === page ? 'text-black' : 'text-white'
-        }`}
-      onClick={() => paginate(page)}
-    >
-      {page === 'product' ? 'PRODUCT' : 'AI AGENT NFT'}
-    </Button>
+  const PageContent = useCallback(
+    ({ children }: { children: React.ReactNode }) => (
+      <motion.div
+        custom={currentPage}
+        variants={pageVariants}
+        initial='enter'
+        animate='center'
+        exit='exit'
+        transition={pageTransition}
+      >
+        {children}
+      </motion.div>
+    ),
+    [currentPage]
+  )
+
+  const TabButton = useCallback(
+    ({ page }: { page: 'product' | 'ai-agent-nft' }) => (
+      <Button
+        color={currentPage === page ? 'primary' : 'secondary'}
+        variant={currentPage === page ? 'faded' : 'light'}
+        className={`focus:bg-gradient-button-1 border-none rounded-[30px] flex-1 w-auto sm:w-[200px]
+          h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
+            currentPage === page ? 'text-black' : 'text-white'
+          }`}
+        onClick={() => paginate(page)}
+      >
+        {page === 'product' ? 'PRODUCT' : 'AI AGENT NFT'}
+      </Button>
+    ),
+    [currentPage, paginate]
   )
 
   return (
