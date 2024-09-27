@@ -10,7 +10,7 @@ export const getProductsService = async (): Promise<ApiProductsResponse> => {
 }
 
 export const useGetProducts = () => {
-  return useQuery({
+  return useQuery<ApiProductsResponse, Error>({
     queryKey: ['all', 'products'],
     queryFn: () => getProductsService()
   })

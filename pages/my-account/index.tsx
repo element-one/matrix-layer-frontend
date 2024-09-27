@@ -14,6 +14,7 @@ import { CopyIcon } from '@components/Icon/CopyIcon'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
+import { useGetPayments } from '@services/api'
 import { tn } from '@utils/tn'
 
 const gradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
@@ -88,6 +89,9 @@ const statusClass = (status: string) => {
 }
 
 const MyAccount = () => {
+  const { data } = useGetPayments(1)
+  console.log(data)
+
   return (
     <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
       <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>

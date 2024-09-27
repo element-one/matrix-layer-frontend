@@ -101,4 +101,38 @@ export type ApiProducts = {
   data: ApiProduct[]
 }
 
-export type ApiProductsResponse = ApiProducts & ApiResponse
+export type ApiProductsResponse = ApiProduct[]
+
+export type ApiSaveAddressParams = {
+  firstName: string
+  lastName: string
+  email: string
+  address: string
+  city: string
+  province: string
+  country: string
+  phoneNumber: string
+  isDefault: boolean
+}
+
+export type ApiSaveAddressResponse = ApiSaveAddressParams & {
+  user: { address: string }
+}
+
+export type IAddress = {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  address: string
+  city: string
+  province: string
+  country: string
+  phoneNumber: string
+  isDefault: boolean
+  createdAt: string
+  deletedAt: string
+  updatedAt: string
+}
+
+export type ApiGetAddressResponse = IAddress[]

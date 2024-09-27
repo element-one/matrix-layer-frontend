@@ -5,6 +5,7 @@ import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import GradientText from '@components/Text/GradientText'
 
+import { IProduct } from './ProductItem'
 import Selection, { SelectionItemProps } from './Selection'
 
 const Chains: SelectionItemProps[] = [
@@ -16,12 +17,14 @@ const Chains: SelectionItemProps[] = [
 ]
 
 export interface PaymentFieldProps {
+  selectedProduct?: IProduct
   onPayButtonClick?: () => void
   isPaying?: boolean
 }
 
 const PaymentField: FC<PaymentFieldProps> = ({
   onPayButtonClick,
+  selectedProduct,
   isPaying
 }) => {
   const [understandTerm, setUnderstandTerm] = useState(false)
@@ -44,7 +47,10 @@ const PaymentField: FC<PaymentFieldProps> = ({
           className='text-[24px] md:text-[32px] font-semibold md:font-bold text-white leading-none
             text-right'
         >
-          123 USDT
+          {selectedProduct
+            ? selectedProduct.priceInUsdt * selectedProduct.quantity
+            : 0}
+          &nbsp;USDT
         </Text>
       </div>
       <Button
@@ -52,7 +58,12 @@ const PaymentField: FC<PaymentFieldProps> = ({
         className='w-full p-[10px] font-semibold text-[16px] rounded-[35px]'
         onClick={onPayButtonClick}
         isLoading={isPaying}
-        disabled={!understandTerm || !isConnected}
+        disabled={
+          !understandTerm ||
+          !isConnected ||
+          !selectedProduct ||
+          !selectedProduct.quantity
+        }
       >
         Pay Now
       </Button>
