@@ -25,7 +25,7 @@ export const getAuth = async () => {
 }
 
 export const useGetAuth = (
-  options?: Partial<UseQueryOptions<ApiAuthResponse, any, any>> //eslint-disable-line
+  options?: Partial<UseQueryOptions<ApiAuthResponse, Error>>
 ) => {
   return useQuery<ApiAuthResponse, Error>({
     queryKey: ['auth', 'status'],

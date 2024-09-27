@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { Button } from '@components/Button'
@@ -6,6 +7,7 @@ import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
+import { useAuth } from '@contexts/auth'
 
 const pageVariants = {
   enter: (currentPage: 'product' | 'ai-agent-nft') => ({
@@ -37,6 +39,14 @@ const ProductPage = () => {
   const [currentPage, setCurrentPage] = useState<'product' | 'ai-agent-nft'>(
     'product'
   )
+
+  const { isAuthenticated } = useAuth()
+  const router = useRouter()
+
+  const handleToCheckout = () => {
+    if (!isAuthenticated) return
+    router.push('/checkout')
+  }
 
   const paginate = (newPage: 'product' | 'ai-agent-nft') =>
     setCurrentPage(newPage)
@@ -113,10 +123,12 @@ const ProductPage = () => {
                         $699
                       </Text>
                       <Button
-                        color='primary'
-                        className={`rounded-[30px] w-[191px] h-12 text-[22px] font-semibold`}
+                        className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
+                        onClick={handleToCheckout}
                       >
-                        ORDER NOW
+                        {isAuthenticated
+                          ? 'Order Now'
+                          : 'Connect Wallet to Order'}
                       </Button>
                     </div>
                     <div className='relative'>
@@ -382,8 +394,13 @@ const ProductPage = () => {
                           >
                             {item.price}
                           </Text>
-                          <Button className='rounded-[35px] h-12 text-base font-semibold w-[218px]'>
-                            Connect Wallet to Order
+                          <Button
+                            className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
+                            onClick={handleToCheckout}
+                          >
+                            {isAuthenticated
+                              ? 'Order Now'
+                              : 'Connect Wallet to Order'}
                           </Button>
                         </div>
                       </div>

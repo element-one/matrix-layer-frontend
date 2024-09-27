@@ -99,16 +99,26 @@ const statusCommonClass =
   'w-[103px] h-[34px] rounded-[24px] flex items-center justify-center font-semibold capitalize text-sm border'
 
 const MyAccount = () => {
-  const { user } = useAuth()
+  const { user, isAuthenticated } = useAuth()
+
   const [page, setPage] = useState(1)
 
-  const { data, refetch: refetchOrders } = useGetPayments(page)
-  const { data: holdings } = useGetUserHolding()
+  const { data, refetch: refetchOrders } = useGetPayments(page, 6, {
+    enabled: isAuthenticated
+  })
+  const { data: holdings } = useGetUserHolding({
+    enabled: isAuthenticated
+  })
+
   const { showModal, hideModal } = useModal()
   const { mutateAsync: save } = useSaveAddress()
   const { mutateAsync: activeDelivery } = useActiveDelivery()
 
   const orders = useMemo(() => data?.data || [], [data])
+  const totalPage = useMemo(
+    () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
+    [data]
+  )
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -313,7 +323,7 @@ const MyAccount = () => {
                   variant='light'
                   showControls
                   page={page}
-                  total={data?.total || 0}
+                  total={totalPage}
                   disableAnimation
                   classNames={{
                     cursor: 'bg-transparent',

@@ -1,7 +1,8 @@
 import {
   useMutation,
   UseMutationOptions,
-  useQuery
+  useQuery,
+  UseQueryOptions
 } from '@tanstack/react-query'
 
 import axios from '@services/axios/client'
@@ -19,10 +20,13 @@ export const getProductsService = async (): Promise<ApiProductsResponse> => {
   return data
 }
 
-export const useGetProducts = () => {
+export const useGetProducts = (
+  options?: Partial<UseQueryOptions<ApiProductsResponse, Error>>
+) => {
   return useQuery<ApiProductsResponse, Error>({
     queryKey: ['all', 'products'],
-    queryFn: () => getProductsService()
+    queryFn: () => getProductsService(),
+    ...options
   })
 }
 
@@ -32,10 +36,13 @@ export const getUserHoldingService = async (): Promise<ApiHoldingsResponse> => {
   return data
 }
 
-export const useGetUserHolding = () => {
+export const useGetUserHolding = (
+  options?: Partial<UseQueryOptions<ApiHoldingsResponse, Error>>
+) => {
   return useQuery<ApiHoldingsResponse, Error>({
     queryKey: ['user', 'holding'],
-    queryFn: () => getUserHoldingService()
+    queryFn: () => getUserHoldingService(),
+    ...options
   })
 }
 

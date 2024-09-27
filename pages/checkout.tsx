@@ -17,6 +17,7 @@ import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { SelectItemSkeleton } from '@components/Skeleton/SelectItemSkeleton'
 import { Text } from '@components/Text'
+import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
 import { useGetProducts } from '@services/api/account'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
@@ -32,8 +33,12 @@ const CheckoutPage = () => {
   const [products, setProducts] = useState<IProduct[]>([])
   const [selectedProductType, setSelectedProductType] = useState('')
 
+  const { isAuthenticated } = useAuth()
+
   const { data: allProducts = [], isLoading: isLoadingProducts } =
-    useGetProducts()
+    useGetProducts({
+      enabled: isAuthenticated
+    })
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
 
