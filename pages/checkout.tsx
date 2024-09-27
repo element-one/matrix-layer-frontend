@@ -18,7 +18,7 @@ import Layout from '@components/Layout/Layout'
 import { SelectItemSkeleton } from '@components/Skeleton/SelectItemSkeleton'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
-import { useGetProducts } from '@services/api/product'
+import { useGetProducts } from '@services/api/account'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
@@ -32,7 +32,8 @@ const CheckoutPage = () => {
   const [products, setProducts] = useState<IProduct[]>([])
   const [selectedProductType, setSelectedProductType] = useState('')
 
-  const { data = [] } = useGetProducts()
+  const { data: allProducts = [], isLoading: isLoadingProducts } =
+    useGetProducts()
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
 
@@ -86,9 +87,9 @@ const CheckoutPage = () => {
   )
 
   useEffect(() => {
-    if (data.length) {
+    if (allProducts.length) {
       setProducts(() =>
-        data
+        allProducts
           .map((item) => ({
             name: convertTypeToName(item.type),
             price: item.price,
@@ -99,7 +100,7 @@ const CheckoutPage = () => {
           .filter((v) => v.name)
       )
     }
-  }, [data])
+  }, [allProducts])
 
   useEffect(() => {
     if (isCopied) {
@@ -112,7 +113,7 @@ const CheckoutPage = () => {
   const handleCopy = async () => {
     if (navigator.clipboard && !isCopied) {
       try {
-        await navigator.clipboard.writeText('')
+        await navigator.clipboard.writeText(address as string)
       } finally {
         setIsCopied(true)
       }
@@ -170,12 +171,7 @@ const CheckoutPage = () => {
       {
         abi: PAYMENT_ABI,
         functionName: 'payPublicSale',
-        args: [
-          String(amount),
-          type,
-          selectedProduct.quantity,
-          '08b485c2-05b2-4321-924f-27b44fddc4e4'
-        ],
+        args: [String(amount), type, selectedProduct.quantity],
         address: PAYMENT_ADDRESS as Address
       },
       {
@@ -212,7 +208,8 @@ const CheckoutPage = () => {
             alt='product-top'
           />
           <img
-            className='rotate-[276deg] absolute top-[140px] -right-[28px] w-[156px] h-[156px]'
+            className='rotate-[276deg] absolute md:top-[140px] md:-right-[28px] md:w-[156px]
+              md:h-[156px] w-[80px] h-[80px] top-[140px] right-0'
             style={{
               filter: 'blur(4.6px)'
             }}
@@ -220,14 +217,15 @@ const CheckoutPage = () => {
             alt='product-dot'
           />
           <img
-            className='absolute rotate-[45deg] top-[180px] -left-[73px] w-[245px] h-[245px]'
+            className='absolute rotate-[45deg] w-[100px] h-[100px] top-[200px] left-[-30px]
+              md:top-[180px] md:-left-[73px] md:w-[245px] md:h-[245px]'
             src='/images/product/product-dot.png'
             alt='product-dot'
           />
         </ImagesField>
         <Content>
-          <div className='flex flex-col items-center justify-center pt-[220px]'>
-            <Text className='mb-5 font-pressStart2P text-white text-[36px]'>
+          <div className='flex flex-col items-center justify-center pt-[150px] md:pt-[220px]'>
+            <Text className='mb-5 font-pressStart2P text-white text-[24px] md:text-[36px]'>
               CHECKOUT
             </Text>
           </div>
@@ -236,8 +234,8 @@ const CheckoutPage = () => {
       <Container>
         <Content>
           <div
-            className='flex flex-row justify-between items-center border-b border-co-gray-2 pt-[64px]
-              pb-[64px]'
+            className='flex flex-col gap-y-[10px] md:flex-row justify-between items-start
+              md:items-center border-b border-co-gray-2 py-[32px] md:py-[64px]'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
               Customer Details
@@ -245,7 +243,7 @@ const CheckoutPage = () => {
             <div
               className='flex flex-row border-gradient-desktop justify-between items-center p-[8px]
                 pl-[12px] md:pl-[32px] md:pr-[24px] md:py-[20px] border rounded-[20px] w-full
-                md:w-[582px] mt-2'
+                md:w-[582px]'
             >
               <span className='text-[12px] md:text-[18px] text-co-gray-7 bg-transparent'>
                 {address ?? 'Wallet Address'}
@@ -282,15 +280,17 @@ const CheckoutPage = () => {
         </ImagesField>
         <Content>
           <div
-            className='flex flex-row justify-between items-start pt-[64px] pb-[64px] border-b
-              border-co-gray-2'
+            className='flex flex-col gap-y-[10px] md:flex-row md:items-center justify-between
+              items-start py-[32px] md:py-[64px] border-b border-co-gray-2'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
               Select Item
             </Text>
-            <div className='grid grid-cols-2 gap-x-[24px] gap-y-[32px]'>
-              {false ? (
+            <div className='w-full md:w-fit grid grid-cols-1 md:grid-cols-2 gap-x-[24px] gap-y-[32px]'>
+              {isLoadingProducts ? (
                 <>
+                  <SelectItemSkeleton />
+                  <SelectItemSkeleton />
                   <SelectItemSkeleton />
                   <SelectItemSkeleton />
                 </>
@@ -313,7 +313,7 @@ const CheckoutPage = () => {
       <Container>
         <Content>
           <div
-            className='flex flex-row justify-between items-start pt-[64px] pb-[64px] border-b
+            className='flex flex-row justify-between items-start py-[32px] md:py-[64px] border-b
               border-co-gray-2'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
@@ -344,7 +344,7 @@ const CheckoutPage = () => {
       </Container>
       <Container>
         <ImagesField>
-          <div className='absolute bottom-[100px] left-0 w-screen object-cover h-[1200px]'>
+          <div className='hidden md:block absolute bottom-[100px] left-0 w-screen object-cover h-[1200px]'>
             <video
               className='w-fit absolute left-1/2 top-0 translate-x-[-50%] h-[1200px] object-cover
                 opacity-15'
@@ -359,13 +359,16 @@ const CheckoutPage = () => {
             <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
           </div>
           <img
-            className='absolute bottom-[120px] left-[-10px] w-[310px] h-[353px]'
+            className='hidden md:block absolute bottom-[120px] left-[-10px] w-[310px] h-[353px]'
             src='/images/checkout/checkout-float-2.png'
             alt='checkout-float-2'
           />
         </ImagesField>
         <Content>
-          <div className='flex flex-row justify-between items-center pt-[64px] pb-[300px]'>
+          <div
+            className='flex flex-col md:flex-row justify-between items-start md:items-center pt-[32px]
+              md:pt-[64px] pb-[150px] md:pb-[300px] gap-y-[20px]'
+          >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
               Payment
             </Text>

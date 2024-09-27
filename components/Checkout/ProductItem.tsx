@@ -61,16 +61,16 @@ const ProductItem: FC<ProductItemProps> = ({
   return (
     <div
       className={clsx(
-        `w-[500px] h-[294px] box-border transition flex flex-col justify-center
-          items-center`,
+        `w-full md:w-[500px] h-[360px] md:h-[294px] box-border transition flex flex-col
+          justify-center items-center`,
         product.type === selectedProductType
           ? 'border-product-item-active-gradient'
           : 'border-product-item-gradient'
       )}
     >
-      <div className='w-[430px]'>
+      <div className='w-[80%] md:w-[430px]'>
         <div className='flex flex-row justify-between items-center mb-[14px]'>
-          <Text className='text-[32px] font-bold text-white'>
+          <Text className='text-[20px] md:text-[32px] font-bold text-white'>
             {product.name}
           </Text>
           <input
@@ -81,7 +81,7 @@ const ProductItem: FC<ProductItemProps> = ({
             onChange={handleSelectChange}
           />
         </div>
-        <div className='flex flex-row justify-between items-center gap-4'>
+        <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
           <div>
             <Text>Select quantity</Text>
             <div className='flex flex-row items-center gap-x-[12px] mt-[12px] mb-[20px]'>
@@ -116,13 +116,13 @@ const ProductItem: FC<ProductItemProps> = ({
                 <PlusIcon className={clsx('fill-black')} />
               </div>
             </div>
-            <Text className='text-[32px] text-white font-bold'>
+            <Text className='text-[24px] md:text-[32px] text-white font-bold'>
               ${product.priceInUsdt}&nbsp;
               <span className='text-[16px] text-co-gray-7'>/item</span>
             </Text>
           </div>
           <img
-            className='h-[172px]'
+            className='h-[100px] md:h-[172px]'
             src={`/images/checkout/${product.type}.png`}
             alt='product-1'
           />

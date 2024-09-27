@@ -37,10 +37,10 @@ const PaymentField: FC<PaymentFieldProps> = ({
   return (
     <div className='w-full md:max-w-[680px]'>
       <div
-        className='flex flex-col md:flex-row justify-between items-center gap-x-[32px] mb-[38px]
-          md:mb-[36px] gap-y-[12px]'
+        className='flex flex-col md:flex-row justify-between items-start md:items-center
+          gap-x-[32px] mb-[38px] md:mb-[36px] gap-y-[12px]'
       >
-        <div className='w-[340px]'>
+        <div className='w-full md:w-[340px]'>
           <Selection disabledValues={['BNB']} selectionItems={Chains} />
         </div>
         <Text

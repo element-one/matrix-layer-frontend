@@ -54,7 +54,14 @@
   .border-gradient {
     background:
       linear-gradient(black, black) padding-box,
-      linear-gradient(to bottom, #00ffe5 0%, #ff30f7 100%) border-box;
+      linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box;
+  }
+  .border-referral-gradient {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(#151515, #151515) padding-box,
+      linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box;
+    backdrop-filter: blur(10px);
   }
 }
 

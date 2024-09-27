@@ -13,7 +13,7 @@ export const getPayments = async (
 }
 
 export const useGetPayments = (page: number, pageSize = 6) => {
-  return useQuery({
+  return useQuery<ApiPaymentResponse, Error>({
     queryKey: ['all', 'payments', page, pageSize],
     queryFn: () => getPayments(page, pageSize)
   })
