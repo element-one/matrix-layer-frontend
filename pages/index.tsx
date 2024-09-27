@@ -87,7 +87,7 @@ const HomePage = () => {
         <div ref={section1Ref}>
           <video
             ref={video1Ref}
-            className='w-screen h-full object-cover max-h-[1200px] min-h-[1000px]'
+            className='w-screen h-full object-cover max-h-[1200px] min-h-[557px] sm:min-h-[1000px]'
             autoPlay
             muted
             loop
@@ -111,41 +111,46 @@ const HomePage = () => {
             />
           </ImagesField>
           <Content
-            className='absolute left-1/2 top-[55%] translate-x-[-50%] translate-y-[-50%] flex
-              justify-center items-center'
+            className='absolute left-1/2 top-[60%] sm:top-[55%] translate-x-[-50%] translate-y-[-50%]
+              flex justify-center items-center'
           >
-            <div className='flex flex-col lg:w-[1000px] relative mx-auto'>
-              <img
-                className='w-[368px] h-[368px] object-cover absolute right-[80px] top-[100px]'
-                src='/images/home/home_float_2.webp'
-                alt='home_float_2'
-              />
+            <div className='flex flex-col w-full lg:w-[1000px] relative mx-auto'>
               <div className='flex flex-col justify-center items-center'>
-                <Text className='relative z-10 text-[52px] text-white font-pressStart2P text-center'>
+                <Text
+                  className='relative z-10 text-2xl leading-normal sm:text-[52px] text-white
+                    font-pressStart2P text-center'
+                >
                   MATRIX LAYER <br />
                   PROTOCOL
                 </Text>
                 <img
-                  className='w-[456px] h-[521px] object-cover relative z-20'
+                  className='mt-7 sm:mt-0 w-[196px] h-[225px] sm:w-[456px] sm:h-[521px] object-cover relative
+                    z-20'
                   src='/images/home/home_image_1.webp'
                   alt='home_image_1'
                 />
               </div>
               <Button
-                className='relative z-20 bottom-[50px] text-[32px] text-center p-[20px] rounded-[20px]
-                  translate-y-[-6px]'
+                className='relative z-20 bottom-0 sm:bottom-[50px] text-[14px] sm:text-[32px] text-center
+                  p-2.5 sm:p-5 rounded-[15px] sm:rounded-[20px] translate-y-0
+                  sm:translate-y-[-6px] whitespace-normal'
               >
-                Unlock with Your Eyes, Connect with the Blockchain
+                Unlock with Your Eyes,
+                <br className='sm:hidden' /> Connect with the Blockchain
               </Button>
             </div>
           </Content>
         </div>
       </Container>
-      <Container className='flex flex-col justify-end bg-gradient-home-bg-1 min-h-[800px]'>
-        <div ref={section2Ref}>
+      <Container className='flex flex-col justify-end bg-gradient-home-bg-1 sm:min-h-[800px]'>
+        <div
+          ref={section2Ref}
+          className='flex flex-col-reverse sm:flex-col overflow-hidden'
+        >
           <video
             ref={video2Ref}
-            className='w-screen h-full object-cover max-h-[1080px] rotate-[27.82deg] opacity-30'
+            className='w-screen sm:relative h-full object-cover max-h-[1080px] rotate-[27.82deg]
+              sm:opacity-30 scale-125 sm:scale-100'
             autoPlay
             muted
             loop
@@ -161,21 +166,22 @@ const HomePage = () => {
                 blur-[150px] bg-radial-gradient-1'
             ></div>
             <img
-              className='absolute w-[490px] right-0 top-[-200px] lg:w-[490px] z-20 object-cover'
+              className='absolute w-[156px] top-[100px] sm:w-[490px] right-0 sm:top-[-200px] lg:w-[490px]
+                z-20 object-cover'
               src='/images/home/home_float_3.webp'
               alt='home_float_3'
             />
           </ImagesField>
-          <Content className='absolute left-1/2 top-[50px] translate-x-[-50%]'>
-            <div className='flex flex-col gap-y-[30px] items-start lg:w-[920px]'>
+          <Content className='relative sm:absolute left-1/2 top-0 sm:top-[50px] translate-x-[-50%]'>
+            <div className='flex flex-col gap-y-5 sm:gap-y-[30px] items-start lg:w-[920px]'>
               <Text
-                className='text-[14px] text-center lg:text-left lg:text-[48px] clip-text
-                  bg-gradient-home-text-1 font-semibold'
+                className='text-[18px] text-left sm:text-[48px] clip-text bg-gradient-home-text-1
+                  font-semibold'
               >
                 The World&apos;s First Smartphone <br />
                 with Full-Chain Network Integration
               </Text>
-              <Text className='text-[12px] font-normal lg:text-[22px] text-center lg:text-left'>
+              <Text className='text-[14px] font-normal lg:text-[22px] text-left w-[279px] sm:w-auto'>
                 Matrix Layer Protocol is designed to break the limitations of
                 traditional mobile devices by deeply integrating blockchain
                 technology into smartphones through innovative hardware and
@@ -183,10 +189,7 @@ const HomePage = () => {
                 their overall experience.
               </Text>
               <div className='w-[65px] h-[1px] bg-white'></div>
-              <Text
-                className='text-[12px] font-normal lg:text-[28px] text-center lg:text-left uppercase
-                  tracking-[2px]'
-              >
+              <Text className='text-[12px] font-normal lg:text-[28px] text-left uppercase tracking-[2px]'>
                 Redefining the Gateway to the Blockchain Ecosystem
               </Text>
             </div>
@@ -201,7 +204,8 @@ const HomePage = () => {
             alt='home_float_4'
           />
           <img
-            className='absolute w-[490px] right-0 bottom-[400px] lg:w-[215px] z-20 object-cover'
+            className='absolute w-[109px] sm:w-[490px] right-0 bottom-[200px] sm:bottom-[400px]
+              lg:w-[215px] z-20 object-cover'
             src='/images/home/home_float_5.webp'
             alt='home_float_5'
           />
@@ -214,16 +218,21 @@ const HomePage = () => {
           <Text className='text-[24px] lg:text-[64px] mb-[12px] font-semibold text-center'>
             <span className='clip-text bg-gradient-home-text-1'>
               Why choose
-            </span>{' '}
+            </span>
+            <span className='hidden sm:inline'> </span>
+            <br className='sm:hidden' />
             <span className='#fff'>Matrix Layer Protocol</span>
           </Text>
-          <div className='flex justify-between items-center mb-[50px]'>
-            <div className='w-[630px]'>
-              <Text className='text-[48px] mb-[40px] font-semibold text-white'>
+          <div className='flex flex-col-reverse sm:flex-row justify-between items-center mb-[50px]'>
+            <div className='w-full sm:w-[630px]'>
+              <Text
+                className='text-[18px] sm:text-[48px] text-center sm:text-left mb-2.5 sm:mb-10
+                  font-semibold text-white'
+              >
                 The world&apos;s first mobile blockchain network node with iris
                 authentication.
               </Text>
-              <Button className='w-full py-[10px]'>
+              <Button className='w-full p-2.5 rounded-lg text-[12px] sm:text-[24px]'>
                 Safety and profitability coexist
               </Button>
             </div>
@@ -233,28 +242,35 @@ const HomePage = () => {
               className='w-[560px] object-cover'
             />
           </div>
-          <div className='flex justify-between items-center mb-[50px]'>
+          <div className='flex flex-col sm:flex-row justify-between items-center mb-[50px]'>
             <img
               src='/images/home/home_image_3.webp'
               alt='home_image_3'
               className='w-[550px] object-cover'
             />
-            <div className='w-[630px]'>
-              <Text className='text-[48px] mb-[40px] font-semibold text-white text-right'>
+            <div className='w-full sm:w-[630px]'>
+              <Text
+                className='text-[18px] sm:text-[48px] text-center mb-2.5 sm:mb-10 font-semibold text-white
+                  sm:text-right'
+              >
                 Ultimate privacy and industry-standard confidentiality.
               </Text>
-              <Button className='w-full py-[10px]'>
+              <Button className='w-full p-2.5 rounded-lg text-[12px] sm:text-[24px]'>
                 Iris login, identification information ZK encryption
               </Button>
             </div>
           </div>
           <div>
-            <Text className='text-[48px] mb-[20px] font-semibold text-white text-center whitespace-nowrap'>
+            <Text
+              className='text-[18px] sm:text-[48px] mb-[20px] font-semibold text-white text-left
+                sm:text-center whitespace-normal sm:whitespace-nowrap'
+            >
               The first full-chain ecological Web3 mobile phone
             </Text>
             <Text
-              className='text-[28px] mb-[30px] font-semibold clip-text bg-gradient-home-text-1
-                text-center whitespace-nowrap uppercase'
+              className='text-[12px] sm:text-[28px] mb-8 sm:mb-[30px] font-semibold clip-text
+                bg-gradient-home-text-1 sm:text-center sm:whitespace-nowrap uppercase w-[222px]
+                sm:w-auto text-left whitespace-normal'
             >
               One device in hand, interacts with the global ecosystem.
             </Text>
@@ -269,7 +285,7 @@ const HomePage = () => {
       <Container>
         <div ref={section3Ref}>
           <ImagesField>
-            <div className='absolute left-0 top-[-300px]'>
+            <div className='absolute left-0 top-0 sm:top-[-300px]'>
               <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
               <video
                 ref={video3Ref}
@@ -285,25 +301,25 @@ const HomePage = () => {
             </div>
             <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
           </ImagesField>
-          <Content className='flex justify-center pb-[235px]'>
-            <div className='flex gap-x-[40px] justify-between items-center'>
+          <Content className='flex justify-center pb-[66px] sm:pb-[235px]'>
+            <div className='flex flex-col sm:flex-row gap-x-[40px] justify-between items-center'>
               <img
                 src='/images/home/home_image_5.webp'
                 alt='home_image_5'
                 className='w-[495px] object-cover'
               />
-              <div className='grow'>
+              <div className='grow flex sm:block flex-col items-center'>
                 <img
                   src='/images/home/home_image_6.webp'
                   alt='home_image_6'
-                  className='w-[425px] object-cover'
+                  className='w-[157px] sm:w-[425px] object-cover'
                 />
-                <Text className='text-[48px] font-semibold text-white'>
+                <Text className='sm:w-auto text-[18px] sm:text-[48px] font-semibold text-white'>
                   smartphone assistant
                 </Text>
-                <div className='w-[65px] h-[1px] bg-white my-[20px]'></div>
+                <div className='w-[65px] h-[1px] bg-white my-2.5 sm:my-4'></div>
                 <Text
-                  className='text-[12px] lg:text-[28px] text-center lg:text-left uppercase clip-text
+                  className='text-[18px] lg:text-[28px] text-center lg:text-left uppercase clip-text
                     bg-gradient-home-text-1 font-semibold'
                 >
                   Follow Sam Altman&apos;s thoughts and let technology serve
@@ -318,23 +334,25 @@ const HomePage = () => {
         <ImagesField>
           <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
           <img
-            className='absolute w-[160px] left-0 bottom-[50px] lg:w-[233px] z-20 object-cover'
+            className='invisible sm:visible absolute w-[160px] left-0 bottom-[50px] lg:w-[233px] z-20
+              object-cover'
             src={'/images/home/home_float_6.webp'}
             alt='home_float_6'
           />
           <img
-            className='absolute top-0 left-0 w-screen z-10 object-cover'
+            className='invisible sm:visible absolute top-0 left-0 w-screen z-10 object-cover'
             src='/images/home/home_bg_4.webp'
             alt='home-bg-4'
           />
           <div
-            className='absolute bottom-[-50px] left-[-100px] rounded-full w-[368px] h-[535px]
-              blur-[150px] opacity-80 bg-radial-gradient-1'
+            className='invisible sm:visible absolute bottom-[-50px] left-[-100px] rounded-full
+              w-[368px] h-[535px] blur-[150px] opacity-80 bg-radial-gradient-1'
           ></div>
         </ImagesField>
-        <Content className='pb-[185px]'>
-          <Text className='text-[24px] lg:text-[64px] mb-[40px] font-semibold text-center'>
+        <Content className='pb-11 sm:pb-[185px]'>
+          <Text className='text-[24px] lg:text-[64px] mb-[35px] sm:mb-[40px] font-semibold text-center'>
             <span className='#fff'>One Mobile Phone, </span>
+            <br className='sm:hidden' />
             <span className='clip-text bg-gradient-home-text-1'>
               6 Benefits
             </span>
@@ -361,32 +379,34 @@ const HomePage = () => {
           />
         </ImagesField>
         <Content className='pb-[185px]'>
-          <Text className='text-[24px] lg:text-[64px] mb-[40px] font-semibold text-center'>
+          <Text className='text-[24px] lg:text-[64px] mb-[57px] sm:mb-[40px] font-semibold text-center'>
             <span className='#fff'>How to join</span>
+            <br className='sm:hidden' />
             <span className='clip-text bg-gradient-home-text-1'>
               &nbsp;Matrix Layer Protocol&nbsp;
             </span>
             <span className='#fff'>growth and maximize earnings? </span>
           </Text>
-          <div className='grid grid-cols-2 gap-x-[20px] gap-y-[50px]'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-[30px] gap-x-[20px] sm:gap-y-[50px]'>
             {advantages.map((item) => (
               <div
                 key={item.title}
-                className='relative flex justify-center items-center border-2 border-purple-500 h-[184px]
-                  rounded-[20px] p-[20px]'
+                className='relative flex justify-center items-center border-2 border-purple-500 h-fit
+                  sm:h-[184px] rounded-[10px] sm:rounded-[20px] p-[20px]'
               >
                 <div
-                  className='absolute top-0 left-1/2 translate-x-[-50%] translate-y-[-50%] w-[360px]
-                    py-[10px] bg-gradient-button-1 rounded-[10px] text-center'
+                  className='absolute top-0 left-1/2 translate-x-[-50%] translate-y-[-50%] min-w-[172px]
+                    sm:w-[360px] px-2.5 py-[5px] sm:py-2.5 bg-gradient-button-1 rounded-[5px]
+                    sm:rounded-[10px] text-center whitespace-nowrap sm:whitespace-normal'
                 >
                   <Text
                     as='span'
-                    className='leading-none text-[20px] font-semibold text-black'
+                    className='leading-none text-[16px] sm:text-[20px] font-semibold text-black'
                   >
                     {item.title}
                   </Text>
                 </div>
-                <Text className='text-[20px] font-semibold text-white text-center'>
+                <Text className='text-[14px] sm:text-[20px] font-semibold text-white text-center'>
                   {item.description}
                 </Text>
               </div>
