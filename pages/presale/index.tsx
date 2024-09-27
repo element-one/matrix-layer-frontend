@@ -9,6 +9,7 @@ import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
+import { ProductEnum } from '@utils/payment'
 
 const pageVariants = {
   enter: (currentPage: 'product' | 'ai-agent-nft') => ({
@@ -47,9 +48,9 @@ const ProductPage = () => {
 
   const { showModal } = useModal()
 
-  const handleToCheckout = () => {
+  const handleToCheckout = (type: string) => () => {
     if (isAuthenticated) {
-      router.push('/checkout')
+      router.push(`/checkout?type=${type}`)
     } else {
       showModal(ModalType.CONNECT_WALLET_MODAL)
     }
@@ -142,7 +143,7 @@ const ProductPage = () => {
                       </Text>
                       <Button
                         className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
-                        onClick={handleToCheckout}
+                        onClick={handleToCheckout(ProductEnum.PHONE)}
                       >
                         {isAuthenticated
                           ? 'Order Now'
@@ -413,7 +414,8 @@ const ProductPage = () => {
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1'
                         ],
-                        price: '$699'
+                        price: '$699',
+                        key: ProductEnum.AGENT_ONE
                       },
                       {
                         title: 'AI Agent Pro',
@@ -423,7 +425,8 @@ const ProductPage = () => {
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1.2'
                         ],
-                        price: '$899'
+                        price: '$899',
+                        key: ProductEnum.AGENT_PRO
                       },
                       {
                         title: 'AI Agent Ultra',
@@ -433,11 +436,12 @@ const ProductPage = () => {
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1.5'
                         ],
-                        price: '$1299'
+                        price: '$1299',
+                        key: ProductEnum.AGENT_ULTRA
                       }
                     ].map((item) => (
-                      <div key={item.title}>
-                        <div key={item.title} className='flex items-center'>
+                      <div key={item.key}>
+                        <div className='flex items-center'>
                           <img
                             className='w-[121px] h-[121px] sm:w-[250px] sm:h-[250px] mr-[11px] sm:mr-10'
                             src={item.img}
@@ -480,7 +484,7 @@ const ProductPage = () => {
                             </Text>
                             <Button
                               className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
-                              onClick={handleToCheckout}
+                              onClick={handleToCheckout(item.key)}
                             >
                               {isAuthenticated
                                 ? 'Order Now'

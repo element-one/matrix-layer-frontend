@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import { Address } from 'viem'
 import {
   useAccount,
@@ -29,6 +30,8 @@ const CheckoutPage = () => {
   const { isConnected, address } = useAccount()
   const { showModal } = useModal()
 
+  const { query } = useRouter()
+
   const [isCopied, setIsCopied] = useState(false)
   const [products, setProducts] = useState<IProduct[]>([])
   const [selectedProductType, setSelectedProductType] = useState('')
@@ -41,6 +44,12 @@ const CheckoutPage = () => {
     })
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
+
+  useEffect(() => {
+    if (query?.type) {
+      setSelectedProductType(query.type as string)
+    }
+  }, [query])
 
   const { data: accountBalance, refetch: refetchAccount } = useReadContract({
     abi: USDT_ABI,
