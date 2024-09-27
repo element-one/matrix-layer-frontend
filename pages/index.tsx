@@ -275,8 +275,13 @@ const HomePage = () => {
               One device in hand, interacts with the global ecosystem.
             </Text>
             <img
-              className='w-full object-cover'
+              className='w-full object-cover hidden sm:inline-block'
               src='/images/home/home_image_4.webp'
+              alt='home_image_4'
+            />
+            <img
+              className='w-full object-cover sm:hidden'
+              src='/images/home/home_image_4_mobile.webp'
               alt='home_image_4'
             />
           </div>
@@ -360,7 +365,12 @@ const HomePage = () => {
           <img
             src='/images/home/home_image_7.webp'
             alt='home_image_7'
-            className='w-full object-cover'
+            className='w-full object-cover hidden sm:inline-block'
+          />
+          <img
+            src='/images/home/home_image_7_mobile.webp'
+            alt='home_image_7'
+            className='w-full object-cover sm:hidden'
           />
         </Content>
       </Container>
