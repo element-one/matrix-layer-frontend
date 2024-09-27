@@ -93,14 +93,15 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
       isDismissable={false}
       size='xl'
       placement='center'
+      scrollBehavior={'outside'}
       classNames={{
         closeButton:
-          'right-12 top-12 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
+          'top-4 right-4 md:right-12 md:top-12 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
     >
       <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody>
-          <div className='flex flex-col gap-5 items-center py-10 px-6 text-co-text-1'>
+          <div className='flex flex-col gap-5 items-center px-2 pt-10 pb-5 md:py-10 md:px-6 text-co-text-1'>
             <div className='text-xl leading-9 font-chakraPetch'>
               MY DELIVERY ADDRESS
             </div>
@@ -108,7 +109,7 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
               You need to confirm your delivery address for World Phone
             </div>
             <div className='flex flex-col w-full gap-y-6 mb-8'>
-              <div className='grid grid-cols-2 gap-4 w-full'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full'>
                 <Input
                   label='First Name'
                   labelPlacement={'outside'}
@@ -142,7 +143,7 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
                 value={formData.address}
                 onChange={handleFormDataChange('address')}
               />
-              <div className='grid grid-cols-2 gap-4 w-full'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full'>
                 <Input
                   label='City'
                   labelPlacement={'outside'}
