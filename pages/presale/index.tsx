@@ -8,6 +8,7 @@ import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { useAuth } from '@contexts/auth'
+import { ModalType, useModal } from '@contexts/modal'
 
 const pageVariants = {
   enter: (currentPage: 'product' | 'ai-agent-nft') => ({
@@ -41,11 +42,17 @@ const ProductPage = () => {
   )
 
   const { isAuthenticated } = useAuth()
+
   const router = useRouter()
 
+  const { showModal } = useModal()
+
   const handleToCheckout = () => {
-    if (!isAuthenticated) return
-    router.push('/checkout')
+    if (isAuthenticated) {
+      router.push('/checkout')
+    } else {
+      showModal(ModalType.CONNECT_WALLET_MODAL)
+    }
   }
 
   const paginate = (newPage: 'product' | 'ai-agent-nft') =>
@@ -134,9 +141,7 @@ const ProductPage = () => {
                         $699
                       </Text>
                       <Button
-                        color='primary'
-                        className={`rounded-[35px] sm:rounded-[30px] w-[157px] sm:w-[191px] h-[22px] sm:h-12
-                          text-[12px] sm:text-[22px] font-semibold`}
+                        className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
                         onClick={handleToCheckout}
                       >
                         {isAuthenticated
