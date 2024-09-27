@@ -5,40 +5,40 @@ import { MinusIcon } from '@components/Icon/MinusIcon'
 import { PlusIcon } from '@components/Icon/PlusIcon'
 import { Text } from '@components/Text'
 
-export interface Product {
-  id: string
+export interface IProduct {
   name: string
   price: number
+  priceInUsdt: number
   quantity: number
-  img: string
+  type: string
 }
 
 interface ProductItemProps {
-  products: Product[]
-  product: Product
-  selectedProductId: string
-  onChangeProduct: (productId: string) => void
-  onChangeProductQuantity: (products: Product[]) => void
+  products: IProduct[]
+  product: IProduct
+  selectedProductType: string
+  onChangeProduct: (type: string) => void
+  onChangeProductQuantity: (products: IProduct[]) => void
 }
 
 const ProductItem: FC<ProductItemProps> = ({
   products,
   product,
-  selectedProductId,
+  selectedProductType,
   onChangeProduct,
   onChangeProductQuantity
 }) => {
   const handleSelectChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked && product.id !== selectedProductId) {
-      onChangeProduct(product.id)
+    if (e.target.checked && product.type !== selectedProductType) {
+      onChangeProduct(product.type)
     }
   }
 
   const handleProductQuantityMinus = () => {
-    if (product.quantity <= 0 || product.id !== selectedProductId) return
+    if (product.quantity <= 0 || product.type !== selectedProductType) return
 
     const clonedProducts = [...products]
-    const matchedProduct = products.find((v) => v.id === product.id)
+    const matchedProduct = products.find((v) => v.type === product.type)
 
     if (matchedProduct) {
       matchedProduct.quantity = matchedProduct.quantity - 1
@@ -47,10 +47,10 @@ const ProductItem: FC<ProductItemProps> = ({
   }
 
   const handleProductQuantityPlus = () => {
-    if (product.quantity >= 99 || product.id !== selectedProductId) return
+    if (product.quantity >= 99 || product.type !== selectedProductType) return
 
     const clonedProducts = [...products]
-    const matchedProduct = products.find((v) => v.id === product.id)
+    const matchedProduct = products.find((v) => v.type === product.type)
 
     if (matchedProduct) {
       matchedProduct.quantity = matchedProduct.quantity + 1
@@ -61,27 +61,27 @@ const ProductItem: FC<ProductItemProps> = ({
   return (
     <div
       className={clsx(
-        `w-[500px] h-[294px] box-border transition flex flex-col justify-center
-          items-center`,
-        product.id === selectedProductId
+        `w-full md:w-[500px] h-[360px] md:h-[294px] box-border transition flex flex-col
+          justify-center items-center`,
+        product.type === selectedProductType
           ? 'border-product-item-active-gradient'
           : 'border-product-item-gradient'
       )}
     >
-      <div className='w-[430px]'>
+      <div className='w-[80%] md:w-[430px]'>
         <div className='flex flex-row justify-between items-center mb-[14px]'>
-          <Text className='text-[32px] font-bold text-white'>
+          <Text className='text-[20px] md:text-[32px] font-bold text-white'>
             {product.name}
           </Text>
           <input
             type='radio'
-            value={product.id}
-            checked={product.id === selectedProductId}
+            value={product.type}
+            checked={product.type === selectedProductType}
             className='productItem-checkbox'
             onChange={handleSelectChange}
           />
         </div>
-        <div className='flex flex-row justify-between items-center gap-4'>
+        <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
           <div>
             <Text>Select quantity</Text>
             <div className='flex flex-row items-center gap-x-[12px] mt-[12px] mb-[20px]'>
@@ -116,12 +116,16 @@ const ProductItem: FC<ProductItemProps> = ({
                 <PlusIcon className={clsx('fill-black')} />
               </div>
             </div>
-            <Text className='text-[32px] text-white font-bold'>
-              ${product.price}&nbsp;
+            <Text className='text-[24px] md:text-[32px] text-white font-bold'>
+              ${product.priceInUsdt}&nbsp;
               <span className='text-[16px] text-co-gray-7'>/item</span>
             </Text>
           </div>
-          <img className='h-[172px]' src={product.img} alt='product-1' />
+          <img
+            className='h-[100px] md:h-[172px]'
+            src={`/images/checkout/${product.type}.png`}
+            alt='product-1'
+          />
         </div>
       </div>
     </div>

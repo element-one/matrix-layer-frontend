@@ -24,19 +24,22 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
   const { hideModal, isModalShown } = useModal()
   const [verifySuccess, setVerifySuccess] = useState(false)
 
-  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(referralCode ?? '', {
-    onSuccess() {
-      onVerifySuccess?.()
-      setVerifySuccess(true)
-      setTimeout(() => {
-        handleClose()
-      }, 3000);
-    },
-    onError(err) {
-      console.log('patch referral code error:', err)
-      toast.error('Invalid referral code')
+  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(
+    referralCode ?? '',
+    {
+      onSuccess() {
+        onVerifySuccess?.()
+        setVerifySuccess(true)
+        setTimeout(() => {
+          handleClose()
+        }, 3000)
+      },
+      onError(err) {
+        console.log('patch referral code error:', err)
+        toast.error('Invalid referral code')
+      }
     }
-  })
+  )
 
   const handleClose = () => {
     hideModal()
@@ -68,7 +71,8 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
       size='xl'
       placement='center'
       classNames={{
-        closeButton: 'right-12 top-12 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
+        closeButton:
+          'right-12 top-12 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
     >
       <ModalContent className='bg-co-bg-1 border border-co-border-gray'>
@@ -80,31 +84,33 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
                 placeholder='12345678'
                 value={referralCode?.toUpperCase()}
                 onChange={handleChange}
-                className='rounded-full px-6 h-[52px] text-xl leading-9 placeholder:text-co-text-gray text-co-text-black'
+                className='rounded-full px-6 h-[52px] text-xl leading-9 placeholder:text-co-text-gray
+                  text-co-text-black'
               />
               <Button
                 color='primary'
                 disabled={!referralCode}
-                className={
-                  clsx(
-                    'h-[52px] font-semibold text-xl',
-                    !referralCode ? 'bg-[url(/)] bg-co-gray-3' : ''
-                  )
-                }
+                className={clsx(
+                  'h-[52px] font-semibold text-xl',
+                  !referralCode ? 'bg-[url(/)] bg-co-gray-3' : ''
+                )}
                 isLoading={isPending}
                 onClick={handleVerify}
-              >Verify</Button>
-              {verifySuccess ?
-                (<div className='text-co-text-success text-xs text-center md:text-sm font-semibold leading-6'>
+              >
+                Verify
+              </Button>
+              {verifySuccess ? (
+                <div className='text-co-text-success text-xs text-center md:text-sm font-semibold leading-6'>
                   Code Valid and Invitation successfully recorded
-                </div>) :
-                (<div
+                </div>
+              ) : (
+                <div
                   className='text-base leading-6 px-4 mx-auto underline cursor-pointer'
                   onClick={handleSkip}
                 >
                   Skip
-                </div>)
-              }
+                </div>
+              )}
             </div>
           </div>
         </ModalBody>

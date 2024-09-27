@@ -11,12 +11,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'black-15': '#151515',
         'black-17': '#171717',
         'black-25': '#2B2B2B',
         'black-28': '#282828',
         'black-140': '#92008C',
         'gray-42': '#2A2A2A',
         'gray-57': '#575757',
+        'gray-666': '#666666',
         'gray-78': '#787878',
         'gray-90': '#919090',
         'gray-130': '#ACACAC',

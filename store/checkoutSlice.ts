@@ -1,13 +1,13 @@
 import { StateCreator } from 'zustand'
 
-import type { Product } from '@components/Checkout/ProductItem'
+import type { IProduct } from '@components/Checkout/ProductItem'
 
 type CheckoutState = {
-  currentProduct?: Product
+  currentProduct?: IProduct
 }
 
 type CheckoutActions = {
-  setCurrentProduct: (product: Product | undefined) => void
+  setCurrentProduct: (product: IProduct | undefined) => void
 }
 
 export type CheckoutSlice = CheckoutState & CheckoutActions

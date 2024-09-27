@@ -57,7 +57,6 @@ export type ApiPaymentData = {
   createdAt: string
   deletedAt: string | null
   expectedPrice: string
-  from: `0x${string}`
   id: string
   name: string
   price: string
@@ -76,9 +75,9 @@ export type ApiPayment = {
   data: ApiPaymentData[]
 }
 
-export type ApiPaymentResponse = ApiResponse & ApiPayment
+export type ApiPaymentResponse = ApiPayment
 
-export type ProductType = 'wifi' | 'aiAgent'
+export type ProductType = 'phone' | 'agent_one' | 'agent_pro' | 'agent_ultra'
 
 export type ApiTokenAddressResponse = ApiResponse & {
   address: `0x${string}`
@@ -101,4 +100,55 @@ export type ApiProducts = {
   data: ApiProduct[]
 }
 
-export type ApiProductsResponse = ApiProducts & ApiResponse
+export type ApiProductsResponse = ApiProduct[]
+
+export type ApiSaveAddressParams = {
+  firstName: string
+  lastName: string
+  email: string
+  address: string
+  city: string
+  province: string
+  country: string
+  phoneNumber: string
+  isDefault: boolean
+}
+
+export type ApiSaveAddressResponse = ApiSaveAddressParams & {
+  id: string
+  user: { address: string }
+}
+
+export type IAddress = {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  address: string
+  city: string
+  province: string
+  country: string
+  phoneNumber: string
+  isDefault: boolean
+  createdAt: string
+  deletedAt: string
+  updatedAt: string
+}
+
+export type ApiGetAddressResponse = IAddress[]
+
+export type ApiHoldingsResponse = Partial<{
+  availableRewards: number
+  wpnTokenAmount: number
+  phone: number
+  agent_limit: number
+  agent_one: number
+  agent_pro: number
+  agent_ultra: number
+}>
+
+export type ApiErrorResponse = {
+  error: string
+  message: string[]
+  statusCode: number
+}
