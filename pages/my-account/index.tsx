@@ -74,10 +74,18 @@ const holding_temp = [
 ]
 
 const processHoldings = (holdings: ApiHoldingsResponse = {}) => {
-  return holding_temp.map((item) => ({
-    ...item,
-    count: Object.entries(holdings).find(([key]) => key === item.key)?.[1] || 0
-  }))
+  return holding_temp.map((item) => {
+    const matchedValue =
+      Object.entries(holdings).find(([key]) => key === item.key)?.[1] || 0
+
+    return {
+      ...item,
+      count:
+        item.key === 'wpnTokenAmount' || item.key === 'availableRewards'
+          ? Number(matchedValue) / 1000000
+          : matchedValue
+    }
+  })
 }
 
 const statusClass = (status: string) => {
@@ -97,6 +105,8 @@ const statusClass = (status: string) => {
 
 const statusCommonClass =
   'w-[103px] h-[34px] rounded-[24px] flex items-center justify-center font-semibold capitalize text-sm border'
+
+const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 
 const MyAccount = () => {
   const { user, isAuthenticated } = useAuth()
@@ -211,16 +221,14 @@ const MyAccount = () => {
                   items-center justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
-                  {`https://invite.worldphone.io/${user?.referralCode}`}
+                  {WEB_URL + '/referral?code=' + user?.referralCode ?? ''}
                 </div>
                 <Button
                   className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
                     text-base font-semibold'
                   variant='bordered'
                   onClick={handleCopy(
-                    user?.referralCode
-                      ? `https://invite.worldphone.io/${user.referralCode}`
-                      : ''
+                    WEB_URL + '/referral?code=' + user?.referralCode ?? ''
                   )}
                 >
                   <span className='md:inline hidden'>Copy Link</span>
