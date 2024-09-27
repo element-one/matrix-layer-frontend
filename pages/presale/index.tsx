@@ -58,8 +58,10 @@ const ProductPage = () => {
     <Button
       color={currentPage === page ? 'primary' : 'secondary'}
       variant={currentPage === page ? 'faded' : 'light'}
-      className={`focus:bg-gradient-button-1 border-none rounded-[30px] w-[200px] h-12 text-[22px]
-        font-semibold ${currentPage === page ? 'text-black' : 'text-white'}`}
+      className={`focus:bg-gradient-button-1 border-none rounded-[30px] flex-1 w-auto sm:w-[200px]
+        h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
+          currentPage === page ? 'text-black' : 'text-white'
+        }`}
       onClick={() => paginate(page)}
     >
       {page === 'product' ? 'PRODUCT' : 'AI AGENT NFT'}
@@ -68,15 +70,18 @@ const ProductPage = () => {
 
   return (
     <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
-      <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>
+      <Container
+        className='overflow-visible pb-[38px] border-b-0 sm:border-b
+          border-[rgba(102,102,102,0.40)]'
+      >
         <TopSectionBackground />
         <Content>
-          <div className='flex flex-col items-center justify-center pt-[220px]'>
-            <Text className='mb-5 font-pressStart2P text-white text-2xl'>
+          <div className='flex flex-col items-center justify-center pt-[122px] sm:pt-[220px]'>
+            <Text className='mb-[17px] sm:mb-5 font-pressStart2P text-white text-2xl'>
               PRE-SALE
             </Text>
             <div
-              className={`flex p-2 gap-[30px] border-2 rounded-[40px] ${gradientBorderClass}`}
+              className={`flex p-2.5 sm:p-2 gap-[30px] border-2 rounded-[40px] ${gradientBorderClass}`}
             >
               <TabButton page='product' />
               <TabButton page='ai-agent-nft' />
@@ -90,38 +95,40 @@ const ProductPage = () => {
             <div className=''>
               <Container>
                 <Content>
-                  <div className='flex justify-between items-center pt-[171px]'>
-                    <div className='flex flex-col gap-5 max-w-[612px]'>
-                      <Text className='text-white text-[28px] font-semibold leading-normal tracking-[2.8px] uppercase'>
+                  <div className='flex justify-between items-center pt-6 sm:pt-[171px]'>
+                    <div className='flex flex-col gap-2.5 sm:gap-5 max-w-[153px] sm:max-w-[612px]'>
+                      <Text
+                        className='text-white text-[14px] sm:text-[28px] font-semibold leading-normal
+                          tracking-[2.8px] uppercase whitespace-nowrap'
+                      >
                         mobile hardware
                       </Text>
-                      <Text className='text-white text-7xl font-semibold'>
+                      <Text className='text-white text-[18px] sm:text-7xl font-semibold'>
                         MATRIX <br />
                         LAYER PROTOCOL
                       </Text>
-                      <Text className='text-base font-semibold text-gray-a5 pr-[20px]'>
+                      <Text className='text-[12px] sm:text-base font-semibold text-gray-a5 pr-0 sm:pr-[20px]'>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Aenean ornare mattis risus, eget condimentum nibh
-                        ultrices ut. Phasellus tempor accumsan eros. Proin odio
-                        turpis, tristique eu tortor vulputate, sagittis suscipit
-                        massa.
+                        ultrices ut.
                       </Text>
                       <Text
-                        className={`text-[98px] leading-[1.2] ${gradientTextClass}`}
+                        className={`text-[48px] sm:text-[98px] leading-[1.2] ${gradientTextClass}`}
                         size='extrabold'
                       >
                         $699
                       </Text>
                       <Button
                         color='primary'
-                        className={`rounded-[30px] w-[191px] h-12 text-[22px] font-semibold`}
+                        className={`rounded-[35px] sm:rounded-[30px] w-[157px] sm:w-[191px] h-[22px] sm:h-12
+                          text-[12px] sm:text-[22px] font-semibold`}
                       >
                         ORDER NOW
                       </Button>
                     </div>
-                    <div className='relative'>
+                    <div className='sm:relative absolute -right-[70px] sm:right-auto top-6 sm:top-auto'>
                       <img
-                        className='w-[456px] h-[521px]'
+                        className='w-[226px] sm:w-[456px] h-[259px] sm:h-[521px]'
                         src='/images/product/phone21.png'
                         alt='phone21'
                       />
@@ -131,7 +138,7 @@ const ProductPage = () => {
                 </Content>
               </Container>
               <Container className='mt-[58px]'>
-                <ImagesField>
+                <ImagesField className='hidden'>
                   <img
                     className='w-screen absolute top-[50px] left-0'
                     src='/images/product/product-content-mask.png'
@@ -155,7 +162,7 @@ const ProductPage = () => {
                 </ImagesField>
                 <Content>
                   <div className='flex justify-between items-center'>
-                    <div className='flex gap-[54px]'>
+                    <div className='gap-[54px] hidden sm:flex'>
                       <img
                         className='h-[554px]'
                         src='/images/product/phone4.png'
@@ -168,58 +175,104 @@ const ProductPage = () => {
                       />
                     </div>
                     <div className='flex flex-col'>
-                      <Text className='text-[28px]' size='bold'>
-                        MATRIX LAYER PROTOCOL
-                      </Text>
-                      <Text
-                        className={`text-[64px] ${gradientTextClass}`}
-                        size='bold'
-                      >
-                        Spesification
-                      </Text>
-                      <div
-                        className='py-[20px] grid grid-cols-[198px_198px_256px] gap-[20px] border-b
-                          border-[rgba(102,102,102,0.40)]'
-                      >
-                        {[
-                          ['Dimensions', '162.23x73.6x8.55 mm'],
-                          ['Operating System', 'Based on Android 14'],
-                          ['Display', 'AMOLED 6.67 inches, 120Hz']
-                        ].map((item) => (
-                          <div key={item[0]} className='flex flex-col gap-5'>
-                            <Text className='text-xl'>{item[0]}</Text>
-                            <Text className='text-xl text-gray-a5'>
-                              {item[1]}
-                            </Text>
+                      <div className='flex sm:flex-col flex-row items-center sm:items-start gap-x-[14px]'>
+                        <Text
+                          className='text-[12px] sm:text-[28px]'
+                          size='bold'
+                        >
+                          MATRIX LAYER PROTOCOL
+                        </Text>
+                        <Text
+                          className={`text-[24px] sm:text-[64px] ${gradientTextClass}`}
+                          size='bold'
+                        >
+                          Spesification
+                        </Text>
+                      </div>
+                      <div className='grid grid-cols-2 sm:grid-cols-1 gap-x-5'>
+                        <div className='gap-5 flex sm:hidden'>
+                          <img
+                            className='h-[255px]'
+                            src='/images/product/phone4.png'
+                            alt='phone4'
+                          />
+                          <img
+                            className='h-[255px]'
+                            src='/images/product/phone-side.png'
+                            alt='phone-side'
+                          />
+                        </div>
+                        <div>
+                          <div
+                            className='py-0 sm:py-[20px] grid grid-cols-1 sm:grid-cols-[198px_198px_256px] gap-[7px]
+                              sm:gap-[20px] border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                          >
+                            {[
+                              ['Dimensions', '162.23x73.6x8.55 mm'],
+                              ['Operating System', 'Based on Android 14'],
+                              ['Display', 'AMOLED 6.67 inches, 120Hz']
+                            ].map((item) => (
+                              <div
+                                key={item[0]}
+                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b sm:border-0
+                                  border-[rgba(102,102,102,0.40)] pb-[7px] sm:pb-0'
+                              >
+                                <Text className='text-[12px] sm:text-xl'>
+                                  {item[0]}
+                                </Text>
+                                <Text className='text-[12px] sm:text-xl text-gray-a5'>
+                                  {item[1]}
+                                </Text>
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                          <div
+                            className='py-0 sm:py-[20px] grid grid-cols-1 sm:grid-cols-[198px_198px_256px] gap-[7px]
+                              sm:gap-[20px] border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                          >
+                            {[
+                              ['Battery Capacity', '5050mAh'],
+                              ['GPU', 'Arm Mali-G57']
+                            ].map((item) => (
+                              <div
+                                key={item[0]}
+                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b sm:border-0
+                                  border-[rgba(102,102,102,0.40)] pb-[7px] sm:pb-0'
+                              >
+                                <Text className='text-[12px] sm:text-xl'>
+                                  {item[0]}
+                                </Text>
+                                <Text className='text-[12px] sm:text-xl text-gray-a5'>
+                                  {item[1]}
+                                </Text>
+                              </div>
+                            ))}
+                            <div className='hidden sm:flex flex-col gap-1 sm:gap-5'>
+                              <Text className='text-[12px] sm:text-xl'>
+                                CPU
+                              </Text>
+                              <Text className='text-[12px] sm:text-base text-gray-a5'>
+                                MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz
+                              </Text>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <div
-                        className='py-[20px] grid grid-cols-[198px_198px_256px] gap-[20px] border-b
-                          border-[rgba(102,102,102,0.40)]'
+                        className='py-[7px] sm:py-[20px] grid-cols-2 sm:grid-cols-1 grid gap-[7px] sm:gap-[20px]
+                          border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
                       >
-                        {[
-                          ['Battery Capacity', '5050mAh'],
-                          ['GPU', 'Arm Mali-G57']
-                        ].map((item) => (
-                          <div key={item[0]} className='flex flex-col gap-5'>
-                            <Text className='text-xl'>{item[0]}</Text>
-                            <Text className='text-xl text-gray-a5'>
-                              {item[1]}
-                            </Text>
-                          </div>
-                        ))}
-                        <div className='flex flex-col gap-5'>
-                          <Text className='text-xl'>CPU</Text>
-                          <Text className='text-base text-gray-a5'>
+                        <div className='sm:hidden flex-col gap-1 sm:gap-5'>
+                          <Text className='text-[12px] sm:text-xl'>CPU</Text>
+                          <Text className='text-[12px] sm:text-base text-gray-a5'>
                             MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz
                           </Text>
                         </div>
-                      </div>
-                      <div className='py-[20px] grid border-b border-[rgba(102,102,102,0.40)]'>
-                        <div className='flex flex-col gap-5'>
-                          <Text className='text-xl'>SIM Cards</Text>
-                          <Text className='text-base text-gray-a5'>
+                        <div className='flex flex-col gap-1 sm:gap-5'>
+                          <Text className='text-[12px] sm:text-xl'>
+                            SIM Cards
+                          </Text>
+                          <Text className='text-[12px] text-base text-gray-a5'>
                             Dual SIM
                             <br /> (Nano SIM, dual standby)
                           </Text>
@@ -232,19 +285,19 @@ const ProductPage = () => {
               <Container className='pb-32'>
                 <Content className='relative'>
                   <img
-                    className='rotate-[276deg] absolute top-[140px] left-[28px] w-[156px] h-[156px]
-                      blur-[4.6px]'
+                    className='hidden sm:inline-flex rotate-[276deg] absolute top-[140px] left-[28px] w-[156px]
+                      h-[156px] blur-[4.6px]'
                     src='/images/product/product-dot.png'
                     alt='dot'
                   />
-                  <div className='relative z-20 pt-[58px] flex flex-col items-center'>
+                  <div className='relative z-20 pt-10 sm:pt-[58px] flex flex-col items-center'>
                     <Text
-                      className={`text-[64px] ${gradientTextClass}`}
+                      className={`text-[24px] sm:text-[64px] ${gradientTextClass}`}
                       size='bold'
                     >
                       User Benefits
                     </Text>
-                    <div className='mt-10 grid justify-center grid-cols-[534px_554px] gap-[20px]'>
+                    <div className='mt-10 grid justify-center grid-cols-1 sm:grid-cols-[534px_554px] gap-[20px]'>
                       {[
                         {
                           img: '/images/svg/building-token.svg',
@@ -273,22 +326,25 @@ const ProductPage = () => {
                       ].map((item) => (
                         <div
                           key={item.title}
-                          className={`bg-black flex gap-8 px-[20px] py-[10px] rounded-[40px] items-center border-1
-                            ${gradientBorderClass}`}
+                          className={`bg-black flex gap-5 sm:gap-8 px-2.5 py-2.5 sm:px-5 rounded-[10px]
+                            sm:rounded-[40px] items-center border-1 ${gradientBorderClass}`}
                         >
                           <img
                             src={item.img}
                             alt={item.title}
-                            className='w-[64px] shrink-0'
+                            className='w-12 sm:w-[64px] shrink-0'
                           />
-                          <div className='flex flex-col gap-[10px]'>
+                          <div className='flex flex-col gap-1 sm:gap-[10px]'>
                             <Text
-                              className={`text-[22px] ${gradientTextClass}`}
+                              className={`text-[16px] sm:text-[22px] ${gradientTextClass}`}
                               size='extrabold'
                             >
                               {item.title}
                             </Text>
-                            <Text size='extrabold' className='text-base'>
+                            <Text
+                              size='extrabold'
+                              className='text-[12px] sm:text-base'
+                            >
                               {item.description}
                             </Text>
                           </div>
@@ -296,7 +352,7 @@ const ProductPage = () => {
                       ))}
                     </div>
                     <Text
-                      className='text-center text-[22px] mt-10 max-w-[1107px]
+                      className='text-center text-[12px] sm:text-[22px] mt-5 sm:mt-10 max-w-[1107px]
                         shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'
                       size='bold'
                     >

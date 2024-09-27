@@ -9,13 +9,14 @@ export const TopSectionBackground = () => {
         alt='product-top'
       />
       <img
-        className='rotate-[276deg] absolute top-[140px] -right-[28px] w-[156px] h-[156px]
-          blur-[4.6px]'
+        className='hidden sm:inline-block rotate-[276deg] absolute top-[140px] -right-[28px]
+          w-[156px] h-[156px] blur-[4.6px]'
         src='/images/product/product-dot.png'
         alt='product-dot'
       />
       <img
-        className='absolute rotate-[45deg] top-[250px] -left-[73px] w-[245px] h-[245px]'
+        className='hidden sm:inline-block absolute rotate-[45deg] top-[250px] -left-[73px]
+          w-[245px] h-[245px]'
         src='/images/product/product-dot.png'
         alt='product-dot'
       />
