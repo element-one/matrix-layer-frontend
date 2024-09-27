@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import http from '@services/axios/client'
 import { ApiPaymentResponse } from '@type/api'
@@ -12,9 +12,14 @@ export const getPayments = async (
   return data
 }
 
-export const useGetPayments = (page: number, pageSize = 6) => {
-  return useQuery({
+export const useGetPayments = (
+  page: number,
+  pageSize = 6,
+  options?: Partial<UseQueryOptions<ApiPaymentResponse, Error>>
+) => {
+  return useQuery<ApiPaymentResponse, Error>({
     queryKey: ['all', 'payments', page, pageSize],
-    queryFn: () => getPayments(page, pageSize)
+    queryFn: () => getPayments(page, pageSize),
+    ...options
   })
 }

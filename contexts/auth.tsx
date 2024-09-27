@@ -7,6 +7,7 @@ import React, {
   useState
 } from 'react'
 import { useRouter } from 'next/router'
+import { useAccount } from 'wagmi'
 
 import { useGetAuth } from '@services/api/auth'
 import { useGetMe } from '@services/api/user'
@@ -49,7 +50,12 @@ export const AuthProvider: React.FC<{ children?: ReactNode }> = ({
     [setUser]
   )
 
-  const { data: authStatus, isPending: isFetchingAuthStatus } = useGetAuth()
+  const { isConnected } = useAccount()
+
+  const { data: authStatus, isPending: isFetchingAuthStatus } = useGetAuth({
+    enabled: isConnected
+  })
+
   const { data: authUser } = useGetMe({ enabled: isAuthenticated })
 
   useEffect(() => {

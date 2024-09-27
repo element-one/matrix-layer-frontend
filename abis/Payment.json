@@ -36,12 +36,6 @@
         "internalType": "uint256",
         "name": "quantity",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "shippingAddressId",
-        "type": "string"
       }
     ],
     "name": "PaymentReceived",
@@ -159,11 +153,6 @@
         "internalType": "bytes32[]",
         "name": "merkleProof",
         "type": "bytes32[]"
-      },
-      {
-        "internalType": "string",
-        "name": "shippingAddressId",
-        "type": "string"
       }
     ],
     "name": "payPrivateSale",
@@ -187,11 +176,6 @@
         "internalType": "uint256",
         "name": "quantity",
         "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "shippingAddressId",
-        "type": "string"
       }
     ],
     "name": "payPublicSale",

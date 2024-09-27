@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useRouter } from 'next/router'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { Button } from '@components/Button'
@@ -6,6 +7,9 @@ import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
+import { useAuth } from '@contexts/auth'
+import { ModalType, useModal } from '@contexts/modal'
+import { ProductEnum } from '@utils/payment'
 
 const pageVariants = {
   enter: (currentPage: 'product' | 'ai-agent-nft') => ({
@@ -38,34 +42,56 @@ const ProductPage = () => {
     'product'
   )
 
-  const paginate = (newPage: 'product' | 'ai-agent-nft') =>
-    setCurrentPage(newPage)
+  const { isAuthenticated } = useAuth()
 
-  const PageContent = ({ children }: { children: React.ReactNode }) => (
-    <motion.div
-      custom={currentPage}
-      variants={pageVariants}
-      initial='enter'
-      animate='center'
-      exit='exit'
-      transition={pageTransition}
-    >
-      {children}
-    </motion.div>
+  const router = useRouter()
+
+  const { showModal } = useModal()
+
+  const handleToCheckout = (type: string) => () => {
+    if (isAuthenticated) {
+      router.push(`/checkout?type=${type}`)
+    } else {
+      showModal(ModalType.CONNECT_WALLET_MODAL)
+    }
+  }
+
+  const paginate = useCallback(
+    (newPage: 'product' | 'ai-agent-nft') => setCurrentPage(newPage),
+    []
   )
 
-  const TabButton = ({ page }: { page: 'product' | 'ai-agent-nft' }) => (
-    <Button
-      color={currentPage === page ? 'primary' : 'secondary'}
-      variant={currentPage === page ? 'faded' : 'light'}
-      className={`focus:bg-gradient-button-1 border-none rounded-[30px] flex-1 w-auto sm:w-[200px]
-        h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
-          currentPage === page ? 'text-black' : 'text-white'
-        }`}
-      onClick={() => paginate(page)}
-    >
-      {page === 'product' ? 'PRODUCT' : 'AI AGENT NFT'}
-    </Button>
+  const PageContent = useCallback(
+    ({ children }: { children: React.ReactNode }) => (
+      <motion.div
+        custom={currentPage}
+        variants={pageVariants}
+        initial='enter'
+        animate='center'
+        exit='exit'
+        transition={pageTransition}
+      >
+        {children}
+      </motion.div>
+    ),
+    [currentPage]
+  )
+
+  const TabButton = useCallback(
+    ({ page }: { page: 'product' | 'ai-agent-nft' }) => (
+      <Button
+        color={currentPage === page ? 'primary' : 'secondary'}
+        variant={currentPage === page ? 'faded' : 'light'}
+        className={`focus:bg-gradient-button-1 border-none rounded-[30px] flex-1 w-auto sm:w-[200px]
+          h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
+            currentPage === page ? 'text-black' : 'text-white'
+          }`}
+        onClick={() => paginate(page)}
+      >
+        {page === 'product' ? 'PRODUCT' : 'AI AGENT NFT'}
+      </Button>
+    ),
+    [currentPage, paginate]
   )
 
   return (
@@ -124,11 +150,12 @@ const ProductPage = () => {
                         $699
                       </Text>
                       <Button
-                        color='primary'
-                        className={`rounded-[35px] sm:rounded-[30px] w-[157px] sm:w-[191px] h-[22px] sm:h-12
-                          text-[12px] sm:text-[22px] font-semibold`}
+                        className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
+                        onClick={handleToCheckout(ProductEnum.PHONE)}
                       >
-                        ORDER NOW
+                        {isAuthenticated
+                          ? 'Order Now'
+                          : 'Connect Wallet to Order'}
                       </Button>
                     </div>
                     <div className='sm:relative absolute -right-[70px] sm:right-auto top-6 sm:top-auto'>
@@ -395,7 +422,8 @@ const ProductPage = () => {
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1'
                         ],
-                        price: '$699'
+                        price: '$699',
+                        key: ProductEnum.AGENT_ONE
                       },
                       {
                         title: 'AI Agent Pro',
@@ -405,7 +433,8 @@ const ProductPage = () => {
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1.2'
                         ],
-                        price: '$899'
+                        price: '$899',
+                        key: ProductEnum.AGENT_PRO
                       },
                       {
                         title: 'AI Agent Ultra',
@@ -415,11 +444,12 @@ const ProductPage = () => {
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1.5'
                         ],
-                        price: '$1299'
+                        price: '$1299',
+                        key: ProductEnum.AGENT_ULTRA
                       }
                     ].map((item) => (
-                      <div key={item.title}>
-                        <div key={item.title} className='flex items-center'>
+                      <div key={item.key}>
+                        <div className='flex items-center'>
                           <img
                             className='w-[121px] h-[121px] sm:w-[250px] sm:h-[250px] mr-[11px] sm:mr-10'
                             src={item.img}
@@ -460,8 +490,13 @@ const ProductPage = () => {
                             >
                               {item.price}
                             </Text>
-                            <Button className='rounded-[35px] h-12 text-base font-semibold w-[218px]'>
-                              Connect Wallet to Order
+                            <Button
+                              className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
+                              onClick={handleToCheckout(item.key)}
+                            >
+                              {isAuthenticated
+                                ? 'Order Now'
+                                : 'Connect Wallet to Order'}
                             </Button>
                           </div>
                         </div>
