@@ -150,7 +150,7 @@ const ProductPage = () => {
                         $699
                       </Text>
                       <Button
-                        className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
+                        className='rounded-[35px] h-12 text-base font-semibold w-[218px] z-10'
                         onClick={handleToCheckout(ProductEnum.PHONE)}
                       >
                         {isAuthenticated
@@ -471,8 +471,13 @@ const ProductPage = () => {
                               >
                                 {item.price}
                               </Text>
-                              <Button className='rounded-[35px] w-[155px] h-7 text-[12px] font-semibold'>
-                                Connect Wallet to Order
+                              <Button
+                                className='rounded-[35px] w-[155px] h-7 text-[12px] font-semibold'
+                                onClick={handleToCheckout(item.key)}
+                              >
+                                {isAuthenticated
+                                  ? 'Order Now'
+                                  : 'Connect Wallet to Order'}
                               </Button>
                             </div>
                             {/* show larger than sm */}
