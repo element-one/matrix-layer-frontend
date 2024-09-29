@@ -53,10 +53,10 @@ const holding_temp = [
     key: 'availableRewards'
   },
   {
-    title: 'AI AGENT ULTRA',
-    count: 4,
-    icon: '/images/product/ai_agent_ultra.png',
-    key: 'agent_ultra'
+    title: 'MATRIX',
+    count: 0,
+    icon: '/images/checkout/matrix.png',
+    key: 'matrix'
   },
   {
     title: 'AI AGENT ONE',
@@ -69,6 +69,12 @@ const holding_temp = [
     count: 0,
     icon: '/images/product/ai_agent_pro.png',
     key: 'agent_pro'
+  },
+  {
+    title: 'AI AGENT ULTRA',
+    count: 4,
+    icon: '/images/product/ai_agent_ultra.png',
+    key: 'agent_ultra'
   }
 ]
 
@@ -140,7 +146,8 @@ const MyAccount = () => {
   }
 
   const handleOpenShippingModal = () => {
-    showModal(ModalType.SHIPPING_ADDRESS_MODAL, {
+    showModal(ModalType.MANAGE_ADDRESS_MODAL, {
+      type: 'shipping',
       onConfirm: async (id) => {
         try {
           await activeDelivery({ id })
@@ -330,7 +337,7 @@ const MyAccount = () => {
               className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
               onClick={handleShowAddressManageModal}
             >
-              My delivery status
+              Address Management
             </Button>
           </div>
           <Table

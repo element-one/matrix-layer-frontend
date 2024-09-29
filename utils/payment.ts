@@ -25,14 +25,16 @@ export const convertTypeToName = (type: string) => {
 
 export const convertTypeToInt = (type: string) => {
   switch (type) {
-    case ProductEnum.AGENT_ONE:
-      return 1
-    case ProductEnum.AGENT_PRO:
-      return 2
-    case ProductEnum.AGENT_ULTRA:
-      return 3
     case ProductEnum.PHONE:
       return 0
+    case ProductEnum.MATRIX:
+      return 1
+    case ProductEnum.AGENT_ONE:
+      return 2
+    case ProductEnum.AGENT_PRO:
+      return 3
+    case ProductEnum.AGENT_ULTRA:
+      return 4
     default:
       return -1
   }

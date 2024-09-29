@@ -56,8 +56,8 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
 }) => {
   const { isModalShown, hideModal } = useModal()
 
-  const { mutateAsync: save } = useSaveAddress()
-  const { mutateAsync: update } = useUpdateAddress()
+  const { mutateAsync: save, isPending: isSavePending } = useSaveAddress()
+  const { mutateAsync: update, isPending: isUpdatePending } = useUpdateAddress()
 
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
 
@@ -123,7 +123,7 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
       }
 
       if (savedFormData) {
-        update({ id: savedFormData.id, data: form })
+        await update({ id: savedFormData.id, data: form })
       } else {
         await save(form)
       }
@@ -234,6 +234,7 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
               </div>
             </div>
             <Button
+              isLoading={isSavePending || isUpdatePending}
               disabled={!Object.values(formData).every((v) => v)}
               className='w-full text-[16px] p-[10px] rounded-[35px]'
               onClick={handleSubmit}

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import {
   Modal,
   ModalBody,
@@ -29,20 +29,32 @@ export interface IFormData {
 }
 
 export interface ManageAddressModalProps {
+  type?: 'management' | 'shipping'
   onClose?: () => void
-  onConfirm: (addressId: string) => void
+  onConfirm?: (addressId: string) => void
 }
 
 export const ManageAddressModal: FC<ManageAddressModalProps> = ({
+  type = 'management',
   onClose,
   onConfirm
 }) => {
   const { isModalShown, hideModal } = useModal()
-  const { data: myAddresses, refetch, isLoading } = useGetAllAddresses()
+  const {
+    data: myAddresses,
+    refetch,
+    isLoading,
+    isRefetching
+  } = useGetAllAddresses()
   const [selectedAddress, setSelectedAddress] = useState('')
   const { isOpen, onOpen, onClose: onCloseCreateAddressModal } = useDisclosure()
   const [editFromData, setEditFormData] = useState<IAddress | null>(null)
   const { mutateAsync: deleteAddress } = useDeleteAddress()
+
+  const loading = useMemo(
+    () => isLoading || isRefetching,
+    [isLoading, isRefetching]
+  )
 
   const handleClose = () => {
     hideModal()
@@ -75,7 +87,7 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
 
   const handleConfirm = () => {
     if (!selectedAddress) return
-    onConfirm(selectedAddress)
+    onConfirm && onConfirm(selectedAddress)
   }
 
   const handleCloseCreateAddressModal = () => {
@@ -100,7 +112,7 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
         <ModalBody>
           <div className='flex flex-col gap-5 px-2 pt-10 pb-5 md:py-10 md:px-6 text-co-text-1'>
             <div className='text-xl leading-9 font-chakraPetch text-center'>
-              ADDRESS MANAGEMENT
+              {type === 'management' ? 'ADDRESS MANAGEMENT' : 'SELECT ADDRESS'}
             </div>
             <Button
               className='self-start px-5 py-2 text-[16px]'
@@ -109,16 +121,16 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
               Add Address
             </Button>
             <div className='flex flex-col gap-3 max-h-[800px] overflow-y-auto'>
-              {isLoading &&
+              {loading &&
                 Array(2)
                   .fill('')
                   .map((_, index) => <AddressItemSkeleton key={index} />)}
-              {!isLoading &&
+              {!loading &&
                 myAddresses?.map((address) => (
                   <div
                     key={address.id}
                     className={clsx(
-                      `w-full flex flex-col gap-y-1 box-border transition cursor-pointer p-4`,
+                      `w-full flex flex-col gap-y-1.5 box-border transition cursor-pointer p-4`,
                       address.id === selectedAddress
                         ? 'border-address-item-active-gradient'
                         : 'border-address-item-gradient'
@@ -126,14 +138,14 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
                     onClick={handleChangeAddress(address.id)}
                   >
                     <div className='flex flex-row justify-between items-center'>
-                      <Text className='text-[16px] md:text-[20px] font-bold text-white leading-[1.5]'>
+                      <Text className='text-[14px] md:text-[18px] font-bold text-white leading-[1.5]'>
                         {address.firstName} {address.lastName}
                       </Text>
-                      <Text className='text-[16px] md:text-[20px] font-bold text-white'>
+                      <Text className='text-[14px] md:text-[18px] font-bold text-white'>
                         {address.areaCode} {address.phoneNumber}
                       </Text>
                     </div>
-                    <Text className='text-[14px] md:text-[18px] font-bold text-white'>
+                    <Text className='text-[12px] md:text-[16px] font-bold text-white'>
                       {address.address},&nbsp;{address.city},&nbsp;
                       {address.country},&nbsp;
                       {address.province}
@@ -155,13 +167,15 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
                   </div>
                 ))}
             </div>
-            <Button
-              disabled={!selectedAddress}
-              className='w-full text-[16px] p-[10px] rounded-[35px]'
-              onClick={handleConfirm}
-            >
-              Confirm
-            </Button>
+            {type === 'shipping' && (
+              <Button
+                disabled={!selectedAddress}
+                className='w-full text-[16px] p-[10px] rounded-[35px]'
+                onClick={handleConfirm}
+              >
+                Confirm
+              </Button>
+            )}
           </div>
         </ModalBody>
       </ModalContent>
