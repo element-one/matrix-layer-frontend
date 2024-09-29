@@ -11,31 +11,88 @@
     "type": "constructor"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableInvalidOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "from",
+        "name": "previousOwner",
         "type": "address"
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "buyer",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "enum MatrixPayment.DeviceType",
+                "name": "deviceType",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint256",
+                "name": "quantity",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct MatrixPayment.DeviceOrder[]",
+            "name": "orders",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalAmount",
+            "type": "uint256"
+          }
+        ],
         "indexed": false,
-        "internalType": "enum Payment.DeviceType",
-        "name": "deviceType",
-        "type": "uint8"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "quantity",
-        "type": "uint256"
+        "internalType": "struct MatrixPayment.PaymentData",
+        "name": "paymentData",
+        "type": "tuple"
       }
     ],
     "name": "PaymentReceived",
@@ -51,7 +108,7 @@
         "type": "bool"
       }
     ],
-    "name": "PrivateSaleToggled",
+    "name": "PrivateSaleStateChanged",
     "type": "event"
   },
   {
@@ -64,14 +121,14 @@
         "type": "bool"
       }
     ],
-    "name": "PublicSaleToggled",
+    "name": "PublicSaleStateChanged",
     "type": "event"
   },
   {
     "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "address",
         "name": "tokenAddress",
         "type": "address"
@@ -86,7 +143,7 @@
       {
         "indexed": false,
         "internalType": "bytes32",
-        "name": "whitelistRoot",
+        "name": "newRoot",
         "type": "bytes32"
       }
     ],
@@ -136,22 +193,29 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "totalAmount",
         "type": "uint256"
       },
       {
-        "internalType": "enum Payment.DeviceType",
-        "name": "deviceType",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "quantity",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "enum MatrixPayment.DeviceType",
+            "name": "deviceType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "quantity",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct MatrixPayment.DeviceOrder[]",
+        "name": "orders",
+        "type": "tuple[]"
       },
       {
         "internalType": "bytes32[]",
-        "name": "merkleProof",
+        "name": "proof",
         "type": "bytes32[]"
       }
     ],
@@ -164,21 +228,61 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "totalAmount",
         "type": "uint256"
       },
       {
-        "internalType": "enum Payment.DeviceType",
-        "name": "deviceType",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "quantity",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "enum MatrixPayment.DeviceType",
+            "name": "deviceType",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "quantity",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct MatrixPayment.DeviceOrder[]",
+        "name": "orders",
+        "type": "tuple[]"
       }
     ],
     "name": "payPublicSale",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "setPrivateSaleActive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isActive",
+        "type": "bool"
+      }
+    ],
+    "name": "setPublicSaleActive",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -197,20 +301,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "togglePrivateSale",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "togglePublicSale",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -218,7 +308,20 @@
         "type": "bytes32"
       }
     ],
-    "name": "updateWhitelistRoot",
+    "name": "setWhitelistRoot",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

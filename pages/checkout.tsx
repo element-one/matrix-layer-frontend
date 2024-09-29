@@ -34,7 +34,6 @@ const CheckoutPage = () => {
 
   const [isCopied, setIsCopied] = useState(false)
   const [products, setProducts] = useState<IProduct[]>([])
-  const [selectedProductType, setSelectedProductType] = useState('')
 
   const { isAuthenticated } = useAuth()
 
@@ -45,11 +44,20 @@ const CheckoutPage = () => {
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
 
-  useEffect(() => {
-    if (query?.type) {
-      setSelectedProductType(query.type as string)
+  const { selectedProducts, amount, amountInUSDT } = useMemo(() => {
+    const selectedProducts = products.filter((p) => p.quantity)
+    return {
+      selectedProducts,
+      amountInUSDT: selectedProducts.reduce(
+        (sum, product) => sum + Number(product.priceInUsdt) * product.quantity,
+        0
+      ),
+      amount: selectedProducts.reduce(
+        (sum, product) => sum + Number(product.price) * product.quantity,
+        0
+      )
     }
-  }, [query])
+  }, [products])
 
   const { data: accountBalance, refetch: refetchAccount } = useReadContract({
     abi: USDT_ABI,
@@ -95,11 +103,6 @@ const CheckoutPage = () => {
     }
   }, [txData, showModal, successModalHasShown])
 
-  const selectedProduct: IProduct | undefined = useMemo(
-    () => products.find((p) => p.type === selectedProductType) ?? undefined,
-    [products, selectedProductType]
-  )
-
   useEffect(() => {
     if (allProducts.length) {
       setProducts(() =>
@@ -109,12 +112,12 @@ const CheckoutPage = () => {
             price: item.price,
             priceInUsdt: item.price / 1000000,
             type: item.type,
-            quantity: 0
+            quantity: query.type === item.type ? 1 : 0
           }))
           .filter((v) => v.name)
       )
     }
-  }, [allProducts])
+  }, [allProducts, query])
 
   useEffect(() => {
     if (isCopied) {
@@ -138,15 +141,13 @@ const CheckoutPage = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
 
-  const handlePayButtonClick = async () => {
+  const handlePayButtonClick = () => {
     if (!isConnected || !address) {
       toast.info('Please connect your wallet first')
       return
     }
 
-    if (!selectedProduct) return
-
-    const amount = Number(selectedProduct.price) * selectedProduct.quantity
+    if (!selectedProducts.length) return
 
     if (accountBalance && Number(accountBalance) >= amount) {
       approveContract(
@@ -173,19 +174,19 @@ const CheckoutPage = () => {
   }
 
   const handlePay = useCallback(() => {
-    if (!selectedProduct) return
+    if (!selectedProducts.length || !amount) return
 
-    const amount = selectedProduct.price * selectedProduct.quantity
-
-    const type = convertTypeToInt(selectedProduct.type)
-    if (type === -1) return
+    const orders = selectedProducts.map((product) => ({
+      deviceType: convertTypeToInt(product.type),
+      quantity: product.quantity
+    }))
 
     console.log('going to pay: ', amount)
     payContract(
       {
         abi: PAYMENT_ABI,
         functionName: 'payPublicSale',
-        args: [String(amount), type, selectedProduct.quantity],
+        args: [String(amount), orders],
         address: PAYMENT_ADDRESS as Address
       },
       {
@@ -198,7 +199,7 @@ const CheckoutPage = () => {
         }
       }
     )
-  }, [selectedProduct, payContract])
+  }, [selectedProducts, amount, payContract])
 
   useEffect(() => {
     if (approveData) {
@@ -307,6 +308,7 @@ const CheckoutPage = () => {
                   <SelectItemSkeleton />
                   <SelectItemSkeleton />
                   <SelectItemSkeleton />
+                  <SelectItemSkeleton />
                 </>
               ) : (
                 products.map((item) => (
@@ -314,8 +316,6 @@ const CheckoutPage = () => {
                     key={item.type}
                     products={products}
                     product={item}
-                    selectedProductType={selectedProductType}
-                    onChangeProduct={setSelectedProductType}
                     onChangeProductQuantity={setProducts}
                   />
                 ))
@@ -334,22 +334,23 @@ const CheckoutPage = () => {
               Subtotal
             </Text>
             <div>
-              <Text
-                className='text-[16px] md:text-[20px] text-gray-78 mb-[12px] font-normal md:font-medium
-                  md:mb-[24px] leading-none text-right'
-              >
-                {selectedProduct
-                  ? `${selectedProduct.quantity} x ${selectedProduct.priceInUsdt}`
-                  : 0}
-                &nbsp;USDT
-              </Text>
+              <div>
+                {selectedProducts.map((product) => (
+                  <Text
+                    key={product.type}
+                    className='text-[16px] md:text-[20px] text-gray-78 mb-[12px] font-normal md:font-medium
+                      md:mb-[24px] leading-none text-right'
+                  >
+                    {product.name} {product.quantity} x {product.priceInUsdt}
+                    &nbsp;USDT
+                  </Text>
+                ))}
+              </div>
               <Text
                 className='text-[24px] md:text-[32px] font-semibold md:font-semibold text-white
                   leading-none text-right'
               >
-                {selectedProduct
-                  ? selectedProduct.priceInUsdt * selectedProduct.quantity
-                  : 0}
+                {amountInUSDT}
                 &nbsp;USDT
               </Text>
             </div>
@@ -388,7 +389,7 @@ const CheckoutPage = () => {
             </Text>
             <PaymentField
               isPaying={isPaying}
-              selectedProduct={selectedProduct}
+              amount={amountInUSDT}
               onPayButtonClick={handlePayButtonClick}
             />
           </div>

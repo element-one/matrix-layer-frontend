@@ -6,6 +6,10 @@
     .contract-preview
 } */
 
+body {
+  background-color: #000000;
+}
+
 .border-gradient,
 .border-gradient-desktop {
   border: 1px solid transparent;
@@ -48,6 +52,24 @@
     linear-gradient(to right, #e789ff, #9299ff) border-box;
   backdrop-filter: blur(5px);
   border-radius: 32px;
+}
+
+.border-address-item-gradient {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(to right, #4d4d4d, #a2a2a2, #2f2f2f) border-box;
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
+}
+
+.border-address-item-active-gradient {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(to right, #e789ff, #9299ff) border-box;
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
 }
 
 @media only screen and (max-width: 768px) {

@@ -1,11 +1,13 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { Input, Modal, ModalBody, ModalContent } from '@nextui-org/react'
 
 import { Button } from '@components/Button'
 import Selection from '@components/MyAccount/Selection'
 import Digits from '@config/country_dial_info.json'
 import { ModalType, useModal } from '@contexts/modal'
-import { ApiSaveAddressParams } from '@type/api'
+import { useSaveAddress, useUpdateAddress } from '@services/api'
+import { IAddress } from '@type/api'
 
 export interface IFormData {
   firstName: string
@@ -15,13 +17,15 @@ export interface IFormData {
   city: string
   province: string
   country: string
-  zone: string
+  CountryCode: string
   phone: string
 }
 
 export interface ShippingAddressModalProps {
+  savedFormData: IAddress | null
+  isOpen?: boolean
   onClose?: () => void
-  onSubmit: (formData: ApiSaveAddressParams) => void
+  onSubmit: () => void
 }
 
 const inputStyles = {
@@ -32,23 +36,48 @@ const inputStyles = {
   input: 'font-chakraPetch text-[12px] group-data-[has-value=true]:text-white'
 }
 
+const DEFAULT_FORM_DATA = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  address: '',
+  city: '',
+  province: '',
+  country: '',
+  CountryCode: 'US',
+  phoneNumber: ''
+}
+
 export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
+  savedFormData,
+  isOpen,
   onClose,
   onSubmit
 }) => {
   const { isModalShown, hideModal } = useModal()
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    address: '',
-    city: '',
-    province: '',
-    country: '',
-    zone: 'US',
-    phoneNumber: ''
-  })
+  const { mutateAsync: save, isPending: isSavePending } = useSaveAddress()
+  const { mutateAsync: update, isPending: isUpdatePending } = useUpdateAddress()
+
+  const [formData, setFormData] = useState(DEFAULT_FORM_DATA)
+
+  useEffect(() => {
+    if (savedFormData) {
+      const newFormData = {
+        firstName: savedFormData.firstName,
+        lastName: savedFormData.lastName,
+        email: savedFormData.email,
+        address: savedFormData.address,
+        city: savedFormData.city,
+        province: savedFormData.province,
+        country: savedFormData.country,
+        CountryCode: savedFormData.countryCode,
+        phoneNumber: savedFormData.phoneNumber
+      }
+
+      setFormData(newFormData)
+    }
+  }, [savedFormData])
 
   const handleFormDataChange =
     (key: string) => (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,37 +87,57 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
       })
     }
 
-  const handleZoneChange = (zone: string) => {
+  const handleZoneChange = (CountryCode: string) => {
     setFormData({
       ...formData,
-      zone
+      CountryCode
     })
   }
 
   const handleClose = () => {
-    hideModal()
-    onClose?.()
+    setFormData(DEFAULT_FORM_DATA)
+    if (onClose) {
+      onClose()
+    } else {
+      hideModal()
+    }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!Object.values(formData).every((v) => v)) return
 
-    onSubmit({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-      address: formData.address,
-      city: formData.city,
-      province: formData.province,
-      country: formData.country,
-      phoneNumber: `${Digits.find((d) => d.code === formData.zone)?.dial_code || ''} ${formData.phoneNumber}`,
-      isDefault: true
-    })
+    try {
+      const form = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        address: formData.address,
+        city: formData.city,
+        province: formData.province,
+        country: formData.country,
+        phoneNumber: formData.phoneNumber,
+        countryCode: formData.CountryCode,
+        isDefault: false,
+        areaCode:
+          Digits.find((d) => d.code === formData.CountryCode)?.dial_code || ''
+      }
+
+      if (savedFormData) {
+        await update({ id: savedFormData.id, data: form })
+      } else {
+        await save(form)
+      }
+      setFormData(DEFAULT_FORM_DATA)
+      onSubmit()
+    } catch (e) {
+      console.log(e)
+      toast.error('Address save failed, please try again later')
+    }
   }
 
   return (
     <Modal
-      isOpen={isModalShown(ModalType.SHIPPING_ADDRESS_MODAL)}
+      isOpen={isOpen || isModalShown(ModalType.SHIPPING_ADDRESS_MODAL)}
       onClose={handleClose}
       isDismissable={false}
       size='xl'
@@ -172,7 +221,7 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
               <div className='flex flex-row gap-4 w-full'>
                 <Selection
                   selectionItems={Digits}
-                  countryCode={formData.zone}
+                  countryCode={formData.CountryCode}
                   onChange={handleZoneChange}
                 />
                 <Input
@@ -185,11 +234,12 @@ export const ShippingAddressModal: FC<ShippingAddressModalProps> = ({
               </div>
             </div>
             <Button
+              isLoading={isSavePending || isUpdatePending}
               disabled={!Object.values(formData).every((v) => v)}
               className='w-full text-[16px] p-[10px] rounded-[35px]'
               onClick={handleSubmit}
             >
-              Confirm
+              {savedFormData ? 'Update Address' : 'Create New Address'}
             </Button>
           </div>
         </ModalBody>

@@ -102,3 +102,54 @@ export const useActiveDelivery = (
     ...options
   })
 }
+
+export const updateAddressService = async (
+  id: string,
+  params: ApiSaveAddressParams
+) => {
+  try {
+    const { data } = await axios.put(`/shipping-address/${id}`, params)
+    return data
+  } catch (err) {
+    console.log('logout error:', err)
+    throw err
+  }
+}
+
+export const useUpdateAddress = (
+  options?: UseMutationOptions<
+    ApiSaveAddressResponse,
+    Error,
+    { id: string; data: ApiSaveAddressParams }
+  >
+) => {
+  return useMutation<
+    ApiSaveAddressResponse,
+    Error,
+    { id: string; data: ApiSaveAddressParams }
+  >({
+    mutationKey: ['update', 'address'],
+    mutationFn: ({ id, data }) => updateAddressService(id, data),
+    ...options
+  })
+}
+
+export const deleteAddressService = async (id: string) => {
+  try {
+    const { data } = await axios.delete(`/shipping-address/${id}`)
+    return data
+  } catch (err) {
+    console.log('logout error:', err)
+    throw err
+  }
+}
+
+export const useDeleteAddress = (
+  options?: UseMutationOptions<ApiSaveAddressResponse, Error, { id: string }>
+) => {
+  return useMutation<ApiSaveAddressResponse, Error, { id: string }>({
+    mutationKey: ['delete', 'address'],
+    mutationFn: ({ id }) => deleteAddressService(id),
+    ...options
+  })
+}

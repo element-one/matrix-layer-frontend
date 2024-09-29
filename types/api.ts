@@ -111,6 +111,8 @@ export type ApiSaveAddressParams = {
   province: string
   country: string
   phoneNumber: string
+  countryCode: string
+  areaCode: string
   isDefault: boolean
 }
 
@@ -129,6 +131,8 @@ export type IAddress = {
   province: string
   country: string
   phoneNumber: string
+  countryCode: string
+  areaCode: string
   isDefault: boolean
   createdAt: string
   deletedAt: string

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 
-import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
@@ -130,14 +129,15 @@ const HomePage = () => {
                   alt='home_image_1'
                 />
               </div>
-              <Button
-                className='relative z-20 bottom-0 sm:bottom-[50px] text-[14px] sm:text-[32px] text-center
-                  p-2.5 sm:p-5 rounded-[15px] sm:rounded-[20px] translate-y-0
-                  sm:translate-y-[-6px] whitespace-normal'
+              <div
+                className='bg-gradient-button-1 text-black h-fit font-chakraPetch relative z-20 bottom-0
+                  sm:bottom-[50px] text-[14px] sm:text-[32px] text-center p-2.5 sm:p-5
+                  rounded-[15px] sm:rounded-[20px] translate-y-0 sm:translate-y-[-6px]
+                  whitespace-normal font-semibold'
               >
                 Unlock with Your Eyes,
                 <br className='sm:hidden' /> Connect with the Blockchain
-              </Button>
+              </div>
             </div>
           </Content>
         </div>
@@ -232,9 +232,12 @@ const HomePage = () => {
                 The world&apos;s first mobile blockchain network node with iris
                 authentication.
               </Text>
-              <Button className='w-full p-2.5 rounded-lg text-[12px] sm:text-[24px]'>
+              <div
+                className='bg-gradient-button-1 text-black h-fit font-chakraPetch w-full p-2.5 rounded-lg
+                  text-[12px] sm:text-[24px] font-semibold text-center'
+              >
                 Safety and profitability coexist
-              </Button>
+              </div>
             </div>
             <img
               src='/images/home/home_image_2.webp'
@@ -255,9 +258,12 @@ const HomePage = () => {
               >
                 Ultimate privacy and industry-standard confidentiality.
               </Text>
-              <Button className='w-full p-2.5 rounded-lg text-[12px] sm:text-[24px]'>
+              <div
+                className='bg-gradient-button-1 text-black h-fit font-chakraPetch w-full p-2.5 rounded-lg
+                  text-[12px] sm:text-[24px] text-center font-semibold'
+              >
                 Iris login, identification information ZK encryption
-              </Button>
+              </div>
             </div>
           </div>
           <div>
