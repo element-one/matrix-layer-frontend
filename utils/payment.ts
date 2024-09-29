@@ -1,8 +1,9 @@
 export enum ProductEnum {
+  PHONE = 'phone',
+  MATRIX = 'matrix',
   AGENT_ULTRA = 'agent_ultra',
   AGENT_PRO = 'agent_pro',
-  AGENT_ONE = 'agent_one',
-  PHONE = 'phone'
+  AGENT_ONE = 'agent_one'
 }
 
 export const convertTypeToName = (type: string) => {
@@ -15,6 +16,8 @@ export const convertTypeToName = (type: string) => {
       return 'Ai Agent Ultra'
     case ProductEnum.PHONE:
       return 'Matrix Layer Protocol'
+    case ProductEnum.MATRIX:
+      return 'Matrix'
     default:
       return ''
   }

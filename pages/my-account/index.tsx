@@ -22,10 +22,9 @@ import { ModalType, useModal } from '@contexts/modal'
 import {
   useActiveDelivery,
   useGetPayments,
-  useGetUserHolding,
-  useSaveAddress
+  useGetUserHolding
 } from '@services/api'
-import { ApiHoldingsResponse, ApiSaveAddressParams } from '@type/api'
+import { ApiHoldingsResponse } from '@type/api'
 import { convertTypeToName } from '@utils/payment'
 import { tn } from '@utils/tn'
 
@@ -116,12 +115,12 @@ const MyAccount = () => {
   const { data, refetch: refetchOrders } = useGetPayments(page, 6, {
     enabled: isAuthenticated
   })
+
   const { data: holdings } = useGetUserHolding({
     enabled: isAuthenticated
   })
 
   const { showModal, hideModal } = useModal()
-  const { mutateAsync: save } = useSaveAddress()
   const { mutateAsync: activeDelivery } = useActiveDelivery()
 
   const orders = useMemo(() => data?.data || [], [data])
@@ -142,10 +141,24 @@ const MyAccount = () => {
 
   const handleOpenShippingModal = () => {
     showModal(ModalType.SHIPPING_ADDRESS_MODAL, {
-      onSubmit: async (formData: ApiSaveAddressParams) => {
+      onConfirm: async (id) => {
         try {
-          const res = await save(formData)
-          await activeDelivery({ id: res.id })
+          await activeDelivery({ id })
+          await refetchOrders()
+          hideModal()
+        } catch (e) {
+          console.log(e)
+          toast.error('Please try again')
+        }
+      }
+    })
+  }
+
+  const handleShowAddressManageModal = () => {
+    showModal(ModalType.MANAGE_ADDRESS_MODAL, {
+      onConfirm: async (id) => {
+        try {
+          await activeDelivery({ id })
           await refetchOrders()
           hideModal()
         } catch (e) {
@@ -313,7 +326,10 @@ const MyAccount = () => {
             >
               My Order
             </Text>
-            <Button className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'>
+            <Button
+              className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
+              onClick={handleShowAddressManageModal}
+            >
               My delivery status
             </Button>
           </div>

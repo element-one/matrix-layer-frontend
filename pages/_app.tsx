@@ -83,6 +83,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <AuthProvider>
                   <ModalProvider>
                     <Head>
+                      <title>Matrix Layer Protocol</title>
                       <meta
                         name='viewport'
                         content='width=device-width, initial-scale=1'

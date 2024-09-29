@@ -16,19 +16,25 @@ import {
   ShippingAddressModal,
   ShippingAddressModalProps
 } from '@components/Modal'
+import {
+  ManageAddressModal,
+  ManageAddressModalProps
+} from '@components/Modal/ManageAddressModal'
 
 export enum ModalType {
   CONNECT_WALLET_MODAL = 'CONNECT_WALLET_MODAL',
   PAY_SUCCESS_MODAL = 'PAY_SUCCESS_MODAL',
   REFERRAL_CODE_MODAL = 'REFERRAL_CODE_MODAL',
-  SHIPPING_ADDRESS_MODAL = 'SHIPPING_ADDRESS_MODAL'
+  SHIPPING_ADDRESS_MODAL = 'SHIPPING_ADDRESS_MODAL',
+  MANAGE_ADDRESS_MODAL = 'MANAGE_ADDRESS_MODAL'
 }
 
 const MODAL_COMPONENTS = {
   [ModalType.CONNECT_WALLET_MODAL]: ConnectWalletModal,
   [ModalType.PAY_SUCCESS_MODAL]: PaySuccessModal,
   [ModalType.REFERRAL_CODE_MODAL]: ReferralCodeModal,
-  [ModalType.SHIPPING_ADDRESS_MODAL]: ShippingAddressModal
+  [ModalType.SHIPPING_ADDRESS_MODAL]: ShippingAddressModal,
+  [ModalType.MANAGE_ADDRESS_MODAL]: ManageAddressModal
 }
 
 type ModalProps =
@@ -36,6 +42,7 @@ type ModalProps =
   | PaySuccessModalProps
   | ReferralCodeModalProps
   | ShippingAddressModalProps
+  | ManageAddressModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }
