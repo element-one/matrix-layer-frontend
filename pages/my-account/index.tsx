@@ -15,6 +15,7 @@ import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
 import Layout from '@components/Layout/Layout'
+import HoldingItem from '@components/MyAccount/HoldingItem'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { useAuth } from '@contexts/auth'
@@ -34,63 +35,69 @@ const gradientBorderClass =
   'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
 
 const holding_temp = [
-  {
-    title: 'WORLD PHONE',
-    count: 0,
-    icon: '/images/product/phone21.png',
-    key: 'phone'
-  },
-  {
-    title: 'WPN TOKEN',
-    count: 0,
-    icon: '/images/account/wpn-token.png',
-    key: 'wpnTokenAmount'
-  },
-  {
-    title: 'REWARDS',
-    count: 0,
-    icon: '/images/account/rewards-icon.png',
-    key: 'availableRewards'
-  },
-  {
-    title: 'MATRIX',
-    count: 0,
-    icon: '/images/checkout/matrix.png',
-    key: 'matrix'
-  },
-  {
-    title: 'AI AGENT ONE',
-    count: 0,
-    icon: '/images/product/ai_agent_one.png',
-    key: 'agent_one'
-  },
-  {
-    title: 'AI AGENT PRO',
-    count: 0,
-    icon: '/images/product/ai_agent_pro.png',
-    key: 'agent_pro'
-  },
-  {
-    title: 'AI AGENT ULTRA',
-    count: 4,
-    icon: '/images/product/ai_agent_ultra.png',
-    key: 'agent_ultra'
-  }
+  [
+    {
+      title: 'WORLD PHONE',
+      count: 0,
+      icon: '/images/product/phone21.png',
+      key: 'phone'
+    },
+    {
+      title: 'WPN TOKEN',
+      count: 0,
+      icon: '/images/account/wpn-token.png',
+      key: 'wpnTokenAmount'
+    },
+    {
+      title: 'REWARDS',
+      count: 0,
+      icon: '/images/account/rewards-icon.png',
+      key: 'availableRewards'
+    }
+  ],
+  [
+    {
+      title: 'MATRIX',
+      count: 0,
+      icon: '/images/checkout/matrix.png',
+      key: 'matrix'
+    },
+    {
+      title: 'AI AGENT ONE',
+      count: 0,
+      icon: '/images/product/ai_agent_one.png',
+      key: 'agent_one'
+    },
+    {
+      title: 'AI AGENT PRO',
+      count: 0,
+      icon: '/images/product/ai_agent_pro.png',
+      key: 'agent_pro'
+    },
+    {
+      title: 'AI AGENT ULTRA',
+      count: 4,
+      icon: '/images/product/ai_agent_ultra.png',
+      key: 'agent_ultra'
+    }
+  ]
 ]
 
 const processHoldings = (holdings: ApiHoldingsResponse = {}) => {
-  return holding_temp.map((item) => {
-    const matchedValue =
-      Object.entries(holdings).find(([key]) => key === item.key)?.[1] || 0
+  return holding_temp.map((group) =>
+    group.map((item) => {
+      const matchedValue =
+        Object.entries(holdings).find(([key]) => key === item.key)?.[1] || 0
 
-    return {
-      ...item,
-      count:
-        item.key === 'wpnTokenAmount' || item.key === 'availableRewards'
-          ? Number(matchedValue) / 1000000
-          : matchedValue
-    }
-  })
+      return {
+        ...item,
+        count:
+          item.key === 'wpnTokenAmount' || item.key === 'availableRewards'
+            ? Number(matchedValue) / 1000000
+            : matchedValue
+      }
+    })
+  )
 }
 
 const statusClass = (status: string) => {
@@ -267,37 +274,25 @@ const MyAccount = () => {
           >
             I own
           </Text>
-          <div className='mt-6 grid grid-cols-2 md:grid-cols-3 gap-6'>
-            {processHoldings(holdings).map((item) => (
-              <div
-                key={item.title}
-                className={`px-8 py-6 border-2 rounded-[20px] flex flex-row justify-between items-center
-                  ${gradientBorderClass}`}
-              >
-                <div className='flex flex-col md:flex-row items-center md:justify-between w-full gap-x-4 gap-y-2'>
-                  <img
-                    src={item.icon}
-                    alt={item.title}
-                    className='h-[77px] md:h-[86px]'
-                  />
-                  <div className='flex flex-col-reverse md:flex-col items-center md:items-end'>
-                    <Text className='text-[14px] md:text-[20px] text-gray-a5 font-semibold whitespace-nowrap'>
-                      {item.title}
-                    </Text>
-                    <Text
-                      className={clsx(
-                        'font-semibold mt-1 grow !leading-[32px] md:!leading-[72px]',
-                        String(item.count).length > 5
-                          ? 'text-[16px] md:text-[20px]'
-                          : 'text-[24px] md:text-[48px]'
-                      )}
-                    >
-                      {item.count}
-                    </Text>
-                  </div>
-                </div>
-              </div>
-            ))}
+          {processHoldings(holdings).map((group, index) => (
+            <div
+              key={index}
+              className={clsx(
+                'hidden md:grid mt-6 gap-6',
+                index > 0 ? 'grid-cols-4' : 'grid-cols-3'
+              )}
+            >
+              {group.map((item) => (
+                <HoldingItem key={item.key} item={item} />
+              ))}
+            </div>
+          ))}
+          <div className={'grid md:hidden mt-6 grid-cols-2 gap-6'}>
+            {processHoldings(holdings)
+              .flat()
+              .map((item) => (
+                <HoldingItem key={item.key} item={item} />
+              ))}
           </div>
         </Content>
       </Container>
