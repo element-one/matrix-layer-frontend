@@ -52,6 +52,8 @@ const MyAccount = () => {
 
   const [page, setPage] = useState(1)
 
+  const [selectedOrderId, setSelectedOrderId] = useState('')
+
   const { data, refetch: refetchOrders } = useGetPayments(page, 6, {
     enabled: isAuthenticated
   })
@@ -112,6 +114,7 @@ const MyAccount = () => {
 
   const handleConfirmDeliveryModal = (paymentId: string) => async () => {
     try {
+      setSelectedOrderId(paymentId)
       await confirmDelivery({ paymentId })
       await refetchOrders()
     } catch (e) {
@@ -362,7 +365,9 @@ const MyAccount = () => {
 
                     {statusType(order) === 'shipped' && (
                       <Button
-                        isLoading={isConfirmLoading}
+                        isLoading={
+                          isConfirmLoading && selectedOrderId === order.id
+                        }
                         onClick={handleConfirmDeliveryModal(order.id)}
                         className='text-[14px] p-2'
                       >
