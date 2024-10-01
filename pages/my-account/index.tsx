@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import {
   Pagination,
@@ -26,6 +26,7 @@ import {
   useGetPayments,
   useGetUserHolding
 } from '@services/api'
+import { useStore } from '@store/store'
 import {
   formatAddress,
   processHoldings,
@@ -58,6 +59,10 @@ const MyAccount = () => {
   const { data: holdings, refetch: refetchHoldings } = useGetUserHolding({
     enabled: isAuthenticated
   })
+  const { setHoldings, setActiveLoading } = useStore((state) => ({
+    setHoldings: state.setHoldings,
+    setActiveLoading: state.setConfirmLoading
+  }))
 
   const { showModal, hideModal } = useModal()
   const { mutateAsync: activeDelivery, isPending: isActiveLoading } =
@@ -70,6 +75,14 @@ const MyAccount = () => {
     () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
     [data]
   )
+
+  useEffect(() => {
+    setHoldings(holdings || {})
+  }, [holdings, setHoldings])
+
+  useEffect(() => {
+    setActiveLoading(isActiveLoading)
+  }, [isActiveLoading, setActiveLoading])
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -84,7 +97,6 @@ const MyAccount = () => {
   const handleOpenShippingModal = (paymentId: string) => () => {
     showModal(ModalType.MANAGE_ADDRESS_MODAL, {
       type: 'shipping',
-      confirmLoading: isActiveLoading,
       onConfirm: async (addressId) => {
         try {
           await activeDelivery({ paymentId, addressId })
@@ -118,8 +130,6 @@ const MyAccount = () => {
     if (!isAuthenticated) return
 
     showModal(ModalType.REWARDS_MODAL, {
-      availableRewards: Number(holdings?.availableRewards),
-      totalRewards: Number(holdings?.totalRewards),
       onClaimSuccess: async () => {
         await refetchHoldings()
       }
@@ -343,7 +353,6 @@ const MyAccount = () => {
                   <TableCell className='whitespace-nowrap'>
                     {statusType(order) === 'confirm' && (
                       <Button
-                        isLoading={isActiveLoading}
                         onClick={handleOpenShippingModal(order.id)}
                         className='text-[14px] p-2'
                       >

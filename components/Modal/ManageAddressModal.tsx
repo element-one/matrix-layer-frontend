@@ -12,6 +12,7 @@ import { AddressItemSkeleton } from '@components/Skeleton/AddressItemSkeleton'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 import { useDeleteAddress, useGetAllAddresses } from '@services/api'
+import { useStore } from '@store/store'
 import { IAddress } from '@type/api'
 
 import { ShippingAddressModal } from './ShippingAddressModal'
@@ -30,18 +31,18 @@ export interface IFormData {
 
 export interface ManageAddressModalProps {
   type?: 'management' | 'shipping'
-  confirmLoading?: boolean
   onClose?: () => void
   onConfirm?: (addressId: string) => void
 }
 
 export const ManageAddressModal: FC<ManageAddressModalProps> = ({
   type = 'management',
-  confirmLoading,
   onClose,
   onConfirm
 }) => {
-  console.log(confirmLoading)
+  const { isActiveLoading } = useStore((state) => ({
+    isActiveLoading: state.confirmLoading
+  }))
 
   const { isModalShown, hideModal } = useModal()
   const {
@@ -173,7 +174,7 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
             </div>
             {type === 'shipping' && (
               <Button
-                isLoading={confirmLoading}
+                isLoading={isActiveLoading}
                 disabled={!selectedAddress}
                 className='w-full text-[16px] p-[10px] rounded-[35px]'
                 onClick={handleConfirm}

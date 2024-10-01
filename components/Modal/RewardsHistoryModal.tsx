@@ -15,25 +15,12 @@ import {
 
 import { Text } from '@components/Text'
 import { useGetRewardsHistory } from '@services/api'
+import { formatClaimWalletAddress } from '@utils/formatWalletAddress'
+import dayjs from 'dayjs'
 
 export interface RewardsHistoryModalProps extends Omit<ModalProps, 'children'> {
   onSubmit?: () => void
 }
-
-const Mock_data = [
-  {
-    time: '2024.9.17',
-    address: '0x12454545****151545',
-    reward: 500,
-    status: 'onprogress'
-  },
-  {
-    time: '2024.9.17',
-    address: '0x12454545****151545',
-    reward: 500,
-    status: 'claimed'
-  }
-]
 
 const statusClass = (status: string) => {
   switch (status) {
@@ -49,6 +36,8 @@ const statusClass = (status: string) => {
 const statusCommonClass =
   'w-[103px] h-[34px] rounded-[24px] flex items-center justify-center font-semibold capitalize text-sm border'
 
+const PAGE_SIZE = 6
+
 export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
   isOpen,
   onOpenChange,
@@ -56,15 +45,13 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
 }) => {
   const [page, setPage] = useState(1)
 
-  const { data } = useGetRewardsHistory(page, 6)
+  const { data } = useGetRewardsHistory(page, PAGE_SIZE)
 
   const history = useMemo(() => data?.data || [], [data])
   const totalPage = useMemo(
     () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
     [data]
   )
-
-  console.log(history)
 
   return (
     <Modal
@@ -103,11 +90,17 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
               <TableColumn>Status</TableColumn>
             </TableHeader>
             <TableBody>
-              {Mock_data.map((item, index) => (
+              {history.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell className='text-gray-150'>{item.time}</TableCell>
-                  <TableCell>{item.address}</TableCell>
-                  <TableCell className='font-bold'>{item.reward}</TableCell>
+                  <TableCell className='text-gray-150'>
+                    {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm:ss')}
+                  </TableCell>
+                  <TableCell>
+                    {formatClaimWalletAddress(item.address)}
+                  </TableCell>
+                  <TableCell className='font-bold'>
+                    {Number(item.claimedAmount) / 1000000}
+                  </TableCell>
                   <TableCell className='flex flex-row justify-center'>
                     <span
                       className={`${statusCommonClass} ${statusClass(item.status)}`}

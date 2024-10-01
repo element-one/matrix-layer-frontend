@@ -55,7 +55,10 @@ const HoldingItem: FC<HoldingItemProps> = ({ item, group, OnClickItem }) => {
             {item.count}
           </Text>
           {item.key === 'availableRewards' && (
-            <Button onClick={OnClickItem} className='text-[12px] py-1 px-4'>
+            <Button
+              onClick={OnClickItem}
+              className='text-[12px] py-1 md:py-2 px-4'
+            >
               REWARD DETAILS
             </Button>
           )}

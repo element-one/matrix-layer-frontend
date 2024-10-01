@@ -1,4 +1,5 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
+import { useInterval } from 'react-use'
 import { Modal, ModalBody, ModalContent, ModalProps } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
@@ -11,6 +12,21 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
   onOpenChange,
   onClose
 }) => {
+  const [count, setCount] = useState(5)
+
+  useInterval(
+    () => {
+      setCount(count - 1)
+    },
+    count > 0 ? 1000 : null
+  )
+
+  useEffect(() => {
+    if (count === 0) {
+      onClose && onClose()
+    }
+  }, [count, onClose])
+
   return (
     <Modal
       isOpen={isOpen}
@@ -20,6 +36,7 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
       size='xl'
       placement='center'
       scrollBehavior={'outside'}
+      hideCloseButton
       classNames={{
         base: 'md:mt-[500px]',
         closeButton:
@@ -38,6 +55,9 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
           </Text>
           <Text className='text-white text-[48px] font-bold font-chakraPetch'>
             Success
+          </Text>
+          <Text className='text-white text-[24px] font-chakraPetch'>
+            {count} S
           </Text>
         </ModalBody>
       </ModalContent>

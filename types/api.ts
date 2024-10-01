@@ -177,3 +177,20 @@ export type ApiConfirmDeliveryResponse = {
   type: string
   updatedAt: string
 }
+
+export type IClaimHistoryItem = {
+  claimedAmount: string
+  createdAt: string
+  deletedAt: string
+  id: string
+  status: string
+  updatedAt: string
+  address: string
+}
+
+export type ApiClaimHistoryResponse = {
+  total: number
+  pageSize: number
+  page: number
+  data: IClaimHistoryItem[]
+}

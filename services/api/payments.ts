@@ -1,7 +1,11 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import http from '@services/axios/client'
-import { ApiGetSignatureResponse, ApiPaymentResponse } from '@type/api'
+import {
+  ApiClaimHistoryResponse,
+  ApiGetSignatureResponse,
+  ApiPaymentResponse
+} from '@type/api'
 
 export const getPayments = async (
   page = 1,
@@ -46,7 +50,7 @@ export const useGetSignature = (
 export const getRewardsHistory = async (
   page = 1,
   pageSize = 20
-): Promise<ApiPaymentResponse> => {
+): Promise<ApiClaimHistoryResponse> => {
   const { data } = await http.get(
     `/user-reward-claims?page=${page}&pageSize=${pageSize}`
   )
@@ -57,9 +61,9 @@ export const getRewardsHistory = async (
 export const useGetRewardsHistory = (
   page: number,
   pageSize = 6,
-  options?: Partial<UseQueryOptions<ApiPaymentResponse, Error>>
+  options?: Partial<UseQueryOptions<ApiClaimHistoryResponse, Error>>
 ) => {
-  return useQuery<ApiPaymentResponse, Error>({
+  return useQuery<ApiClaimHistoryResponse, Error>({
     queryKey: ['history', 'rewards', page, pageSize],
     queryFn: () => getRewardsHistory(page, pageSize),
     ...options

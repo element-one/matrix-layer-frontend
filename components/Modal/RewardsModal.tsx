@@ -14,13 +14,12 @@ import PAYMENT_ABI from '@abis/Payment.json'
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
+import { useStore } from '@store/store'
 
 import { RewardsClaimSuccessModal } from './RewardsClaimSuccessModal'
 import { RewardsHistoryModal } from './RewardsHistoryModal'
 
 export interface RewardsModalProps {
-  totalRewards?: number
-  availableRewards?: number
   onClose?: () => void
   onClaimSuccess: () => void
 }
@@ -29,12 +28,21 @@ const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
 
 export const RewardsModal: FC<RewardsModalProps> = ({
   onClose,
-  onClaimSuccess,
-  totalRewards = 0,
-  availableRewards = 0
+  onClaimSuccess
 }) => {
-  console.log(totalRewards)
-  console.log(availableRewards)
+  const { holdings } = useStore((state) => ({
+    holdings: state.holdings
+  }))
+
+  const { totalRewards, availableRewards } = useMemo(
+    () => ({
+      totalRewards: holdings.totalRewards ? Number(holdings.totalRewards) : 0,
+      availableRewards: holdings.availableRewards
+        ? Number(holdings.availableRewards)
+        : 0
+    }),
+    [holdings]
+  )
 
   const { isModalShown, hideModal } = useModal()
   const [successClaimHasShown, setSuccessClaimHasShown] = useState(false)
@@ -76,7 +84,6 @@ export const RewardsModal: FC<RewardsModalProps> = ({
   useEffect(() => {
     if (txData && !successClaimHasShown) {
       onClaimOpen()
-      onClaimSuccess()
       setSuccessClaimHasShown(true)
     }
   }, [txData, onClaimOpen, successClaimHasShown, onClaimSuccess])
@@ -110,6 +117,11 @@ export const RewardsModal: FC<RewardsModalProps> = ({
         }
       }
     )
+  }
+
+  const handleCloseSuccessModal = async () => {
+    await onClaimSuccess()
+    onClaimClose()
   }
 
   return (
@@ -157,7 +169,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                       'text-[20px] md:text-[48px]'
                     )}
                   >
-                    {totalRewards}
+                    {totalRewards / 1000000}
                   </Text>
                 </div>
                 <Button
@@ -183,7 +195,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                     'text-[20px] md:text-[48px]'
                   )}
                 >
-                  {availableRewards}
+                  {availableRewards / 1000000}
                 </Text>
                 <Button
                   isDisabled={!availableRewards}
@@ -205,11 +217,13 @@ export const RewardsModal: FC<RewardsModalProps> = ({
           onClose={onHistoryClose}
         />
       )}
-      <RewardsClaimSuccessModal
-        isOpen={isOpenClaim}
-        onOpenChange={onOpenClaimChange}
-        onClose={onClaimClose}
-      />
+      {isOpenClaim && (
+        <RewardsClaimSuccessModal
+          isOpen={isOpenClaim}
+          onOpenChange={onOpenClaimChange}
+          onClose={handleCloseSuccessModal}
+        />
+      )}
     </Modal>
   )
 }
