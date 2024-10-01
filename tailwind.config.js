@@ -13,6 +13,7 @@ module.exports = {
       colors: {
         'black-15': '#151515',
         'black-17': '#171717',
+        'black-20': '#1a1a1a',
         'black-25': '#2B2B2B',
         'black-28': '#282828',
         'black-140': '#92008C',
@@ -42,7 +43,8 @@ module.exports = {
         'gradient-home-bg-1': 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 27.52%, #000 100%)',
         'gradient-button-1': 'linear-gradient(180deg, #E789FF 0%, #9299FF 100%)',
         'gradient-home-section-1': 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 27.52%, #000 100%)',
-        'radial-gradient-1': 'radial-gradient(50% 50% at 50% 50%, #A2A2A2 0%, rgba(162, 162, 162, 0.50) 100%)'
+        'radial-gradient-1': 'radial-gradient(50% 50% at 50% 50%, #A2A2A2 0%, rgba(162, 162, 162, 0.50) 100%)',
+        'gradient-rewards-history': 'linear-gradient(to bottom, #e6e6e6, #a4a4a4)',
       },
       fontWeight: {
         light: '200',

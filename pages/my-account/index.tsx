@@ -183,6 +183,10 @@ const MyAccount = () => {
     })
   }
 
+  const handleRewardsModal = () => {
+    showModal(ModalType.REWARDS_MODAL)
+  }
+
   return (
     <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
       <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>
@@ -328,12 +332,20 @@ const MyAccount = () => {
             >
               My Order
             </Text>
-            <Button
-              className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
-              onClick={handleShowAddressManageModal}
-            >
-              Address Management
-            </Button>
+            <div className='flex flex-row gap-x-2'>
+              <Button
+                className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
+                onClick={handleRewardsModal}
+              >
+                Rewards
+              </Button>
+              <Button
+                className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
+                onClick={handleShowAddressManageModal}
+              >
+                Address Management
+              </Button>
+            </div>
           </div>
           <Table
             aria-label='Example table with dynamic content'
