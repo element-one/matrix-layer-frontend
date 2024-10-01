@@ -1,7 +1,7 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import http from '@services/axios/client'
-import { ApiPaymentResponse } from '@type/api'
+import { ApiGetSignatureResponse, ApiPaymentResponse } from '@type/api'
 
 export const getPayments = async (
   page = 1,
@@ -20,6 +20,25 @@ export const useGetPayments = (
   return useQuery<ApiPaymentResponse, Error>({
     queryKey: ['all', 'payments', page, pageSize],
     queryFn: () => getPayments(page, pageSize),
+    ...options
+  })
+}
+
+export const getSignature = async (
+  totalAmount: number
+): Promise<ApiGetSignatureResponse> => {
+  const { data } = await http.get(`/contracts/signature/${totalAmount}`)
+
+  return data
+}
+
+export const useGetSignature = (
+  totalAmount: number,
+  options?: Partial<UseQueryOptions<ApiGetSignatureResponse, Error>>
+) => {
+  return useQuery<ApiGetSignatureResponse, Error>({
+    queryKey: ['all', totalAmount],
+    queryFn: () => getSignature(totalAmount),
     ...options
   })
 }
