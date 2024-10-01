@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo, useState } from 'react'
 import {
   Modal,
   ModalBody,
@@ -14,6 +14,7 @@ import {
 } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
+import { useGetRewardsHistory } from '@services/api'
 
 export interface RewardsHistoryModalProps extends Omit<ModalProps, 'children'> {
   onSubmit?: () => void
@@ -53,6 +54,18 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
   onOpenChange,
   onClose
 }) => {
+  const [page, setPage] = useState(1)
+
+  const { data } = useGetRewardsHistory(page, 6)
+
+  const history = useMemo(() => data?.data || [], [data])
+  const totalPage = useMemo(
+    () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
+    [data]
+  )
+
+  console.log(history)
+
   return (
     <Modal
       isOpen={isOpen}
@@ -70,17 +83,17 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
     >
       <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
-          <Text className='text-white text-[24px] font-bold'>
-            Reward Details
+          <Text className='text-white text-[24px] md:text-[32px] font-bold'>
+            History
           </Text>
           <Table
             aria-label='Reward History'
             classNames={{
               wrapper:
                 'rounded-[12px] border-2 border-[#666] bg-black-15 backdrop-blur-[6px] p-0',
-              th: 'bg-gradient-rewards-history text-white text-[20px] font-bold text-black-15 text-center py-3 !rounded-none',
+              th: 'bg-gradient-rewards-history text-white text-[20px] font-bold text-black-15 text-center py-3 !rounded-none font-chakraPetch',
               td: 'p-4 text-[18px] font-medium text-center whitespace-nowrap',
-              tr: 'odd:bg-black-20 even:bg-black-15 hover:bg-black-15'
+              tr: 'odd:bg-black-20 even:bg-black-15 hover:bg-black-15 font-chakraPetch'
             }}
           >
             <TableHeader>
@@ -92,7 +105,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
             <TableBody>
               {Mock_data.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell>{item.time}</TableCell>
+                  <TableCell className='text-gray-150'>{item.time}</TableCell>
                   <TableCell>{item.address}</TableCell>
                   <TableCell className='font-bold'>{item.reward}</TableCell>
                   <TableCell className='flex flex-row justify-center'>
@@ -110,8 +123,8 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
             <Pagination
               variant='light'
               showControls
-              page={1}
-              total={4}
+              page={page}
+              total={totalPage}
               disableAnimation
               classNames={{
                 cursor: 'bg-transparent',
@@ -119,7 +132,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
                 next: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
                 prev: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
               }}
-              // onChange={setPage}
+              onChange={setPage}
             />
           </div>
         </ModalBody>

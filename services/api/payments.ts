@@ -42,3 +42,26 @@ export const useGetSignature = (
     ...options
   })
 }
+
+export const getRewardsHistory = async (
+  page = 1,
+  pageSize = 20
+): Promise<ApiPaymentResponse> => {
+  const { data } = await http.get(
+    `/user-reward-claims?page=${page}&pageSize=${pageSize}`
+  )
+
+  return data
+}
+
+export const useGetRewardsHistory = (
+  page: number,
+  pageSize = 6,
+  options?: Partial<UseQueryOptions<ApiPaymentResponse, Error>>
+) => {
+  return useQuery<ApiPaymentResponse, Error>({
+    queryKey: ['history', 'rewards', page, pageSize],
+    queryFn: () => getRewardsHistory(page, pageSize),
+    ...options
+  })
+}

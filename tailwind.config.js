@@ -23,6 +23,7 @@ module.exports = {
         'gray-78': '#787878',
         'gray-90': '#919090',
         'gray-130': '#ACACAC',
+        'gray-150': '#A7A7A7',
         'gray-180': '#BCBCBC',
         'red-255': '#FF6363',
         'purple-500': "#E789FF",
@@ -44,7 +45,7 @@ module.exports = {
         'gradient-button-1': 'linear-gradient(180deg, #E789FF 0%, #9299FF 100%)',
         'gradient-home-section-1': 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 27.52%, #000 100%)',
         'radial-gradient-1': 'radial-gradient(50% 50% at 50% 50%, #A2A2A2 0%, rgba(162, 162, 162, 0.50) 100%)',
-        'gradient-rewards-history': 'linear-gradient(to bottom, #e6e6e6, #a4a4a4)',
+        'gradient-rewards-history': 'linear-gradient(180deg, #FFF, #939393)',
       },
       fontWeight: {
         light: '200',

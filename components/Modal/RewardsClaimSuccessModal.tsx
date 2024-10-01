@@ -27,8 +27,18 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
       }}
     >
       <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
-        <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
-          <Text className='text-white text-[32px] font-bold'>Success</Text>
+        <ModalBody className='flex flex-col items-center gap-0 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
+          <img
+            className='w-[219px] object-cover'
+            src='/images/account/claim-success.png'
+            alt='claim-success'
+          />
+          <Text className='text-white text-[24px] font-chakraPetch'>
+            Claim Reward
+          </Text>
+          <Text className='text-white text-[48px] font-bold font-chakraPetch'>
+            Success
+          </Text>
         </ModalBody>
       </ModalContent>
     </Modal>

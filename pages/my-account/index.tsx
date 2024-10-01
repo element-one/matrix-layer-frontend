@@ -55,7 +55,7 @@ const MyAccount = () => {
     enabled: isAuthenticated
   })
 
-  const { data: holdings } = useGetUserHolding({
+  const { data: holdings, refetch: refetchHoldings } = useGetUserHolding({
     enabled: isAuthenticated
   })
 
@@ -109,11 +109,21 @@ const MyAccount = () => {
   }
 
   const handleShowAddressManageModal = () => {
+    if (!isAuthenticated) return
+
     showModal(ModalType.MANAGE_ADDRESS_MODAL)
   }
 
-  const handleRewardsModal = () => {
-    showModal(ModalType.REWARDS_MODAL)
+  const handleOpenRewardsModal = () => {
+    if (!isAuthenticated) return
+
+    showModal(ModalType.REWARDS_MODAL, {
+      availableRewards: Number(holdings?.availableRewards),
+      totalRewards: Number(holdings?.totalRewards),
+      onClaimSuccess: async () => {
+        await refetchHoldings()
+      }
+    })
   }
 
   return (
@@ -211,22 +221,22 @@ const MyAccount = () => {
             <div
               key={index}
               className={clsx(
-                'hidden md:grid mt-6 gap-6',
-                index > 0 ? 'grid-cols-4' : 'grid-cols-3'
+                'grid mt-6 gap-6',
+                index > 0
+                  ? 'grid-cols-2 md:grid-cols-4'
+                  : 'grid-cols-1 md:grid-cols-3'
               )}
             >
               {group.map((item) => (
-                <HoldingItem key={item.key} item={item} />
+                <HoldingItem
+                  OnClickItem={handleOpenRewardsModal}
+                  group={index}
+                  key={item.key}
+                  item={item}
+                />
               ))}
             </div>
           ))}
-          <div className={'grid md:hidden mt-6 grid-cols-2 gap-6'}>
-            {processHoldings(holdings)
-              .flat()
-              .map((item) => (
-                <HoldingItem key={item.key} item={item} />
-              ))}
-          </div>
         </Content>
       </Container>
       <Container className='mb-[200px]'>
@@ -262,12 +272,6 @@ const MyAccount = () => {
               My Order
             </Text>
             <div className='flex flex-row gap-x-2'>
-              <Button
-                className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
-                onClick={handleRewardsModal}
-              >
-                Rewards
-              </Button>
               <Button
                 className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
                 onClick={handleShowAddressManageModal}
