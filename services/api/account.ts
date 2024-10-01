@@ -7,6 +7,7 @@ import {
 
 import axios from '@services/axios/client'
 import {
+  ApiConfirmDeliveryResponse,
   ApiGetAddressResponse,
   ApiHoldingsResponse,
   ApiProductsResponse,
@@ -83,26 +84,6 @@ export const useGetAllAddresses = () => {
   })
 }
 
-export const activeDeliveryService = async (id: string) => {
-  try {
-    const { data } = await axios.post(`/payments/delivery/${id}`)
-    return data
-  } catch (err) {
-    console.log('logout error:', err)
-    throw err
-  }
-}
-
-export const useActiveDelivery = (
-  options?: UseMutationOptions<ApiSaveAddressResponse, Error, { id: string }>
-) => {
-  return useMutation<ApiSaveAddressResponse, Error, { id: string }>({
-    mutationKey: ['active', 'delivery'],
-    mutationFn: ({ id }) => activeDeliveryService(id),
-    ...options
-  })
-}
-
 export const updateAddressService = async (
   id: string,
   params: ApiSaveAddressParams
@@ -150,6 +131,64 @@ export const useDeleteAddress = (
   return useMutation<ApiSaveAddressResponse, Error, { id: string }>({
     mutationKey: ['delete', 'address'],
     mutationFn: ({ id }) => deleteAddressService(id),
+    ...options
+  })
+}
+
+export const activeDeliveryService = async (
+  paymentId: string,
+  addressId: string
+) => {
+  try {
+    const { data } = await axios.post(
+      `/payments/delivery/${paymentId}/${addressId}`
+    )
+    return data
+  } catch (err) {
+    console.log('logout error:', err)
+    throw err
+  }
+}
+
+export const useActiveDelivery = (
+  options?: UseMutationOptions<
+    ApiSaveAddressResponse,
+    Error,
+    { paymentId: string; addressId: string }
+  >
+) => {
+  return useMutation<
+    ApiSaveAddressResponse,
+    Error,
+    { paymentId: string; addressId: string }
+  >({
+    mutationKey: ['active', 'delivery'],
+    mutationFn: ({ paymentId, addressId }) =>
+      activeDeliveryService(paymentId, addressId),
+    ...options
+  })
+}
+
+export const confirmDeliveryService = async (paymentId: string) => {
+  try {
+    const { data } = await axios.post(`/payments/confirm-receipt/${paymentId}`)
+    return data
+  } catch (err) {
+    console.log('logout error:', err)
+    throw err
+  }
+}
+
+export const useConfirmDelivery = (
+  options?: UseMutationOptions<
+    ApiConfirmDeliveryResponse,
+    Error,
+    { paymentId: string }
+  >
+) => {
+  return useMutation<ApiConfirmDeliveryResponse, Error, { paymentId: string }>({
+    mutationKey: ['confirm', 'delivery'],
+    mutationFn: ({ paymentId }) => confirmDeliveryService(paymentId),
     ...options
   })
 }

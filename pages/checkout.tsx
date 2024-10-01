@@ -20,11 +20,13 @@ import { SelectItemSkeleton } from '@components/Skeleton/SelectItemSkeleton'
 import { Text } from '@components/Text'
 import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
+import { useGetSignature } from '@services/api'
 import { useGetProducts } from '@services/api/account'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
+const IS_PRIVATE = process.env.NEXT_PUBLIC_IS_PRIVATE
 
 const CheckoutPage = () => {
   const { isConnected, address } = useAccount()
@@ -35,7 +37,7 @@ const CheckoutPage = () => {
   const [isCopied, setIsCopied] = useState(false)
   const [products, setProducts] = useState<IProduct[]>([])
 
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
 
   const { data: allProducts = [], isLoading: isLoadingProducts } =
     useGetProducts({
@@ -58,6 +60,10 @@ const CheckoutPage = () => {
       )
     }
   }, [products])
+
+  const { refetch: getSignature } = useGetSignature(amount, {
+    enabled: false
+  })
 
   const { data: accountBalance, refetch: refetchAccount } = useReadContract({
     abi: USDT_ABI,
@@ -141,7 +147,7 @@ const CheckoutPage = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
 
-  const handlePayButtonClick = () => {
+  const handlePayButtonClick = async () => {
     if (!isConnected || !address) {
       toast.info('Please connect your wallet first')
       return
@@ -173,20 +179,29 @@ const CheckoutPage = () => {
     }
   }
 
-  const handlePay = useCallback(() => {
+  const handlePay = useCallback(async () => {
     if (!selectedProducts.length || !amount) return
+
+    const { data } = await getSignature()
+    const signature = data?.signature || ''
+    const referral = user?.referredByUser?.address || ''
+
+    if (!signature) return
 
     const orders = selectedProducts.map((product) => ({
       deviceType: convertTypeToInt(product.type),
       quantity: product.quantity
     }))
 
+    const functionName =
+      IS_PRIVATE === 'true' ? 'payPrivateSale' : 'payPublicSale'
+
     console.log('going to pay: ', amount)
     payContract(
       {
         abi: PAYMENT_ABI,
-        functionName: 'payPublicSale',
-        args: [String(amount), orders],
+        functionName,
+        args: [String(amount), orders, referral, signature],
         address: PAYMENT_ADDRESS as Address
       },
       {
@@ -199,7 +214,7 @@ const CheckoutPage = () => {
         }
       }
     )
-  }, [selectedProducts, amount, payContract])
+  }, [selectedProducts, amount, payContract, getSignature, user])
 
   useEffect(() => {
     if (approveData) {

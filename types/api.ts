@@ -32,6 +32,7 @@ export type ApiUser = {
   referredBy: string | null
   totalCommission: string
   updatedAt: string
+  referredByUser?: ApiUser
 }
 
 export type ApiWalletLoginParams = {
@@ -66,6 +67,7 @@ export type ApiPaymentData = {
   transactionHash: string
   type: ProductType
   updatedAt: string
+  shippingAddress: IAddress
 }
 
 export type ApiPayment = {
@@ -142,6 +144,7 @@ export type IAddress = {
 export type ApiGetAddressResponse = IAddress[]
 
 export type ApiHoldingsResponse = Partial<{
+  totalRewards: number
   availableRewards: number
   wpnTokenAmount: number
   phone: number
@@ -155,4 +158,39 @@ export type ApiErrorResponse = {
   error: string
   message: string[]
   statusCode: number
+}
+
+export type ApiGetSignatureResponse = {
+  signature: string
+}
+
+export type ApiConfirmDeliveryResponse = {
+  createdAt: string
+  deletedAt: string
+  id: string
+  name: string
+  price: string
+  quantity: number
+  status: string
+  totalPrice: string
+  transactionHash: string
+  type: string
+  updatedAt: string
+}
+
+export type IClaimHistoryItem = {
+  claimedAmount: string
+  createdAt: string
+  deletedAt: string
+  id: string
+  status: string
+  updatedAt: string
+  address: string
+}
+
+export type ApiClaimHistoryResponse = {
+  total: number
+  pageSize: number
+  page: number
+  data: IClaimHistoryItem[]
 }

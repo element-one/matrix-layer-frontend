@@ -12,6 +12,7 @@ import { AddressItemSkeleton } from '@components/Skeleton/AddressItemSkeleton'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 import { useDeleteAddress, useGetAllAddresses } from '@services/api'
+import { useStore } from '@store/store'
 import { IAddress } from '@type/api'
 
 import { ShippingAddressModal } from './ShippingAddressModal'
@@ -39,6 +40,10 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
   onClose,
   onConfirm
 }) => {
+  const { isActiveLoading } = useStore((state) => ({
+    isActiveLoading: state.confirmLoading
+  }))
+
   const { isModalShown, hideModal } = useModal()
   const {
     data: myAddresses,
@@ -51,7 +56,7 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
   const [editFromData, setEditFormData] = useState<IAddress | null>(null)
   const { mutateAsync: deleteAddress } = useDeleteAddress()
 
-  const loading = useMemo(
+  const addressesLoading = useMemo(
     () => isLoading || isRefetching,
     [isLoading, isRefetching]
   )
@@ -121,11 +126,11 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
               Add Address
             </Button>
             <div className='flex flex-col gap-3 max-h-[800px] overflow-y-auto'>
-              {loading &&
+              {addressesLoading &&
                 Array(2)
                   .fill('')
                   .map((_, index) => <AddressItemSkeleton key={index} />)}
-              {!loading &&
+              {!addressesLoading &&
                 myAddresses?.map((address) => (
                   <div
                     key={address.id}
@@ -169,6 +174,7 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
             </div>
             {type === 'shipping' && (
               <Button
+                isLoading={isActiveLoading}
                 disabled={!selectedAddress}
                 className='w-full text-[16px] p-[10px] rounded-[35px]'
                 onClick={handleConfirm}

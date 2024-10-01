@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import {
   Pagination,
@@ -22,98 +22,25 @@ import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
 import {
   useActiveDelivery,
+  useConfirmDelivery,
   useGetPayments,
   useGetUserHolding
 } from '@services/api'
-import { ApiHoldingsResponse } from '@type/api'
+import { useStore } from '@store/store'
+import {
+  formatAddress,
+  processHoldings,
+  statusClass,
+  statusType
+} from '@utils/myAccount'
 import { convertTypeToName } from '@utils/payment'
 import { tn } from '@utils/tn'
+import dayjs from 'dayjs'
 
 const gradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 const gradientBorderClass =
   'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
-
-const holding_temp = [
-  [
-    {
-      title: 'WORLD PHONE',
-      count: 0,
-      icon: '/images/product/phone21.png',
-      key: 'phone'
-    },
-    {
-      title: 'WPN TOKEN',
-      count: 0,
-      icon: '/images/account/wpn-token.png',
-      key: 'wpnTokenAmount'
-    },
-    {
-      title: 'REWARDS',
-      count: 0,
-      icon: '/images/account/rewards-icon.png',
-      key: 'availableRewards'
-    }
-  ],
-  [
-    {
-      title: 'MATRIX',
-      count: 0,
-      icon: '/images/checkout/matrix.png',
-      key: 'matrix'
-    },
-    {
-      title: 'AI AGENT ONE',
-      count: 0,
-      icon: '/images/product/ai_agent_one.png',
-      key: 'agent_one'
-    },
-    {
-      title: 'AI AGENT PRO',
-      count: 0,
-      icon: '/images/product/ai_agent_pro.png',
-      key: 'agent_pro'
-    },
-    {
-      title: 'AI AGENT ULTRA',
-      count: 4,
-      icon: '/images/product/ai_agent_ultra.png',
-      key: 'agent_ultra'
-    }
-  ]
-]
-
-const processHoldings = (holdings: ApiHoldingsResponse = {}) => {
-  return holding_temp.map((group) =>
-    group.map((item) => {
-      const matchedValue =
-        Object.entries(holdings).find(([key]) => key === item.key)?.[1] || 0
-
-      return {
-        ...item,
-        count:
-          item.key === 'wpnTokenAmount' || item.key === 'availableRewards'
-            ? Number(matchedValue) / 1000000
-            : matchedValue
-      }
-    })
-  )
-}
-
-const statusClass = (status: string) => {
-  switch (status) {
-    case 'completed':
-      return 'border-[#34D399] bg-[rgba(4,120,87,0.20)]'
-    case 'paid':
-      return 'border-[#FACC15] bg-[rgba(161,98,7,0.20)]'
-    case 'shipped':
-      return 'border-[#fff] bg-[#151515]'
-    case 'unpaid':
-      return 'border-[#00AEEF] bg-[rgba(0,174,239,0.20)]'
-    default:
-      return ''
-  }
-}
 
 const statusCommonClass =
   'w-[103px] h-[34px] rounded-[24px] flex items-center justify-center font-semibold capitalize text-sm border'
@@ -125,22 +52,39 @@ const MyAccount = () => {
 
   const [page, setPage] = useState(1)
 
+  const [selectedOrderId, setSelectedOrderId] = useState('')
+
   const { data, refetch: refetchOrders } = useGetPayments(page, 6, {
     enabled: isAuthenticated
   })
 
-  const { data: holdings } = useGetUserHolding({
+  const { data: holdings, refetch: refetchHoldings } = useGetUserHolding({
     enabled: isAuthenticated
   })
+  const { setHoldings, setActiveLoading } = useStore((state) => ({
+    setHoldings: state.setHoldings,
+    setActiveLoading: state.setConfirmLoading
+  }))
 
   const { showModal, hideModal } = useModal()
-  const { mutateAsync: activeDelivery } = useActiveDelivery()
+  const { mutateAsync: activeDelivery, isPending: isActiveLoading } =
+    useActiveDelivery()
+  const { mutateAsync: confirmDelivery, isPending: isConfirmLoading } =
+    useConfirmDelivery()
 
   const orders = useMemo(() => data?.data || [], [data])
   const totalPage = useMemo(
     () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
     [data]
   )
+
+  useEffect(() => {
+    setHoldings(holdings || {})
+  }, [holdings, setHoldings])
+
+  useEffect(() => {
+    setActiveLoading(isActiveLoading)
+  }, [isActiveLoading, setActiveLoading])
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -152,12 +96,12 @@ const MyAccount = () => {
     }
   }
 
-  const handleOpenShippingModal = () => {
+  const handleOpenShippingModal = (paymentId: string) => () => {
     showModal(ModalType.MANAGE_ADDRESS_MODAL, {
       type: 'shipping',
-      onConfirm: async (id) => {
+      onConfirm: async (addressId) => {
         try {
-          await activeDelivery({ id })
+          await activeDelivery({ paymentId, addressId })
           await refetchOrders()
           hideModal()
         } catch (e) {
@@ -168,17 +112,29 @@ const MyAccount = () => {
     })
   }
 
+  const handleConfirmDeliveryModal = (paymentId: string) => async () => {
+    try {
+      setSelectedOrderId(paymentId)
+      await confirmDelivery({ paymentId })
+      await refetchOrders()
+    } catch (e) {
+      console.log(e)
+      toast.error('Confirm receipt failed, please try again')
+    }
+  }
+
   const handleShowAddressManageModal = () => {
-    showModal(ModalType.MANAGE_ADDRESS_MODAL, {
-      onConfirm: async (id) => {
-        try {
-          await activeDelivery({ id })
-          await refetchOrders()
-          hideModal()
-        } catch (e) {
-          console.log(e)
-          toast.error('Please try again')
-        }
+    if (!isAuthenticated) return
+
+    showModal(ModalType.MANAGE_ADDRESS_MODAL)
+  }
+
+  const handleOpenRewardsModal = () => {
+    if (!isAuthenticated) return
+
+    showModal(ModalType.REWARDS_MODAL, {
+      onClaimSuccess: async () => {
+        await refetchHoldings()
       }
     })
   }
@@ -278,22 +234,22 @@ const MyAccount = () => {
             <div
               key={index}
               className={clsx(
-                'hidden md:grid mt-6 gap-6',
-                index > 0 ? 'grid-cols-4' : 'grid-cols-3'
+                'grid mt-6 gap-6',
+                index > 0
+                  ? 'grid-cols-2 md:grid-cols-4'
+                  : 'grid-cols-1 md:grid-cols-3'
               )}
             >
               {group.map((item) => (
-                <HoldingItem key={item.key} item={item} />
+                <HoldingItem
+                  OnClickItem={handleOpenRewardsModal}
+                  group={index}
+                  key={item.key}
+                  item={item}
+                />
               ))}
             </div>
           ))}
-          <div className={'grid md:hidden mt-6 grid-cols-2 gap-6'}>
-            {processHoldings(holdings)
-              .flat()
-              .map((item) => (
-                <HoldingItem key={item.key} item={item} />
-              ))}
-          </div>
         </Content>
       </Container>
       <Container className='mb-[200px]'>
@@ -328,12 +284,14 @@ const MyAccount = () => {
             >
               My Order
             </Text>
-            <Button
-              className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
-              onClick={handleShowAddressManageModal}
-            >
-              Address Management
-            </Button>
+            <div className='flex flex-row gap-x-2'>
+              <Button
+                className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
+                onClick={handleShowAddressManageModal}
+              >
+                Address Management
+              </Button>
+            </div>
           </div>
           <Table
             aria-label='Example table with dynamic content'
@@ -365,7 +323,7 @@ const MyAccount = () => {
             <TableHeader>
               <TableColumn>Date</TableColumn>
               <TableColumn>Item</TableColumn>
-              {/* <TableColumn>Receiver Address</TableColumn> */}
+              <TableColumn>Receiver Address</TableColumn>
               <TableColumn>Total</TableColumn>
               <TableColumn>Status</TableColumn>
             </TableHeader>
@@ -373,7 +331,7 @@ const MyAccount = () => {
               {orders.map((order, index) => (
                 <TableRow key={index}>
                   <TableCell className='whitespace-nowrap'>
-                    {order.createdAt}
+                    {dayjs(order.createdAt).format('YYYY-MM-DD hh:mm:ss')}
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center w-[max-content]'>
@@ -383,11 +341,11 @@ const MyAccount = () => {
                         alt='ai-agent-nft-1'
                       />
                       <Text className='text-[18px] whitespace-nowrap w-fit'>
-                        {convertTypeToName(order.type)}
+                        {convertTypeToName(order.type)} x {order.quantity}
                       </Text>
                     </div>
                   </TableCell>
-                  {/* <TableCell>{order.name}</TableCell> */}
+                  <TableCell>{formatAddress(order.shippingAddress)}</TableCell>
                   <TableCell className='whitespace-nowrap'>
                     {(
                       (Number(order.price) / 1000000) *
@@ -396,14 +354,28 @@ const MyAccount = () => {
                     &nbsp;USDT
                   </TableCell>
                   <TableCell className='whitespace-nowrap'>
-                    {order.type === 'phone' && order.status === 'paid' ? (
+                    {statusType(order) === 'confirm' && (
                       <Button
-                        onClick={handleOpenShippingModal}
+                        onClick={handleOpenShippingModal(order.id)}
                         className='text-[14px] p-2'
                       >
                         Submit Address
                       </Button>
-                    ) : (
+                    )}
+
+                    {statusType(order) === 'shipped' && (
+                      <Button
+                        isLoading={
+                          isConfirmLoading && selectedOrderId === order.id
+                        }
+                        onClick={handleConfirmDeliveryModal(order.id)}
+                        className='text-[14px] p-2'
+                      >
+                        Confirm Receipt
+                      </Button>
+                    )}
+
+                    {statusType(order) === 'other' && (
                       <span
                         className={`${statusCommonClass} ${statusClass(order.status)}`}
                       >
