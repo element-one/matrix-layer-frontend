@@ -45,6 +45,7 @@ const CheckoutPage = () => {
     })
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
+  const [isAblePay, setIsAblePay] = useState(true)
 
   const { selectedProducts, amount, amountInUSDT } = useMemo(() => {
     const selectedProducts = products.filter((p) => p.quantity)
@@ -156,6 +157,8 @@ const CheckoutPage = () => {
     if (!selectedProducts.length) return
 
     if (accountBalance && Number(accountBalance) >= amount) {
+      setIsAblePay(true)
+
       approveContract(
         {
           abi: USDT_ABI,
@@ -184,7 +187,9 @@ const CheckoutPage = () => {
 
     const { data } = await getSignature()
     const signature = data?.signature || ''
-    const referral = user?.referredByUser?.address || ''
+    const referral =
+      user?.referredByUser?.address ||
+      '0x0000000000000000000000000000000000000000'
 
     if (!signature) return
 
@@ -210,17 +215,18 @@ const CheckoutPage = () => {
         },
         onError(err) {
           console.log(err.message)
-          toast.error('pay: Please try again')
+          toast.error('pay failed, Please try again')
         }
       }
     )
   }, [selectedProducts, amount, payContract, getSignature, user])
 
   useEffect(() => {
-    if (approveData) {
+    if (approveData && isAblePay) {
       handlePay()
+      setIsAblePay(false)
     }
-  }, [approveData, handlePay])
+  }, [approveData, handlePay, isAblePay])
 
   const isPaying =
     isApprovingContract ||
