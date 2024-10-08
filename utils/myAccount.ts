@@ -3,7 +3,7 @@ import { ApiHoldingsResponse, ApiPaymentData, IAddress } from '@type/api'
 const holding_temp = [
   [
     {
-      title: 'WORLD PHONE',
+      title: 'MATRIX LAYER PROTOCOL',
       count: 0,
       icon: '/images/product/phone21.png',
       key: 'phone'
@@ -22,12 +22,6 @@ const holding_temp = [
     }
   ],
   [
-    {
-      title: 'MATRIX',
-      count: 0,
-      icon: '/images/checkout/matrix.png',
-      key: 'matrix'
-    },
     {
       title: 'AI AGENT ONE',
       count: 0,
