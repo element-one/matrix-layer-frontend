@@ -329,7 +329,6 @@ const CheckoutPage = () => {
                   <SelectItemSkeleton />
                   <SelectItemSkeleton />
                   <SelectItemSkeleton />
-                  <SelectItemSkeleton />
                 </>
               ) : (
                 products.map((item) => (

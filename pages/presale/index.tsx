@@ -415,17 +415,6 @@ const ProductPage = () => {
                   <div className='flex flex-col gap-5 sm:gap-12'>
                     {[
                       {
-                        title: 'Matrix',
-                        img: '/images/checkout/matrix.png',
-                        descriptionList: [
-                          'Purchase $199 worth of $MLP to activate the NFT (the tokens will be burned after activation).',
-                          'Unlocks basic pool mining',
-                          'Mining coefficient: 1'
-                        ],
-                        price: '$199',
-                        key: ProductEnum.MATRIX
-                      },
-                      {
                         title: 'AI Agent One',
                         img: '/images/product/ai_agent_one.png',
                         descriptionList: [

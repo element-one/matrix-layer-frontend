@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react'
-import clsx from 'clsx'
 
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
@@ -123,12 +122,6 @@ const MyAccount = () => {
     }
   }
 
-  const handleShowAddressManageModal = () => {
-    if (!isAuthenticated) return
-
-    showModal(ModalType.MANAGE_ADDRESS_MODAL)
-  }
-
   const handleOpenRewardsModal = () => {
     if (!isAuthenticated) return
 
@@ -233,12 +226,7 @@ const MyAccount = () => {
           {processHoldings(holdings).map((group, index) => (
             <div
               key={index}
-              className={clsx(
-                'grid mt-6 gap-6',
-                index > 0
-                  ? 'grid-cols-2 md:grid-cols-4'
-                  : 'grid-cols-1 md:grid-cols-3'
-              )}
+              className='grid mt-6 gap-6 grid-cols-1 md:grid-cols-3'
             >
               {group.map((item) => (
                 <HoldingItem
@@ -284,14 +272,6 @@ const MyAccount = () => {
             >
               My Order
             </Text>
-            <div className='flex flex-row gap-x-2'>
-              <Button
-                className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'
-                onClick={handleShowAddressManageModal}
-              >
-                Address Management
-              </Button>
-            </div>
           </div>
           <Table
             aria-label='Example table with dynamic content'
