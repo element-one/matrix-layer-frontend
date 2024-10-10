@@ -312,19 +312,6 @@
   },
   {
     "inputs": [],
-    "name": "MATRIX_PRICE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "PHONE_PRICE",
     "outputs": [
       {
@@ -557,6 +544,11 @@
         "type": "address"
       },
       {
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
+      },
+      {
         "internalType": "bytes",
         "name": "signature",
         "type": "bytes"
@@ -595,6 +587,11 @@
         "internalType": "address",
         "name": "referral",
         "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isWhitelisted",
+        "type": "bool"
       },
       {
         "internalType": "bytes",

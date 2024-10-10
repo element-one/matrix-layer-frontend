@@ -186,7 +186,10 @@ const CheckoutPage = () => {
     if (!selectedProducts.length || !amount) return
 
     const { data } = await getSignature()
+
     const signature = data?.signature || ''
+    const isWhitelisted = data?.isWhitelisted || false
+
     const referral =
       user?.referredByUser?.address ||
       '0x0000000000000000000000000000000000000000'
@@ -206,7 +209,7 @@ const CheckoutPage = () => {
       {
         abi: PAYMENT_ABI,
         functionName,
-        args: [String(amount), orders, referral, signature],
+        args: [String(amount), orders, referral, isWhitelisted, signature],
         address: PAYMENT_ADDRESS as Address
       },
       {

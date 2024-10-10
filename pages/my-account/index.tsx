@@ -311,7 +311,7 @@ const MyAccount = () => {
               {orders.map((order, index) => (
                 <TableRow key={index}>
                   <TableCell className='whitespace-nowrap'>
-                    {dayjs(order.createdAt).format('YYYY-MM-DD hh:mm:ss')}
+                    {dayjs(order.createdAt).format('YYYY-MM-DD HH:mm:ss')}
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center w-[max-content]'>
