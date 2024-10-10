@@ -6,14 +6,7 @@
   "tabWidth": 2,
   "printWidth": 80,
   "useTabs": false,
-  "plugins": [
-    "prettier-plugin-tailwindcss",
-    "prettier-plugin-classnames"
-  ],
-  "customAttributes": [
-    "className"
-  ],
-  "customFunctions": [
-    "classNames"
-  ]
+  "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-classnames"],
+  "customAttributes": ["className"],
+  "customFunctions": ["classNames"]
 }

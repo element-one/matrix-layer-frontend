@@ -11,7 +11,8 @@ const Title: FC<TitleProps> = ({ children, className }) => {
   return (
     <Text
       className={clsx(
-        'text-[32px] bg-gradient-title-2 md:bg-gradient-title-1 bg-clip-text text-transparent font-semibold',
+        `text-[32px] bg-gradient-title-2 md:bg-gradient-title-1 bg-clip-text
+          text-transparent font-semibold`,
         className
       )}
     >

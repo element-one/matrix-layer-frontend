@@ -8,7 +8,7 @@ import { useStore } from '@store/store'
 export const useDisconnect = () => {
   const { disconnect: wagmiDisconnect } = useWagmiDisconnect()
   const { reset } = useSignMessage()
-  const { setHasSignSuccess } = useStore(state => ({
+  const { setHasSignSuccess } = useStore((state) => ({
     setHasSignSuccess: state.setHasSignSuccess
   }))
   const { setAuthenticated } = useAuth()
