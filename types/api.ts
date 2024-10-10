@@ -162,6 +162,7 @@ export type ApiErrorResponse = {
 
 export type ApiGetSignatureResponse = {
   signature: string
+  isWhitelisted: boolean
 }
 
 export type ApiConfirmDeliveryResponse = {
