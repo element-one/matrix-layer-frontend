@@ -15,7 +15,7 @@ export const convertTypeToName = (type: string) => {
     case ProductEnum.AGENT_ULTRA:
       return 'Ai Agent Ultra'
     case ProductEnum.PHONE:
-      return 'Matrix Layer Protocol'
+      return 'Matrix Layer Phone'
     case ProductEnum.MATRIX:
       return 'Matrix'
     default:
