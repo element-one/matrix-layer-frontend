@@ -131,17 +131,19 @@ const ProductPage = () => {
                       </Text>
                       <Text className='text-white text-[18px] sm:text-7xl font-semibold'>
                         MATRIX <br />
-                        LAYER PROTOCOL
+                        LAYER PHONE
                       </Text>
                       <Text
                         className='text-[12px] sm:text-base font-semibold text-gray-a5 pr-0 sm:pr-[20px]
                           line-clamp-3'
                       >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Aenean ornare mattis risus, eget condimentum nibh
-                        ultrices ut. Phasellus tempor accumsan eros. Proin odio
-                        turpis, tristique eu tortor vulputate, sagittis suscipit
-                        massa.
+                        MatrixLayerPhone is an intelligent hardware and owns
+                        diverse application scenarios, offers users a convenient
+                        entry point for accessing decentralized networks and
+                        Web3 applications in their daily lives. MLPhone brings
+                        an unprecedented experience for individuals and infinite
+                        opportunities for businesses, developers, and society as
+                        a whole.
                       </Text>
                       <Text
                         className={`text-[48px] sm:text-[98px] leading-[1.2] ${gradientTextClass}`}
@@ -212,7 +214,7 @@ const ProductPage = () => {
                           className='text-[12px] sm:text-[28px]'
                           size='bold'
                         >
-                          MATRIX LAYER PROTOCOL
+                          MATRIX LAYER PHONE
                         </Text>
                         <Text
                           className={`text-[24px] sm:text-[64px] ${gradientTextClass}`}
@@ -335,13 +337,13 @@ const ProductPage = () => {
                           img: '/images/svg/building-token.svg',
                           title: 'Built-in Tokens',
                           description:
-                            'Each phone comes pre-installed with 10,000 $WPN tokens, to be released linearly over a period of 3 years.'
+                            'Each phone comes pre-installed with 20,000 $MLP tokens, to be released linearly over a period of 1.5 years.'
                         },
                         {
                           img: '/images/svg/mining-experience.svg',
                           title: 'Mining Experience',
                           description:
-                            'Phone holders are granted 30 days of basic pool mining rights (a limited-time offer), with mining speeds matching that of AI Agent One'
+                            'Phone holders are granted 10 days of basic pool mining rights (a limited-time offer), with mining speeds matching that of AI Agent One'
                         },
                         {
                           img: '/images/svg/bitcoin.svg',
@@ -391,8 +393,8 @@ const ProductPage = () => {
                       The actual specifications of the delivered product may
                       differ from the official descriptions due to material
                       supply constraints and other uncontrollable factors.
-                      MetaLink reserves the right to make changes to the product
-                      specifications without prior notice.
+                      MatrixLayerProtocol reserves the right to make changes to
+                      the product specifications without prior notice.
                     </Text>
                   </div>
                 </Content>
@@ -418,33 +420,33 @@ const ProductPage = () => {
                         title: 'AI Agent One',
                         img: '/images/product/ai_agent_one.png',
                         descriptionList: [
-                          'Purchase $699 worth of $WPN to activate the NFT (the tokens will be burned after activation).',
+                          'Purchase $199 worth of $MLP to activate the NFT (the tokens will be burned after activation).',
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1'
                         ],
-                        price: '$699',
+                        price: '$199',
                         key: ProductEnum.AGENT_ONE
                       },
                       {
                         title: 'AI Agent Pro',
                         img: '/images/product/ai_agent_pro.png',
                         descriptionList: [
-                          'Purchase $899 worth of $WPN to activate the NFT (the tokens will be burned after activation).',
+                          'Purchase $699 worth of $MLP to activate the NFT (the tokens will be burned after activation).',
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1.2'
                         ],
-                        price: '$899',
+                        price: '$699',
                         key: ProductEnum.AGENT_PRO
                       },
                       {
                         title: 'AI Agent Ultra',
                         img: '/images/product/ai_agent_ultra.png',
                         descriptionList: [
-                          'Purchase $1299 worth of $WPN to activate the NFT (the tokens will be burned after activation).',
+                          'Purchase $899 worth of $MLP to activate the NFT (the tokens will be burned after activation).',
                           'Unlocks basic pool mining',
                           'Mining coefficient: 1.5'
                         ],
-                        price: '$1299',
+                        price: '$899',
                         key: ProductEnum.AGENT_ULTRA
                       }
                     ].map((item) => (

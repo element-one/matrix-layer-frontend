@@ -146,7 +146,7 @@ export type ApiGetAddressResponse = IAddress[]
 export type ApiHoldingsResponse = Partial<{
   totalRewards: number
   availableRewards: number
-  wpnTokenAmount: number
+  mlpTokenAmount: number
   phone: number
   agent_limit: number
   agent_one: number

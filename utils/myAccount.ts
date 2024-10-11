@@ -3,16 +3,16 @@ import { ApiHoldingsResponse, ApiPaymentData, IAddress } from '@type/api'
 const holding_temp = [
   [
     {
-      title: 'MATRIX LAYER PROTOCOL',
+      title: 'MATRIX LAYER PHONE',
       count: 0,
       icon: '/images/product/phone21.png',
       key: 'phone'
     },
     {
-      title: 'WPN TOKEN',
+      title: 'MLP TOKEN',
       count: 0,
-      icon: '/images/account/wpn-token.png',
-      key: 'wpnTokenAmount'
+      icon: '/images/account/mlp-token.png',
+      key: 'mlpTokenAmount'
     },
     {
       title: 'REWARDS',
@@ -52,7 +52,7 @@ export const processHoldings = (holdings: ApiHoldingsResponse = {}) => {
       return {
         ...item,
         count:
-          item.key === 'wpnTokenAmount' || item.key === 'availableRewards'
+          item.key === 'mlpTokenAmount' || item.key === 'availableRewards'
             ? Number(matchedValue) / 1000000
             : matchedValue
       }
