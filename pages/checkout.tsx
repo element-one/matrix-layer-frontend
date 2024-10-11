@@ -37,8 +37,6 @@ const CheckoutPage = () => {
   const chainId = useChainId()
   const { showModal } = useModal()
 
-  console.log('chainId: ', chainId)
-
   const { query } = useRouter()
 
   const [isCopied, setIsCopied] = useState(false)

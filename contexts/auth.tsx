@@ -59,6 +59,12 @@ export const AuthProvider: React.FC<{ children?: ReactNode }> = ({
   const { data: authUser } = useGetMe({ enabled: isAuthenticated })
 
   useEffect(() => {
+    if (!isConnected) {
+      setAuthenticated(false)
+    }
+  }, [isConnected, setAuthenticated])
+
+  useEffect(() => {
     authStatus && setAuthenticated(!!authStatus)
   }, [authStatus, setAuthenticated])
 
