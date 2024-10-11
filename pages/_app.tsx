@@ -49,8 +49,8 @@ const poppins = Poppins({
 const { wallets } = getDefaultWallets()
 
 const config = getDefaultConfig({
-  appName: 'wphone',
-  projectId: 'e9ef74a338477056c42b653dcb081e86',
+  appName: 'matrix-layer',
+  projectId: '45ecc68adffe3012e792cfa6ee6ebc08',
   wallets: [
     ...wallets,
     {
