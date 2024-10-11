@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
@@ -425,6 +426,7 @@ const HomePage = () => {
                 <Text className='text-[14px] sm:text-[20px] font-semibold text-white text-center'>
                   {item.description}
                 </Text>
+                <ConnectButton />
               </div>
             ))}
           </div>
