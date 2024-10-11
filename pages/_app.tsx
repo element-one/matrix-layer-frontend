@@ -12,7 +12,7 @@ import {
 } from '@rainbow-me/rainbowkit'
 import { binanceWallet, okxWallet } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { bsc, bscTestnet } from 'viem/chains'
+import { bsc, bscTestnet, mainnet } from 'viem/chains'
 import { WagmiProvider } from 'wagmi'
 
 import { AuthProvider } from '@contexts/auth'
@@ -58,7 +58,10 @@ const config = getDefaultConfig({
       wallets: [okxWallet, binanceWallet]
     }
   ],
-  chains: [process.env.NEXT_PUBLIC_APP_ENV === 'dev' ? bscTestnet : bsc],
+  chains:
+    process.env.NEXT_PUBLIC_APP_ENV === 'dev'
+      ? [bscTestnet, mainnet]
+      : [bsc, mainnet],
   ssr: true
 })
 

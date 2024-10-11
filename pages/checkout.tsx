@@ -4,7 +4,9 @@ import { useRouter } from 'next/router'
 import { Address } from 'viem'
 import {
   useAccount,
+  useChainId,
   useReadContract,
+  useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract
 } from 'wagmi'
@@ -30,6 +32,8 @@ const IS_PRIVATE = process.env.NEXT_PUBLIC_IS_PRIVATE
 
 const CheckoutPage = () => {
   const { isConnected, address } = useAccount()
+  const { switchChain } = useSwitchChain()
+  const chainId = useChainId()
   const { showModal } = useModal()
 
   const { query } = useRouter()
@@ -155,6 +159,13 @@ const CheckoutPage = () => {
     }
 
     if (!selectedProducts.length) return
+
+    if (chainId !== (process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number)) {
+      switchChain({
+        chainId: process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number
+      })
+      return
+    }
 
     if (accountBalance && Number(accountBalance) >= amount) {
       setIsAblePay(true)
