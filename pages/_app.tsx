@@ -65,9 +65,9 @@ const config = getDefaultConfig({
   ssr: true
 })
 
-export default function App({ Component, pageProps }: AppProps) {
-  const [queryClient] = React.useState(() => new QueryClient())
+const queryClient = new QueryClient()
 
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <style jsx global>{`

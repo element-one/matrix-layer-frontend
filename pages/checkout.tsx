@@ -29,12 +29,15 @@ import { convertTypeToInt, convertTypeToName } from '@utils/payment'
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
 const IS_PRIVATE = process.env.NEXT_PUBLIC_IS_PRIVATE
+const TARGET_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 const CheckoutPage = () => {
   const { isConnected, address } = useAccount()
   const { switchChain } = useSwitchChain()
   const chainId = useChainId()
   const { showModal } = useModal()
+
+  console.log('chainId: ', chainId)
 
   const { query } = useRouter()
 
@@ -152,7 +155,7 @@ const CheckoutPage = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
 
-  const handlePayButtonClick = async () => {
+  const handlePayButtonClick = useCallback(async () => {
     if (!isConnected || !address) {
       toast.info('Please connect your wallet first')
       return
@@ -160,11 +163,16 @@ const CheckoutPage = () => {
 
     if (!selectedProducts.length) return
 
-    console.log('existing chainId: ', chainId, process.env.NEXT_PUBLIC_CHAIN_ID)
-    if (chainId !== (process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number)) {
-      switchChain({
-        chainId: process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number
-      })
+    console.log('existing chainId: ', chainId, TARGET_CHAIN_ID)
+    if (chainId !== Number(TARGET_CHAIN_ID)) {
+      console.log('going to switch chain')
+      try {
+        switchChain({
+          chainId: Number(TARGET_CHAIN_ID)
+        })
+      } catch (err) {
+        console.log(err)
+      }
       return
     }
 
@@ -192,13 +200,23 @@ const CheckoutPage = () => {
     } else {
       toast.info('your account balance is not enough to pay')
     }
-  }
+  }, [
+    isConnected,
+    address,
+    selectedProducts.length,
+    chainId,
+    accountBalance,
+    amount,
+    switchChain,
+    approveContract,
+    refetchAccount
+  ])
 
   const handlePay = useCallback(async () => {
-    console.log('existing chainId: ', chainId, process.env.NEXT_PUBLIC_CHAIN_ID)
-    if (chainId !== (process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number)) {
+    console.log('existing chainId: ', chainId, TARGET_CHAIN_ID)
+    if (chainId !== Number(TARGET_CHAIN_ID)) {
       switchChain({
-        chainId: process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number
+        chainId: Number(TARGET_CHAIN_ID)
       })
       return
     }
