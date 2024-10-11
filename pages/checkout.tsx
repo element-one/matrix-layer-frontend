@@ -194,6 +194,13 @@ const CheckoutPage = () => {
   }
 
   const handlePay = useCallback(async () => {
+    if (chainId !== (process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number)) {
+      switchChain({
+        chainId: process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number
+      })
+      return
+    }
+
     if (!selectedProducts.length || !amount) return
 
     const { data } = await getSignature()
