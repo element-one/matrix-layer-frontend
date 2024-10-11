@@ -160,6 +160,7 @@ const CheckoutPage = () => {
 
     if (!selectedProducts.length) return
 
+    console.log('existing chainId: ', chainId, process.env.NEXT_PUBLIC_CHAIN_ID)
     if (chainId !== (process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number)) {
       switchChain({
         chainId: process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number
@@ -194,6 +195,7 @@ const CheckoutPage = () => {
   }
 
   const handlePay = useCallback(async () => {
+    console.log('existing chainId: ', chainId, process.env.NEXT_PUBLIC_CHAIN_ID)
     if (chainId !== (process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number)) {
       switchChain({
         chainId: process.env.NEXT_PUBLIC_CHAIN_ID as unknown as number
@@ -240,7 +242,15 @@ const CheckoutPage = () => {
         }
       }
     )
-  }, [selectedProducts, amount, payContract, getSignature, user])
+  }, [
+    chainId,
+    selectedProducts,
+    amount,
+    getSignature,
+    user?.referredByUser?.address,
+    payContract,
+    switchChain
+  ])
 
   useEffect(() => {
     if (approveData && isAblePay) {
