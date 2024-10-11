@@ -16,7 +16,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
     >
       <div className='flex items-center gap-8 text-[10px] md:text-sm'>
         <a
-          href='/'
+          href='https://x.com/matrix_mlp?s=21&t=wSC_Z_s-s2P9fwoumryd9A'
           target='_blank'
           className='flex items-center justify-center gap-2'
         >
@@ -24,7 +24,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
           <span>MatrixLayerProtocol_MLP</span>
         </a>
         <a
-          href='/'
+          href='https://t.me/MLP_Community'
           target='_blank'
           className='flex items-center justify-center gap-2'
         >

@@ -144,7 +144,8 @@ export const RewardsModal: FC<RewardsModalProps> = ({
             Reward Details
           </Text>
           <Text className='text-white text-[12px] md:text-[22px]'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Collect your rewards for sharing Matrix Layer Protocol with your
+            frens & fam.
           </Text>
           <div
             className='grid grid-cols-1 md:grid-cols-2 justify-between items-center gap-x-8 gap-y-4

@@ -96,7 +96,7 @@ input {
 }
 
 .term-checkbox {
-  @apply h-[18px] w-[18px] shrink-0 cursor-pointer appearance-none bg-[url("/images/checkout/term_unchecked.svg")] bg-cover bg-no-repeat checked:bg-[url("/images/checkout/term_checked.svg")];
+  @apply h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none bg-[url("/images/checkout/term_unchecked.svg")] bg-cover bg-no-repeat checked:bg-[url("/images/checkout/term_checked.svg")];
 }
 
 .clip-text {

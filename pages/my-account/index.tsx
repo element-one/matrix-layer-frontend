@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import {
   Pagination,
   Table,
@@ -7,7 +8,8 @@ import {
   TableCell,
   TableColumn,
   TableHeader,
-  TableRow
+  TableRow,
+  Tooltip
 } from '@nextui-org/react'
 
 import { Button } from '@components/Button'
@@ -48,7 +50,7 @@ const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 
 const MyAccount = () => {
   const { user, isAuthenticated } = useAuth()
-
+  const router = useRouter()
   const [page, setPage] = useState(1)
 
   const [selectedOrderId, setSelectedOrderId] = useState('')
@@ -84,6 +86,12 @@ const MyAccount = () => {
   useEffect(() => {
     setActiveLoading(isActiveLoading)
   }, [isActiveLoading, setActiveLoading])
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/')
+    }
+  }, [isAuthenticated, router])
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -359,7 +367,13 @@ const MyAccount = () => {
                       <span
                         className={`${statusCommonClass} ${statusClass(order.status)}`}
                       >
-                        {order?.status}
+                        {order?.status === 'received' ? (
+                          <Tooltip content='Once your phone is ready to ship you will be asked to submit a shipping address.'>
+                            {order?.status}
+                          </Tooltip>
+                        ) : (
+                          order?.status
+                        )}
                       </span>
                     )}
                   </TableCell>
