@@ -49,7 +49,7 @@ const CheckoutPage = () => {
     enabled: !!address && IS_PRIVATE
   })
 
-  console.log(whitelistData)
+  console.log(userData)
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
   const [isAblePay, setIsAblePay] = useState(true)
@@ -242,7 +242,7 @@ const CheckoutPage = () => {
     const isWhitelisted = data?.isWhitelisted || false
 
     const referral =
-      userData?.referredByUser?.address ||
+      userData?.referredByUserAddress ||
       '0x0000000000000000000000000000000000000000'
 
     if (!signature) return
@@ -280,7 +280,7 @@ const CheckoutPage = () => {
     selectedProducts,
     amount,
     getSignature,
-    userData?.referredByUser?.address,
+    userData?.referredByUserAddress,
     payContract,
     switchChain
   ])

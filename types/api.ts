@@ -32,7 +32,7 @@ export type ApiUser = {
   referredBy: string | null
   totalCommission: string
   updatedAt: string
-  referredByUser?: ApiUser
+  referredByUserAddress?: string
 }
 
 export type ApiWalletLoginParams = {
