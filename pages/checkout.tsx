@@ -49,8 +49,6 @@ const CheckoutPage = () => {
     enabled: !!address && IS_PRIVATE
   })
 
-  console.log(userData)
-
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
   const [isAblePay, setIsAblePay] = useState(true)
 
