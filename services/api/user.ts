@@ -67,9 +67,15 @@ export const useGetProof = (
   })
 }
 
-export const patchReferralCode = async (referralCode: string) => {
-  const url = `/users/referrer/${referralCode}`
-  const { data } = await axios.patch<ApiUserResponse>(url)
+export const patchReferralCode = async (
+  referralCode: string,
+  signature: string
+) => {
+  const url = `/users/referral`
+  const { data } = await axios.patch<ApiUserResponse>(url, {
+    referralCode,
+    signature
+  })
 
   return data
 }
@@ -78,8 +84,8 @@ export const usePatchReferralCode = (
   referralCode: string,
   options?: Partial<UseMutationOptions<ApiUserResponse, any, any>> //eslint-disable-line
 ) => {
-  return useMutation<ApiUserResponse, Error>({
-    mutationFn: () => patchReferralCode(referralCode),
+  return useMutation<ApiUserResponse, Error, { signature: string }>({
+    mutationFn: ({ signature }) => patchReferralCode(referralCode, signature),
     mutationKey: ['patch', 'referralCode', referralCode],
     ...options
   })
