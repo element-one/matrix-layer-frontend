@@ -83,7 +83,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
             classNames={{
               wrapper:
                 'rounded-[12px] border-2 border-[#666] bg-black-15 backdrop-blur-[6px] p-0',
-              th: 'bg-gradient-rewards-history text-white text-[20px] font-bold text-black-15 text-center py-3 !rounded-none font-chakraPetch',
+              th: 'bg-black text-white text-[20px] font-bold text-white text-center py-3 !rounded-none font-chakraPetch',
               td: 'p-4 text-[18px] font-medium text-center whitespace-nowrap',
               tr: 'odd:bg-black-20 even:bg-black-15 hover:bg-black-15 font-chakraPetch'
             }}
