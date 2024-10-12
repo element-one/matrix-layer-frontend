@@ -352,12 +352,19 @@ const MyAccount = () => {
                   </TableCell>
                   <TableCell className='whitespace-nowrap'>
                     {statusType(order) === 'confirm' && (
-                      <Button
-                        onClick={handleOpenShippingModal(order.id)}
-                        className='text-[14px] p-2'
-                      >
-                        Submit Address
-                      </Button>
+                      <>
+                        <Button
+                          onClick={handleOpenShippingModal(order.id)}
+                          className='text-[14px] p-2 hidden'
+                        >
+                          Submit Address
+                        </Button>
+                        <span
+                          className={`${statusCommonClass} ${statusClass(order.status)}`}
+                        >
+                          {order?.status}
+                        </span>
+                      </>
                     )}
 
                     {statusType(order) === 'shipped' && (
