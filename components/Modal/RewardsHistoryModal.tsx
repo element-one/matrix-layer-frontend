@@ -12,6 +12,8 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 import { Text } from '@components/Text'
 import { useGetRewardsHistory } from '@services/api'
@@ -43,9 +45,12 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
   onOpenChange,
   onClose
 }) => {
+  const { address } = useAccount()
   const [page, setPage] = useState(1)
 
-  const { data } = useGetRewardsHistory(page, PAGE_SIZE)
+  const { data } = useGetRewardsHistory(address as Address, page, PAGE_SIZE, {
+    enabled: !!address
+  })
 
   const history = useMemo(() => data?.data || [], [data])
   const totalPage = useMemo(

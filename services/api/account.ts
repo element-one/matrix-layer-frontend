@@ -4,13 +4,11 @@ import {
   useQuery,
   UseQueryOptions
 } from '@tanstack/react-query'
-import { Address } from 'viem'
 
 import axios from '@services/axios/client'
 import {
   ApiConfirmDeliveryResponse,
   ApiGetAddressResponse,
-  ApiHoldingsResponse,
   ApiProductsResponse,
   ApiSaveAddressParams,
   ApiSaveAddressResponse
@@ -27,25 +25,6 @@ export const useGetProducts = (
   return useQuery<ApiProductsResponse, Error>({
     queryKey: ['all', 'products'],
     queryFn: () => getProducts(),
-    ...options
-  })
-}
-
-export const getUserHolding = async (
-  address?: Address
-): Promise<ApiHoldingsResponse> => {
-  const { data } = await axios.get(`/users/holding/${address}`)
-
-  return data
-}
-
-export const useGetUserHolding = (
-  address?: Address,
-  options?: Partial<UseQueryOptions<ApiHoldingsResponse, Error>>
-) => {
-  return useQuery<ApiHoldingsResponse, Error>({
-    queryKey: ['user', 'holding', address],
-    queryFn: () => getUserHolding(address),
     ...options
   })
 }
@@ -86,7 +65,7 @@ export const useGetAllAddresses = () => {
   })
 }
 
-export const updateAddressService = async (
+export const updateAddress = async (
   id: string,
   params: ApiSaveAddressParams
 ) => {
@@ -112,12 +91,12 @@ export const useUpdateAddress = (
     { id: string; data: ApiSaveAddressParams }
   >({
     mutationKey: ['update', 'address'],
-    mutationFn: ({ id, data }) => updateAddressService(id, data),
+    mutationFn: ({ id, data }) => updateAddress(id, data),
     ...options
   })
 }
 
-export const deleteAddressService = async (id: string) => {
+export const deleteAddress = async (id: string) => {
   try {
     const { data } = await axios.delete(`/shipping-address/${id}`)
     return data
@@ -132,12 +111,12 @@ export const useDeleteAddress = (
 ) => {
   return useMutation<ApiSaveAddressResponse, Error, { id: string }>({
     mutationKey: ['delete', 'address'],
-    mutationFn: ({ id }) => deleteAddressService(id),
+    mutationFn: ({ id }) => deleteAddress(id),
     ...options
   })
 }
 
-export const activeDeliveryService = async (
+export const postActivateDelivery = async (
   paymentId: string,
   addressId: string
 ) => {
@@ -166,12 +145,12 @@ export const useActiveDelivery = (
   >({
     mutationKey: ['active', 'delivery'],
     mutationFn: ({ paymentId, addressId }) =>
-      activeDeliveryService(paymentId, addressId),
+      postActivateDelivery(paymentId, addressId),
     ...options
   })
 }
 
-export const confirmDeliveryService = async (paymentId: string) => {
+export const postConfirmDelivery = async (paymentId: string) => {
   try {
     const { data } = await axios.post(`/payments/confirm-receipt/${paymentId}`)
     return data
@@ -190,7 +169,7 @@ export const useConfirmDelivery = (
 ) => {
   return useMutation<ApiConfirmDeliveryResponse, Error, { paymentId: string }>({
     mutationKey: ['confirm', 'delivery'],
-    mutationFn: ({ paymentId }) => confirmDeliveryService(paymentId),
+    mutationFn: ({ paymentId }) => postConfirmDelivery(paymentId),
     ...options
   })
 }
