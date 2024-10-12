@@ -15,7 +15,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { bsc, bscTestnet, mainnet } from 'viem/chains'
 import { WagmiProvider } from 'wagmi'
 
-import { AuthProvider } from '@contexts/auth'
 import { ModalProvider } from '@contexts/modal'
 
 import '@rainbow-me/rainbowkit/styles.css'
@@ -83,19 +82,17 @@ export default function App({ Component, pageProps }: AppProps) {
           <RainbowKitProvider>
             <NextUIProvider>
               <NextThemesProvider attribute='class' defaultTheme='light'>
-                <AuthProvider>
-                  <ModalProvider>
-                    <Head>
-                      <title>Matrix Layer Protocol</title>
-                      <meta
-                        name='viewport'
-                        content='width=device-width, initial-scale=1'
-                      />
-                    </Head>
-                    <Component {...pageProps} />
-                    <ToastContainer />
-                  </ModalProvider>
-                </AuthProvider>
+                <ModalProvider>
+                  <Head>
+                    <title>Matrix Layer Protocol</title>
+                    <meta
+                      name='viewport'
+                      content='width=device-width, initial-scale=1'
+                    />
+                  </Head>
+                  <Component {...pageProps} />
+                  <ToastContainer />
+                </ModalProvider>
               </NextThemesProvider>
             </NextUIProvider>
           </RainbowKitProvider>

@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react'
 import { useRouter } from 'next/router'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useAccount } from 'wagmi'
 
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
 import { ProductEnum } from '@utils/payment'
 
@@ -42,14 +42,13 @@ const ProductPage = () => {
     'product'
   )
 
-  const { isAuthenticated } = useAuth()
-
   const router = useRouter()
 
+  const { isConnected } = useAccount()
   const { showModal } = useModal()
 
   const handleToCheckout = (type: string) => () => {
-    if (isAuthenticated) {
+    if (isConnected) {
       router.push(`/checkout?type=${type}`)
     } else {
       showModal(ModalType.CONNECT_WALLET_MODAL)
@@ -155,9 +154,7 @@ const ProductPage = () => {
                         className='rounded-[35px] h-12 text-base font-semibold w-[218px] z-10'
                         onClick={handleToCheckout(ProductEnum.PHONE)}
                       >
-                        {isAuthenticated
-                          ? 'Order Now'
-                          : 'Connect Wallet to Order'}
+                        {isConnected ? 'Order Now' : 'Connect Wallet to Order'}
                       </Button>
                     </div>
                     <div className='sm:relative absolute -right-[70px] sm:right-auto top-6 sm:top-auto'>
@@ -477,7 +474,7 @@ const ProductPage = () => {
                                 className='rounded-[35px] w-[155px] h-7 text-[12px] font-semibold'
                                 onClick={handleToCheckout(item.key)}
                               >
-                                {isAuthenticated
+                                {isConnected
                                   ? 'Order Now'
                                   : 'Connect Wallet to Order'}
                               </Button>
@@ -501,7 +498,7 @@ const ProductPage = () => {
                               className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
                               onClick={handleToCheckout(item.key)}
                             >
-                              {isAuthenticated
+                              {isConnected
                                 ? 'Order Now'
                                 : 'Connect Wallet to Order'}
                             </Button>

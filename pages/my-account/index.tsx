@@ -11,6 +11,8 @@ import {
   TableRow,
   Tooltip
 } from '@nextui-org/react'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
@@ -19,12 +21,12 @@ import Layout from '@components/Layout/Layout'
 import HoldingItem from '@components/MyAccount/HoldingItem'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
 import {
   useActiveDelivery,
   useConfirmDelivery,
   useGetPayments,
+  useGetUser,
   useGetUserHolding
 } from '@services/api'
 import { useStore } from '@store/store'
@@ -49,19 +51,28 @@ const statusCommonClass =
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 
 const MyAccount = () => {
-  const { user, isAuthenticated } = useAuth()
+  const { isConnected, address } = useAccount()
   const router = useRouter()
   const [page, setPage] = useState(1)
 
   const [selectedOrderId, setSelectedOrderId] = useState('')
 
-  const { data, refetch: refetchOrders } = useGetPayments(page, 6, {
-    enabled: isAuthenticated
-  })
+  const { data: userData } = useGetUser(address, { enabled: !!address })
+  const { data, refetch: refetchOrders } = useGetPayments(
+    address as Address,
+    page,
+    6,
+    {
+      enabled: !!address
+    }
+  )
 
-  const { data: holdings, refetch: refetchHoldings } = useGetUserHolding({
-    enabled: isAuthenticated
-  })
+  const { data: holdings, refetch: refetchHoldings } = useGetUserHolding(
+    address,
+    {
+      enabled: !!address
+    }
+  )
   const { setHoldings, setActiveLoading } = useStore((state) => ({
     setHoldings: state.setHoldings,
     setActiveLoading: state.setConfirmLoading
@@ -80,18 +91,18 @@ const MyAccount = () => {
   )
 
   useEffect(() => {
+    if (!isConnected) {
+      router.push('/')
+    }
+  }, [isConnected, router])
+
+  useEffect(() => {
     setHoldings(holdings || {})
   }, [holdings, setHoldings])
 
   useEffect(() => {
     setActiveLoading(isActiveLoading)
   }, [isActiveLoading, setActiveLoading])
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/')
-    }
-  }, [isAuthenticated, router])
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -131,8 +142,6 @@ const MyAccount = () => {
   }
 
   const handleOpenRewardsModal = () => {
-    if (!isAuthenticated) return
-
     showModal(ModalType.REWARDS_MODAL, {
       onClaimSuccess: async () => {
         await refetchHoldings()
@@ -177,13 +186,13 @@ const MyAccount = () => {
                   justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
-                  {user?.referralCode}
+                  {userData?.referralCode}
                 </div>
                 <Button
                   className='shrink-0 h-10 rounded-[35px] min-w-fit bg-transparent border-[#666] text-white
                     text-base font-semibold'
                   variant='bordered'
-                  onClick={handleCopy(user?.referralCode || '')}
+                  onClick={handleCopy(userData?.referralCode || '')}
                 >
                   <span className='md:inline hidden'>Copy Code</span>
                   <CopyIcon />
@@ -205,14 +214,14 @@ const MyAccount = () => {
                   items-center justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
-                  {WEB_URL + '/referral?code=' + user?.referralCode ?? ''}
+                  {WEB_URL + '/referral?code=' + userData?.referralCode ?? ''}
                 </div>
                 <Button
                   className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
                     text-base font-semibold'
                   variant='bordered'
                   onClick={handleCopy(
-                    WEB_URL + '/referral?code=' + user?.referralCode ?? ''
+                    WEB_URL + '/referral?code=' + userData?.referralCode ?? ''
                   )}
                 >
                   <span className='md:inline hidden'>Copy Link</span>

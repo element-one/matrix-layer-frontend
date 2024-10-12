@@ -4,26 +4,28 @@ import {
   useQuery,
   UseQueryOptions
 } from '@tanstack/react-query'
+import { Address } from 'viem'
 
 import { ApiProofResponse, ApiUserResponse } from '@type/api'
 
 import axios from '../axios/client'
 
-export const getMe = async () => {
+export const getUser = async (address?: Address) => {
   try {
-    const { data } = await axios.get('/users/me')
+    const { data } = await axios.get(`/users/${address}`)
     return data
   } catch (err) {
     throw err
   }
 }
 
-export const useGetMe = (
+export const useGetUser = (
+  address?: Address,
   options?: Partial<UseQueryOptions<ApiUserResponse, any, any>> //eslint-disable-line
 ) => {
   return useQuery<ApiUserResponse, Error>({
-    queryKey: ['user', 'me'],
-    queryFn: () => getMe(),
+    queryKey: ['user', address],
+    queryFn: () => getUser(address),
     ...options
   })
 }

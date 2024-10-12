@@ -4,6 +4,7 @@ import {
   useQuery,
   UseQueryOptions
 } from '@tanstack/react-query'
+import { Address } from 'viem'
 
 import axios from '@services/axios/client'
 import {
@@ -15,9 +16,8 @@ import {
   ApiSaveAddressResponse
 } from '@type/api'
 
-export const getProductsService = async (): Promise<ApiProductsResponse> => {
-  const { data } = await axios.get('/products')
-
+export const getProducts = async (): Promise<ApiProductsResponse> => {
+  const { data } = await axios.get(`/products`)
   return data
 }
 
@@ -26,28 +26,31 @@ export const useGetProducts = (
 ) => {
   return useQuery<ApiProductsResponse, Error>({
     queryKey: ['all', 'products'],
-    queryFn: () => getProductsService(),
+    queryFn: () => getProducts(),
     ...options
   })
 }
 
-export const getUserHoldingService = async (): Promise<ApiHoldingsResponse> => {
-  const { data } = await axios.get('/user-holding/holding-counts')
+export const getUserHolding = async (
+  address?: Address
+): Promise<ApiHoldingsResponse> => {
+  const { data } = await axios.get(`/users/holding/${address}`)
 
   return data
 }
 
 export const useGetUserHolding = (
+  address?: Address,
   options?: Partial<UseQueryOptions<ApiHoldingsResponse, Error>>
 ) => {
   return useQuery<ApiHoldingsResponse, Error>({
-    queryKey: ['user', 'holding'],
-    queryFn: () => getUserHoldingService(),
+    queryKey: ['user', 'holding', address],
+    queryFn: () => getUserHolding(address),
     ...options
   })
 }
 
-export const saveAddressService = async (params: ApiSaveAddressParams) => {
+export const saveAddress = async (params: ApiSaveAddressParams) => {
   try {
     const { data } = await axios.post('/shipping-address', params)
     return data
@@ -66,21 +69,20 @@ export const useSaveAddress = (
 ) => {
   return useMutation<ApiSaveAddressResponse, Error, ApiSaveAddressParams>({
     mutationKey: ['save', 'address'],
-    mutationFn: (data) => saveAddressService(data),
+    mutationFn: (data) => saveAddress(data),
     ...options
   })
 }
 
-export const getAllAddressesService =
-  async (): Promise<ApiGetAddressResponse> => {
-    const { data } = await axios.get('/shipping-address')
-    return data
-  }
+export const getAllAddresses = async (): Promise<ApiGetAddressResponse> => {
+  const { data } = await axios.get('/shipping-address')
+  return data
+}
 
 export const useGetAllAddresses = () => {
   return useQuery<ApiGetAddressResponse, Error>({
     queryKey: ['all', 'addresses'],
-    queryFn: () => getAllAddressesService()
+    queryFn: () => getAllAddresses()
   })
 }
 

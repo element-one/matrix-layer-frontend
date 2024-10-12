@@ -7,17 +7,15 @@ import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 
 import Layout from '@components/Layout/Layout'
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
-import { useGetMe } from '@services/api'
+import { useGetUser } from '@services/api'
 
 const ReferralPage: NextPage = () => {
   const params = useSearchParams()
   const code = params.get('code')
-  const { isAuthenticated } = useAuth()
-  const { isConnected } = useAccount()
+  const { isConnected, address } = useAccount()
   const { showModal, isModalShown } = useModal()
-  const { data: myData } = useGetMe()
+  const { data: userData } = useGetUser(address, { enabled: !!address })
   const [skipReferral, setSkipReferral] = useState(false)
   const [verifySuccess, setVerifySuccess] = useState(false)
   const router = useRouter()
@@ -36,12 +34,12 @@ const ReferralPage: NextPage = () => {
 
   useDebounce(
     () => {
-      if (!isAuthenticated) {
+      if (!isConnected) {
         showModal(ModalType.CONNECT_WALLET_MODAL)
       }
     },
     500,
-    [isAuthenticated, showModal]
+    [isConnected, showModal]
   )
 
   useDebounce(
@@ -51,9 +49,9 @@ const ReferralPage: NextPage = () => {
       }
 
       if (
-        isAuthenticated &&
         isConnected &&
-        !myData?.referredBy &&
+        isConnected &&
+        !userData?.referredBy &&
         !isModalShown(ModalType.REFERRAL_CODE_MODAL)
       ) {
         showModal(ModalType.REFERRAL_CODE_MODAL, {
@@ -61,7 +59,7 @@ const ReferralPage: NextPage = () => {
           onSkip: handleSkip,
           onVerifySuccess: handleVerifySuccess
         })
-      } else if (myData?.referredBy) {
+      } else if (userData?.referredBy) {
         toast.info('You already have a reference')
         setTimeout(() => {
           router.push('/')
@@ -72,10 +70,9 @@ const ReferralPage: NextPage = () => {
     [
       code,
       skipReferral,
-      isAuthenticated,
       isConnected,
       showModal,
-      myData?.referredBy,
+      userData?.referredBy,
       isModalShown,
       handleSkip,
       verifySuccess

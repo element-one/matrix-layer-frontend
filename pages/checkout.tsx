@@ -20,11 +20,11 @@ import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { SelectItemSkeleton } from '@components/Skeleton/SelectItemSkeleton'
 import { Text } from '@components/Text'
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
-import { useGetSignature } from '@services/api'
+import { useGetSignature, useGetUser } from '@services/api'
 import { useGetProducts } from '@services/api/account'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
+import { serializeError } from 'eth-rpc-errors'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
@@ -42,12 +42,9 @@ const CheckoutPage = () => {
   const [isCopied, setIsCopied] = useState(false)
   const [products, setProducts] = useState<IProduct[]>([])
 
-  const { isAuthenticated, user } = useAuth()
-
+  const { data: userData } = useGetUser(address, { enabled: !!address })
   const { data: allProducts = [], isLoading: isLoadingProducts } =
-    useGetProducts({
-      enabled: isAuthenticated
-    })
+    useGetProducts()
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
   const [isAblePay, setIsAblePay] = useState(true)
@@ -67,9 +64,13 @@ const CheckoutPage = () => {
     }
   }, [products])
 
-  const { refetch: getSignature } = useGetSignature(amount, {
-    enabled: false
-  })
+  const { refetch: getSignature } = useGetSignature(
+    address as Address,
+    amount,
+    {
+      enabled: false
+    }
+  )
 
   const { data: accountBalance, refetch: refetchAccount } = useReadContract({
     abi: USDT_ABI,
@@ -190,8 +191,11 @@ const CheckoutPage = () => {
             refetchAccount()
           },
           onError(err: Error) {
-            console.log(err.message)
-            toast.error('Please try again')
+            const serializedError = serializeError(err)
+            console.log({ serializedError })
+            toast.error(
+              (serializedError?.data as any)?.originalError?.shortMessage
+            )
           }
         }
       )
@@ -227,7 +231,7 @@ const CheckoutPage = () => {
     const isWhitelisted = data?.isWhitelisted || false
 
     const referral =
-      user?.referredByUser?.address ||
+      userData?.referredByUser?.address ||
       '0x0000000000000000000000000000000000000000'
 
     if (!signature) return
@@ -253,8 +257,11 @@ const CheckoutPage = () => {
           console.log('pay contract success')
         },
         onError(err) {
-          console.log(err.message)
-          toast.error('pay failed, Please try again')
+          const serializedError = serializeError(err)
+          console.log({ serializedError })
+          toast.error(
+            (serializedError?.data as any)?.originalError?.shortMessage
+          )
         }
       }
     )
@@ -263,7 +270,7 @@ const CheckoutPage = () => {
     selectedProducts,
     amount,
     getSignature,
-    user?.referredByUser?.address,
+    userData?.referredByUser?.address,
     payContract,
     switchChain
   ])

@@ -1,5 +1,4 @@
-import { FC, Key, useEffect } from 'react'
-import { toast } from 'react-toastify'
+import { FC, Key } from 'react'
 import { useRouter } from 'next/router'
 import {
   Dropdown,
@@ -9,13 +8,9 @@ import {
   Spinner
 } from '@nextui-org/react'
 import clsx from 'clsx'
-import { useAccount, useSignMessage } from 'wagmi'
+import { useAccount, useDisconnect } from 'wagmi'
 
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
-import { useDisconnect } from '@hooks/useDisconnect'
-import { useGetNonce, usePostWalletLogin } from '@services/api/auth'
-import { useStore } from '@store/store'
 import { formatWalletAddress } from '@utils/formatWalletAddress'
 
 import Button from './Button'
@@ -31,85 +26,10 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
   const { showModal } = useModal()
   const { isConnected, isConnecting, isReconnecting, address } = useAccount()
   const { disconnect } = useDisconnect()
-  const { data: signData, signMessage, isPending: isSigning } = useSignMessage()
-
-  const { data: nonceData, isLoading: isGettingNonce } = useGetNonce(address, {
-    enabled: !!address,
-    retry: false
-  })
-  const { mutate: login, isPending: isLogging } = usePostWalletLogin()
-
-  const { hasSignSuccess, setHasSignSuccess } = useStore((state) => ({
-    hasSignSuccess: state.hasSignSuccess,
-    setHasSignSuccess: state.setHasSignSuccess
-  }))
-  const { isAuthenticated, setAuthenticated } = useAuth()
 
   const handleClick = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
-
-  useEffect(() => {
-    if (
-      isConnected &&
-      !isAuthenticated &&
-      nonceData?.nonce &&
-      address &&
-      !hasSignSuccess
-    ) {
-      signMessage(
-        {
-          message: `Login to Matrix with one-time nonce: ${nonceData.nonce}`
-        },
-        {
-          onSuccess() {
-            setHasSignSuccess(true)
-          },
-          onError(err) {
-            console.log('sign error: ', err)
-            toast.error('signature error:' + (err as Error).message)
-            disconnect()
-          }
-        }
-      )
-    }
-  }, [
-    nonceData?.nonce,
-    address,
-    isConnected,
-    isAuthenticated,
-    signMessage,
-    hasSignSuccess,
-    setHasSignSuccess,
-    disconnect
-  ])
-
-  useEffect(() => {
-    if (address && signData && hasSignSuccess && !isAuthenticated) {
-      login(
-        {
-          address,
-          signature: signData
-        },
-        {
-          onSuccess: () => {
-            setAuthenticated(true)
-          },
-          onError: () => {
-            disconnect()
-          }
-        }
-      )
-    }
-  }, [
-    address,
-    login,
-    signData,
-    hasSignSuccess,
-    isAuthenticated,
-    disconnect,
-    setAuthenticated
-  ])
 
   const handleDropdownAction = (key: Key) => {
     switch (key) {
@@ -124,7 +44,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
     }
   }
 
-  if (isConnected && isAuthenticated) {
+  if (isConnected) {
     return (
       <>
         <Dropdown className='bg-transparent' placement='bottom' offset={28}>
@@ -187,7 +107,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
       )}
       color='primary'
       onClick={handleClick}
-      isLoading={isGettingNonce || isLogging || isSigning}
+      isLoading={isConnecting || isReconnecting}
     >
       <span>Connect Wallet</span>
     </Button>
