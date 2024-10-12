@@ -21,14 +21,14 @@ import Layout from '@components/Layout/Layout'
 import { SelectItemSkeleton } from '@components/Skeleton/SelectItemSkeleton'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
-import { useGetSignature, useGetUser } from '@services/api'
+import { useGetIsInWhitelist, useGetSignature, useGetUser } from '@services/api'
 import { useGetProducts } from '@services/api/account'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
 import { serializeError } from 'eth-rpc-errors'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
-const IS_PRIVATE = process.env.NEXT_PUBLIC_IS_PRIVATE
+const IS_PRIVATE = Boolean(process.env.NEXT_PUBLIC_IS_PRIVATE)
 const TARGET_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 const CheckoutPage = () => {
@@ -45,6 +45,11 @@ const CheckoutPage = () => {
   const { data: userData } = useGetUser(address, { enabled: !!address })
   const { data: allProducts = [], isLoading: isLoadingProducts } =
     useGetProducts()
+  const { data: whitelistData } = useGetIsInWhitelist(address, {
+    enabled: !!address && IS_PRIVATE
+  })
+
+  console.log(whitelistData)
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
   const [isAblePay, setIsAblePay] = useState(true)
@@ -162,6 +167,11 @@ const CheckoutPage = () => {
 
     if (!selectedProducts.length) return
 
+    if (IS_PRIVATE && !whitelistData?.isWhitelisted) {
+      toast.info('You are not in the whitelist')
+      return
+    }
+
     console.log('existing chainId: ', chainId, TARGET_CHAIN_ID)
     if (chainId !== Number(TARGET_CHAIN_ID)) {
       console.log('going to switch chain')
@@ -206,6 +216,7 @@ const CheckoutPage = () => {
     isConnected,
     address,
     selectedProducts.length,
+    whitelistData?.isWhitelisted,
     chainId,
     accountBalance,
     amount,
@@ -241,8 +252,7 @@ const CheckoutPage = () => {
       quantity: product.quantity
     }))
 
-    const functionName =
-      IS_PRIVATE === 'true' ? 'payPrivateSale' : 'payPublicSale'
+    const functionName = IS_PRIVATE ? 'payPrivateSale' : 'payPublicSale'
 
     console.log('going to pay: ', amount)
     payContract(

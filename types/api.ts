@@ -195,3 +195,7 @@ export type ApiRewardHistoryResponse = {
   page: number
   data: RewardHistoryItem[]
 }
+
+export type ApiInWhitelistResponse = {
+  isWhitelisted: boolean
+}

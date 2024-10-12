@@ -8,6 +8,7 @@ import { Address } from 'viem'
 
 import {
   ApiHoldingsResponse,
+  ApiInWhitelistResponse,
   ApiRewardHistoryResponse,
   ApiUserResponse
 } from '@type/api'
@@ -98,6 +99,29 @@ export const useGetUserHolding = (
   return useQuery<ApiHoldingsResponse, Error>({
     queryKey: ['user', 'holding', address],
     queryFn: () => getUserHolding(address),
+    ...options
+  })
+}
+
+export const getIsInWhitelist = async (
+  address?: Address
+): Promise<ApiInWhitelistResponse> => {
+  try {
+    const url = `/users/is-in-whitelist/${address}`
+    const { data } = await axios.get(url)
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const useGetIsInWhitelist = (
+  address?: Address,
+  options?: Partial<UseQueryOptions<ApiInWhitelistResponse, Error>>
+) => {
+  return useQuery<ApiInWhitelistResponse, Error>({
+    queryKey: ['user', 'whitelist', address],
+    queryFn: () => getIsInWhitelist(address),
     ...options
   })
 }
