@@ -64,7 +64,7 @@ export const getRewardsHistory = async (
   pageSize = 20
 ): Promise<ApiRewardHistoryResponse> => {
   const { data } = await axios.get(
-    `/rewards/${address}?page=${page}&pageSize=${pageSize}`
+    `/user/rewards/${address}?page=${page}&pageSize=${pageSize}`
   )
 
   return data
