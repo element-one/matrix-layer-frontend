@@ -28,7 +28,7 @@ import { serializeError } from 'eth-rpc-errors'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
-const IS_PRIVATE = Boolean(process.env.NEXT_PUBLIC_IS_PRIVATE)
+const IS_PRIVATE = process.env.NEXT_PUBLIC_IS_PRIVATE === 'true'
 const TARGET_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 const CheckoutPage = () => {
