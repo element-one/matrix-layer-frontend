@@ -10,13 +10,11 @@ import {
   PopoverTrigger
 } from '@nextui-org/react'
 import clsx from 'clsx'
-import { useAccount } from 'wagmi'
+import { useAccount, useDisconnect } from 'wagmi'
 
 import { Button, ConnectWalletButton } from '@components/Button'
 import { MenuItemIcon } from '@components/Icon/MenuItemsIcon'
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
-import { useDisconnect } from '@hooks/useDisconnect'
 
 import { MenuList } from './ProfileMenu'
 
@@ -28,7 +26,6 @@ const Header: FC<HeaderProps> = ({ className }) => {
   const { asPath } = useRouter()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
-  const { isAuthenticated } = useAuth()
   const router = useRouter()
   const { showModal } = useModal()
 
@@ -130,7 +127,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                 })}
               </div>
 
-              {isAuthenticated && isConnected ? (
+              {isConnected ? (
                 <>
                   <Button
                     onClick={handleMyAccountButtonClick}

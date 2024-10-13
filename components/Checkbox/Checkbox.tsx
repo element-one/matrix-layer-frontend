@@ -11,6 +11,6 @@ const Checkbox = extendVariants(NextCheckbox, {
       }
     }
   }
-});
+})
 
 export default Checkbox

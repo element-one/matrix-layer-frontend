@@ -24,9 +24,12 @@ export const PaySuccessModal = () => {
     handleClose()
   }
 
-  useInterval(() => {
-    setCount(count - 1)
-  }, count > 0 ? 1000 : null)
+  useInterval(
+    () => {
+      setCount(count - 1)
+    },
+    count > 0 ? 1000 : null
+  )
 
   return (
     <Modal
@@ -38,15 +41,22 @@ export const PaySuccessModal = () => {
         closeButton: 'hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
     >
-      <ModalContent
-        className='bg-co-bg-1 border border-co-border-gray text-co-text-1 py-10'
-      >
+      <ModalContent className='bg-co-bg-1 border border-co-border-gray text-co-text-1 py-10'>
         <ModalBody className='flex flex-col items-center justify-center gap-8'>
           <div className='font-semibold text-[32px]'>Payment successful</div>
 
           <div className='flex flex-col items-center justify-center gap-2'>
-            <Button disabled={count > 0} color='primary' className='font-semibold mb-2 text-lg px-10 h-[48px]' onClick={handleButtonClick}>View My Orders</Button>
-            {count > 0 && <div className='text-sm text-co-text-3'>{count} S</div>}
+            <Button
+              disabled={count > 0}
+              color='primary'
+              className='font-semibold mb-2 text-lg px-10 h-[48px]'
+              onClick={handleButtonClick}
+            >
+              View My Orders
+            </Button>
+            {count > 0 && (
+              <div className='text-sm text-co-text-3'>{count} S</div>
+            )}
           </div>
         </ModalBody>
       </ModalContent>

@@ -32,6 +32,7 @@ export type ApiUser = {
   referredBy: string | null
   totalCommission: string
   updatedAt: string
+  referredByUserAddress?: string
 }
 
 export type ApiWalletLoginParams = {
@@ -66,6 +67,7 @@ export type ApiPaymentData = {
   transactionHash: string
   type: ProductType
   updatedAt: string
+  shippingAddress: IAddress
 }
 
 export type ApiPayment = {
@@ -111,6 +113,8 @@ export type ApiSaveAddressParams = {
   province: string
   country: string
   phoneNumber: string
+  countryCode: string
+  areaCode: string
   isDefault: boolean
 }
 
@@ -129,6 +133,8 @@ export type IAddress = {
   province: string
   country: string
   phoneNumber: string
+  countryCode: string
+  areaCode: string
   isDefault: boolean
   createdAt: string
   deletedAt: string
@@ -138,8 +144,9 @@ export type IAddress = {
 export type ApiGetAddressResponse = IAddress[]
 
 export type ApiHoldingsResponse = Partial<{
+  totalRewards: number
   availableRewards: number
-  wpnTokenAmount: number
+  mlpTokenAmount: number
   phone: number
   agent_limit: number
   agent_one: number
@@ -151,4 +158,44 @@ export type ApiErrorResponse = {
   error: string
   message: string[]
   statusCode: number
+}
+
+export type ApiGetSignatureResponse = {
+  signature: string
+  isWhitelisted: boolean
+}
+
+export type ApiConfirmDeliveryResponse = {
+  createdAt: string
+  deletedAt: string
+  id: string
+  name: string
+  price: string
+  quantity: number
+  status: string
+  totalPrice: string
+  transactionHash: string
+  type: string
+  updatedAt: string
+}
+
+export type RewardHistoryItem = {
+  claimedAmount: string
+  createdAt: string
+  deletedAt: string
+  id: string
+  status: string
+  updatedAt: string
+  address: string
+}
+
+export type ApiRewardHistoryResponse = {
+  total: number
+  pageSize: number
+  page: number
+  data: RewardHistoryItem[]
+}
+
+export type ApiInWhitelistResponse = {
+  isWhitelisted: boolean
 }

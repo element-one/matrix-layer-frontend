@@ -4,70 +4,46 @@ import {
   useQuery,
   UseQueryOptions
 } from '@tanstack/react-query'
+import { Address } from 'viem'
 
-import { ApiProofResponse, ApiUserResponse } from '@type/api'
+import {
+  ApiHoldingsResponse,
+  ApiInWhitelistResponse,
+  ApiRewardHistoryResponse,
+  ApiUserResponse
+} from '@type/api'
 
 import axios from '../axios/client'
 
-export const getMe = async () => {
+export const getUser = async (address?: Address) => {
   try {
-    const { data } = await axios.get('/users/me')
+    const { data } = await axios.get(`/users/${address}`)
     return data
   } catch (err) {
     throw err
   }
 }
 
-export const useGetMe = (
+export const useGetUser = (
+  address?: Address,
   options?: Partial<UseQueryOptions<ApiUserResponse, any, any>> //eslint-disable-line
 ) => {
   return useQuery<ApiUserResponse, Error>({
-    queryKey: ['user', 'me'],
-    queryFn: () => getMe(),
+    queryKey: ['user', address],
+    queryFn: () => getUser(address),
     ...options
   })
 }
 
-export const verifyIsInWhitelist = async () => {
-  try {
-    const url = '/users/is-in-whitelist'
-    const { data } = await axios.get(url)
-    return data
-  } catch (err) {
-    throw err
-  }
-}
-
-export const useVerifyIsInWhitelist = () => {
-  return useMutation<boolean, Error>({
-    mutationFn: () => verifyIsInWhitelist(),
-    mutationKey: ['verify', 'is in whitelist']
-  })
-}
-
-export const getProof = async () => {
-  try {
-    const { data } = await axios.get(`/users/proof`)
-    return data
-  } catch (err) {
-    throw err
-  }
-}
-
-export const useGetProof = (
-  address?: string,
-  options?: Partial<UseQueryOptions<ApiProofResponse, any, any>> //eslint-disable-line
+export const patchReferralCode = async (
+  referralCode: string,
+  signature: string
 ) => {
-  return useQuery<ApiProofResponse, Error>({
-    queryKey: ['user', 'proof', address],
-    queryFn: () => getProof(),
-    ...options
+  const url = `/users/referral`
+  const { data } = await axios.patch<ApiUserResponse>(url, {
+    referralCode,
+    signature
   })
-}
-
-export const patchReferralCode = async (referralCode: string) => {
-  const url = `/users/referrer/${referralCode}`
-  const { data } = await axios.patch<ApiUserResponse>(url)
 
   return data
 }
@@ -76,9 +52,76 @@ export const usePatchReferralCode = (
   referralCode: string,
   options?: Partial<UseMutationOptions<ApiUserResponse, any, any>> //eslint-disable-line
 ) => {
-  return useMutation<ApiUserResponse, Error>({
-    mutationFn: () => patchReferralCode(referralCode),
+  return useMutation<ApiUserResponse, Error, { signature: string }>({
+    mutationFn: ({ signature }) => patchReferralCode(referralCode, signature),
     mutationKey: ['patch', 'referralCode', referralCode],
+    ...options
+  })
+}
+
+export const getRewardsHistory = async (
+  address: Address,
+  page = 1,
+  pageSize = 20
+): Promise<ApiRewardHistoryResponse> => {
+  const { data } = await axios.get(
+    `/user/rewards/${address}?page=${page}&pageSize=${pageSize}`
+  )
+
+  return data
+}
+
+export const useGetRewardsHistory = (
+  address: Address,
+  page: number,
+  pageSize = 6,
+  options?: Partial<UseQueryOptions<ApiRewardHistoryResponse, Error>>
+) => {
+  return useQuery<ApiRewardHistoryResponse, Error>({
+    queryKey: ['history', 'rewards', address, page, pageSize],
+    queryFn: () => getRewardsHistory(address, page, pageSize),
+    ...options
+  })
+}
+
+export const getUserHolding = async (
+  address?: Address
+): Promise<ApiHoldingsResponse> => {
+  const { data } = await axios.get(`/users/holdings/${address}`)
+
+  return data
+}
+
+export const useGetUserHolding = (
+  address?: Address,
+  options?: Partial<UseQueryOptions<ApiHoldingsResponse, Error>>
+) => {
+  return useQuery<ApiHoldingsResponse, Error>({
+    queryKey: ['user', 'holding', address],
+    queryFn: () => getUserHolding(address),
+    ...options
+  })
+}
+
+export const getIsInWhitelist = async (
+  address?: Address
+): Promise<ApiInWhitelistResponse> => {
+  try {
+    const url = `/users/is-in-whitelist/${address}`
+    const { data } = await axios.get(url)
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const useGetIsInWhitelist = (
+  address?: Address,
+  options?: Partial<UseQueryOptions<ApiInWhitelistResponse, Error>>
+) => {
+  return useQuery<ApiInWhitelistResponse, Error>({
+    queryKey: ['user', 'whitelist', address],
+    queryFn: () => getIsInWhitelist(address),
     ...options
   })
 }

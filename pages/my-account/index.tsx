@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import {
   Pagination,
   Table,
@@ -7,101 +8,42 @@ import {
   TableCell,
   TableColumn,
   TableHeader,
-  TableRow
+  TableRow,
+  Tooltip
 } from '@nextui-org/react'
-import clsx from 'clsx'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
 
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
 import Layout from '@components/Layout/Layout'
+import HoldingItem from '@components/MyAccount/HoldingItem'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
 import {
   useActiveDelivery,
+  useConfirmDelivery,
   useGetPayments,
-  useGetUserHolding,
-  useSaveAddress
+  useGetUser,
+  useGetUserHolding
 } from '@services/api'
-import { ApiHoldingsResponse, ApiSaveAddressParams } from '@type/api'
+import { useStore } from '@store/store'
+import {
+  formatAddress,
+  processHoldings,
+  statusClass,
+  statusType
+} from '@utils/myAccount'
 import { convertTypeToName } from '@utils/payment'
 import { tn } from '@utils/tn'
+import dayjs from 'dayjs'
 
 const gradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 const gradientBorderClass =
   'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
-
-const holding_temp = [
-  {
-    title: 'WORLD PHONE',
-    count: 0,
-    icon: '/images/product/phone21.png',
-    key: 'phone'
-  },
-  {
-    title: 'WPN TOKEN',
-    count: 0,
-    icon: '/images/account/wpn-token.png',
-    key: 'wpnTokenAmount'
-  },
-  {
-    title: 'REWARDS',
-    count: 0,
-    icon: '/images/account/rewards-icon.png',
-    key: 'availableRewards'
-  },
-  {
-    title: 'AI AGENT ULTRA',
-    count: 4,
-    icon: '/images/product/ai_agent_ultra.png',
-    key: 'agent_ultra'
-  },
-  {
-    title: 'AI AGENT ONE',
-    count: 0,
-    icon: '/images/product/ai_agent_one.png',
-    key: 'agent_one'
-  },
-  {
-    title: 'AI AGENT PRO',
-    count: 0,
-    icon: '/images/product/ai_agent_pro.png',
-    key: 'agent_pro'
-  }
-]
-
-const processHoldings = (holdings: ApiHoldingsResponse = {}) => {
-  return holding_temp.map((item) => {
-    const matchedValue =
-      Object.entries(holdings).find(([key]) => key === item.key)?.[1] || 0
-
-    return {
-      ...item,
-      count:
-        item.key === 'wpnTokenAmount' || item.key === 'availableRewards'
-          ? Number(matchedValue) / 1000000
-          : matchedValue
-    }
-  })
-}
-
-const statusClass = (status: string) => {
-  switch (status) {
-    case 'completed':
-      return 'border-[#34D399] bg-[rgba(4,120,87,0.20)]'
-    case 'paid':
-      return 'border-[#FACC15] bg-[rgba(161,98,7,0.20)]'
-    case 'shipped':
-      return 'border-[#fff] bg-[#151515]'
-    case 'unpaid':
-      return 'border-[#00AEEF] bg-[rgba(0,174,239,0.20)]'
-    default:
-      return ''
-  }
-}
 
 const statusCommonClass =
   'w-[103px] h-[34px] rounded-[24px] flex items-center justify-center font-semibold capitalize text-sm border'
@@ -109,26 +51,58 @@ const statusCommonClass =
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 
 const MyAccount = () => {
-  const { user, isAuthenticated } = useAuth()
-
+  const { isConnected, address } = useAccount()
+  const router = useRouter()
   const [page, setPage] = useState(1)
 
-  const { data, refetch: refetchOrders } = useGetPayments(page, 6, {
-    enabled: isAuthenticated
-  })
-  const { data: holdings } = useGetUserHolding({
-    enabled: isAuthenticated
-  })
+  const [selectedOrderId, setSelectedOrderId] = useState('')
+
+  const { data: userData } = useGetUser(address, { enabled: !!address })
+  const { data, refetch: refetchOrders } = useGetPayments(
+    address as Address,
+    page,
+    6,
+    {
+      enabled: !!address
+    }
+  )
+
+  const { data: holdings, refetch: refetchHoldings } = useGetUserHolding(
+    address,
+    {
+      enabled: !!address
+    }
+  )
+  const { setHoldings, setActiveLoading } = useStore((state) => ({
+    setHoldings: state.setHoldings,
+    setActiveLoading: state.setConfirmLoading
+  }))
 
   const { showModal, hideModal } = useModal()
-  const { mutateAsync: save } = useSaveAddress()
-  const { mutateAsync: activeDelivery } = useActiveDelivery()
+  const { mutateAsync: activeDelivery, isPending: isActiveLoading } =
+    useActiveDelivery()
+  const { mutateAsync: confirmDelivery, isPending: isConfirmLoading } =
+    useConfirmDelivery()
 
   const orders = useMemo(() => data?.data || [], [data])
   const totalPage = useMemo(
     () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
     [data]
   )
+
+  useEffect(() => {
+    if (!isConnected) {
+      router.push('/')
+    }
+  }, [isConnected, router])
+
+  useEffect(() => {
+    setHoldings(holdings || {})
+  }, [holdings, setHoldings])
+
+  useEffect(() => {
+    setActiveLoading(isActiveLoading)
+  }, [isActiveLoading, setActiveLoading])
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -140,18 +114,37 @@ const MyAccount = () => {
     }
   }
 
-  const handleOpenShippingModal = () => {
-    showModal(ModalType.SHIPPING_ADDRESS_MODAL, {
-      onSubmit: async (formData: ApiSaveAddressParams) => {
+  const handleOpenShippingModal = (paymentId: string) => () => {
+    showModal(ModalType.MANAGE_ADDRESS_MODAL, {
+      type: 'shipping',
+      onConfirm: async (addressId) => {
         try {
-          const res = await save(formData)
-          await activeDelivery({ id: res.id })
+          await activeDelivery({ paymentId, addressId })
           await refetchOrders()
           hideModal()
         } catch (e) {
           console.log(e)
           toast.error('Please try again')
         }
+      }
+    })
+  }
+
+  const handleConfirmDeliveryModal = (paymentId: string) => async () => {
+    try {
+      setSelectedOrderId(paymentId)
+      await confirmDelivery({ paymentId })
+      await refetchOrders()
+    } catch (e) {
+      console.log(e)
+      toast.error('Confirm receipt failed, please try again')
+    }
+  }
+
+  const handleOpenRewardsModal = () => {
+    showModal(ModalType.REWARDS_MODAL, {
+      onClaimSuccess: async () => {
+        await refetchHoldings()
       }
     })
   }
@@ -193,13 +186,13 @@ const MyAccount = () => {
                   justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
-                  {user?.referralCode}
+                  {userData?.referralCode}
                 </div>
                 <Button
                   className='shrink-0 h-10 rounded-[35px] min-w-fit bg-transparent border-[#666] text-white
                     text-base font-semibold'
                   variant='bordered'
-                  onClick={handleCopy(user?.referralCode || '')}
+                  onClick={handleCopy(userData?.referralCode || '')}
                 >
                   <span className='md:inline hidden'>Copy Code</span>
                   <CopyIcon />
@@ -221,14 +214,14 @@ const MyAccount = () => {
                   items-center justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
-                  {WEB_URL + '/referral?code=' + user?.referralCode ?? ''}
+                  {WEB_URL + '/referral?code=' + userData?.referralCode ?? ''}
                 </div>
                 <Button
                   className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
                     text-base font-semibold'
                   variant='bordered'
                   onClick={handleCopy(
-                    WEB_URL + '/referral?code=' + user?.referralCode ?? ''
+                    WEB_URL + '/referral?code=' + userData?.referralCode ?? ''
                   )}
                 >
                   <span className='md:inline hidden'>Copy Link</span>
@@ -247,38 +240,21 @@ const MyAccount = () => {
           >
             I own
           </Text>
-          <div className='mt-6 grid grid-cols-2 md:grid-cols-3 gap-6'>
-            {processHoldings(holdings).map((item) => (
-              <div
-                key={item.title}
-                className={`px-8 py-6 border-2 rounded-[20px] flex flex-row justify-between items-center
-                  ${gradientBorderClass}`}
-              >
-                <div className='flex flex-col md:flex-row items-center md:justify-between w-full gap-x-4 gap-y-2'>
-                  <img
-                    src={item.icon}
-                    alt={item.title}
-                    className='h-[77px] md:h-[86px]'
-                  />
-                  <div className='flex flex-col-reverse md:flex-col items-center md:items-end'>
-                    <Text className='text-[14px] md:text-[20px] text-gray-a5 font-semibold whitespace-nowrap'>
-                      {item.title}
-                    </Text>
-                    <Text
-                      className={clsx(
-                        'font-semibold mt-1 grow !leading-[32px] md:!leading-[72px]',
-                        String(item.count).length > 5
-                          ? 'text-[16px] md:text-[20px]'
-                          : 'text-[24px] md:text-[48px]'
-                      )}
-                    >
-                      {item.count}
-                    </Text>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          {processHoldings(holdings).map((group, index) => (
+            <div
+              key={index}
+              className='grid mt-6 gap-6 grid-cols-1 md:grid-cols-3'
+            >
+              {group.map((item) => (
+                <HoldingItem
+                  OnClickItem={handleOpenRewardsModal}
+                  group={index}
+                  key={item.key}
+                  item={item}
+                />
+              ))}
+            </div>
+          ))}
         </Content>
       </Container>
       <Container className='mb-[200px]'>
@@ -313,9 +289,6 @@ const MyAccount = () => {
             >
               My Order
             </Text>
-            <Button className='rounded-[32px] h-12 text-black text-base font-semibold bg-white'>
-              My delivery status
-            </Button>
           </div>
           <Table
             aria-label='Example table with dynamic content'
@@ -347,7 +320,7 @@ const MyAccount = () => {
             <TableHeader>
               <TableColumn>Date</TableColumn>
               <TableColumn>Item</TableColumn>
-              {/* <TableColumn>Receiver Address</TableColumn> */}
+              <TableColumn>Receiver Address</TableColumn>
               <TableColumn>Total</TableColumn>
               <TableColumn>Status</TableColumn>
             </TableHeader>
@@ -355,7 +328,7 @@ const MyAccount = () => {
               {orders.map((order, index) => (
                 <TableRow key={index}>
                   <TableCell className='whitespace-nowrap'>
-                    {order.createdAt}
+                    {dayjs(order.createdAt).format('YYYY-MM-DD HH:mm:ss')}
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center w-[max-content]'>
@@ -365,11 +338,11 @@ const MyAccount = () => {
                         alt='ai-agent-nft-1'
                       />
                       <Text className='text-[18px] whitespace-nowrap w-fit'>
-                        {convertTypeToName(order.type)}
+                        {convertTypeToName(order.type)} x {order.quantity}
                       </Text>
                     </div>
                   </TableCell>
-                  {/* <TableCell>{order.name}</TableCell> */}
+                  <TableCell>{formatAddress(order.shippingAddress)}</TableCell>
                   <TableCell className='whitespace-nowrap'>
                     {(
                       (Number(order.price) / 1000000) *
@@ -378,18 +351,45 @@ const MyAccount = () => {
                     &nbsp;USDT
                   </TableCell>
                   <TableCell className='whitespace-nowrap'>
-                    {order.type === 'phone' && order.status === 'paid' ? (
+                    {statusType(order) === 'confirm' && (
+                      <>
+                        <Button
+                          onClick={handleOpenShippingModal(order.id)}
+                          className='text-[14px] p-2 hidden'
+                        >
+                          Submit Address
+                        </Button>
+                        <span
+                          className={`${statusCommonClass} ${statusClass(order.status)}`}
+                        >
+                          {order?.status}
+                        </span>
+                      </>
+                    )}
+
+                    {statusType(order) === 'shipped' && (
                       <Button
-                        onClick={handleOpenShippingModal}
+                        isLoading={
+                          isConfirmLoading && selectedOrderId === order.id
+                        }
+                        onClick={handleConfirmDeliveryModal(order.id)}
                         className='text-[14px] p-2'
                       >
-                        Submit Address
+                        Confirm Receipt
                       </Button>
-                    ) : (
+                    )}
+
+                    {statusType(order) === 'other' && (
                       <span
                         className={`${statusCommonClass} ${statusClass(order.status)}`}
                       >
-                        {order?.status}
+                        {order?.status === 'received' ? (
+                          <Tooltip content='Once your phone is ready to ship you will be asked to submit a shipping address.'>
+                            {order?.status}
+                          </Tooltip>
+                        ) : (
+                          order?.status
+                        )}
                       </span>
                     )}
                   </TableCell>

@@ -4,7 +4,9 @@ import { useRouter } from 'next/router'
 import { Address } from 'viem'
 import {
   useAccount,
+  useChainId,
   useReadContract,
+  useSwitchChain,
   useWaitForTransactionReceipt,
   useWriteContract
 } from 'wagmi'
@@ -18,38 +20,60 @@ import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { SelectItemSkeleton } from '@components/Skeleton/SelectItemSkeleton'
 import { Text } from '@components/Text'
-import { useAuth } from '@contexts/auth'
 import { ModalType, useModal } from '@contexts/modal'
+import { useGetIsInWhitelist, useGetSignature, useGetUser } from '@services/api'
 import { useGetProducts } from '@services/api/account'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
+import { serializeError } from 'eth-rpc-errors'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS
+const IS_PRIVATE = process.env.NEXT_PUBLIC_IS_PRIVATE === 'true'
+const TARGET_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 const CheckoutPage = () => {
   const { isConnected, address } = useAccount()
+  const { switchChain } = useSwitchChain()
+  const chainId = useChainId()
   const { showModal } = useModal()
 
   const { query } = useRouter()
 
   const [isCopied, setIsCopied] = useState(false)
   const [products, setProducts] = useState<IProduct[]>([])
-  const [selectedProductType, setSelectedProductType] = useState('')
 
-  const { isAuthenticated } = useAuth()
-
+  const { data: userData } = useGetUser(address, { enabled: !!address })
   const { data: allProducts = [], isLoading: isLoadingProducts } =
-    useGetProducts({
-      enabled: isAuthenticated
-    })
+    useGetProducts()
+  const { data: whitelistData } = useGetIsInWhitelist(address, {
+    enabled: !!address && IS_PRIVATE
+  })
 
   const [successModalHasShown, setSuccessModalHasShown] = useState(false)
+  const [isAblePay, setIsAblePay] = useState(true)
 
-  useEffect(() => {
-    if (query?.type) {
-      setSelectedProductType(query.type as string)
+  const { selectedProducts, amount, amountInUSDT } = useMemo(() => {
+    const selectedProducts = products.filter((p) => p.quantity)
+    return {
+      selectedProducts,
+      amountInUSDT: selectedProducts.reduce(
+        (sum, product) => sum + Number(product.priceInUsdt) * product.quantity,
+        0
+      ),
+      amount: selectedProducts.reduce(
+        (sum, product) => sum + Number(product.price) * product.quantity,
+        0
+      )
     }
-  }, [query])
+  }, [products])
+
+  const { refetch: getSignature } = useGetSignature(
+    address as Address,
+    amount,
+    {
+      enabled: false
+    }
+  )
 
   const { data: accountBalance, refetch: refetchAccount } = useReadContract({
     abi: USDT_ABI,
@@ -95,11 +119,6 @@ const CheckoutPage = () => {
     }
   }, [txData, showModal, successModalHasShown])
 
-  const selectedProduct: IProduct | undefined = useMemo(
-    () => products.find((p) => p.type === selectedProductType) ?? undefined,
-    [products, selectedProductType]
-  )
-
   useEffect(() => {
     if (allProducts.length) {
       setProducts(() =>
@@ -109,12 +128,12 @@ const CheckoutPage = () => {
             price: item.price,
             priceInUsdt: item.price / 1000000,
             type: item.type,
-            quantity: 0
+            quantity: query.type === item.type ? 1 : 0
           }))
           .filter((v) => v.name)
       )
     }
-  }, [allProducts])
+  }, [allProducts, query])
 
   useEffect(() => {
     if (isCopied) {
@@ -138,17 +157,35 @@ const CheckoutPage = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
 
-  const handlePayButtonClick = async () => {
+  const handlePayButtonClick = useCallback(async () => {
     if (!isConnected || !address) {
       toast.info('Please connect your wallet first')
       return
     }
 
-    if (!selectedProduct) return
+    if (!selectedProducts.length) return
 
-    const amount = Number(selectedProduct.price) * selectedProduct.quantity
+    if (IS_PRIVATE && !whitelistData?.isWhitelisted) {
+      toast.info('You are not in the whitelist')
+      return
+    }
+
+    console.log('existing chainId: ', chainId, TARGET_CHAIN_ID)
+    if (chainId !== Number(TARGET_CHAIN_ID)) {
+      console.log('going to switch chain')
+      try {
+        switchChain({
+          chainId: Number(TARGET_CHAIN_ID)
+        })
+      } catch (err) {
+        console.log(err)
+      }
+      return
+    }
 
     if (accountBalance && Number(accountBalance) >= amount) {
+      setIsAblePay(true)
+
       approveContract(
         {
           abi: USDT_ABI,
@@ -162,30 +199,65 @@ const CheckoutPage = () => {
             refetchAccount()
           },
           onError(err: Error) {
-            console.log(err.message)
-            toast.error('Please try again')
+            const serializedError = serializeError(err)
+            console.log({ serializedError })
+            toast.error(
+              (serializedError?.data as any)?.originalError?.shortMessage
+            )
           }
         }
       )
     } else {
       toast.info('your account balance is not enough to pay')
     }
-  }
+  }, [
+    isConnected,
+    address,
+    selectedProducts.length,
+    whitelistData?.isWhitelisted,
+    chainId,
+    accountBalance,
+    amount,
+    switchChain,
+    approveContract,
+    refetchAccount
+  ])
 
-  const handlePay = useCallback(() => {
-    if (!selectedProduct) return
+  const handlePay = useCallback(async () => {
+    console.log('existing chainId: ', chainId, TARGET_CHAIN_ID)
+    if (chainId !== Number(TARGET_CHAIN_ID)) {
+      switchChain({
+        chainId: Number(TARGET_CHAIN_ID)
+      })
+      return
+    }
 
-    const amount = selectedProduct.price * selectedProduct.quantity
+    if (!selectedProducts.length || !amount) return
 
-    const type = convertTypeToInt(selectedProduct.type)
-    if (type === -1) return
+    const { data } = await getSignature()
+
+    const signature = data?.signature || ''
+    const isWhitelisted = data?.isWhitelisted || false
+
+    const referral =
+      userData?.referredByUserAddress ||
+      '0x0000000000000000000000000000000000000000'
+
+    if (!signature) return
+
+    const orders = selectedProducts.map((product) => ({
+      deviceType: convertTypeToInt(product.type),
+      quantity: product.quantity
+    }))
+
+    const functionName = IS_PRIVATE ? 'payPrivateSale' : 'payPublicSale'
 
     console.log('going to pay: ', amount)
     payContract(
       {
         abi: PAYMENT_ABI,
-        functionName: 'payPublicSale',
-        args: [String(amount), type, selectedProduct.quantity],
+        functionName,
+        args: [String(amount), orders, referral, isWhitelisted, signature],
         address: PAYMENT_ADDRESS as Address
       },
       {
@@ -193,18 +265,30 @@ const CheckoutPage = () => {
           console.log('pay contract success')
         },
         onError(err) {
-          console.log(err.message)
-          toast.error('pay: Please try again')
+          const serializedError = serializeError(err)
+          console.log({ serializedError })
+          toast.error(
+            (serializedError?.data as any)?.originalError?.shortMessage
+          )
         }
       }
     )
-  }, [selectedProduct, payContract])
+  }, [
+    chainId,
+    selectedProducts,
+    amount,
+    getSignature,
+    userData?.referredByUserAddress,
+    payContract,
+    switchChain
+  ])
 
   useEffect(() => {
-    if (approveData) {
+    if (approveData && isAblePay) {
       handlePay()
+      setIsAblePay(false)
     }
-  }, [approveData, handlePay])
+  }, [approveData, handlePay, isAblePay])
 
   const isPaying =
     isApprovingContract ||
@@ -314,8 +398,6 @@ const CheckoutPage = () => {
                     key={item.type}
                     products={products}
                     product={item}
-                    selectedProductType={selectedProductType}
-                    onChangeProduct={setSelectedProductType}
                     onChangeProductQuantity={setProducts}
                   />
                 ))
@@ -334,22 +416,23 @@ const CheckoutPage = () => {
               Subtotal
             </Text>
             <div>
-              <Text
-                className='text-[16px] md:text-[20px] text-gray-78 mb-[12px] font-normal md:font-medium
-                  md:mb-[24px] leading-none text-right'
-              >
-                {selectedProduct
-                  ? `${selectedProduct.quantity} x ${selectedProduct.priceInUsdt}`
-                  : 0}
-                &nbsp;USDT
-              </Text>
+              <div>
+                {selectedProducts.map((product) => (
+                  <Text
+                    key={product.type}
+                    className='text-[16px] md:text-[20px] text-gray-78 mb-[12px] font-normal md:font-medium
+                      md:mb-[24px] leading-none text-right'
+                  >
+                    {product.name} {product.quantity} x {product.priceInUsdt}
+                    &nbsp;USDT
+                  </Text>
+                ))}
+              </div>
               <Text
                 className='text-[24px] md:text-[32px] font-semibold md:font-semibold text-white
                   leading-none text-right'
               >
-                {selectedProduct
-                  ? selectedProduct.priceInUsdt * selectedProduct.quantity
-                  : 0}
+                {amountInUSDT}
                 &nbsp;USDT
               </Text>
             </div>
@@ -388,7 +471,7 @@ const CheckoutPage = () => {
             </Text>
             <PaymentField
               isPaying={isPaying}
-              selectedProduct={selectedProduct}
+              amount={amountInUSDT}
               onPayButtonClick={handlePayButtonClick}
             />
           </div>

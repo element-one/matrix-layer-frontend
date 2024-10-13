@@ -12,10 +12,9 @@ import {
 } from '@rainbow-me/rainbowkit'
 import { binanceWallet, okxWallet } from '@rainbow-me/rainbowkit/wallets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { bsc, bscTestnet } from 'viem/chains'
+import { bsc, bscTestnet, mainnet } from 'viem/chains'
 import { WagmiProvider } from 'wagmi'
 
-import { AuthProvider } from '@contexts/auth'
 import { ModalProvider } from '@contexts/modal'
 
 import '@rainbow-me/rainbowkit/styles.css'
@@ -49,8 +48,8 @@ const poppins = Poppins({
 const { wallets } = getDefaultWallets()
 
 const config = getDefaultConfig({
-  appName: 'wphone',
-  projectId: 'e9ef74a338477056c42b653dcb081e86',
+  appName: 'matrix-layer',
+  projectId: '45ecc68adffe3012e792cfa6ee6ebc08',
   wallets: [
     ...wallets,
     {
@@ -58,13 +57,16 @@ const config = getDefaultConfig({
       wallets: [okxWallet, binanceWallet]
     }
   ],
-  chains: [process.env.NEXT_PUBLIC_APP_ENV === 'dev' ? bscTestnet : bsc],
+  chains:
+    process.env.NEXT_PUBLIC_APP_ENV === 'dev'
+      ? [bscTestnet, mainnet]
+      : [bsc, mainnet],
   ssr: true
 })
 
-export default function App({ Component, pageProps }: AppProps) {
-  const [queryClient] = React.useState(() => new QueryClient())
+const queryClient = new QueryClient()
 
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <style jsx global>{`
@@ -80,18 +82,17 @@ export default function App({ Component, pageProps }: AppProps) {
           <RainbowKitProvider>
             <NextUIProvider>
               <NextThemesProvider attribute='class' defaultTheme='light'>
-                <AuthProvider>
-                  <ModalProvider>
-                    <Head>
-                      <meta
-                        name='viewport'
-                        content='width=device-width, initial-scale=1'
-                      />
-                    </Head>
-                    <Component {...pageProps} />
-                    <ToastContainer />
-                  </ModalProvider>
-                </AuthProvider>
+                <ModalProvider>
+                  <Head>
+                    <title>Matrix Layer Protocol</title>
+                    <meta
+                      name='viewport'
+                      content='width=device-width, initial-scale=1'
+                    />
+                  </Head>
+                  <Component {...pageProps} />
+                  <ToastContainer />
+                </ModalProvider>
               </NextThemesProvider>
             </NextUIProvider>
           </RainbowKitProvider>

@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 
-import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
@@ -34,7 +33,7 @@ const advantages = [
   {
     title: 'AI Financial Management',
     description:
-      'WorldPhone serves as a hardware wallet that not only stores assets but continuously generates income for you through automated AI-driven investments.'
+      'Matrix Layer Phone serves as a hardware wallet that not only stores assets but continuously generates income for you through automated AI-driven investments.'
   }
 ]
 
@@ -130,14 +129,15 @@ const HomePage = () => {
                   alt='home_image_1'
                 />
               </div>
-              <Button
-                className='relative z-20 bottom-0 sm:bottom-[50px] text-[14px] sm:text-[32px] text-center
-                  p-2.5 sm:p-5 rounded-[15px] sm:rounded-[20px] translate-y-0
-                  sm:translate-y-[-6px] whitespace-normal'
+              <div
+                className='bg-gradient-button-1 text-black h-fit font-chakraPetch relative z-20 bottom-0
+                  sm:bottom-[50px] text-[14px] sm:text-[32px] text-center p-2.5 sm:p-5
+                  rounded-[15px] sm:rounded-[20px] translate-y-0 sm:translate-y-[-6px]
+                  whitespace-normal font-semibold'
               >
                 Unlock with Your Eyes,
                 <br className='sm:hidden' /> Connect with the Blockchain
-              </Button>
+              </div>
             </div>
           </Content>
         </div>
@@ -182,7 +182,7 @@ const HomePage = () => {
                 with Full-Chain Network Integration
               </Text>
               <Text className='text-[14px] font-normal lg:text-[22px] text-left w-[279px] sm:w-auto'>
-                Matrix Layer Protocol is designed to break the limitations of
+                Matrix Layer Phone is designed to break the limitations of
                 traditional mobile devices by deeply integrating blockchain
                 technology into smartphones through innovative hardware and
                 software, simplifying users&apos; access to Web3 and enhancing
@@ -221,7 +221,7 @@ const HomePage = () => {
             </span>
             <span className='hidden sm:inline'> </span>
             <br className='sm:hidden' />
-            <span className='#fff'>Matrix Layer Protocol</span>
+            <span className='#fff'>Matrix Layer Phone</span>
           </Text>
           <div className='flex flex-col-reverse sm:flex-row justify-between items-center mb-[50px]'>
             <div className='w-full sm:w-[630px]'>
@@ -232,9 +232,12 @@ const HomePage = () => {
                 The world&apos;s first mobile blockchain network node with iris
                 authentication.
               </Text>
-              <Button className='w-full p-2.5 rounded-lg text-[12px] sm:text-[24px]'>
+              <div
+                className='bg-gradient-button-1 text-black h-fit font-chakraPetch w-full p-2.5 rounded-lg
+                  text-[12px] sm:text-[24px] font-semibold text-center'
+              >
                 Safety and profitability coexist
-              </Button>
+              </div>
             </div>
             <img
               src='/images/home/home_image_2.webp'
@@ -255,9 +258,12 @@ const HomePage = () => {
               >
                 Ultimate privacy and industry-standard confidentiality.
               </Text>
-              <Button className='w-full p-2.5 rounded-lg text-[12px] sm:text-[24px]'>
+              <div
+                className='bg-gradient-button-1 text-black h-fit font-chakraPetch w-full p-2.5 rounded-lg
+                  text-[12px] sm:text-[24px] text-center font-semibold'
+              >
                 Iris login, identification information ZK encryption
-              </Button>
+              </div>
             </div>
           </div>
           <div>
@@ -393,7 +399,7 @@ const HomePage = () => {
             <span className='#fff'>How to join</span>
             <br className='sm:hidden' />
             <span className='clip-text bg-gradient-home-text-1'>
-              &nbsp;Matrix Layer Protocol&nbsp;
+              &nbsp;Matrix Layer Phone&nbsp;
             </span>
             <span className='#fff'>growth and maximize earnings? </span>
           </Text>

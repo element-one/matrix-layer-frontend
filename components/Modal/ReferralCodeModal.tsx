@@ -2,6 +2,7 @@ import { ChangeEventHandler, FC, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import clsx from 'clsx'
+import { useSignMessage } from 'wagmi'
 
 import { Button } from '@components/Button'
 import { ModalType, useModal } from '@contexts/modal'
@@ -23,8 +24,9 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
   const [referralCode, setReferralCode] = useState<string | undefined>(code)
   const { hideModal, isModalShown } = useModal()
   const [verifySuccess, setVerifySuccess] = useState(false)
+  const { signMessage } = useSignMessage()
 
-  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(
+  const { mutateAsync: patchReferralCode, isPending } = usePatchReferralCode(
     referralCode ?? '',
     {
       onSuccess() {
@@ -55,12 +57,25 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
     setReferralCode(e.target.value.toLowerCase())
   }
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (!referralCode) {
       return
     }
 
-    patchReferralCode()
+    signMessage(
+      {
+        message: `Referral Code: ${referralCode}`
+      },
+      {
+        onSuccess(data) {
+          patchReferralCode({ signature: data })
+        },
+        onError(err) {
+          console.log('sign error: ', err)
+          toast.error('signature error:' + (err as Error).message)
+        }
+      }
+    )
   }
 
   return (
