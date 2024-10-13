@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { Container, Content } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
@@ -155,12 +157,13 @@ const PrivacyPage = () => {
                 <Text>
                   If you have any questions about this Privacy Policy, please
                   contact us at{' '}
-                  <a
+                  <Link
                     href='https://matrixlayer.ai/contact'
                     className='text-blue-500 hover:underline'
+                    target='_blank'
                   >
                     https://matrixlayer.ai/contact
-                  </a>
+                  </Link>
                 </Text>
               </section>
             </div>
