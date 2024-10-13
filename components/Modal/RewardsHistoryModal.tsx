@@ -66,9 +66,8 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
       isDismissable={false}
       size='xl'
       placement='center'
-      scrollBehavior={'outside'}
       classNames={{
-        base: 'w-[1000px] !max-w-[80vw] md:mt-[500px]',
+        base: 'w-[1000px] !max-w-[80vw]',
         closeButton:
           'top-4 right-4 md:right-8 md:top-8 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
