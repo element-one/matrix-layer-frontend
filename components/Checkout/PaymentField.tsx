@@ -1,4 +1,5 @@
 import { ChangeEventHandler, FC, useState } from 'react'
+import Link from 'next/link'
 import { useAccount } from 'wagmi'
 
 import { Button } from '@components/Button'
@@ -79,9 +80,14 @@ const PaymentField: FC<PaymentFieldProps> = ({
         By clicking ‘PAY NOW’, I acknowledge that I am committing to
         pre-ordering a product that is not immediately available. I also confirm
         that I have reviewed and agree to the terms outlined in the{' '}
-        <GradientText>Privacy Policy</GradientText> and{' '}
-        <GradientText>Terms</GradientText> &{' '}
-        <GradientText>Conditions</GradientText>.
+        <Link href='/privacy'>
+          <GradientText>Privacy Policy</GradientText>
+        </Link>{' '}
+        and{' '}
+        <Link href='/terms'>
+          <GradientText>Terms</GradientText>
+        </Link>{' '}
+        & <GradientText>Conditions</GradientText>.
       </Text>
     </div>
   )
