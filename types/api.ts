@@ -162,7 +162,14 @@ export type ApiErrorResponse = {
 
 export type ApiGetSignatureResponse = {
   signature: string
-  isWhitelisted: boolean
+  payload: {
+    isWhitelisted: boolean
+    directPercentage: number
+    directReferral: string
+    levelPercentages: number[]
+    levelReferrals: string[]
+    totalAmount: number
+  }
 }
 
 export type ApiConfirmDeliveryResponse = {

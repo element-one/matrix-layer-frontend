@@ -237,9 +237,12 @@ const CheckoutPage = () => {
     const { data } = await getSignature()
 
     const signature = data?.signature || ''
-    const isWhitelisted = data?.isWhitelisted || false
+    const isWhitelisted = data?.payload.isWhitelisted || false
+    const directPercentage = data?.payload.directPercentage ?? 0
+    const levelReferrals = data?.payload.levelReferrals ?? []
+    const levelPercentages = data?.payload.levelPercentages ?? []
 
-    const referral =
+    const directReferral =
       userData?.referredByUserAddress ||
       '0x0000000000000000000000000000000000000000'
 
@@ -257,7 +260,16 @@ const CheckoutPage = () => {
       {
         abi: PAYMENT_ABI,
         functionName,
-        args: [String(amount), orders, referral, isWhitelisted, signature],
+        args: [
+          String(amount),
+          orders,
+          directReferral,
+          directPercentage,
+          levelReferrals,
+          levelPercentages,
+          isWhitelisted,
+          signature
+        ],
         address: PAYMENT_ADDRESS as Address
       },
       {
