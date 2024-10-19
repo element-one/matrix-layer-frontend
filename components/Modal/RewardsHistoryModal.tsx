@@ -5,6 +5,7 @@ import {
   ModalContent,
   ModalProps,
   Pagination,
+  Spinner,
   Table,
   TableBody,
   TableCell,
@@ -48,9 +49,14 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
   const { address } = useAccount()
   const [page, setPage] = useState(1)
 
-  const { data } = useGetRewardsHistory(address as Address, page, PAGE_SIZE, {
-    enabled: !!address
-  })
+  const { data, isLoading } = useGetRewardsHistory(
+    address as Address,
+    page,
+    PAGE_SIZE,
+    {
+      enabled: !!address
+    }
+  )
 
   const history = useMemo(() => data?.data || [], [data])
   const totalPage = useMemo(
@@ -93,7 +99,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
               <TableColumn>Reward</TableColumn>
               <TableColumn>Status</TableColumn>
             </TableHeader>
-            <TableBody>
+            <TableBody isLoading={isLoading} loadingContent={<Spinner />}>
               {history.map((item, index) => (
                 <TableRow key={index}>
                   <TableCell className='text-gray-150'>
