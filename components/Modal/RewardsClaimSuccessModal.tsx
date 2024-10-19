@@ -35,7 +35,6 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
       isDismissable={false}
       size='xl'
       placement='center'
-      scrollBehavior={'outside'}
       hideCloseButton
       classNames={{
         base: 'md:mt-[500px]',

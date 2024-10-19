@@ -85,9 +85,9 @@ const PaymentField: FC<PaymentFieldProps> = ({
         </Link>{' '}
         and{' '}
         <Link href='/terms'>
-          <GradientText>Terms</GradientText>
-        </Link>{' '}
-        & <GradientText>Conditions</GradientText>.
+          <GradientText>Terms & Conditions</GradientText>{' '}
+        </Link>
+        .
       </Text>
     </div>
   )
