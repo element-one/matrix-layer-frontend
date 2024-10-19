@@ -13,13 +13,15 @@ export interface ReferralCodeModalProps {
   onSkip?: () => void
   onVerifySuccess?: () => void
   code?: string
+  userHasReferred?: boolean
 }
 
 export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
   onClose,
   onSkip,
   onVerifySuccess,
-  code
+  code,
+  userHasReferred
 }) => {
   const [referralCode, setReferralCode] = useState<string | undefined>(code)
   const { hideModal, isModalShown } = useModal()
@@ -104,7 +106,7 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
               />
               <Button
                 color='primary'
-                disabled={!referralCode}
+                disabled={!referralCode || userHasReferred}
                 className={clsx(
                   'h-[52px] font-semibold text-xl',
                   !referralCode ? 'bg-[url(/)] bg-co-gray-3' : ''
@@ -114,6 +116,11 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
               >
                 Verify
               </Button>
+              {userHasReferred && (
+                <div className='text-co-text-success text-xs text-center md:text-sm font-semibold leading-6'>
+                  You&apos;ve already bound the referrer
+                </div>
+              )}
               {verifySuccess ? (
                 <div className='text-co-text-success text-xs text-center md:text-sm font-semibold leading-6'>
                   Code Valid and Invitation successfully recorded
@@ -123,7 +130,7 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
                   className='text-base leading-6 px-4 mx-auto underline cursor-pointer'
                   onClick={handleSkip}
                 >
-                  Skip
+                  {userHasReferred ? 'Back to Home' : 'Skip'}
                 </div>
               )}
             </div>
