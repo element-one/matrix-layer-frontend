@@ -54,7 +54,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
 
   const history = useMemo(() => data?.data || [], [data])
   const totalPage = useMemo(
-    () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
+    () => Math.ceil((data?.total || 1) / (data?.pageSize || PAGE_SIZE)),
     [data]
   )
 
