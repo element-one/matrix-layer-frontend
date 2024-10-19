@@ -118,7 +118,7 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
               </Button>
               {userHasReferred && (
                 <div className='text-co-text-success text-xs text-center md:text-sm font-semibold leading-6'>
-                  You&apos;ve already bound the referrer
+                  You already have a referral
                 </div>
               )}
               {verifySuccess ? (
