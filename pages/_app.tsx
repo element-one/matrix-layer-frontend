@@ -16,6 +16,7 @@ import { bsc, bscTestnet, mainnet } from 'viem/chains'
 import { WagmiProvider } from 'wagmi'
 
 import { ModalProvider } from '@contexts/modal'
+import { UserProvider } from '@contexts/user'
 
 import '@rainbow-me/rainbowkit/styles.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -82,17 +83,19 @@ export default function App({ Component, pageProps }: AppProps) {
           <RainbowKitProvider>
             <NextUIProvider>
               <NextThemesProvider attribute='class' defaultTheme='light'>
-                <ModalProvider>
-                  <Head>
-                    <title>Matrix Layer Protocol</title>
-                    <meta
-                      name='viewport'
-                      content='width=device-width, initial-scale=1'
-                    />
-                  </Head>
-                  <Component {...pageProps} />
-                  <ToastContainer />
-                </ModalProvider>
+                <UserProvider>
+                  <ModalProvider>
+                    <Head>
+                      <title>Matrix Layer Protocol</title>
+                      <meta
+                        name='viewport'
+                        content='width=device-width, initial-scale=1'
+                      />
+                    </Head>
+                    <Component {...pageProps} />
+                    <ToastContainer />
+                  </ModalProvider>
+                </UserProvider>
               </NextThemesProvider>
             </NextUIProvider>
           </RainbowKitProvider>
