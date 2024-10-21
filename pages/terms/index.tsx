@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import { Container, Content } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
@@ -177,12 +179,13 @@ const TermsPage = () => {
                 <Text>
                   If you have any questions about these Terms & Conditions,
                   please contact us at{' '}
-                  <a
+                  <Link
                     href='mailto:info@matrixlayer.ai'
                     className='text-blue-500 hover:underline'
+                    target='_blank'
                   >
                     info@matrixlayer.ai
-                  </a>
+                  </Link>
                 </Text>
               </section>
             </div>

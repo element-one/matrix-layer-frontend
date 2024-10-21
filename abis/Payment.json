@@ -540,8 +540,23 @@
       },
       {
         "internalType": "address",
-        "name": "referral",
+        "name": "directReferral",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "directPercentage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address[5]",
+        "name": "levelReferrals",
+        "type": "address[5]"
+      },
+      {
+        "internalType": "uint256[5]",
+        "name": "levelPercentages",
+        "type": "uint256[5]"
       },
       {
         "internalType": "bool",
@@ -585,8 +600,23 @@
       },
       {
         "internalType": "address",
-        "name": "referral",
+        "name": "directReferral",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "directPercentage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address[5]",
+        "name": "levelReferrals",
+        "type": "address[5]"
+      },
+      {
+        "internalType": "uint256[5]",
+        "name": "levelPercentages",
+        "type": "uint256[5]"
       },
       {
         "internalType": "bool",

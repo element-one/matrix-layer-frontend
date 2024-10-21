@@ -131,7 +131,6 @@ export const RewardsModal: FC<RewardsModalProps> = ({
       isDismissable={false}
       size='xl'
       placement='center'
-      scrollBehavior={'outside'}
       classNames={{
         base: 'w-[1200px] !max-w-[80vw]',
         closeButton:
