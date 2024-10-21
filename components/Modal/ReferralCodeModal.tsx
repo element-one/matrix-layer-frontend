@@ -83,7 +83,7 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
   return (
     <Modal
       isOpen={isModalShown(ModalType.REFERRAL_CODE_MODAL)}
-      onClose={handleClose}
+      onClose={handleSkip}
       isDismissable={false}
       size='xl'
       placement='center'

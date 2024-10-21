@@ -15,6 +15,7 @@ import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 import { useStore } from '@store/store'
+import { formatUSDT } from '@utils/currency'
 
 import { RewardsClaimSuccessModal } from './RewardsClaimSuccessModal'
 import { RewardsHistoryModal } from './RewardsHistoryModal'
@@ -169,7 +170,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                       'text-[20px] md:text-[48px]'
                     )}
                   >
-                    {totalRewards / 1000000}
+                    {formatUSDT(totalRewards)}
                   </Text>
                 </div>
                 <Button
@@ -195,7 +196,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                     'text-[20px] md:text-[48px]'
                   )}
                 >
-                  {availableRewards / 1000000}
+                  {formatUSDT(availableRewards)}
                 </Text>
                 <Button
                   isDisabled={!availableRewards}

@@ -17,6 +17,7 @@ import { useAccount } from 'wagmi'
 
 import { Text } from '@components/Text'
 import { useGetRewardsHistory } from '@services/api'
+import { formatUSDT } from '@utils/currency'
 import { formatClaimWalletAddress } from '@utils/formatWalletAddress'
 import dayjs from 'dayjs'
 
@@ -103,7 +104,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
                     {formatClaimWalletAddress(item.address)}
                   </TableCell>
                   <TableCell className='font-bold'>
-                    {Number(item.claimedAmount) / 1000000}
+                    {formatUSDT(item.claimedAmount)}
                   </TableCell>
                   <TableCell className='flex flex-row justify-center'>
                     <span
