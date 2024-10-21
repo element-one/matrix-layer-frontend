@@ -345,9 +345,7 @@ const MyAccount = () => {
                   </TableCell>
                   <TableCell>{formatAddress(order.shippingAddress)}</TableCell>
                   <TableCell className='whitespace-nowrap'>
-                    {(
-                      Number(formatUSDT(order.price)) * order.quantity
-                    ).toLocaleString()}
+                    {formatUSDT(Number(order.price) * order.quantity)}
                     &nbsp;USDT
                   </TableCell>
                   <TableCell className='whitespace-nowrap'>

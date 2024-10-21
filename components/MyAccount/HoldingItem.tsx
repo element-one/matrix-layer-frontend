@@ -11,7 +11,7 @@ interface HoldingItemProps {
   group: number
   item: {
     title: string
-    count: number
+    count: number | string
     icon: string
     key: string
   }

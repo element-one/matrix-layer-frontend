@@ -55,7 +55,7 @@ export const processHoldings = (holdings: ApiHoldingsResponse = {}) => {
         ...item,
         count:
           item.key === 'mlpTokenAmount' || item.key === 'availableRewards'
-            ? Number(formatUSDT(matchedValue))
+            ? formatUSDT(matchedValue)
             : matchedValue
       }
     })
