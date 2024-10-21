@@ -192,11 +192,11 @@ const CheckoutPage = () => {
           abi: USDT_ABI,
           address: USDT_ADDRESS as Address,
           functionName: 'approve',
-          args: [PAYMENT_ADDRESS, String(amount)]
+          args: [PAYMENT_ADDRESS, BigInt(amount).toString()]
         },
         {
           onSuccess() {
-            console.log('approve success paid: ', String(amount))
+            console.log('approve success paid: ', BigInt(amount).toString())
             refetchAccount()
           },
           onError(err: Error) {
