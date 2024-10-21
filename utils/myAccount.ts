@@ -1,5 +1,7 @@
 import { ApiHoldingsResponse, ApiPaymentData, IAddress } from '@type/api'
 
+import { formatUSDT } from './currency'
+
 const holding_temp = [
   [
     {
@@ -53,7 +55,7 @@ export const processHoldings = (holdings: ApiHoldingsResponse = {}) => {
         ...item,
         count:
           item.key === 'mlpTokenAmount' || item.key === 'availableRewards'
-            ? Number(matchedValue) / 1000000
+            ? Number(formatUSDT(matchedValue))
             : matchedValue
       }
     })

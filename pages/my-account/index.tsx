@@ -30,6 +30,7 @@ import {
   useGetUserHolding
 } from '@services/api'
 import { useStore } from '@store/store'
+import { formatUSDT } from '@utils/currency'
 import {
   formatAddress,
   processHoldings,
@@ -345,8 +346,7 @@ const MyAccount = () => {
                   <TableCell>{formatAddress(order.shippingAddress)}</TableCell>
                   <TableCell className='whitespace-nowrap'>
                     {(
-                      (Number(order.price) / 1000000) *
-                      order.quantity
+                      Number(formatUSDT(order.price)) * order.quantity
                     ).toLocaleString()}
                     &nbsp;USDT
                   </TableCell>

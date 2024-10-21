@@ -23,6 +23,7 @@ import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 import { useGetIsInWhitelist, useGetSignature, useGetUser } from '@services/api'
 import { useGetProducts } from '@services/api/account'
+import { formatUSDT } from '@utils/currency'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
 import { serializeError } from 'eth-rpc-errors'
 
@@ -126,7 +127,7 @@ const CheckoutPage = () => {
           .map((item) => ({
             name: convertTypeToName(item.type),
             price: item.price,
-            priceInUsdt: item.price / 1000000,
+            priceInUsdt: Number(formatUSDT(item.price)),
             type: item.type,
             quantity: query.type === item.type ? 1 : 0
           }))
