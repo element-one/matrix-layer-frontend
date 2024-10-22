@@ -254,6 +254,8 @@ const CheckoutPage = () => {
       quantity: product.quantity
     }))
 
+    console.log('orders: ', orders)
+
     const functionName = IS_PRIVATE ? 'payPrivateSale' : 'payPublicSale'
 
     console.log('going to pay: ', amount)
