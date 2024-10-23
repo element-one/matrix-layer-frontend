@@ -259,7 +259,7 @@ const CheckoutPage = () => {
 
     const functionName = IS_PRIVATE ? 'payPrivateSale' : 'payPublicSale'
 
-    console.log('going to pay: ', amount)
+    console.log('going to pay: ', BigNumber(amount).toFixed(0))
     payContract(
       {
         abi: PAYMENT_ABI,
