@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { formatUnits } from 'ethers'
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -22,6 +23,9 @@ export function formatUSDT(
   amount: string | number,
   decimals: number = 18
 ): string {
-  const formattedAmount = formatUnits(amount.toString(), decimals)
+  const formattedAmount = formatUnits(
+    new BigNumber(amount).toFixed(0),
+    decimals
+  )
   return parseFloat(formattedAmount).toFixed(2)
 }
