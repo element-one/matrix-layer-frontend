@@ -9,6 +9,7 @@ import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { ModalType, useModal } from '@contexts/modal'
+import { useGetProductSales } from '@services/api'
 import { ProductEnum } from '@utils/payment'
 
 const pageVariants = {
@@ -46,6 +47,8 @@ const ProductPage = () => {
 
   const { isConnected } = useAccount()
   const { showModal } = useModal()
+
+  const { data: productSalesData } = useGetProductSales()
 
   const handleToCheckout = (type: string) => () => {
     if (isConnected) {
@@ -144,12 +147,19 @@ const ProductPage = () => {
                         opportunities for businesses, developers, and society as
                         a whole.
                       </Text>
-                      <Text
-                        className={`text-[48px] sm:text-[98px] leading-[1.2] ${gradientTextClass}`}
-                        size='extrabold'
-                      >
-                        $699
-                      </Text>
+                      <div className='flex items-end gap-2 sm:gap-4'>
+                        <Text
+                          className={`text-[48px] sm:text-[98px] leading-[1.2] ${gradientTextClass}`}
+                          size='extrabold'
+                        >
+                          $699
+                        </Text>
+                        {!!productSalesData?.phone?.soldQuantity && (
+                          <Text className='text-gray-a5 text-[12px] sm:text-base mb-2 sm:mb-6 italic text-nowrap'>
+                            {productSalesData.phone.soldQuantity} sold
+                          </Text>
+                        )}
+                      </div>
                       <Button
                         className='rounded-[35px] h-12 text-base font-semibold w-[218px] z-10'
                         onClick={handleToCheckout(ProductEnum.PHONE)}
@@ -422,6 +432,8 @@ const ProductPage = () => {
                           'Mining coefficient: 1'
                         ],
                         price: '$199',
+                        sold: productSalesData?.[ProductEnum.AGENT_ONE]
+                          ?.soldQuantity,
                         key: ProductEnum.AGENT_ONE
                       },
                       {
@@ -433,6 +445,8 @@ const ProductPage = () => {
                           'Mining coefficient: 1.2'
                         ],
                         price: '$699',
+                        sold: productSalesData?.[ProductEnum.AGENT_PRO]
+                          ?.soldQuantity,
                         key: ProductEnum.AGENT_PRO
                       },
                       {
@@ -444,6 +458,8 @@ const ProductPage = () => {
                           'Mining coefficient: 1.5'
                         ],
                         price: '$899',
+                        sold: productSalesData?.[ProductEnum.AGENT_ULTRA]
+                          ?.soldQuantity,
                         key: ProductEnum.AGENT_ULTRA
                       }
                     ].map((item) => (
@@ -464,14 +480,21 @@ const ProductPage = () => {
                             </Text>
                             {/* show smaller than sm */}
                             <div className='sm:hidden flex-col items-start'>
-                              <Text
-                                className={`text-[24px] mb-2 ${gradientTextClass}`}
-                                size='bold'
-                              >
-                                {item.price}
-                              </Text>
+                              <div className='flex items-end gap-2 sm:gap-4'>
+                                <Text
+                                  className={`text-[24px] mb-2 ${gradientTextClass}`}
+                                  size='bold'
+                                >
+                                  {item.price}
+                                </Text>
+                                {!!item.sold && (
+                                  <Text className='text-gray-a5 text-[12px] mb-[14px] italic text-nowrap'>
+                                    {item.sold} sold
+                                  </Text>
+                                )}
+                              </div>
                               <Button
-                                className='rounded-[35px] w-[155px] h-7 text-[12px] font-semibold'
+                                className='rounded-[35px] w-full h-7 text-[12px] font-semibold'
                                 onClick={handleToCheckout(item.key)}
                               >
                                 {isConnected
@@ -488,12 +511,19 @@ const ProductPage = () => {
                           </div>
                           {/* show larger than sm */}
                           <div className='hidden sm:flex flex-col items-end'>
-                            <Text
-                              className={`text-[82px] ${gradientTextClass}`}
-                              size='bold'
-                            >
-                              {item.price}
-                            </Text>
+                            <div className='flex items-end gap-2 sm:gap-4'>
+                              {!!item.sold && (
+                                <Text className='text-gray-a5 text-[12px] text-base mb-6 italic text-nowrap'>
+                                  {item.sold} sold
+                                </Text>
+                              )}
+                              <Text
+                                className={`text-[82px] ${gradientTextClass}`}
+                                size='bold'
+                              >
+                                {item.price}
+                              </Text>
+                            </div>
                             <Button
                               className='rounded-[35px] h-12 text-base font-semibold w-[218px]'
                               onClick={handleToCheckout(item.key)}
