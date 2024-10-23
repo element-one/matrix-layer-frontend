@@ -25,6 +25,7 @@ import { useGetIsInWhitelist, useGetSignature, useGetUser } from '@services/api'
 import { useGetProducts } from '@services/api/account'
 import { formatUSDT } from '@utils/currency'
 import { convertTypeToInt, convertTypeToName } from '@utils/payment'
+import BigNumber from 'bignumber.js'
 import { serializeError } from 'eth-rpc-errors'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
@@ -192,11 +193,11 @@ const CheckoutPage = () => {
           abi: USDT_ABI,
           address: USDT_ADDRESS as Address,
           functionName: 'approve',
-          args: [PAYMENT_ADDRESS, BigInt(amount).toString()]
+          args: [PAYMENT_ADDRESS, BigNumber(amount).toFixed(0)]
         },
         {
           onSuccess() {
-            console.log('approve success paid: ', BigInt(amount).toString())
+            console.log('approve success paid: ', BigNumber(amount).toFixed(0))
             refetchAccount()
           },
           onError(err: Error) {
@@ -262,7 +263,7 @@ const CheckoutPage = () => {
         abi: PAYMENT_ABI,
         functionName,
         args: [
-          String(amount),
+          BigNumber(amount).toFixed(0),
           orders,
           directReferral,
           directPercentage,
