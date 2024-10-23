@@ -54,7 +54,7 @@ const ReferralPage: NextPage = () => {
       if (
         isConnected &&
         userData &&
-        !userData?.referredBy &&
+        !userData?.referredByUserAddress &&
         !isModalShown(ModalType.REFERRAL_CODE_MODAL)
       ) {
         showModal(ModalType.REFERRAL_CODE_MODAL, {
@@ -63,7 +63,7 @@ const ReferralPage: NextPage = () => {
           onVerifySuccess: handleVerifySuccess,
           userHasReferred: !!userData?.referredByUserAddress
         })
-      } else if (userData?.referredBy) {
+      } else if (userData?.referredByUserAddress) {
         toast.info('You already have a reference')
         setTimeout(() => {
           router.push('/')
