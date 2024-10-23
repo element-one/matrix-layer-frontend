@@ -1,10 +1,14 @@
 import { ChangeEventHandler, FC, useState } from 'react'
+import { toast } from 'react-toastify'
 import Link from 'next/link'
-import { useAccount } from 'wagmi'
+import { useAccount, useSignMessage } from 'wagmi'
 
 import { Button } from '@components/Button'
+import { Input } from '@components/Input'
 import { Text } from '@components/Text'
 import GradientText from '@components/Text/GradientText'
+import { usePatchReferralCode } from '@services/api'
+import { ApiUser } from '@type/api'
 
 import Selection, { SelectionItemProps } from './Selection'
 
@@ -20,15 +24,56 @@ export interface PaymentFieldProps {
   amount: number
   onPayButtonClick?: () => void
   isPaying?: boolean
+  userInfo?: ApiUser
+  onVerifyReferralCodeSuccess?: () => void
 }
 
 const PaymentField: FC<PaymentFieldProps> = ({
   onPayButtonClick,
   amount,
-  isPaying
+  isPaying,
+  userInfo,
+  onVerifyReferralCodeSuccess
 }) => {
   const [understandTerm, setUnderstandTerm] = useState(false)
   const { isConnected } = useAccount()
+  const [referralCode, setReferralCode] = useState('')
+  const { signMessage } = useSignMessage()
+
+  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(
+    referralCode ?? '',
+    {
+      onSuccess() {
+        onVerifyReferralCodeSuccess?.()
+        toast.success('Verify success')
+      },
+      onError(err) {
+        console.log('patch referral code error:', err)
+        toast.error('Invalid referral code')
+      }
+    }
+  )
+
+  const handleVerify = async () => {
+    if (!referralCode) {
+      return
+    }
+
+    signMessage(
+      {
+        message: `Referral Code: ${referralCode}`
+      },
+      {
+        onSuccess(data) {
+          patchReferralCode({ signature: data })
+        },
+        onError(err) {
+          console.log('sign error: ', err)
+          toast.error('signature error:' + (err as Error).message)
+        }
+      }
+    )
+  }
 
   const handleCheckboxChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setUnderstandTerm(e.target.checked)
@@ -51,6 +96,27 @@ const PaymentField: FC<PaymentFieldProps> = ({
           &nbsp;USDT
         </Text>
       </div>
+      {userInfo && !userInfo.referredByUserAddress && (
+        <div className='flex items-center justify-start gap-4 mb-8'>
+          <Input
+            type='text'
+            value={referralCode.toUpperCase()}
+            onChange={setReferralCode}
+            id='referralCode'
+            placeholder='Enter your referral code'
+            inputClassName='focus:outline-none h-[40px] focus:ring-0 w-[220px]'
+            wrapperClassName='m-0'
+          />
+          <Button
+            onClick={handleVerify}
+            isLoading={isPending}
+            disabled={!referralCode}
+            className='p-[10px] font-semibold text-[16px] mt-2 rounded-[35px]'
+          >
+            Verify
+          </Button>
+        </div>
+      )}
       <Button
         color='primary'
         className='w-full p-[10px] font-semibold text-[16px] rounded-[35px]'

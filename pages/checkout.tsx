@@ -44,7 +44,9 @@ const CheckoutPage = () => {
   const [isCopied, setIsCopied] = useState(false)
   const [products, setProducts] = useState<IProduct[]>([])
 
-  const { data: userData } = useGetUser(address, { enabled: !!address })
+  const { data: userData, refetch: refetchUser } = useGetUser(address, {
+    enabled: !!address
+  })
   const { data: allProducts = [], isLoading: isLoadingProducts } =
     useGetProducts()
   const { data: whitelistData } = useGetIsInWhitelist(address, {
@@ -487,6 +489,8 @@ const CheckoutPage = () => {
               isPaying={isPaying}
               amount={amountInUSDT}
               onPayButtonClick={handlePayButtonClick}
+              userInfo={userData}
+              onVerifyReferralCodeSuccess={refetchUser}
             />
           </div>
         </Content>

@@ -28,7 +28,7 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
   const [verifySuccess, setVerifySuccess] = useState(false)
   const { signMessage } = useSignMessage()
 
-  const { mutateAsync: patchReferralCode, isPending } = usePatchReferralCode(
+  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(
     referralCode ?? '',
     {
       onSuccess() {

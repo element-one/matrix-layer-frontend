@@ -29,7 +29,6 @@ export type ApiUser = {
   profileImage: string | null
   receiverInfos: unknown[]
   referralCode: string | null
-  referredBy: string | null
   totalCommission: string
   updatedAt: string
   referredByUserAddress?: string
