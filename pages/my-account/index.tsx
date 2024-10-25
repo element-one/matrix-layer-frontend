@@ -12,8 +12,10 @@ import {
   Tooltip
 } from '@nextui-org/react'
 import { Address } from 'viem'
-import { useAccount } from 'wagmi'
+import { useAccount, useReadContracts } from 'wagmi'
 
+import NFT_ABI from '@abis/NFT.json'
+import PAYMENT_ABI from '@abis/Payment.json'
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
@@ -56,6 +58,86 @@ const MyAccount = () => {
   const router = useRouter()
   const [page, setPage] = useState(1)
 
+  const setHoldings = useStore((state) => state.setHoldings)
+
+  const { data: nftBalances } = useReadContracts({
+    contracts: [
+      {
+        address: process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address,
+        abi: NFT_ABI,
+        functionName: 'balanceOf',
+        args: [address]
+      },
+      {
+        address: process.env.NEXT_PUBLIC_AI_AGENT_ONE_ADDRESS as Address,
+        abi: NFT_ABI,
+        functionName: 'balanceOf',
+        args: [address]
+      },
+      {
+        address: process.env.NEXT_PUBLIC_AI_AGENT_PRO_ADDRESS as Address,
+        abi: NFT_ABI,
+        functionName: 'balanceOf',
+        args: [address]
+      },
+      {
+        address: process.env.NEXT_PUBLIC_AI_AGENT_ULTRA_ADDRESS as Address,
+        abi: NFT_ABI,
+        functionName: 'balanceOf',
+        args: [address]
+      },
+      {
+        address: process.env.NEXT_PUBLIC_PAYMENT_ADDRESS as Address,
+        abi: PAYMENT_ABI,
+        functionName: 'getReferralRewards',
+        args: [address]
+      }
+    ],
+    query: {
+      enabled: !!address
+    }
+  })
+
+  const [
+    phoneBalance,
+    aiAgentOneBalance,
+    aiAgentProBalance,
+    aiAgentUltraBalance,
+    referralRewards
+  ] = nftBalances?.map((result) => result.result) ?? [
+    BigInt(0),
+    BigInt(0),
+    BigInt(0),
+    BigInt(0),
+    BigInt(0)
+  ]
+
+  console.log(
+    phoneBalance?.toString(),
+    aiAgentOneBalance?.toString(),
+    aiAgentProBalance?.toString(),
+    aiAgentUltraBalance?.toString(),
+    referralRewards?.toString()
+  )
+
+  const holdings = useMemo(() => {
+    return {
+      phone: phoneBalance?.toString(),
+      mlpTokenAmount: 0,
+      totalRewards: referralRewards?.toString(),
+      availableRewards: referralRewards?.toString(),
+      agent_one: aiAgentOneBalance?.toString(),
+      agent_pro: aiAgentProBalance?.toString(),
+      agent_ultra: aiAgentUltraBalance?.toString()
+    }
+  }, [
+    phoneBalance,
+    referralRewards,
+    aiAgentOneBalance,
+    aiAgentProBalance,
+    aiAgentUltraBalance
+  ])
+
   const [selectedOrderId, setSelectedOrderId] = useState('')
 
   const { data: userData } = useGetUser(address, { enabled: !!address })
@@ -68,20 +150,19 @@ const MyAccount = () => {
     }
   )
 
-  const { data: holdings, refetch: refetchHoldings } = useGetUserHolding(
+  const { data: userHolding, refetch: refetchHoldings } = useGetUserHolding(
     address,
     {
       enabled: !!address
     }
   )
-  const { setHoldings, setActiveLoading } = useStore((state) => ({
-    setHoldings: state.setHoldings,
-    setActiveLoading: state.setConfirmLoading
-  }))
+
+  useEffect(() => {
+    setHoldings(userHolding || {})
+  }, [userHolding, setHoldings])
 
   const { showModal, hideModal } = useModal()
-  const { mutateAsync: activeDelivery, isPending: isActiveLoading } =
-    useActiveDelivery()
+  const { mutateAsync: activeDelivery } = useActiveDelivery()
   const { mutateAsync: confirmDelivery, isPending: isConfirmLoading } =
     useConfirmDelivery()
 
@@ -96,14 +177,6 @@ const MyAccount = () => {
       router.push('/')
     }
   }, [isConnected, router])
-
-  useEffect(() => {
-    setHoldings(holdings || {})
-  }, [holdings, setHoldings])
-
-  useEffect(() => {
-    setActiveLoading(isActiveLoading)
-  }, [isActiveLoading, setActiveLoading])
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {

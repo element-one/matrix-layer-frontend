@@ -143,14 +143,14 @@ export type IAddress = {
 export type ApiGetAddressResponse = IAddress[]
 
 export type ApiHoldingsResponse = Partial<{
-  totalRewards: number
-  availableRewards: number
-  mlpTokenAmount: number
-  phone: number
-  agent_limit: number
-  agent_one: number
-  agent_pro: number
-  agent_ultra: number
+  totalRewards: number | string
+  availableRewards: number | string
+  mlpTokenAmount: number | string
+  phone: number | string
+  agent_limit: number | string
+  agent_one: number | string
+  agent_pro: number | string
+  agent_ultra: number | string
 }>
 
 export type ApiErrorResponse = {
