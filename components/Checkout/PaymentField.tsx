@@ -97,14 +97,14 @@ const PaymentField: FC<PaymentFieldProps> = ({
         </Text>
       </div>
       {userInfo && !userInfo.referredByUserAddress && (
-        <div className='flex items-center justify-start gap-4 mb-8'>
+        <div className='flex items-center justify-between sm:justify-end sm:gap-4 mb-8'>
           <Input
             type='text'
             value={referralCode.toUpperCase()}
             onChange={setReferralCode}
             id='referralCode'
             placeholder='Enter your referral code'
-            inputClassName='focus:outline-none h-[40px] focus:ring-0 w-[220px]'
+            inputClassName='focus:outline-none  h-[40px] !rounded-[16px] focus:!ring-0 w-[224px]'
             wrapperClassName='m-0'
           />
           <Button
