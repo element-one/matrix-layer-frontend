@@ -60,7 +60,7 @@ const MyAccount = () => {
 
   const setHoldings = useStore((state) => state.setHoldings)
 
-  const { data: nftBalances } = useReadContracts({
+  const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
       {
         address: process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address,
@@ -219,6 +219,7 @@ const MyAccount = () => {
     showModal(ModalType.REWARDS_MODAL, {
       onClaimSuccess: async () => {
         await refetchHoldings()
+        await refetchNftBalances()
       }
     })
   }
