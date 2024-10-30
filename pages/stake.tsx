@@ -28,6 +28,7 @@ const GradientBorderClass =
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 const STAKE_ADDRESS = process.env.NEXT_PUBLIC_STAKE_ADDRESS as Address
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS as Address
+const MATRIX_ADDRESS = process.env.NEXT_PUBLIC_MATRIX_ADDRESS as Address
 const AI_AGENT_PRO_ADDRESS = process.env
   .NEXT_PUBLIC_AI_AGENT_PRO_ADDRESS as Address
 const AI_AGENT_ONE_ADDRESS = process.env
@@ -135,6 +136,12 @@ const StakePage: NextPage = () => {
         args: [address]
       },
       {
+        address: MATRIX_ADDRESS,
+        abi: NFT_ABI,
+        functionName: 'balanceOf',
+        args: [address]
+      },
+      {
         address: AI_AGENT_ONE_ADDRESS,
         abi: NFT_ABI,
         functionName: 'balanceOf',
@@ -164,13 +171,17 @@ const StakePage: NextPage = () => {
     }
   })
 
+  console.log(nftBalances)
+
   const [
     phoneBalance,
+    matrixBalance,
     aiAgentOneBalance,
     aiAgentProBalance,
     aiAgentUltraBalance,
     referralRewards
   ] = nftBalances?.map((result) => result.result?.toString()) ?? [
+    BigInt(0),
     BigInt(0),
     BigInt(0),
     BigInt(0),
@@ -340,7 +351,7 @@ const StakePage: NextPage = () => {
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
-                <div className='text-[18px] font-bold'>{1}</div>
+                <div className='text-[18px] font-bold'>{matrixBalance}</div>
               </div>
               <div
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -633,7 +644,7 @@ const StakePage: NextPage = () => {
               <div
                 className={clsx(
                   `flex-1 flex items-center justify-center flex-col font-bold text-center
-                  cursor-pointer`,
+                    cursor-pointer`,
                   currentTab === 'stake' && GradientTextClass
                 )}
                 onClick={() => setCurrentTab('stake')}
@@ -649,7 +660,7 @@ const StakePage: NextPage = () => {
               <div
                 className={clsx(
                   `flex-1 flex items-center justify-center flex-col font-bold text-center
-                  cursor-pointer`,
+                    cursor-pointer`,
                   currentTab === 'unstake' && GradientTextClass
                 )}
                 onClick={() => setCurrentTab('unstake')}
