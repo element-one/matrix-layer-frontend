@@ -106,3 +106,7 @@ input {
 .slick-dots .slick-active div {
   background-image: linear-gradient(180deg, #00ffe5 0%, #ff30f7 100%);
 }
+
+.transparent-scrollbar {
+  scrollbar-color: #ccc #00000000;
+}

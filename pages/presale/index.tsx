@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAccount } from 'wagmi'
@@ -39,9 +40,18 @@ const gradientBorderClass =
   'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#000,#000),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
 
 const ProductPage = () => {
+  const searchParams = useSearchParams()
+  const tab = searchParams.get('tab')
+
   const [currentPage, setCurrentPage] = useState<'product' | 'ai-agent-nft'>(
-    'product'
+    tab === 'nft' ? 'ai-agent-nft' : 'product'
   )
+
+  useEffect(() => {
+    if (tab) {
+      setCurrentPage(tab === 'nft' ? 'ai-agent-nft' : 'product')
+    }
+  }, [tab])
 
   const router = useRouter()
 
