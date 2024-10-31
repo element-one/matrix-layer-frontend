@@ -428,6 +428,7 @@ const StakePage: NextPage = () => {
   }, [unstakeReceipt, refetchNftBalances, refetchTotalNfts])
 
   const handleUnstakeToken = async (token: StakeToken) => {
+    setSelectedToken(token)
     const nftType =
       token?.name === 'Matrix Phone'
         ? 0
