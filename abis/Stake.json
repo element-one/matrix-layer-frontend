@@ -126,7 +126,7 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "nftType",
         "type": "uint8"
       },
@@ -151,7 +151,7 @@
       },
       {
         "indexed": false,
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "nftType",
         "type": "uint8"
       },
@@ -182,7 +182,7 @@
       },
       {
         "indexed": false,
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "nftType",
         "type": "uint8"
       },
@@ -241,6 +241,12 @@
         "internalType": "uint256",
         "name": "timestamp",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum MiningType",
+        "name": "miningType",
+        "type": "uint8"
       }
     ],
     "name": "RewardClaimed",
@@ -533,7 +539,7 @@
   {
     "inputs": [
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "nftType",
         "type": "uint8"
       },
@@ -583,7 +589,7 @@
     "name": "getUserAllStakedNFTs",
     "outputs": [
       {
-        "internalType": "enum MatrixPoWStaking.NFTType[]",
+        "internalType": "enum NFTType[]",
         "name": "nftTypes",
         "type": "uint8[]"
       },
@@ -623,7 +629,7 @@
         "type": "address"
       },
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "nftType",
         "type": "uint8"
       }
@@ -642,7 +648,7 @@
   {
     "inputs": [
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "",
         "type": "uint8"
       },
@@ -679,7 +685,7 @@
   {
     "inputs": [
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "",
         "type": "uint8"
       }
@@ -703,7 +709,7 @@
         "type": "address"
       },
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "",
         "type": "uint8"
       },
@@ -836,7 +842,7 @@
   {
     "inputs": [
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "nftType",
         "type": "uint8"
       },
@@ -856,7 +862,7 @@
       {
         "components": [
           {
-            "internalType": "enum MatrixPoWStaking.NFTType",
+            "internalType": "enum NFTType",
             "name": "nftType",
             "type": "uint8"
           },
@@ -916,7 +922,7 @@
   {
     "inputs": [
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "",
         "type": "uint8"
       }
@@ -948,7 +954,7 @@
   {
     "inputs": [
       {
-        "internalType": "enum MatrixPoWStaking.NFTType",
+        "internalType": "enum NFTType",
         "name": "nftType",
         "type": "uint8"
       },

@@ -52,3 +52,21 @@ export const useGetSignature = (
     ...options
   })
 }
+
+export const getStakingSignature = async (address: Address) => {
+  const url = `/contracts/pow-staking-signature/${address}?_=${Date.now()}`
+  const { data } = await axios.get(url)
+
+  return data
+}
+
+export const useGetStakingSignature = (
+  address: Address,
+  options?: Partial<UseQueryOptions<ApiGetSignatureResponse, Error>>
+) => {
+  return useQuery<ApiGetSignatureResponse, Error>({
+    queryKey: ['all', 'pow-staking-signature', address],
+    queryFn: () => getStakingSignature(address),
+    ...options
+  })
+}
