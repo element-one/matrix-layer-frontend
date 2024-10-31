@@ -1,10 +1,16 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
 import { Tooltip } from '@nextui-org/react'
 import clsx from 'clsx'
 import { Address } from 'viem'
-import { useAccount, useReadContract, useReadContracts } from 'wagmi'
+import {
+  useAccount,
+  useReadContract,
+  useReadContracts,
+  useSignMessage
+} from 'wagmi'
 
 import NFT_ABI from '@abis/NFT.json'
 import PAYMENT_ABI from '@abis/Payment.json'
@@ -18,7 +24,7 @@ import { Input } from '@components/Input'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
-import { useGetUser } from '@services/api'
+import { useGetUser, usePatchReferralCode } from '@services/api'
 
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
@@ -65,8 +71,12 @@ const UnStakes: any[] = []
 const StakePage: NextPage = () => {
   const [currentTab, setCurrentTab] = useState<'stake' | 'unstake'>('stake')
   const { address } = useAccount()
-  const { data: userData } = useGetUser(address, { enabled: !!address })
+  const { data: userData, refetch: refetchUserData } = useGetUser(address, {
+    enabled: !!address
+  })
   const router = useRouter()
+  const [referralCode, setReferralCode] = useState('')
+  const { signMessage } = useSignMessage()
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -76,6 +86,40 @@ const StakePage: NextPage = () => {
         console.log(e)
       }
     }
+  }
+
+  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(
+    referralCode ?? '',
+    {
+      onSuccess() {
+        refetchUserData()
+      },
+      onError(err) {
+        console.log('patch referral code error:', err)
+        toast.error('Invalid referral code')
+      }
+    }
+  )
+
+  const handleVerify = async () => {
+    if (!referralCode) {
+      return
+    }
+
+    signMessage(
+      {
+        message: `Referral Code: ${referralCode}`
+      },
+      {
+        onSuccess(data) {
+          patchReferralCode({ signature: data })
+        },
+        onError(err) {
+          console.log('sign error: ', err)
+          toast.error('signature error:' + (err as Error).message)
+        }
+      }
+    )
   }
 
   const { data: totalNfts } = useReadContracts({
@@ -285,20 +329,30 @@ const StakePage: NextPage = () => {
           </div>
 
           <div className='flex items-center justify-end w-full mt-2'>
-            <div className='w-[50%] flex items-center justify-between pl-10'>
-              <Input
-                placeholder='Enter invite code'
-                wrapperClassName='w-[70%]'
-                inputClassName='border-[#282828] ring-0 bg-[#151515]'
-                type='text'
-                value=''
-                onChange={() => {}}
-                id='inviteCode'
-              />
-              <Button className='rounded-full text-[16px] h-[40px] ml-10'>
-                Verify Link
-              </Button>
-            </div>
+            {!userData?.referredByUserAddress && (
+              <div className='w-[50%] flex items-center justify-between pl-10'>
+                <Input
+                  placeholder='Enter invite code'
+                  wrapperClassName='w-[70%]'
+                  inputClassName='border-[#282828] !outline-none !ring-0 bg-[#151515]'
+                  type='text'
+                  value={referralCode}
+                  onChange={(val) => setReferralCode(val)}
+                  id='inviteCode'
+                />
+                <Button
+                  onClick={handleVerify}
+                  isLoading={isPending}
+                  disabled={!referralCode}
+                  className='rounded-full text-[16px] h-[40px] ml-10'
+                >
+                  Verify Link
+                </Button>
+              </div>
+            )}
+            {!!userData?.referredByUserAddress && (
+              <span>{userData.referredByUserAddress}</span>
+            )}
           </div>
         </Content>
       </Container>
