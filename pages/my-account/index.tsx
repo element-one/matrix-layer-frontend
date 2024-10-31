@@ -97,6 +97,7 @@ const MyAccount = () => {
       enabled: !!address
     }
   })
+  const { data: userData } = useGetUser(address, { enabled: !!address })
 
   const [
     phoneBalance,
@@ -123,7 +124,7 @@ const MyAccount = () => {
   const holdings = useMemo(() => {
     return {
       phone: phoneBalance?.toString(),
-      mlpTokenAmount: 0,
+      mlpTokenAmount: userData?.mlpTokenAmountPoolA,
       totalRewards: referralRewards?.toString(),
       availableRewards: referralRewards?.toString(),
       agent_one: aiAgentOneBalance?.toString(),
@@ -135,12 +136,11 @@ const MyAccount = () => {
     referralRewards,
     aiAgentOneBalance,
     aiAgentProBalance,
-    aiAgentUltraBalance
+    aiAgentUltraBalance,
+    userData?.mlpTokenAmountPoolA
   ])
 
   const [selectedOrderId, setSelectedOrderId] = useState('')
-
-  const { data: userData } = useGetUser(address, { enabled: !!address })
   const { data, refetch: refetchOrders } = useGetPayments(
     address as Address,
     page,
