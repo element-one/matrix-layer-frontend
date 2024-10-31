@@ -17,6 +17,10 @@ import {
   ShippingAddressModalProps
 } from '@components/Modal'
 import {
+  AcceleratePoolModal,
+  AcceleratePoolModalProps
+} from '@components/Modal/AcceleratePoolModal'
+import {
   ManageAddressModal,
   ManageAddressModalProps
 } from '@components/Modal/ManageAddressModal'
@@ -28,7 +32,8 @@ export enum ModalType {
   REFERRAL_CODE_MODAL = 'REFERRAL_CODE_MODAL',
   SHIPPING_ADDRESS_MODAL = 'SHIPPING_ADDRESS_MODAL',
   MANAGE_ADDRESS_MODAL = 'MANAGE_ADDRESS_MODAL',
-  REWARDS_MODAL = 'REWARDS_MODAL'
+  REWARDS_MODAL = 'REWARDS_MODAL',
+  ACCELERATE_POOL_MODAL = 'ACCELERATE_POOL_MODAL'
 }
 
 const MODAL_COMPONENTS = {
@@ -37,7 +42,8 @@ const MODAL_COMPONENTS = {
   [ModalType.REFERRAL_CODE_MODAL]: ReferralCodeModal,
   [ModalType.SHIPPING_ADDRESS_MODAL]: ShippingAddressModal,
   [ModalType.MANAGE_ADDRESS_MODAL]: ManageAddressModal,
-  [ModalType.REWARDS_MODAL]: RewardsModal
+  [ModalType.REWARDS_MODAL]: RewardsModal,
+  [ModalType.ACCELERATE_POOL_MODAL]: AcceleratePoolModal
 }
 
 type ModalProps =
@@ -47,6 +53,7 @@ type ModalProps =
   | ShippingAddressModalProps
   | ManageAddressModalProps
   | RewardsModalProps
+  | AcceleratePoolModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }

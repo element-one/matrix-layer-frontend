@@ -6,6 +6,7 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './stories/**/*.{js,ts,jsx,tsx}',
+    './utils/**/*.{js,ts,jsx,tsx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
@@ -13,6 +14,7 @@ module.exports = {
       colors: {
         'black-15': '#151515',
         'black-17': '#171717',
+        'black-19': '#191919',
         'black-20': '#1a1a1a',
         'black-25': '#2B2B2B',
         'black-28': '#282828',
@@ -27,7 +29,7 @@ module.exports = {
         'gray-180': '#BCBCBC',
         'red-255': '#FF6363',
         'purple-500': "#E789FF",
-        'gray-a5': '#A5A5A5'
+        'gray-a5': '#A5A5A5',
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui'],
@@ -70,7 +72,8 @@ module.exports = {
             4: '#EDEDED',
             5: '#F9FAFB',
             6: '#FFFFFF',
-            7: '#A5A5A5'
+            7: '#A5A5A5',
+            8: '#3A3A3A'
           },
           'co-purple': {
             1: '#4E46DC',
@@ -79,7 +82,17 @@ module.exports = {
             4: '#F5F4FA',
             5: '#F5F4FA',
           },
-          'co-green': '#01C521',
+          'co-green': {
+            1: '01C521',
+            2: '#71FF81',
+            3: '#34D399',
+            4: '#047857',
+            5: '#D1FAE5'
+          },
+          'co-red': {
+            1: '#E33636',
+            3: '#FF9D9D',
+          },
           'co-light-green': '#93E7A1',
           'co-alert': '#EC5C5C',
           'co-tag': {
@@ -157,7 +170,8 @@ module.exports = {
             4: '#474747',
             5: '#333333',
             6: '#212121',
-            7: '#A5A5A5'
+            7: '#A5A5A5',
+            8: '#3A3A3A'
           },
           'co-purple': {
             1: '#4E46DC',
@@ -166,7 +180,13 @@ module.exports = {
             4: '#F0EDFD',
             5: '#3F3D54',
           },
-          'co-green': '#01C521',
+          'co-green': {
+            1: '01C521',
+            2: '#71FF81',
+            3: '#34D399',
+            4: '#047857',
+            5: '#D1FAE5'
+          },
           'co-light-green': '#00550E',
           'co-alert': '#EC5C5C',
           'co-tag': {

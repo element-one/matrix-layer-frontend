@@ -9,12 +9,14 @@ import {
   ModalHeader,
   Table,
   TableBody,
+  TableCell,
   TableColumn,
   TableHeader,
   TableRow,
   Tooltip
 } from '@nextui-org/react'
 import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 import { Address } from 'viem'
 import {
   useAccount,
@@ -38,7 +40,9 @@ import { Input } from '@components/Input'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
+import { ModalType, useModal } from '@contexts/modal'
 import { useGetUser, usePatchReferralCode } from '@services/api'
+import { statusClass } from '@utils/stake'
 import { serializeError } from 'eth-rpc-errors'
 
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
@@ -64,6 +68,41 @@ interface StakeToken {
   img: string
 }
 
+const mock_details = [
+  {
+    id: 0,
+    date: '2024-09-12 11:58:59',
+    period: '30',
+    tokens: 5000,
+    income: 123.85,
+    status: 1
+  },
+  {
+    id: 0,
+    date: '2024-09-12 11:58:59',
+    period: '30',
+    tokens: 5000,
+    income: 123.85,
+    status: 0
+  },
+  {
+    id: 0,
+    date: '2024-09-12 11:58:59',
+    period: '30',
+    tokens: 5000,
+    income: 123.85,
+    status: 1
+  },
+  {
+    id: 0,
+    date: '2024-09-12 11:58:59',
+    period: '30',
+    tokens: 5000,
+    income: 123.85,
+    status: 0
+  }
+]
+
 const StakePage: NextPage = () => {
   const [tokenOwned, setTokenOwned] = useState<StakeToken[]>([])
   const [stakedTokens, setStakedTokens] = useState<StakeToken[]>([])
@@ -79,18 +118,27 @@ const StakePage: NextPage = () => {
   const { signMessage } = useSignMessage()
   const [usdtHistoryModalVisible, setUsdtHistoryModalVisible] = useState(false)
 
+  const { showModal, hideModal } = useModal()
+  const [isShowDetails, setIsShowDetails] = useState(false)
+
   const handleHistoryModalClose = () => {
     setUsdtHistoryModalVisible(false)
   }
 
   const handleUsdtHistoryClick = () => {
     return
-    setUsdtHistoryModalVisible(true)
   }
 
   const handleMLPHistoryClick = () => {
     return
-    setUsdtHistoryModalVisible(true)
+  }
+
+  const handleOpenAccelerationPoolModal = () => {
+    showModal(ModalType.ACCELERATE_POOL_MODAL, {
+      onConfirm: () => {
+        hideModal()
+      }
+    })
   }
 
   const handleCopy = (text: string) => async () => {
@@ -1284,6 +1332,12 @@ const StakePage: NextPage = () => {
               >
                 NFT Boosted Pool
               </Text>
+              <Button
+                className='rounded-full text-[12px] h-8 w-[152px]'
+                onClick={handleOpenAccelerationPoolModal}
+              >
+                Accelerate
+              </Button>
             </div>
             <div className='flex items-center justify-around gap-8 mt-4'>
               <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
@@ -1323,7 +1377,10 @@ const StakePage: NextPage = () => {
               >
                 MLP Boosted Pool
               </Text>
-              <Button className='rounded-full text-[12px] h-8 w-[152px]'>
+              <Button
+                className='rounded-full text-[12px] h-8 w-[152px]'
+                onClick={handleOpenAccelerationPoolModal}
+              >
                 Accelerate
               </Button>
             </div>
@@ -1347,6 +1404,80 @@ const StakePage: NextPage = () => {
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
+            </div>
+
+            <div className='flex flex-col gap-y-8 mt-8 items-center h-fit transition-height'>
+              {isShowDetails && (
+                <Table
+                  aria-label='Details'
+                  classNames={{
+                    wrapper:
+                      'rounded-[12px] border border-purple-500 bg-black-15 backdrop-blur-[6px] p-0 w-full',
+                    th: 'bg-black text-white text-[18px] font-bold text-white text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
+                    td: ' py-5 px-3 text-[14px] font-medium text-center',
+                    tr: 'odd:bg-black-15 even:bg-black-19 hover:bg-black-15 font-chakraPetch'
+                  }}
+                >
+                  <TableHeader>
+                    <TableColumn>Skating Date</TableColumn>
+                    <TableColumn>Skating Period</TableColumn>
+                    <TableColumn>Number of staked tokens</TableColumn>
+                    <TableColumn>Cumulative income</TableColumn>
+                    <TableColumn>Reinvestment</TableColumn>
+                    <TableColumn>Action</TableColumn>
+                  </TableHeader>
+                  <TableBody>
+                    {mock_details.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className='text-gray-150'>
+                          {item.date}
+                        </TableCell>
+                        <TableCell className='text-gray-150'>
+                          {item.period}
+                        </TableCell>
+                        <TableCell className='text-gray-150'>
+                          {item.tokens}
+                        </TableCell>
+                        <TableCell className='text-gray-150'>
+                          {item.income}
+                        </TableCell>
+                        <TableCell className='flex justify-center'>
+                          <span
+                            className={clsx(
+                              `w-[74px] h-[30px] rounded-[24px] flex items-center justify-center border
+                                font-bold`,
+                              statusClass(item.status)
+                            )}
+                          >
+                            {item.status ? 'Yes' : 'No'}
+                          </span>
+                        </TableCell>
+                        <TableCell className='text-gray-150'>
+                          <Button
+                            isDisabled={!item.status}
+                            className={twMerge(
+                              clsx(
+                                'rounded-full text-[12px] h-8 w-[152px] font-bold',
+                                !item.status && 'bg-co-gray-7 text-white'
+                              )
+                            )}
+                          >
+                            Withdraw
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+              <Button
+                onClick={() => {
+                  setIsShowDetails(!isShowDetails)
+                }}
+                className='rounded-[35px] text-[16px] h-[48px] w-[480px] font-bold'
+              >
+                {isShowDetails ? 'HIDE DETAILS' : 'STAKING DETAILS'}
+              </Button>
             </div>
           </div>
 
@@ -1409,113 +1540,6 @@ const StakePage: NextPage = () => {
                 </span>
                 <div className='text-[18px] font-bold'>12</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Total MLP Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            className={clsx(
-              `md:p-8 md:border-2 mt-8 rounded-[20px] md:backdrop-filter
-                md:backdrop-blur-[10px]`,
-              GradientBorderClass
-            )}
-          >
-            <div className='flex justify-between'>
-              <Text
-                className={clsx(
-                  'text-[28px] text-center font-bold',
-                  GradientTextClass
-                )}
-              >
-                Pool Balance
-              </Text>
-              <div className='flex gap-10 items-center'>
-                <span className='text-[28px] font-bold'>$2,345.89 USDT</span>
-                <div
-                  className={clsx(
-                    'flex rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
-                    GradientBorderClass
-                  )}
-                >
-                  <span className='text-gray-a5'>$MLP Amount</span>
-                  <span>19,687.89</span>
-                </div>
-              </div>
-            </div>
-            <div className='w-full mt-20 flex items-center justify-between'>
-              <Text
-                className={clsx(
-                  'text-[28px] text-center font-bold',
-                  GradientTextClass
-                )}
-              >
-                NFT Boosted Pool
-              </Text>
-              <Button className='rounded-full text-[12px] h-8 w-[152px]'>
-                Accelerate
-              </Button>
-            </div>
-            <div className='flex items-center justify-around gap-8 mt-4'>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Yesterday’s Staking Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00 MLP</div>
-              </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Accelerated MLP
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
-              </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Holding NFT
-                </span>
-                <div className='text-[18px] font-bold'>12</div>
-              </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Total MLP Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
-              </div>
-            </div>
-
-            <div className='h-[1px] bg-gray-500 w-full mt-7'></div>
-
-            <div className='w-full mt-7 flex items-center justify-between'>
-              <Text
-                className={clsx(
-                  'text-[28px] text-center font-bold',
-                  GradientTextClass
-                )}
-              >
-                MLP Boosted Pool
-              </Text>
-              <Button className='rounded-full text-[12px] h-8 w-[152px]'>
-                Accelerate
-              </Button>
-            </div>
-            <div className='flex items-center justify-around gap-8 mt-4'>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Yesterday’s Staking Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00 MLP</div>
-              </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Accelerated MLP
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
-              </div>
-              <div className='flex-1'></div>
               <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Total MLP Rewards
