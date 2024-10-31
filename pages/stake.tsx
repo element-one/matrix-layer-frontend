@@ -27,6 +27,7 @@ import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { useGetUser, usePatchReferralCode } from '@services/api'
+import { serializeError } from 'eth-rpc-errors'
 
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
@@ -255,8 +256,6 @@ const StakePage: NextPage = () => {
     }
   })
 
-  console.log(nftBalances)
-
   const [
     phoneBalance,
     matrixBalance,
@@ -429,26 +428,34 @@ const StakePage: NextPage = () => {
   }, [unstakeReceipt, refetchNftBalances, refetchTotalNfts])
 
   const handleUnstakeToken = async (token: StakeToken) => {
-    setSelectedToken(token)
-    console.log(token)
     const nftType =
-      selectedToken?.name === 'Matrix Phone'
+      token?.name === 'Matrix Phone'
         ? 0
-        : selectedToken?.name === 'Matrix'
+        : token?.name === 'Matrix'
           ? 1
-          : selectedToken?.name === 'AI Agent One'
+          : token?.name === 'AI Agent One'
             ? 2
-            : selectedToken?.name === 'AI Agent Pro'
+            : token?.name === 'AI Agent Pro'
               ? 3
               : 4
-    console.log(nftType, token.id)
 
-    unstakeToken({
-      address: STAKE_ADDRESS,
-      abi: STAKE_ABI,
-      functionName: 'unstakeNFT',
-      args: [nftType, token.id]
-    })
+    unstakeToken(
+      {
+        address: STAKE_ADDRESS,
+        abi: STAKE_ABI,
+        functionName: 'unstakeNFT',
+        args: [nftType, token.id]
+      },
+      {
+        onError: (err) => {
+          const serializedError = serializeError(err)
+          console.log({ serializedError })
+          toast.error(
+            (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
+          )
+        }
+      }
+    )
   }
 
   return (
