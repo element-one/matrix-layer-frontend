@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
@@ -9,7 +9,9 @@ import {
   useAccount,
   useReadContract,
   useReadContracts,
-  useSignMessage
+  useSignMessage,
+  useWaitForTransactionReceipt,
+  useWriteContract
 } from 'wagmi'
 
 import NFT_ABI from '@abis/NFT.json'
@@ -43,32 +45,17 @@ const AI_AGENT_ULTRA_ADDRESS = process.env
   .NEXT_PUBLIC_AI_AGENT_ULTRA_ADDRESS as Address
 const PHONE_ADDRESS = process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address
 
-const Stakes = [
-  {
-    name: 'Matrix NFT',
-    id: '#1221312',
-    img: '/images/stake/matrix.png'
-  },
-  {
-    name: 'AI Agent Pro',
-    id: '#1221312',
-    img: '/images/stake/ai-agent-pro.png'
-  },
-  {
-    name: 'AI Agent One',
-    id: '#1221312',
-    img: '/images/stake/ai-agent-pro-02.png'
-  },
-  {
-    name: 'AI Agent Ultra',
-    id: '#1221312',
-    img: '/images/stake/ai-agent-pro-03.png'
-  }
-]
-
-const UnStakes: any[] = []
+interface StakeToken {
+  id: number
+  name: string
+  img: string
+}
 
 const StakePage: NextPage = () => {
+  const [tokenOwned, setTokenOwned] = useState<StakeToken[]>([])
+  const [stakedTokens, setStakedTokens] = useState<StakeToken[]>([])
+  const [selectedToken, setSelectedToken] = useState<StakeToken | null>(null)
+
   const [currentTab, setCurrentTab] = useState<'stake' | 'unstake'>('stake')
   const { address } = useAccount()
   const { data: userData, refetch: refetchUserData } = useGetUser(address, {
@@ -122,37 +109,37 @@ const StakePage: NextPage = () => {
     )
   }
 
-  const { data: totalNfts } = useReadContracts({
+  const { data: totalNfts, refetch: refetchTotalNfts } = useReadContracts({
     contracts: [
       {
         abi: STAKE_ABI,
         address: STAKE_ADDRESS,
-        functionName: 'totalStakedNFTs',
-        args: [0]
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 0]
       },
       {
         abi: STAKE_ABI,
         address: STAKE_ADDRESS,
-        functionName: 'totalStakedNFTs',
-        args: [1]
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 1]
       },
       {
         abi: STAKE_ABI,
         address: STAKE_ADDRESS,
-        functionName: 'totalStakedNFTs',
-        args: [2]
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 2]
       },
       {
         abi: STAKE_ABI,
         address: STAKE_ADDRESS,
-        functionName: 'totalStakedNFTs',
-        args: [3]
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 3]
       },
       {
         abi: STAKE_ABI,
         address: STAKE_ADDRESS,
-        functionName: 'totalStakedNFTs',
-        args: [4]
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 4]
       }
     ],
     query: {
@@ -160,53 +147,106 @@ const StakePage: NextPage = () => {
     }
   })
 
-  console.log(totalNfts)
+  const [
+    phoneStaked,
+    matrixStaked,
+    agentOneStaked,
+    agentProStaked,
+    agentUltraStaked
+  ] = totalNfts?.map((result) => result.result as number[]) ?? [
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
 
-  const { data: userAllStakedNFTs } = useReadContract({
-    abi: STAKE_ABI,
-    address: STAKE_ADDRESS,
-    functionName: 'getUserAllStakedNFTs',
-    args: [address]
-  })
+  useEffect(() => {
+    const phoneTokens = phoneStaked.map((id) => {
+      return {
+        id,
+        name: 'Matrix Phone',
+        img: '/images/stake/phone.png'
+      }
+    })
 
-  console.log(userAllStakedNFTs)
+    const matrixTokens = matrixStaked.map((id) => {
+      return {
+        id,
+        name: 'Matrix',
+        img: '/images/stake/matrix.png'
+      }
+    })
 
-  const { data: nftBalances } = useReadContracts({
+    const agentOneTokens = agentOneStaked.map((id) => {
+      return {
+        id,
+        name: 'AI Agent One',
+        img: '/images/stake/ai-agent-pro-02.png'
+      }
+    })
+
+    const agentProTokens = agentProStaked.map((id) => {
+      return {
+        id,
+        name: 'AI Agent Pro',
+        img: '/images/stake/ai-agent-pro.png'
+      }
+    })
+
+    const agentUltraTokens = agentUltraStaked.map((id) => {
+      return {
+        id,
+        name: 'AI Agent Ultra',
+        img: '/images/stake/ai-agent-pro-03.png'
+      }
+    })
+
+    setStakedTokens([
+      ...phoneTokens,
+      ...matrixTokens,
+      ...agentOneTokens,
+      ...agentProTokens,
+      ...agentUltraTokens
+    ])
+  }, [
+    phoneStaked,
+    matrixStaked,
+    agentOneStaked,
+    agentProStaked,
+    agentUltraStaked
+  ])
+
+  const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
       {
         address: PHONE_ADDRESS,
         abi: NFT_ABI,
-        functionName: 'balanceOf',
+        functionName: 'tokensOwned',
         args: [address]
       },
       {
         address: MATRIX_ADDRESS,
         abi: NFT_ABI,
-        functionName: 'balanceOf',
+        functionName: 'tokensOwned',
         args: [address]
       },
       {
         address: AI_AGENT_ONE_ADDRESS,
         abi: NFT_ABI,
-        functionName: 'balanceOf',
+        functionName: 'tokensOwned',
         args: [address]
       },
       {
         address: AI_AGENT_PRO_ADDRESS,
         abi: NFT_ABI,
-        functionName: 'balanceOf',
+        functionName: 'tokensOwned',
         args: [address]
       },
       {
         address: AI_AGENT_ULTRA_ADDRESS,
         abi: NFT_ABI,
-        functionName: 'balanceOf',
-        args: [address]
-      },
-      {
-        address: PAYMENT_ADDRESS,
-        abi: PAYMENT_ABI,
-        functionName: 'getReferralRewards',
+        functionName: 'tokensOwned',
         args: [address]
       }
     ],
@@ -222,18 +262,194 @@ const StakePage: NextPage = () => {
     matrixBalance,
     aiAgentOneBalance,
     aiAgentProBalance,
-    aiAgentUltraBalance,
-    referralRewards
-  ] = nftBalances?.map((result) => result.result?.toString()) ?? [
-    BigInt(0),
-    BigInt(0),
-    BigInt(0),
-    BigInt(0),
-    BigInt(0),
-    BigInt(0)
+    aiAgentUltraBalance
+  ] = nftBalances?.map((result) => result.result as number[]) ?? [
+    [],
+    [],
+    [],
+    [],
+    []
   ]
 
-  console.log(nftBalances)
+  useEffect(() => {
+    const phoneTokens = phoneBalance.map((id) => {
+      return {
+        id,
+        name: 'Matrix Phone',
+        img: '/images/stake/phone.png'
+      }
+    })
+
+    const matrixTokens = matrixBalance.map((id) => {
+      return {
+        id,
+        name: 'Matrix',
+        img: '/images/stake/matrix.png'
+      }
+    })
+
+    const aiAgentOneTokens = aiAgentOneBalance.map((id) => {
+      return {
+        id,
+        name: 'AI Agent One',
+        img: '/images/stake/ai-agent-pro-02.png'
+      }
+    })
+
+    const aiAgentProTokens = aiAgentProBalance.map((id) => {
+      return {
+        id,
+        name: 'AI Agent Pro',
+        img: '/images/stake/ai-agent-pro.png'
+      }
+    })
+
+    const aiAgentUltraTokens = aiAgentUltraBalance.map((id) => {
+      return {
+        id,
+        name: 'AI Agent Ultra',
+        img: '/images/stake/ai-agent-pro-03.png'
+      }
+    })
+
+    setTokenOwned([
+      ...phoneTokens,
+      ...matrixTokens,
+      ...aiAgentOneTokens,
+      ...aiAgentProTokens,
+      ...aiAgentUltraTokens
+    ])
+  }, [
+    phoneBalance,
+    matrixBalance,
+    aiAgentOneBalance,
+    aiAgentProBalance,
+    aiAgentUltraBalance
+  ])
+
+  const { data: referralRewards } = useReadContract({
+    address: PAYMENT_ADDRESS,
+    abi: PAYMENT_ABI,
+    functionName: 'getReferralRewards',
+    args: [address]
+  })
+
+  const {
+    data: stakeData,
+    writeContract: stakeToken,
+    isPending: isStakingToken
+  } = useWriteContract()
+
+  const { data: stakeReceipt, isLoading: isWaitingStakingToken } =
+    useWaitForTransactionReceipt({ hash: stakeData })
+
+  useEffect(() => {
+    if (stakeReceipt) {
+      refetchTotalNfts()
+      refetchNftBalances()
+    }
+  }, [stakeReceipt, refetchNftBalances, refetchTotalNfts])
+
+  const {
+    data: approveData,
+    writeContract: approveStake,
+    isPending: isApprovingStake
+  } = useWriteContract()
+
+  const { data: approveReceipt, isLoading: isWaitingApprovingStake } =
+    useWaitForTransactionReceipt({
+      hash: approveData
+    })
+
+  useEffect(() => {
+    if (approveReceipt) {
+      const nftType =
+        selectedToken?.name === 'Matrix Phone'
+          ? 0
+          : selectedToken?.name === 'Matrix'
+            ? 1
+            : selectedToken?.name === 'AI Agent One'
+              ? 2
+              : selectedToken?.name === 'AI Agent Pro'
+                ? 3
+                : 4
+
+      stakeToken({
+        address: STAKE_ADDRESS,
+        abi: STAKE_ABI,
+        functionName: 'stakeNFT',
+        args: [nftType, selectedToken?.id]
+      })
+    }
+  }, [
+    approveReceipt,
+    selectedToken?.id,
+    selectedToken?.name,
+    stakeToken,
+    refetchNftBalances,
+    refetchTotalNfts
+  ])
+
+  const handleStakeToken = async (token: StakeToken) => {
+    setSelectedToken(token)
+    console.log(token)
+    const contractAddress =
+      token.name === 'Matrix Phone'
+        ? PHONE_ADDRESS
+        : token.name === 'Matrix'
+          ? MATRIX_ADDRESS
+          : token.name === 'AI Agent One'
+            ? AI_AGENT_ONE_ADDRESS
+            : token.name === 'AI Agent Pro'
+              ? AI_AGENT_PRO_ADDRESS
+              : AI_AGENT_ULTRA_ADDRESS
+
+    approveStake({
+      address: contractAddress,
+      abi: NFT_ABI,
+      functionName: 'approve',
+      args: [STAKE_ADDRESS, token.id]
+    })
+  }
+
+  const {
+    data: unstakeData,
+    writeContract: unstakeToken,
+    isPending: isUnstakingToken
+  } = useWriteContract()
+
+  const { data: unstakeReceipt, isLoading: isWaitingUnstakingToken } =
+    useWaitForTransactionReceipt({ hash: unstakeData })
+
+  useEffect(() => {
+    if (unstakeReceipt) {
+      refetchTotalNfts()
+      refetchNftBalances()
+    }
+  }, [unstakeReceipt, refetchNftBalances, refetchTotalNfts])
+
+  const handleUnstakeToken = async (token: StakeToken) => {
+    setSelectedToken(token)
+    console.log(token)
+    const nftType =
+      selectedToken?.name === 'Matrix Phone'
+        ? 0
+        : selectedToken?.name === 'Matrix'
+          ? 1
+          : selectedToken?.name === 'AI Agent One'
+            ? 2
+            : selectedToken?.name === 'AI Agent Pro'
+              ? 3
+              : 4
+    console.log(nftType, token.id)
+
+    unstakeToken({
+      address: STAKE_ADDRESS,
+      abi: STAKE_ABI,
+      functionName: 'unstakeNFT',
+      args: [nftType, token.id]
+    })
+  }
 
   return (
     <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
@@ -384,7 +600,9 @@ const StakePage: NextPage = () => {
                     Matrix Phone
                   </span>
                 </div>
-                <div className='text-[48px] font-bold'>{1}</div>
+                <div className='text-[48px] font-bold'>
+                  {phoneStaked.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -393,7 +611,9 @@ const StakePage: NextPage = () => {
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
-                <div className='text-[18px] font-bold'>{phoneBalance}</div>
+                <div className='text-[18px] font-bold'>
+                  {phoneBalance.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -403,7 +623,9 @@ const StakePage: NextPage = () => {
                   Stake
                   <LockIcon />
                 </div>
-                <div className='text-[18px] font-bold'>{1}</div>
+                <div className='text-[18px] font-bold'>
+                  {phoneStaked.length}
+                </div>
               </div>
             </div>
           </div>
@@ -424,7 +646,9 @@ const StakePage: NextPage = () => {
                     Matrix
                   </span>
                 </div>
-                <div className='text-[48px] font-bold'>{1}</div>
+                <div className='text-[48px] font-bold'>
+                  {matrixStaked.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -433,7 +657,9 @@ const StakePage: NextPage = () => {
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
-                <div className='text-[18px] font-bold'>{matrixBalance}</div>
+                <div className='text-[18px] font-bold'>
+                  {matrixBalance.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -443,7 +669,9 @@ const StakePage: NextPage = () => {
                   Stake
                   <LockIcon />
                 </div>
-                <div className='text-[18px] font-bold'>{1}</div>
+                <div className='text-[18px] font-bold'>
+                  {matrixStaked.length}
+                </div>
               </div>
             </div>
             <div
@@ -459,7 +687,9 @@ const StakePage: NextPage = () => {
                     AI Agent One
                   </span>
                 </div>
-                <div className='text-[48px] font-bold'>{1}</div>
+                <div className='text-[48px] font-bold'>
+                  {agentOneStaked.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -468,7 +698,9 @@ const StakePage: NextPage = () => {
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
-                <div className='text-[18px] font-bold'>{aiAgentOneBalance}</div>
+                <div className='text-[18px] font-bold'>
+                  {aiAgentOneBalance.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -478,7 +710,9 @@ const StakePage: NextPage = () => {
                   Stake
                   <LockIcon />
                 </div>
-                <div className='text-[18px] font-bold'>{1}</div>
+                <div className='text-[18px] font-bold'>
+                  {agentOneStaked.length}
+                </div>
               </div>
             </div>
             <div
@@ -494,7 +728,9 @@ const StakePage: NextPage = () => {
                     AI Agent Pro
                   </span>
                 </div>
-                <div className='text-[48px] font-bold'>{1}</div>
+                <div className='text-[48px] font-bold'>
+                  {agentProStaked.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -503,7 +739,9 @@ const StakePage: NextPage = () => {
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
-                <div className='text-[18px] font-bold'>{aiAgentProBalance}</div>
+                <div className='text-[18px] font-bold'>
+                  {aiAgentProBalance.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -513,7 +751,9 @@ const StakePage: NextPage = () => {
                   Stake
                   <LockIcon />
                 </div>
-                <div className='text-[18px] font-bold'>{1}</div>
+                <div className='text-[18px] font-bold'>
+                  {agentProStaked.length}
+                </div>
               </div>
             </div>
             <div
@@ -529,7 +769,9 @@ const StakePage: NextPage = () => {
                     AI Agent Ultra
                   </span>
                 </div>
-                <div className='text-[48px] font-bold'>{1}</div>
+                <div className='text-[48px] font-bold'>
+                  {agentUltraStaked.length}
+                </div>
               </div>
               <div
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
@@ -539,7 +781,7 @@ const StakePage: NextPage = () => {
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {aiAgentUltraBalance}
+                  {aiAgentUltraBalance.length}
                 </div>
               </div>
               <div
@@ -550,7 +792,9 @@ const StakePage: NextPage = () => {
                   Stake
                   <LockIcon />
                 </div>
-                <div className='text-[18px] font-bold'>{1}</div>
+                <div className='text-[18px] font-bold'>
+                  {agentUltraStaked.length}
+                </div>
               </div>
             </div>
           </div>
@@ -767,10 +1011,10 @@ const StakePage: NextPage = () => {
                 gap-y-4 gap-x-4 p-8 max-h-[437px] overflow-y-auto transparent-scrollbar'
             >
               {currentTab === 'stake' &&
-                Stakes.map((stake) => {
+                tokenOwned.map((stake) => {
                   return (
                     <div
-                      key={stake.name}
+                      key={stake.name + stake.id}
                       className='flex justify-between items-center pr-4'
                     >
                       <div className='flex items-center gap-4'>
@@ -788,17 +1032,29 @@ const StakePage: NextPage = () => {
                           </span>
                         </div>
                       </div>
-                      <Button className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'>
+                      <Button
+                        isLoading={
+                          stake.id === selectedToken?.id &&
+                          (isApprovingStake ||
+                            isWaitingApprovingStake ||
+                            isWaitingStakingToken ||
+                            isStakingToken)
+                        }
+                        onClick={() => {
+                          handleStakeToken(stake)
+                        }}
+                        className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'
+                      >
                         STAKE
                       </Button>
                     </div>
                   )
                 })}
               {currentTab === 'unstake' &&
-                UnStakes.map((stake) => {
+                stakedTokens.map((stake) => {
                   return (
                     <div
-                      key={stake.name}
+                      key={stake.name + stake.id}
                       className='flex justify-between items-center pr-4'
                     >
                       <div className='flex items-center gap-4'>
@@ -816,8 +1072,17 @@ const StakePage: NextPage = () => {
                           </span>
                         </div>
                       </div>
-                      <Button className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'>
-                        STAKE
+                      <Button
+                        isLoading={
+                          stake.id === selectedToken?.id &&
+                          (isWaitingUnstakingToken || isUnstakingToken)
+                        }
+                        onClick={() => {
+                          handleUnstakeToken(stake)
+                        }}
+                        className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'
+                      >
+                        UNSTAKE
                       </Button>
                     </div>
                   )
