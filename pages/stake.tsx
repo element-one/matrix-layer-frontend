@@ -13,7 +13,8 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  Tooltip
+  Tooltip,
+  useDisclosure
 } from '@nextui-org/react'
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
@@ -38,6 +39,10 @@ import { InfoIcon } from '@components/Icon/InfoIcon'
 import { LockIcon } from '@components/Icon/LockIcon'
 import { Input } from '@components/Input'
 import Layout from '@components/Layout/Layout'
+import {
+  StakeConfirmModal,
+  StakeTypeEnum
+} from '@components/Modal/StakeConfirmModal'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { ModalType, useModal } from '@contexts/modal'
@@ -104,6 +109,14 @@ const mock_details = [
 ]
 
 const StakePage: NextPage = () => {
+  const {
+    isOpen: isOpenStakeConfirm,
+    onOpen: onOpenStakeConfirm,
+    onClose: onCloseChangeStakeConfirm
+  } = useDisclosure()
+
+  const [stakeType, setStakeType] = useState<StakeTypeEnum | null>(null)
+
   const [tokenOwned, setTokenOwned] = useState<StakeToken[]>([])
   const [stakedTokens, setStakedTokens] = useState<StakeToken[]>([])
   const [selectedToken, setSelectedToken] = useState<StakeToken | null>(null)
@@ -465,7 +478,6 @@ const StakePage: NextPage = () => {
   ])
 
   const handleStakeToken = async (token: StakeToken) => {
-    setSelectedToken(token)
     console.log(token)
     const contractAddress =
       token.name === 'Matrix Phone'
@@ -532,6 +544,24 @@ const StakePage: NextPage = () => {
         }
       }
     )
+  }
+
+  const handleShowConfirmModal = (token: StakeToken, type: StakeTypeEnum) => {
+    setStakeType(type)
+    setSelectedToken(token)
+    onOpenStakeConfirm()
+  }
+
+  const handleStakeConfirm = () => {
+    if (!selectedToken) return
+
+    if (stakeType === StakeTypeEnum.STAKE) {
+      handleStakeToken(selectedToken)
+    }
+
+    if (stakeType === StakeTypeEnum.UNSTAKE) {
+      handleUnstakeToken(selectedToken)
+    }
   }
 
   return (
@@ -1168,7 +1198,7 @@ const StakePage: NextPage = () => {
                             isStakingToken)
                         }
                         onClick={() => {
-                          handleStakeToken(stake)
+                          handleShowConfirmModal(stake, StakeTypeEnum.STAKE)
                         }}
                         className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'
                       >
@@ -1205,7 +1235,7 @@ const StakePage: NextPage = () => {
                           (isWaitingUnstakingToken || isUnstakingToken)
                         }
                         onClick={() => {
-                          handleUnstakeToken(stake)
+                          handleShowConfirmModal(stake, StakeTypeEnum.UNSTAKE)
                         }}
                         className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'
                       >
@@ -1552,6 +1582,21 @@ const StakePage: NextPage = () => {
       </Container>
 
       <div className='h-[160px] w-full'></div>
+
+      <StakeConfirmModal
+        loading={
+          isApprovingStake ||
+          isWaitingApprovingStake ||
+          isWaitingStakingToken ||
+          isStakingToken ||
+          isWaitingUnstakingToken ||
+          isUnstakingToken
+        }
+        type={stakeType}
+        isOpen={isOpenStakeConfirm}
+        onClose={onCloseChangeStakeConfirm}
+        onConfirm={handleStakeConfirm}
+      />
 
       <Modal
         isOpen={usdtHistoryModalVisible}
