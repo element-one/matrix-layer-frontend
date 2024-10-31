@@ -1,19 +1,7 @@
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
-import { useRouter } from 'next/navigation'
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  Table,
-  TableBody,
-  TableColumn,
-  TableHeader,
-  TableRow,
-  Tooltip
-} from '@nextui-org/react'
+import { Tooltip } from '@nextui-org/react'
 import clsx from 'clsx'
 import { Address } from 'viem'
 import {
@@ -36,9 +24,16 @@ import { InfoIcon } from '@components/Icon/InfoIcon'
 import { LockIcon } from '@components/Icon/LockIcon'
 import { Input } from '@components/Input'
 import Layout from '@components/Layout/Layout'
+import { RewardsHistoryModal } from '@components/Modal/RewardsHistoryModal'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
-import { useGetUser, usePatchReferralCode } from '@services/api'
+import { ModalType, useModal } from '@contexts/modal'
+import {
+  getStakingSignature,
+  useGetUser,
+  usePatchReferralCode
+} from '@services/api'
+import { formatCurrency } from '@utils/currency'
 import { serializeError } from 'eth-rpc-errors'
 
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
@@ -74,23 +69,26 @@ const StakePage: NextPage = () => {
   const { data: userData, refetch: refetchUserData } = useGetUser(address, {
     enabled: !!address
   })
-  const router = useRouter()
   const [referralCode, setReferralCode] = useState('')
   const { signMessage } = useSignMessage()
   const [usdtHistoryModalVisible, setUsdtHistoryModalVisible] = useState(false)
+
+  const { showModal } = useModal()
 
   const handleHistoryModalClose = () => {
     setUsdtHistoryModalVisible(false)
   }
 
   const handleUsdtHistoryClick = () => {
-    return
     setUsdtHistoryModalVisible(true)
   }
 
   const handleMLPHistoryClick = () => {
-    return
-    setUsdtHistoryModalVisible(true)
+    showModal(ModalType.REWARDS_MLP_HISTORY_MODAL)
+  }
+
+  const handleStakeNFT = () => {
+    showModal(ModalType.BUY_NFT_MODAL)
   }
 
   const handleCopy = (text: string) => async () => {
@@ -353,12 +351,13 @@ const StakePage: NextPage = () => {
     aiAgentUltraBalance
   ])
 
-  const { data: referralRewards } = useReadContract({
-    address: PAYMENT_ADDRESS,
-    abi: PAYMENT_ABI,
-    functionName: 'getReferralRewards',
-    args: [address]
-  })
+  const { data: referralRewards, refetch: refetchReferralWard } =
+    useReadContract({
+      address: PAYMENT_ADDRESS,
+      abi: PAYMENT_ABI,
+      functionName: 'getReferralRewards',
+      args: [address]
+    })
 
   const {
     data: stakeData,
@@ -381,6 +380,104 @@ const StakePage: NextPage = () => {
     writeContract: approveStake,
     isPending: isApprovingStake
   } = useWriteContract()
+
+  const {
+    data: rewardMLPHash,
+    writeContract: claimRewardMLP,
+    isPending: isClaimingMLP
+  } = useWriteContract()
+
+  const { data: txRewardMLP, isLoading: isWaitingClaimMLPReceipt } =
+    useWaitForTransactionReceipt({
+      hash: rewardMLPHash,
+      query: {
+        enabled: rewardMLPHash !== undefined,
+        initialData: undefined
+      }
+    })
+
+  const {
+    data: claimHash,
+    writeContract: claimContract,
+    isPending: isClaimingContract
+  } = useWriteContract()
+
+  const { data: txData, isLoading: isWaitingClaimReceipt } =
+    useWaitForTransactionReceipt({
+      hash: claimHash,
+      query: {
+        enabled: claimHash !== undefined,
+        initialData: undefined
+      }
+    })
+
+  useEffect(() => {
+    if (txData && !isWaitingClaimReceipt) {
+      refetchReferralWard()
+    }
+  }, [txData, refetchReferralWard, isWaitingClaimReceipt])
+
+  const handleClaimReward = async () => {
+    if (!referralRewards || !address) {
+      return
+    }
+
+    claimContract(
+      {
+        abi: PAYMENT_ABI,
+        functionName: 'claimReferralReward',
+        address: PAYMENT_ADDRESS
+      },
+      {
+        onSuccess() {
+          console.log('claim success')
+        },
+        onError(err: Error) {
+          const serializedError = serializeError(err)
+          console.log({ serializedError })
+          toast.error(
+            (serializedError?.data as any)?.originalError?.shortMessage
+          )
+        }
+      }
+    )
+  }
+
+  const handleClaimMLP = async () => {
+    if (
+      !userData?.mlpTokenAmountPoolA ||
+      !Number(userData?.mlpTokenAmountPoolA) ||
+      !address
+    ) {
+      return
+    }
+
+    const signatureData = await getStakingSignature(address)
+
+    claimRewardMLP(
+      {
+        abi: STAKE_ABI,
+        address: STAKE_ADDRESS,
+        functionName: 'claimReward',
+        args: [userData.mlpTokenAmountPoolA, signatureData.signature]
+      },
+      {
+        onError(err: Error) {
+          const serializedError = serializeError(err)
+          console.log({ serializedError })
+          toast.error(
+            (serializedError?.data as any)?.originalError?.shortMessage
+          )
+        }
+      }
+    )
+  }
+
+  useEffect(() => {
+    if (txRewardMLP && !isWaitingClaimMLPReceipt) {
+      refetchUserData()
+    }
+  }, [txRewardMLP, isWaitingClaimMLPReceipt, refetchUserData])
 
   const { data: approveReceipt, isLoading: isWaitingApprovingStake } =
     useWaitForTransactionReceipt({
@@ -581,7 +678,7 @@ const StakePage: NextPage = () => {
 
           <div className='flex items-center justify-end w-full mt-2'>
             {!userData?.referredByUserAddress && (
-              <div className='w-[50%] flex items-center justify-between pl-10'>
+              <div className='w-[50%] flex items-center justify-between pl-10 pr-4'>
                 <Input
                   placeholder='Enter invite code'
                   wrapperClassName='w-[70%]'
@@ -602,7 +699,9 @@ const StakePage: NextPage = () => {
               </div>
             )}
             {!!userData?.referredByUserAddress && (
-              <span>{userData.referredByUserAddress}</span>
+              <span className='pr-4 opacity-60 text-[16px]'>
+                {userData.referredByUserAddress}
+              </span>
             )}
           </div>
         </Content>
@@ -888,7 +987,9 @@ const StakePage: NextPage = () => {
             <div className='flex flex-col items-end'>
               <div className='flex items-center gap-1'>
                 <span className='text-[48px] font-bold'>
-                  {referralRewards ? referralRewards.toString() : '--'}
+                  {referralRewards
+                    ? formatCurrency(referralRewards as number)
+                    : '--'}
                 </span>
                 <span className='text-[20px] text-gray-a5'>USDT</span>
               </div>
@@ -899,7 +1000,11 @@ const StakePage: NextPage = () => {
                 >
                   History
                 </div>
-                <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
+                <Button
+                  onClick={handleClaimReward}
+                  className='rounded-full h-8 w-[152px] text-base font-semibold z-10'
+                  isLoading={isClaimingContract}
+                >
                   CLAIM
                 </Button>
               </div>
@@ -921,8 +1026,12 @@ const StakePage: NextPage = () => {
             </div>
             <div className='flex flex-col items-end'>
               <div className='flex items-center gap-1'>
-                <span className='text-[48px] font-bold'>123,456.89</span>
-                <span className='text-[20px] text-gray-a5'>USDT</span>
+                <span className='text-[48px] font-bold'>
+                  {userData?.mlpTokenAmountPoolA
+                    ? formatCurrency(userData?.mlpTokenAmountPoolA)
+                    : '--'}
+                </span>
+                <span className='text-[20px] text-gray-a5'>$MLP</span>
               </div>
               <div className='flex items-center justify-center gap-4'>
                 <div
@@ -931,7 +1040,11 @@ const StakePage: NextPage = () => {
                 >
                   History
                 </div>
-                <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
+                <Button
+                  onClick={handleClaimMLP}
+                  isLoading={isClaimingMLP}
+                  className='rounded-full h-8 w-[152px] text-base font-semibold z-10'
+                >
                   CLAIM
                 </Button>
               </div>
@@ -950,100 +1063,105 @@ const StakePage: NextPage = () => {
           >
             MLP&apos;s Hashrate Information
           </Text>
-          <div
-            className={clsx(
-              `md:p-8 md:border-2 mt-8 rounded-[20px] md:backdrop-filter
-                md:backdrop-blur-[10px] flex items-center justify-center flex-col gap-6`,
-              GradientBorderClass
-            )}
-          >
-            <div className='flex items-center justify-center gap-4'>
-              <LockIcon width={36} height={36} color='#FFFFFF' />
-              <div className='text-[48px] font-bold'>
-                Stake your{' '}
-                <span className={clsx('', GradientTextClass)}>NFT</span> to
-                unlock this pool
-              </div>
-            </div>
-            <Button
-              onClick={() => router.push('/presale?tab=nft')}
-              className='rounded-full w-[60%] text-[16px] h-[48px]'
-            >
-              BUY NFT
-            </Button>
-          </div>
-          <div
-            className='grid mt-8 grid-cols-1 md:grid-cols-2 gap-8 border-2 md:border-none
-              rounded-[20px] border-referral-gradient p-8 md:p-0'
-          >
-            <div
-              className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
-                GradientBorderClass
-              )}
-            >
-              <div className='flex justify-between items-center'>
-                <span className='text-gray-a5'>Total NFT</span>
-                <span className='text-[48px] font-bold'>4</span>
-              </div>
-              <div className='flex items-center justify-center gap-4 mt-2'>
-                <div
-                  className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
-                    text-gray-a5'
-                >
-                  <div className='text-center'>Matrix Phone</div>
-                  <span>1</span>
-                </div>
-                <div
-                  className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
-                    text-gray-a5'
-                >
-                  <div className='text-center'>Matrix NFT</div>
-                  <span>1</span>
-                </div>
-                <div
-                  className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
-                    text-gray-a5'
-                >
-                  <div className='text-center'>AI Agent One</div>
-                  <span>1</span>
-                </div>
-                <div
-                  className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
-                    text-gray-a5'
-                >
-                  <div className='text-center'>AI Agent Pro</div>
-                  <span>1</span>
-                </div>
-                <div
-                  className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
-                    text-gray-a5'
-                >
-                  <div className='text-center'>AI Agent Ultra</div>
-                  <span>1</span>
-                </div>
-              </div>
-            </div>
 
+          <div className='relative'>
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
-                GradientBorderClass
+                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter absolute z-10 w-full h-full
+                  backdrop-blur-lg bg-opacity-60 md:backdrop-blur-[10px] flex items-center
+                  justify-center flex-col gap-6 border-1`
+                // GradientBorderClass
               )}
             >
-              <div className='flex justify-between items-center'>
-                <span className='text-gray-a5'>Daily MLP Distribution</span>
-                <span className='text-[48px] font-bold'>1,106.9032</span>
+              <div className='flex items-center justify-center gap-4'>
+                <LockIcon width={36} height={36} color='#FFFFFF' />
+                <div className='text-[48px] font-bold'>
+                  Stake your{' '}
+                  <span className={clsx('', GradientTextClass)}>NFT</span> to
+                  unlock this pool
+                </div>
               </div>
-              <div
-                className='bg-black h-[96px] mt-2 rounded-md flex items-center justify-center text-[18px]
-                  flex-col px-4 py-2 text-gray-a5'
+              <Button
+                onClick={handleStakeNFT}
+                className='rounded-full w-[60%] text-[16px] h-[48px]'
               >
-                <div className='text-center'>Staking</div>
-                <span className='text-white'>1,105.9032</span>
+                STAKE NFT
+              </Button>
+            </div>
+            <div
+              className='grid mt-8 grid-cols-1 md:grid-cols-2 gap-8 border-2 md:border-none
+                rounded-[20px] border-referral-gradient p-8 md:p-0'
+            >
+              <div
+                className={clsx(
+                  `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                  GradientBorderClass
+                )}
+              >
+                <div className='flex justify-between items-center'>
+                  <span className='text-gray-a5'>Total NFT</span>
+                  <span className='text-[48px] font-bold'>4</span>
+                </div>
+                <div className='flex items-center justify-center gap-4 mt-2'>
+                  <div
+                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                      text-gray-a5'
+                  >
+                    <div className='text-center'>Matrix Phone</div>
+                    <span>1</span>
+                  </div>
+                  <div
+                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                      text-gray-a5'
+                  >
+                    <div className='text-center'>Matrix NFT</div>
+                    <span>1</span>
+                  </div>
+                  <div
+                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                      text-gray-a5'
+                  >
+                    <div className='text-center'>AI Agent One</div>
+                    <span>1</span>
+                  </div>
+                  <div
+                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                      text-gray-a5'
+                  >
+                    <div className='text-center'>AI Agent Pro</div>
+                    <span>1</span>
+                  </div>
+                  <div
+                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                      text-gray-a5'
+                  >
+                    <div className='text-center'>AI Agent Ultra</div>
+                    <span>1</span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={clsx(
+                  `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                  GradientBorderClass
+                )}
+              >
+                <div className='flex justify-between items-center'>
+                  <span className='text-gray-a5'>Daily MLP Distribution</span>
+                  <span className='text-[48px] font-bold'>1,106.9032</span>
+                </div>
+                <div
+                  className='bg-black h-[96px] mt-2 rounded-md flex items-center justify-center text-[18px]
+                    flex-col px-4 py-2 text-gray-a5'
+                >
+                  <div className='text-center'>Staking</div>
+                  <span className='text-white'>1,105.9032</span>
+                </div>
               </div>
             </div>
           </div>
+
           <div
             className={clsx(
               `py-8 md:border-2 mt-8 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
@@ -1100,7 +1218,11 @@ const StakePage: NextPage = () => {
                         <img
                           src={stake.img}
                           alt='matrix'
-                          className='w-[87px] h-[80px]'
+                          className={
+                            stake.name === 'Matrix Phone'
+                              ? 'ml-1 w-[74px] h-[66px]'
+                              : 'w-[87px] h-[80px]'
+                          }
                         />
                         <div className='flex flex-col'>
                           <span className='text-[32px] font-bold'>
@@ -1140,7 +1262,11 @@ const StakePage: NextPage = () => {
                         <img
                           src={stake.img}
                           alt='matrix'
-                          className='w-[87px] h-[80px]'
+                          className={
+                            stake.name === 'Matrix Phone'
+                              ? 'ml-1 w-[74px] h-[66px]'
+                              : 'w-[87px] h-[80px]'
+                          }
                         />
                         <div className='flex flex-col'>
                           <span className='text-[32px] font-bold'>
@@ -1529,32 +1655,14 @@ const StakePage: NextPage = () => {
 
       <div className='h-[160px] w-full'></div>
 
-      <Modal
-        isOpen={usdtHistoryModalVisible}
-        onClose={handleHistoryModalClose}
-        className='bg-co-bg-black'
-        size='4xl'
-      >
-        <ModalContent>
-          <ModalHeader></ModalHeader>
-          <ModalBody>
-            <Table>
-              <TableHeader>
-                <TableColumn>Time</TableColumn>
-                <TableColumn>Address</TableColumn>
-                <TableColumn>Reward</TableColumn>
-                <TableColumn>Status</TableColumn>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableColumn>aa</TableColumn>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <div> history </div>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      {usdtHistoryModalVisible && (
+        <RewardsHistoryModal
+          isOpen={usdtHistoryModalVisible}
+          onOpenChange={handleHistoryModalClose}
+          onClose={handleHistoryModalClose}
+          title='Node Rewards History'
+        />
+      )}
     </Layout>
   )
 }

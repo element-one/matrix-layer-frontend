@@ -16,10 +16,12 @@ import {
   ShippingAddressModal,
   ShippingAddressModalProps
 } from '@components/Modal'
+import { BuyNFTModal } from '@components/Modal/BuyNFTModal'
 import {
   ManageAddressModal,
   ManageAddressModalProps
 } from '@components/Modal/ManageAddressModal'
+import { RewardsMLPHistoryModal } from '@components/Modal/RewardsMLPHistoryModal'
 import { RewardsModal, RewardsModalProps } from '@components/Modal/RewardsModal'
 
 export enum ModalType {
@@ -28,7 +30,9 @@ export enum ModalType {
   REFERRAL_CODE_MODAL = 'REFERRAL_CODE_MODAL',
   SHIPPING_ADDRESS_MODAL = 'SHIPPING_ADDRESS_MODAL',
   MANAGE_ADDRESS_MODAL = 'MANAGE_ADDRESS_MODAL',
-  REWARDS_MODAL = 'REWARDS_MODAL'
+  REWARDS_MODAL = 'REWARDS_MODAL',
+  REWARDS_MLP_HISTORY_MODAL = 'REWARDS_MLP_HISTORY_MODAL',
+  BUY_NFT_MODAL = 'BUY_NFT_MODAL'
 }
 
 const MODAL_COMPONENTS = {
@@ -37,7 +41,9 @@ const MODAL_COMPONENTS = {
   [ModalType.REFERRAL_CODE_MODAL]: ReferralCodeModal,
   [ModalType.SHIPPING_ADDRESS_MODAL]: ShippingAddressModal,
   [ModalType.MANAGE_ADDRESS_MODAL]: ManageAddressModal,
-  [ModalType.REWARDS_MODAL]: RewardsModal
+  [ModalType.REWARDS_MODAL]: RewardsModal,
+  [ModalType.REWARDS_MLP_HISTORY_MODAL]: RewardsMLPHistoryModal,
+  [ModalType.BUY_NFT_MODAL]: BuyNFTModal
 }
 
 type ModalProps =

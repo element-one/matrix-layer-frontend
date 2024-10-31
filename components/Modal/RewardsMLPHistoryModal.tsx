@@ -1,9 +1,8 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import {
   Modal,
   ModalBody,
   ModalContent,
-  ModalProps,
   Pagination,
   Spinner,
   Table,
@@ -17,14 +16,14 @@ import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { Text } from '@components/Text'
-import { useGetRewardsHistory } from '@services/api'
+import { ModalType, useModal } from '@contexts/modal'
+import { useGetMLPRewardsHistory } from '@services/api'
 import { formatUSDT } from '@utils/currency'
 import { formatClaimWalletAddress } from '@utils/formatWalletAddress'
 import dayjs from 'dayjs'
 
-export interface RewardsHistoryModalProps extends Omit<ModalProps, 'children'> {
-  onSubmit?: () => void
-  title?: string
+export interface RewardsMLPHistoryModalProps {
+  onClose?: () => void
 }
 
 const statusClass = (status: string) => {
@@ -43,16 +42,14 @@ const statusCommonClass =
 
 const PAGE_SIZE = 6
 
-export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
-  isOpen,
-  onOpenChange,
-  onClose,
-  title
+export const RewardsMLPHistoryModal: FC<RewardsMLPHistoryModalProps> = ({
+  onClose
 }) => {
   const { address } = useAccount()
   const [page, setPage] = useState(1)
+  const { hideModal, isModalShown } = useModal()
 
-  const { data, refetch, isLoading, isRefetching } = useGetRewardsHistory(
+  const { data, isLoading, isRefetching } = useGetMLPRewardsHistory(
     address as Address,
     page,
     PAGE_SIZE,
@@ -61,24 +58,21 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
     }
   )
 
-  useEffect(() => {
-    if (isOpen) {
-      setPage(1)
-      refetch()
-    }
-  }, [isOpen, setPage, refetch])
-
   const history = useMemo(() => data?.data || [], [data])
   const totalPage = useMemo(
     () => Math.ceil((data?.total || 1) / (data?.pageSize || PAGE_SIZE)),
     [data]
   )
 
+  const handleClose = () => {
+    hideModal()
+    onClose?.()
+  }
+
   return (
     <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      onClose={onClose}
+      isOpen={isModalShown(ModalType.REWARDS_MLP_HISTORY_MODAL)}
+      onClose={handleClose}
       isDismissable={false}
       size='xl'
       placement='center'
@@ -91,7 +85,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
       <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
           <Text className='text-white text-[24px] md:text-[32px] font-bold'>
-            {title ?? 'History'}
+            MLP Claimable History
           </Text>
           <Table
             aria-label='Reward History'
@@ -126,7 +120,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
                     {formatClaimWalletAddress(item.address)}
                   </TableCell>
                   <TableCell className='font-bold'>
-                    {formatUSDT(item.claimedAmount)}
+                    {formatUSDT(item.tokenAmount)}
                   </TableCell>
                   <TableCell className='flex flex-row justify-center'>
                     <span

@@ -23,9 +23,14 @@ export function formatUSDT(
   amount: string | number,
   decimals: number = 18
 ): string {
-  const formattedAmount = formatUnits(
-    new BigNumber(amount).toFixed(0),
-    decimals
-  )
-  return parseFloat(formattedAmount).toFixed(2)
+  try {
+    const formattedAmount = formatUnits(
+      new BigNumber(amount).toFixed(0),
+      decimals
+    )
+    return parseFloat(formattedAmount).toFixed(2)
+  } catch (error) {
+    console.log('format USDT error: ', error)
+    return ''
+  }
 }
