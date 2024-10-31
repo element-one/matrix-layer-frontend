@@ -1,24 +1,30 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
 import { Tooltip } from '@nextui-org/react'
 import clsx from 'clsx'
 import { Address } from 'viem'
-import { useAccount, useReadContract, useReadContracts } from 'wagmi'
+import {
+  useAccount,
+  useReadContract,
+  useReadContracts,
+  useSignMessage
+} from 'wagmi'
 
 import NFT_ABI from '@abis/NFT.json'
 import PAYMENT_ABI from '@abis/Payment.json'
 import STAKE_ABI from '@abis/Stake.json'
 import { Button } from '@components/Button'
 import { Container, Content } from '@components/Home/Container'
-import { CheckCircleIcon } from '@components/Icon/CheckCircleIcon'
 import { CopyIcon } from '@components/Icon/CopyIcon'
 import { InfoIcon } from '@components/Icon/InfoIcon'
 import { LockIcon } from '@components/Icon/LockIcon'
+import { Input } from '@components/Input'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
-import { useGetUser } from '@services/api'
+import { useGetUser, usePatchReferralCode } from '@services/api'
 
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
@@ -65,8 +71,12 @@ const UnStakes: any[] = []
 const StakePage: NextPage = () => {
   const [currentTab, setCurrentTab] = useState<'stake' | 'unstake'>('stake')
   const { address } = useAccount()
-  const { data: userData } = useGetUser(address, { enabled: !!address })
+  const { data: userData, refetch: refetchUserData } = useGetUser(address, {
+    enabled: !!address
+  })
   const router = useRouter()
+  const [referralCode, setReferralCode] = useState('')
+  const { signMessage } = useSignMessage()
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -76,6 +86,40 @@ const StakePage: NextPage = () => {
         console.log(e)
       }
     }
+  }
+
+  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(
+    referralCode ?? '',
+    {
+      onSuccess() {
+        refetchUserData()
+      },
+      onError(err) {
+        console.log('patch referral code error:', err)
+        toast.error('Invalid referral code')
+      }
+    }
+  )
+
+  const handleVerify = async () => {
+    if (!referralCode) {
+      return
+    }
+
+    signMessage(
+      {
+        message: `Referral Code: ${referralCode}`
+      },
+      {
+        onSuccess(data) {
+          patchReferralCode({ signature: data })
+        },
+        onError(err) {
+          console.log('sign error: ', err)
+          toast.error('signature error:' + (err as Error).message)
+        }
+      }
+    )
   }
 
   const { data: totalNfts } = useReadContracts({
@@ -252,30 +296,63 @@ const StakePage: NextPage = () => {
             </div>
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] flex flex-col justify-center gap-4
-                  md:backdrop-filter md:backdrop-blur-[10px]`,
+                'md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]',
                 GradientBorderClass
               )}
             >
-              <Text className='text-2xl font-semibold bg-clip-text text-transparent bg-gradient-text-1'>
-                Invitation System
+              <Text
+                className='mb-[11px] text-2xl font-semibold bg-clip-text text-transparent
+                  bg-gradient-text-1'
+              >
+                Referral Link
               </Text>
-              <div className='flex justify-between w-full font-bold'>
-                <span className='text-[20px]'>Referral Link</span>
-                <div className='text-[18px] text-gray-a5 flex gap-2'>
-                  {WEB_URL + '/referral?code=' + userData?.referralCode}
-                  <CheckCircleIcon />
+              <div
+                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
+              >
+                <div className='min-w-0 text-[18px] font-semibold truncate'>
+                  {WEB_URL + '/referral?code=' + userData?.referralCode ?? ''}
                 </div>
-              </div>
-              <div className='flex justify-between w-full font-bold'>
-                <span className='text-[20px]'>
-                  Your Referrer&apos;s Wallet Address
-                </span>
-                <div className='text-[18px] text-gray-a5'>
-                  {userData?.referredByUserAddress || '--'}
-                </div>
+                <Button
+                  className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
+                    text-base font-semibold'
+                  variant='bordered'
+                  onClick={handleCopy(
+                    WEB_URL + '/referral?code=' + userData?.referralCode ?? ''
+                  )}
+                >
+                  <span className='md:inline hidden'>Copy Link</span>
+                  <CopyIcon />
+                </Button>
               </div>
             </div>
+          </div>
+
+          <div className='flex items-center justify-end w-full mt-2'>
+            {!userData?.referredByUserAddress && (
+              <div className='w-[50%] flex items-center justify-between pl-10'>
+                <Input
+                  placeholder='Enter invite code'
+                  wrapperClassName='w-[70%]'
+                  inputClassName='border-[#282828] !outline-none !ring-0 bg-[#151515]'
+                  type='text'
+                  value={referralCode}
+                  onChange={(val) => setReferralCode(val)}
+                  id='inviteCode'
+                />
+                <Button
+                  onClick={handleVerify}
+                  isLoading={isPending}
+                  disabled={!referralCode}
+                  className='rounded-full text-[16px] h-[40px] ml-10'
+                >
+                  Verify Link
+                </Button>
+              </div>
+            )}
+            {!!userData?.referredByUserAddress && (
+              <span>{userData.referredByUserAddress}</span>
+            )}
           </div>
         </Content>
       </Container>
@@ -291,8 +368,8 @@ const StakePage: NextPage = () => {
             My NFT Inventory
           </Text>
           <div
-            className='grid grid-cols-1 md:grid-cols-2 gap-8 border-2 md:border-none rounded-[20px]
-              border-referral-gradient p-8 md:p-0'
+            className='grid grid-cols-1 border-2 md:border-none rounded-[20px] border-referral-gradient
+              p-8 md:p-0'
           >
             <div
               className={clsx(
@@ -329,6 +406,11 @@ const StakePage: NextPage = () => {
                 <div className='text-[18px] font-bold'>{1}</div>
               </div>
             </div>
+          </div>
+          <div
+            className='grid grid-cols-1 mt-8 md:grid-cols-2 gap-8 border-2 md:border-none
+              rounded-[20px] border-referral-gradient p-8 md:p-0'
+          >
             <div
               className={clsx(
                 `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
@@ -364,11 +446,6 @@ const StakePage: NextPage = () => {
                 <div className='text-[18px] font-bold'>{1}</div>
               </div>
             </div>
-          </div>
-          <div
-            className='grid grid-cols-1 mt-8 md:grid-cols-3 gap-8 border-2 md:border-none
-              rounded-[20px] border-referral-gradient p-8 md:p-0'
-          >
             <div
               className={clsx(
                 `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
@@ -498,9 +575,14 @@ const StakePage: NextPage = () => {
                 </span>
                 <span className='text-[20px] text-gray-a5'>USDT</span>
               </div>
-              <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
-                CLAIM
-              </Button>
+              <div className='flex items-center justify-center gap-4'>
+                <div className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'>
+                  History
+                </div>
+                <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
+                  CLAIM
+                </Button>
+              </div>
             </div>
           </div>
           <div
@@ -522,9 +604,14 @@ const StakePage: NextPage = () => {
                 <span className='text-[48px] font-bold'>123,456.89</span>
                 <span className='text-[20px] text-gray-a5'>USDT</span>
               </div>
-              <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
-                CLAIM
-              </Button>
+              <div className='flex items-center justify-center gap-4'>
+                <div className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'>
+                  History
+                </div>
+                <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
+                  CLAIM
+                </Button>
+              </div>
             </div>
           </div>
         </Content>
