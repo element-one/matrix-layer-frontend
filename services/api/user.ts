@@ -84,6 +84,30 @@ export const useGetRewardsHistory = (
   })
 }
 
+export const getMLPRewardsHistory = async (
+  address: Address,
+  page = 1,
+  pageSize = 20
+) => {
+  const url = `/users/rewards/mlp-token/${address}`
+  const { data } = await axios.get(url, { params: { page, pageSize } })
+
+  return data
+}
+
+export const useGetMLPRewardsHistory = (
+  address: Address,
+  page: number,
+  pageSize = 6,
+  options?: Partial<UseQueryOptions<ApiRewardHistoryResponse, Error>>
+) => {
+  return useQuery<ApiRewardHistoryResponse, Error>({
+    queryKey: ['history', 'rewards', 'mlp-token', address, page, pageSize],
+    queryFn: () => getMLPRewardsHistory(address, page, pageSize),
+    ...options
+  })
+}
+
 export const getUserHolding = async (
   address?: Address
 ): Promise<ApiHoldingsResponse> => {

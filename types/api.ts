@@ -32,6 +32,18 @@ export type ApiUser = {
   totalCommission: string
   updatedAt: string
   referredByUserAddress?: string
+  totalRewards: string
+  availableRewards: string
+  mlpTokenAmountPoolA: string
+  mlpTokenAmountPoolB1: string
+  mlpTokenAmountPoolB2: string
+  mlpTokenAmountPoolC: string
+  mlpTokenAmountPoolPhone: string
+  stakingNoncePoolA: number
+  stakingNoncePoolB1: number
+  stakingNoncePoolB2: number
+  stakingNoncePoolC: number
+  stakingNoncePoolPhone: number
 }
 
 export type ApiWalletLoginParams = {
@@ -187,6 +199,7 @@ export type ApiConfirmDeliveryResponse = {
 
 export type RewardHistoryItem = {
   claimedAmount: string
+  tokenAmount: string
   createdAt: string
   deletedAt: string
   id: string
