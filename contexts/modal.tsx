@@ -16,6 +16,10 @@ import {
   ShippingAddressModal,
   ShippingAddressModalProps
 } from '@components/Modal'
+import {
+  AcceleratePoolModal,
+  AcceleratePoolModalProps
+} from '@components/Modal/AcceleratePoolModal'
 import { BuyNFTModal } from '@components/Modal/BuyNFTModal'
 import {
   ManageAddressModal,
@@ -31,6 +35,7 @@ export enum ModalType {
   SHIPPING_ADDRESS_MODAL = 'SHIPPING_ADDRESS_MODAL',
   MANAGE_ADDRESS_MODAL = 'MANAGE_ADDRESS_MODAL',
   REWARDS_MODAL = 'REWARDS_MODAL',
+  ACCELERATE_POOL_MODAL = 'ACCELERATE_POOL_MODAL',
   REWARDS_MLP_HISTORY_MODAL = 'REWARDS_MLP_HISTORY_MODAL',
   BUY_NFT_MODAL = 'BUY_NFT_MODAL'
 }
@@ -42,6 +47,7 @@ const MODAL_COMPONENTS = {
   [ModalType.SHIPPING_ADDRESS_MODAL]: ShippingAddressModal,
   [ModalType.MANAGE_ADDRESS_MODAL]: ManageAddressModal,
   [ModalType.REWARDS_MODAL]: RewardsModal,
+  [ModalType.ACCELERATE_POOL_MODAL]: AcceleratePoolModal,
   [ModalType.REWARDS_MLP_HISTORY_MODAL]: RewardsMLPHistoryModal,
   [ModalType.BUY_NFT_MODAL]: BuyNFTModal
 }
@@ -53,6 +59,7 @@ type ModalProps =
   | ShippingAddressModalProps
   | ManageAddressModalProps
   | RewardsModalProps
+  | AcceleratePoolModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }

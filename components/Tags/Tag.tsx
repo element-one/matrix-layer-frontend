@@ -16,7 +16,7 @@ export const Tag = extendVariants(Chip, {
         base: 'bg-co-tag-bg-2 text-co-tag-text-2'
       },
       active: {
-        dot: 'bg-co-green'
+        dot: 'bg-co-green-1'
       },
       paused: {
         dot: 'bg-co-gray-3 dark:bg-co-gray-4 text-co-gray-3'
