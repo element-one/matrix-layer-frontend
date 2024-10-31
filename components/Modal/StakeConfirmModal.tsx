@@ -45,18 +45,21 @@ export const StakeConfirmModal: FC<StakeConfirmModalProps> = ({
             </Text>
             <ModalCloseIcon className='cursor-pointer' onClick={onClose} />
           </div>
-          <div className='flex gap-x-[25px] items-center'>
+          <div className='flex flex-col md:flex-row gap-[25px] items-center'>
             <img
               className='w-[128px] object-cover'
               src='/images/stake/img-matrix@4.png'
               alt='matrix'
             />
             <div className='flex flex-col gap-y-3'>
-              <Text className='text-[18px] font-bold text-co-gray-6'>
+              <Text className='text-[18px] font-bold text-co-gray-6 text-center md:text-left'>
                 After stake the NFT you will be able to obtain the reward MLP
                 Token.
               </Text>
-              <Text className='text-[18px] font-bold bg-clip-text text-transparent bg-gradient-text-1'>
+              <Text
+                className='text-[18px] font-bold bg-clip-text text-transparent bg-gradient-text-1
+                  text-center md:text-left'
+              >
                 Are you sure you want to stake?
               </Text>
             </div>
