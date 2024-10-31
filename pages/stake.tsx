@@ -2,7 +2,18 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useRouter } from 'next/navigation'
-import { Tooltip } from '@nextui-org/react'
+import {
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Table,
+  TableBody,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  Tooltip
+} from '@nextui-org/react'
 import clsx from 'clsx'
 import { Address } from 'viem'
 import {
@@ -20,6 +31,7 @@ import STAKE_ABI from '@abis/Stake.json'
 import { Button } from '@components/Button'
 import { Container, Content } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
+import { InfoColorIcon } from '@components/Icon/InfoColorIcon'
 import { InfoIcon } from '@components/Icon/InfoIcon'
 import { LockIcon } from '@components/Icon/LockIcon'
 import { Input } from '@components/Input'
@@ -65,6 +77,21 @@ const StakePage: NextPage = () => {
   const router = useRouter()
   const [referralCode, setReferralCode] = useState('')
   const { signMessage } = useSignMessage()
+  const [usdtHistoryModalVisible, setUsdtHistoryModalVisible] = useState(false)
+
+  const handleHistoryModalClose = () => {
+    setUsdtHistoryModalVisible(false)
+  }
+
+  const handleUsdtHistoryClick = () => {
+    return
+    setUsdtHistoryModalVisible(true)
+  }
+
+  const handleMLPHistoryClick = () => {
+    return
+    setUsdtHistoryModalVisible(true)
+  }
 
   const handleCopy = (text: string) => async () => {
     if (navigator.clipboard) {
@@ -604,8 +631,27 @@ const StakePage: NextPage = () => {
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
                   <img src='/images/stake/ai-agent-pro.png' alt='' />
-                  <span className='uppercase text-[20px] font-bold text-gray-a5'>
-                    Matrix Phone
+                  <span
+                    className='uppercase flex items-center justify-center gap-2 text-[20px] font-bold
+                      text-gray-a5'
+                  >
+                    MLPhone NFT
+                    <Tooltip
+                      placement='bottom'
+                      className='bg-co-bg-black'
+                      content={
+                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                          MLPhone NFT come with 10 days of mining rights in the
+                          basic pool. Once staking begins, it cannot be ended
+                          prematurely; canceling the stake early will render the
+                          NFT invalid.
+                        </span>
+                      }
+                    >
+                      <span>
+                        <InfoColorIcon />
+                      </span>
+                    </Tooltip>
                   </span>
                 </div>
                 <div className='text-[48px] font-bold'>
@@ -650,8 +696,27 @@ const StakePage: NextPage = () => {
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
                   <img src='/images/stake/matrix.png' alt='' />
-                  <span className='uppercase text-[20px] font-bold text-gray-a5'>
+                  <span
+                    className='uppercase flex items-center justify-center gap-2 text-[20px] font-bold
+                      text-gray-a5'
+                  >
                     Matrix
+                    <Tooltip
+                      placement='bottom'
+                      className='bg-co-bg-black'
+                      content={
+                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                          Matrix NFTs come with 7 days of mining rights in the
+                          basic pool. Once staking begins, it cannot be ended
+                          prematurely; canceling the stake early will render the
+                          NFT invalid.
+                        </span>
+                      }
+                    >
+                      <span>
+                        <InfoColorIcon />
+                      </span>
+                    </Tooltip>
                   </span>
                 </div>
                 <div className='text-[48px] font-bold'>
@@ -828,7 +893,10 @@ const StakePage: NextPage = () => {
                 <span className='text-[20px] text-gray-a5'>USDT</span>
               </div>
               <div className='flex items-center justify-center gap-4'>
-                <div className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'>
+                <div
+                  onClick={handleUsdtHistoryClick}
+                  className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
+                >
                   History
                 </div>
                 <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
@@ -857,7 +925,10 @@ const StakePage: NextPage = () => {
                 <span className='text-[20px] text-gray-a5'>USDT</span>
               </div>
               <div className='flex items-center justify-center gap-4'>
-                <div className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'>
+                <div
+                  onClick={handleMLPHistoryClick}
+                  className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
+                >
                   History
                 </div>
                 <Button className='rounded-full h-8 w-[152px] text-base font-semibold z-10'>
@@ -1113,7 +1184,16 @@ const StakePage: NextPage = () => {
                 )}
               >
                 Basic Pool (PoW)
-                <Tooltip color='default' content='Basic Pool (PoW)'>
+                <Tooltip
+                  placement='bottom'
+                  className='bg-co-bg-black'
+                  content={
+                    <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                      Your mining power in the basic pool is determined by the
+                      number and value of the NFTs you have staked.
+                    </span>
+                  }
+                >
                   <span>
                     <InfoIcon />
                   </span>
@@ -1167,7 +1247,16 @@ const StakePage: NextPage = () => {
                 )}
               >
                 Acceleration Pool (PoS)
-                <Tooltip color='default' content='Basic Pool (PoW)'>
+                <Tooltip
+                  placement='bottom'
+                  className='bg-co-bg-black'
+                  content={
+                    <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                      Your mining power in the accelerated pool is determined by
+                      the amount of $MLP you have staked.
+                    </span>
+                  }
+                >
                   <span>
                     <InfoIcon />
                   </span>
@@ -1276,7 +1365,16 @@ const StakePage: NextPage = () => {
                 )}
               >
                 Promotion Pool
-                <Tooltip color='default' content='Basic Pool (PoW)'>
+                <Tooltip
+                  placement='bottom'
+                  className='bg-co-bg-black'
+                  content={
+                    <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                      Your mining power in the referral pool is determined by
+                      the mining power of the friends you have invited.
+                    </span>
+                  }
+                >
                   <span>
                     <InfoIcon />
                   </span>
@@ -1430,6 +1528,33 @@ const StakePage: NextPage = () => {
       </Container>
 
       <div className='h-[160px] w-full'></div>
+
+      <Modal
+        isOpen={usdtHistoryModalVisible}
+        onClose={handleHistoryModalClose}
+        className='bg-co-bg-black'
+        size='4xl'
+      >
+        <ModalContent>
+          <ModalHeader></ModalHeader>
+          <ModalBody>
+            <Table>
+              <TableHeader>
+                <TableColumn>Time</TableColumn>
+                <TableColumn>Address</TableColumn>
+                <TableColumn>Reward</TableColumn>
+                <TableColumn>Status</TableColumn>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableColumn>aa</TableColumn>
+                </TableRow>
+              </TableBody>
+            </Table>
+            <div> history </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Layout>
   )
 }
