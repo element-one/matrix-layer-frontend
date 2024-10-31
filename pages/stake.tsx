@@ -1288,10 +1288,14 @@ const StakePage: NextPage = () => {
             </div>
 
             <div
-              className='border-1 mx-8 my-6 border-gray-500 rounded-xl border-opacity-50 grid grid-cols-2
-                gap-y-4 gap-x-4 p-8 max-h-[437px] overflow-y-auto transparent-scrollbar'
+              className={clsx(
+                `border-1 mx-8 my-6 border-gray-500 rounded-xl border-opacity-50 grid`,
+                'gap-y-4 gap-x-4 p-8 max-h-[437px] overflow-y-auto transparent-scrollbar',
+                !!tokenOwned.length && 'grid-cols-2'
+              )}
             >
               {currentTab === 'stake' &&
+                !!tokenOwned.length &&
                 tokenOwned.map((stake) => {
                   return (
                     <div
@@ -1335,6 +1339,19 @@ const StakePage: NextPage = () => {
                     </div>
                   )
                 })}
+              {currentTab === 'stake' && !tokenOwned.length && (
+                <div className='font-bold text-[32px] text-center w-[50%] mx-auto'>
+                  You don&apos;t own any{' '}
+                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
+                    NFTs
+                  </span>
+                  , buy{' '}
+                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
+                    NFTs
+                  </span>{' '}
+                  to start your journey with $MLP/ earn $MLP
+                </div>
+              )}
               {currentTab === 'unstake' &&
                 stakedTokens.map((stake) => {
                   return (
