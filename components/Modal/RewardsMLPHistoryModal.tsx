@@ -1,4 +1,5 @@
 import { FC, useMemo, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import {
   Modal,
   ModalBody,
@@ -74,15 +75,15 @@ export const RewardsMLPHistoryModal: FC<RewardsMLPHistoryModalProps> = ({
       isOpen={isModalShown(ModalType.REWARDS_MLP_HISTORY_MODAL)}
       onClose={handleClose}
       isDismissable={false}
-      size='xl'
+      size={isMobile ? 'full' : 'xl'}
       placement='center'
       classNames={{
-        base: 'w-[1000px] !max-w-[80vw]',
+        base: 'w-[1000px] max-w-[100vw] md:!max-w-[80vw]',
         closeButton:
           'top-4 right-4 md:right-8 md:top-8 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
     >
-      <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
+      <ModalContent className='bg-black-15 md:border md:border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
           <Text className='text-white text-[24px] md:text-[32px] font-bold'>
             MLP Claimable History
