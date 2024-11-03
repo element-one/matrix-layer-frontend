@@ -45,9 +45,10 @@ import { ModalType, useModal } from '@contexts/modal'
 import {
   getStakingSignature,
   useGetUser,
+  useGetUserRewardsSummary,
   usePatchReferralCode
 } from '@services/api'
-import { formatCurrency } from '@utils/currency'
+import { formatCurrency, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
 import { serializeError } from 'eth-rpc-errors'
 
@@ -324,6 +325,10 @@ const StakePage: NextPage = () => {
   useEffect(() => {
     setStakeNFTCardVisible(!stakedTokens.length)
   }, [stakedTokens])
+
+  const { data: userRewardsSummary } = useGetUserRewardsSummary(address)
+
+  console.log(userRewardsSummary)
 
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
@@ -1127,24 +1132,34 @@ const StakePage: NextPage = () => {
           </div>
           <div
             className={clsx(
-              `md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
-                justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px] py-4 md:py-8`,
+              `p-5 md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
-            <div className='flex items-center gap-4 md:gap-10'>
+            <div className='flex items-center w-full gap-4 md:gap-10'>
               <img
                 src='/images/stake/usdt.png'
                 alt='usdt'
                 className='w-[70px] md:w-[112px]'
               />
-              <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
-                <span className='hidden md:block'>USDT</span>
-                <span>Node Rewards</span>
+              <div className='flex-1'>
+                <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
+                  <span className='hidden md:block'>USDT</span>
+                  <span>Node Rewards</span>
+                </div>
+                <div className='flex items-center gap-1 md:hidden w-full justify-between'>
+                  <span className='text-[20px] font-bold'>
+                    {referralRewards
+                      ? formatCurrency(referralRewards as number)
+                      : '--'}
+                  </span>
+                  <span className='text-[20px] text-gray-a5'>USDT</span>
+                </div>
               </div>
             </div>
-            <div className='flex flex-col items-center md:items-end'>
-              <div className='flex items-center gap-1'>
+            <div className='flex flex-col items-center md:items-end w-full'>
+              <div className='items-center gap-1 hidden md:flex'>
                 <span className='text-[48px] font-bold'>
                   {referralRewards
                     ? formatCurrency(referralRewards as number)
@@ -1152,7 +1167,7 @@ const StakePage: NextPage = () => {
                 </span>
                 <span className='text-[20px] text-gray-a5'>USDT</span>
               </div>
-              <div className='flex items-center justify-center gap-4'>
+              <div className='flex items-center justify-end gap-4 w-full'>
                 <div
                   onClick={handleUsdtHistoryClick}
                   className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
@@ -1161,7 +1176,7 @@ const StakePage: NextPage = () => {
                 </div>
                 <Button
                   onClick={handleClaimReward}
-                  className='rounded-full h-8 w-[152px] text-base font-semibold z-10'
+                  className='rounded-full h-8 w-fit md:w-[152px] text-base font-semibold z-10'
                   isLoading={isClaimingContract}
                 >
                   CLAIM
@@ -1171,24 +1186,34 @@ const StakePage: NextPage = () => {
           </div>
           <div
             className={clsx(
-              `md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
-                justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px] py-4 md:py-8`,
+              `p-5 md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
-            <div className='flex items-center gap-4 md:gap-10'>
+            <div className='flex w-full items-center gap-4 md:gap-10'>
               <img
                 src='/images/stake/mlp.png'
                 alt='mlp'
                 className='w-[70px] md:w-[112px]'
               />
-              <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
-                <span>MLP</span>
-                <span>CLAIMABLE</span>
+              <div className='flex-1'>
+                <div className='flex gap-x-1 md:flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
+                  <span>MLP</span>
+                  <span>CLAIMABLE</span>
+                </div>
+                <div className='flex w-full justify-between items-center gap-1 md:hidden'>
+                  <span className='text-[20px] font-bold'>
+                    {userData?.mlpTokenAmountPoolA
+                      ? formatCurrency(userData?.mlpTokenAmountPoolA)
+                      : '--'}
+                  </span>
+                  <span className='text-[20px] text-gray-a5'>$MLP</span>
+                </div>
               </div>
             </div>
-            <div className='flex flex-col items-end'>
-              <div className='flex items-center gap-1'>
+            <div className='flex flex-col items-end w-full'>
+              <div className='items-center gap-1 hidden md:flex'>
                 <span className='text-[48px] font-bold'>
                   {userData?.mlpTokenAmountPoolA
                     ? formatCurrency(userData?.mlpTokenAmountPoolA)
@@ -1196,7 +1221,7 @@ const StakePage: NextPage = () => {
                 </span>
                 <span className='text-[20px] text-gray-a5'>$MLP</span>
               </div>
-              <div className='flex items-center justify-center gap-4'>
+              <div className='w-full flex items-center justify-end gap-4'>
                 <div
                   onClick={handleMLPHistoryClick}
                   className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
@@ -1206,7 +1231,7 @@ const StakePage: NextPage = () => {
                 <Button
                   onClick={handleClaimMLP}
                   isLoading={isClaimingMLP}
-                  className='rounded-full h-8 w-[152px] text-base font-semibold z-10'
+                  className='rounded-full h-8 w-fit md:w-[152px] text-base font-semibold z-10'
                 >
                   CLAIM
                 </Button>
@@ -1377,7 +1402,7 @@ const StakePage: NextPage = () => {
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
-                    transparent-scrollbar`,
+                      transparent-scrollbar`,
                     !!tokenOwned.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
@@ -1436,7 +1461,7 @@ const StakePage: NextPage = () => {
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
-                    transparent-scrollbar`,
+                      transparent-scrollbar`,
                     !!stakedTokens.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
@@ -1500,12 +1525,12 @@ const StakePage: NextPage = () => {
 
           <div
             className={clsx(
-              `p-2 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
+              `p-5 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
                 md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
-            <div className='flex flex-col md:flex-row items-center gap-2 md:justify-between'>
+            <div className='flex w-full relative flex-row items-center gap-2 justify-center md:justify-start'>
               <Text
                 className={clsx(
                   'text-[24px] md:text-[28px] text-center font-bold flex items-center gap-2',
@@ -1523,55 +1548,66 @@ const StakePage: NextPage = () => {
                     </span>
                   }
                 >
-                  <span>
+                  <span className='absolute right-0 md:relative'>
                     <InfoIcon />
                   </span>
                 </Tooltip>
               </Text>
             </div>
-            <div className='flex items-center flex-col md:flex-row justify-around gap-2 md:gap-8 mt-4'>
-              <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
-              >
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Yesterday’s Staking Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00 MLP</div>
+            <div className='grid grid-cols-1 md:grid-cols-2 items-center justify-around gap-2 md:gap-8 mt-4'>
+              <div className='grid grid-cols-2 gap-2'>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                    py-4'
+                >
+                  <span className='text-[14px] text-center text-gray-a5 font-bold'>
+                    Yesterday’s Rewards
+                  </span>
+                  <div className='text-[18px] font-bold'>
+                    {formatUSDT(userRewardsSummary?.rewards ?? 0)} MLP
+                  </div>
+                </div>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                    py-4'
+                >
+                  <span className='text-[14px] text-center text-gray-a5 font-bold'>
+                    Holding NFT
+                  </span>
+                  <div className='text-[18px] font-bold'>
+                    {formatUSDT(userRewardsSummary?.stakingAmount ?? 0)}
+                  </div>
+                </div>
               </div>
-              <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
-              >
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Accelerated MLP
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
-              </div>
-              <div className='flex-1 hidden md:block'></div>
-              <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
-              >
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Total MLP Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+                <div className='flex-1 hidden md:block'></div>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                    py-4'
+                >
+                  <span className='text-[14px] text-gray-a5 font-bold'>
+                    Total MLP Rewards
+                  </span>
+                  <div className='text-[18px] font-bold'>
+                    {formatUSDT(userRewardsSummary?.totalRewards ?? 0)}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div
             className={clsx(
-              `p-2 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
+              `p-5 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
                 md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
-            <div className='flex flex-col md:flex-row items-center justify-between'>
+            <div className='flex flex-col w-full md:flex-row items-center justify-between'>
               <Text
                 className={clsx(
-                  'text-[24px] md:text-[28px] flex gap-2 items-center text-center font-bold',
+                  `text-[16px] md:text-[28px] w-full md:w-fit flex justify-center relative gap-2
+                  items-center text-center font-bold`,
                   GradientTextClass
                 )}
               >
@@ -1586,13 +1622,15 @@ const StakePage: NextPage = () => {
                     </span>
                   }
                 >
-                  <span>
+                  <span className='absolute right-0 md:relative'>
                     <InfoIcon />
                   </span>
                 </Tooltip>
               </Text>
               <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
-                <span className='text-[28px] font-bold'>$2,345.89 USDT</span>
+                <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
+                  $2,345.89 USDT
+                </span>
                 <div
                   className={clsx(
                     'flex rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
@@ -1604,55 +1642,55 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div className='w-full mt-20 flex items-center justify-between'>
+            <div className='w-full mt-5 md:mt-20 flex items-center justify-between'>
               <Text
                 className={clsx(
-                  'text-[24px] md:text-[28px] text-center font-bold',
+                  'text-[16px] md:text-[28px] text-center font-bold',
                   GradientTextClass
                 )}
               >
                 NFT Boosted Pool
               </Text>
               <Button
-                className='rounded-full text-[12px] h-8 w-fit md:w-[152px]'
+                className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationPoolModal}
               >
                 Accelerate
               </Button>
             </div>
-            <div className='flex items-center flex-col md:flex-row justify-around gap-2 md:gap-8 mt-4'>
+            <div className='grid grid-cols-2 md:grid-cols-4 justify-around gap-2 md:gap-8 mt-4'>
               <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
                   Yesterday’s Staking Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00 MLP</div>
               </div>
               <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
               <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                   Holding NFT
                 </span>
                 <div className='text-[18px] font-bold'>12</div>
               </div>
               <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
@@ -1664,47 +1702,51 @@ const StakePage: NextPage = () => {
             <div className='w-full mt-7 flex items-center justify-between'>
               <Text
                 className={clsx(
-                  'text-[24px] md:text-[28px] text-center font-bold',
+                  'text-[16px] md:text-[28px] text-center font-bold',
                   GradientTextClass
                 )}
               >
                 MLP Boosted Pool
               </Text>
               <Button
-                className='rounded-full text-[12px] h-8 w-fit md:w-[152px]'
+                className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationPoolModal}
               >
                 Accelerate
               </Button>
             </div>
-            <div className='flex items-center justify-around flex-col md:flex-row gap-2 md:gap-8 mt-4'>
-              <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
-              >
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Yesterday’s Staking Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00 MLP</div>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 mt-4'>
+              <div className='grid grid-cols-2 gap-2 md:gap-8'>
+                <div
+                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                    Yesterday’s Staking Rewards
+                  </span>
+                  <div className='text-[18px] font-bold'>999.00 MLP</div>
+                </div>
+                <div
+                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                    Accelerated MLP
+                  </span>
+                  <div className='text-[18px] font-bold'>999.00</div>
+                </div>
               </div>
-              <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
-              >
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Accelerated MLP
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
-              </div>
-              <div className='flex-1 hidden md:block'></div>
-              <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
-              >
-                <span className='text-[14px] text-gray-a5 font-bold'>
-                  Total MLP Rewards
-                </span>
-                <div className='text-[18px] font-bold'>999.00</div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8'>
+                <div className='flex-1 hidden md:block'></div>
+                <div
+                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                    py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
+                    Total MLP Rewards
+                  </span>
+                  <div className='text-[18px] font-bold'>999.00</div>
+                </div>
               </div>
             </div>
 
@@ -1721,33 +1763,45 @@ const StakePage: NextPage = () => {
                   }}
                 >
                   <TableHeader>
-                    <TableColumn>Skating Date</TableColumn>
-                    <TableColumn>Skating Period</TableColumn>
-                    <TableColumn>Number of staked tokens</TableColumn>
-                    <TableColumn>Cumulative income</TableColumn>
-                    <TableColumn>Reinvestment</TableColumn>
-                    <TableColumn>Action</TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Skating Date
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Skating Period
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Number of staked tokens
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Cumulative income
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Reinvestment
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Action
+                    </TableColumn>
                   </TableHeader>
                   <TableBody>
                     {mock_details.map((item) => (
                       <TableRow key={item.id}>
-                        <TableCell className='text-gray-150'>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                           {item.date}
                         </TableCell>
-                        <TableCell className='text-gray-150'>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                           {item.period}
                         </TableCell>
-                        <TableCell className='text-gray-150'>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                           {item.tokens}
                         </TableCell>
-                        <TableCell className='text-gray-150'>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                           {item.income}
                         </TableCell>
-                        <TableCell className='flex justify-center'>
+                        <TableCell>
                           <span
                             className={clsx(
                               `w-[74px] h-[30px] rounded-[24px] flex items-center justify-center border
-                                font-bold`,
+                                font-bold text-[14px] md:text-[16px] mx-auto`,
                               statusClass(item.status)
                             )}
                           >
@@ -1776,7 +1830,8 @@ const StakePage: NextPage = () => {
                 onClick={() => {
                   setIsShowDetails(!isShowDetails)
                 }}
-                className='rounded-[35px] text-[16px] h-[48px] w-full md:w-[480px] font-bold'
+                className='rounded-[35px] text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-full
+                  md:w-[480px] font-bold'
               >
                 {isShowDetails ? 'HIDE DETAILS' : 'STAKING DETAILS'}
               </Button>
@@ -1785,7 +1840,7 @@ const StakePage: NextPage = () => {
 
           <div
             className={clsx(
-              `p-2 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
+              `p-5 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
                 md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
@@ -1793,7 +1848,8 @@ const StakePage: NextPage = () => {
             <div className='flex flex-col md:flex-row items-center justify-between'>
               <Text
                 className={clsx(
-                  'text-[28px] flex gap-2 items-center text-center font-bold',
+                  `text-[16px] flex gap-2 items-center w-full md:w-fit justify-center relative
+                  text-center font-bold`,
                   GradientTextClass
                 )}
               >
@@ -1808,14 +1864,14 @@ const StakePage: NextPage = () => {
                     </span>
                   }
                 >
-                  <span>
+                  <span className='absolute right-0'>
                     <InfoIcon />
                   </span>
                 </Tooltip>
               </Text>
               <div
                 className={clsx(
-                  'flex items-center rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
+                  'flex items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
                   GradientBorderClass
                 )}
               >
@@ -1823,39 +1879,39 @@ const StakePage: NextPage = () => {
                 <span>19,687.89</span>
               </div>
             </div>
-            <div className='flex items-center flex-col md:flex-row justify-around gap-2 md:gap-8 mt-4'>
+            <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-8 mt-4'>
               <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Yesterday’s Staking Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00 MLP</div>
               </div>
               <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
               <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Holding NFT
                 </span>
                 <div className='text-[18px] font-bold'>12</div>
               </div>
               <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                  py-4'
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                  md:px-8 py-4'
               >
-                <span className='text-[14px] text-gray-a5 font-bold'>
+                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
