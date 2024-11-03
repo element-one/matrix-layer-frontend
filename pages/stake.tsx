@@ -148,8 +148,11 @@ const StakePage: NextPage = () => {
   }
 
   const handleStakeNFT = () => {
-    setStakeNFTCardVisible(false)
-    showModal(ModalType.BUY_NFT_MODAL)
+    if (stakedTokens.length) {
+      setStakeNFTCardVisible(false)
+    } else {
+      showModal(ModalType.BUY_NFT_MODAL)
+    }
   }
 
   const handleOpenAccelerationPoolModal = () => {
@@ -441,6 +444,7 @@ const StakePage: NextPage = () => {
     if (stakeReceipt) {
       refetchTotalNfts()
       refetchNftBalances()
+      onCloseChangeStakeConfirm()
     }
   }, [stakeReceipt, refetchNftBalances, refetchTotalNfts])
 
@@ -619,6 +623,7 @@ const StakePage: NextPage = () => {
     if (unstakeReceipt) {
       refetchTotalNfts()
       refetchNftBalances()
+      onCloseChangeStakeConfirm()
     }
   }, [unstakeReceipt, refetchNftBalances, refetchTotalNfts])
 
@@ -801,7 +806,7 @@ const StakePage: NextPage = () => {
           <Text
             className={clsx(
               `mb-6 md:pt-[78px] mt-6 md:mt-0 text-[24px] text-center md:text-left md:text-5xl
-              font-semibold`,
+                font-semibold`,
               GradientTextClass
             )}
           >
@@ -1173,7 +1178,7 @@ const StakePage: NextPage = () => {
           <Text
             className={clsx(
               `mb-4 md:pt-[78px] mt-5 md:mt-0 text-[24px] text-center md:text-left md:text-5xl
-              font-semibold`,
+                font-semibold`,
               GradientTextClass
             )}
           >
@@ -1214,7 +1219,9 @@ const StakePage: NextPage = () => {
               >
                 <div className='flex justify-between items-center'>
                   <span className='text-gray-a5'>Total NFT</span>
-                  <span className='text-[48px] font-bold'>4</span>
+                  <span className='text-[48px] font-bold'>
+                    {stakedTokens.length}
+                  </span>
                 </div>
                 <div className='grid grid-cols-2 md:flex md:items-center md:justify-center gap-4 mt-2'>
                   <div
@@ -1222,35 +1229,35 @@ const StakePage: NextPage = () => {
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix Phone</div>
-                    <span>1</span>
+                    <span>{phoneStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix NFT</div>
-                    <span>1</span>
+                    <span>{matrixStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent One</div>
-                    <span>1</span>
+                    <span>{agentOneStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Pro</div>
-                    <span>1</span>
+                    <span>{agentProStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Ultra</div>
-                    <span>1</span>
+                    <span>{agentUltraStaked.length}</span>
                   </div>
                 </div>
               </div>
@@ -1352,13 +1359,6 @@ const StakePage: NextPage = () => {
                         </div>
                       </div>
                       <Button
-                        isLoading={
-                          stake.id === selectedToken?.id &&
-                          (isApprovingStake ||
-                            isWaitingApprovingStake ||
-                            isWaitingStakingToken ||
-                            isStakingToken)
-                        }
                         onClick={() => {
                           handleShowConfirmModal(stake, StakeTypeEnum.STAKE)
                         }}
@@ -1410,10 +1410,6 @@ const StakePage: NextPage = () => {
                         </div>
                       </div>
                       <Button
-                        isLoading={
-                          stake.id === selectedToken?.id &&
-                          (isWaitingUnstakingToken || isUnstakingToken)
-                        }
                         onClick={() => {
                           handleShowConfirmModal(stake, StakeTypeEnum.UNSTAKE)
                         }}
