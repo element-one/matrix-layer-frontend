@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import {
@@ -132,6 +132,8 @@ const StakePage: NextPage = () => {
   const [usdtHistoryModalVisible, setUsdtHistoryModalVisible] = useState(false)
   const [stakeNFTCardVisible, setStakeNFTCardVisible] = useState(true)
 
+  const stakeSectionRef = useRef<HTMLDivElement | null>(null)
+
   const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
 
@@ -148,11 +150,15 @@ const StakePage: NextPage = () => {
   }
 
   const handleStakeNFT = () => {
-    if (stakedTokens.length) {
-      setStakeNFTCardVisible(false)
-    } else {
+    if (!tokenOwned.length) {
       showModal(ModalType.BUY_NFT_MODAL)
+      return
     }
+
+    stakeSectionRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    })
   }
 
   const handleOpenAccelerationPoolModal = () => {
@@ -315,6 +321,10 @@ const StakePage: NextPage = () => {
     agentUltraStaked
   ])
 
+  useEffect(() => {
+    setStakeNFTCardVisible(!stakedTokens.length)
+  }, [stakedTokens])
+
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
       {
@@ -446,7 +456,12 @@ const StakePage: NextPage = () => {
       refetchNftBalances()
       onCloseChangeStakeConfirm()
     }
-  }, [stakeReceipt, refetchNftBalances, refetchTotalNfts])
+  }, [
+    stakeReceipt,
+    refetchNftBalances,
+    refetchTotalNfts,
+    onCloseChangeStakeConfirm
+  ])
 
   const {
     data: approveData,
@@ -625,7 +640,12 @@ const StakePage: NextPage = () => {
       refetchNftBalances()
       onCloseChangeStakeConfirm()
     }
-  }, [unstakeReceipt, refetchNftBalances, refetchTotalNfts])
+  }, [
+    unstakeReceipt,
+    refetchNftBalances,
+    refetchTotalNfts,
+    onCloseChangeStakeConfirm
+  ])
 
   const handleUnstakeToken = async (token: StakeToken) => {
     setSelectedToken(token)
@@ -708,7 +728,7 @@ const StakePage: NextPage = () => {
           >
             <div
               className={clsx(
-                `py-2 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
@@ -738,7 +758,7 @@ const StakePage: NextPage = () => {
             </div>
             <div
               className={clsx(
-                'md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]',
+                'p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]',
                 GradientBorderClass
               )}
             >
@@ -776,7 +796,7 @@ const StakePage: NextPage = () => {
                 <Input
                   placeholder='Enter invite code'
                   wrapperClassName='w-[80%] md:w-[70%]'
-                  inputClassName='border-[#282828] !outline-none !ring-0 bg-[#151515]'
+                  inputClassName='border-[#282828] placeholder:text-[#666] !h-[32px] md:!h-[38px] !text-[14px] !outline-none !ring-0 bg-[#151515]'
                   type='text'
                   value={referralCode}
                   onChange={(val) => setReferralCode(val)}
@@ -786,7 +806,7 @@ const StakePage: NextPage = () => {
                   onClick={handleVerify}
                   isLoading={isPending}
                   disabled={!referralCode}
-                  className='rounded-full text-[14px] md:text-[16px] h-[32px] md:h-[40px] ml-10'
+                  className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px] ml-10'
                 >
                   Verify Link
                 </Button>
@@ -815,41 +835,46 @@ const StakePage: NextPage = () => {
           <div className='grid grid-cols-1'>
             <div
               className={clsx(
-                `md:p-8 border-2 p-4 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `md:p-8 border-2 p-5 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
               <div className='flex w-full justify-between'>
-                <div className='flex gap-2 md:gap-6 items-center'>
+                <div className='flex gap-4 md:gap-6 items-center w-full'>
                   <img
-                    src='/images/stake/ai-agent-pro.png'
+                    src='/images/stake/phone.png'
                     alt=''
-                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                    className='w-[80psx] h-[91px]'
                   />
-                  <span
-                    className='uppercase flex items-center justify-center gap-2 text-[16px] md:text-[20px]
-                      font-bold text-gray-a5'
-                  >
-                    MLPhone NFT
-                    <Tooltip
-                      placement='bottom'
-                      className='bg-co-bg-black'
-                      content={
-                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                          MLPhone NFT come with 10 days of mining rights in the
-                          basic pool. Once staking begins, it cannot be ended
-                          prematurely; canceling the stake early will render the
-                          NFT invalid.
-                        </span>
-                      }
+                  <div className='flex-1'>
+                    <span
+                      className='w-full md:w-fit flex items-center justify-between md:justify-center gap-2
+                        text-[20px] font-bold text-gray-a5'
                     >
-                      <span>
-                        <InfoColorIcon />
-                      </span>
-                    </Tooltip>
-                  </span>
+                      MLPhone NFT
+                      <Tooltip
+                        placement='bottom'
+                        className='bg-co-bg-black'
+                        content={
+                          <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                            MLPhone NFT come with 10 days of mining rights in
+                            the basic pool. Once staking begins, it cannot be
+                            ended prematurely; canceling the stake early will
+                            render the NFT invalid.
+                          </span>
+                        }
+                      >
+                        <span>
+                          <InfoColorIcon />
+                        </span>
+                      </Tooltip>
+                    </span>
+                    <div className='text-[24px] mt-3 font-bold md:hidden'>
+                      {phoneStaked.length}
+                    </div>
+                  </div>
                 </div>
-                <div className='text-[48px] font-bold'>
+                <div className='text-[48px] font-bold hidden md:block'>
                   {phoneStaked.length}
                 </div>
               </div>
@@ -857,7 +882,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -868,7 +893,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -878,47 +903,50 @@ const StakePage: NextPage = () => {
               </div>
             </div>
           </div>
-          <div
-            className='grid grid-cols-1 mt-8 md:grid-cols-2 gap-8 border-2 md:border-none
-              rounded-[20px] border-referral-gradient p-4 md:p-0'
-          >
+          <div className='grid grid-cols-1 mt-8 md:grid-cols-2 gap-8 md:border-none rounded-[20px] p-0'>
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
               <div className='flex w-full justify-between'>
-                <div className='flex gap-6 items-center'>
+                <div className='flex gap-6 items-center w-full'>
                   <img
                     src='/images/stake/matrix.png'
                     alt=''
-                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                    className='w-[86px] h-[86px]'
                   />
-                  <span
-                    className='uppercase flex items-center justify-center gap-2 text-[16px] md:text-[20px]
-                      font-bold text-gray-a5'
-                  >
-                    Matrix
-                    <Tooltip
-                      placement='bottom'
-                      className='bg-co-bg-black'
-                      content={
-                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                          Matrix NFTs come with 7 days of mining rights in the
-                          basic pool. Once staking begins, it cannot be ended
-                          prematurely; canceling the stake early will render the
-                          NFT invalid.
-                        </span>
-                      }
+                  <div className='flex-1'>
+                    <span
+                      className='uppercase flex items-center w-full justify-between md:justify-center gap-2
+                        text-[20px] font-bold text-gray-a5'
                     >
-                      <span>
-                        <InfoColorIcon />
-                      </span>
-                    </Tooltip>
-                  </span>
+                      Matrix
+                      <Tooltip
+                        placement='bottom'
+                        className='bg-co-bg-black'
+                        content={
+                          <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                            Matrix NFTs come with 7 days of mining rights in the
+                            basic pool. Once staking begins, it cannot be ended
+                            prematurely; canceling the stake early will render
+                            the NFT invalid.
+                          </span>
+                        }
+                      >
+                        <span>
+                          <InfoColorIcon />
+                        </span>
+                      </Tooltip>
+                    </span>
+
+                    <div className='text-[24px] mt-3 font-bold md:hidden'>
+                      {matrixStaked.length}
+                    </div>
+                  </div>
                 </div>
-                <div className='text-[48px] font-bold'>
+                <div className='text-[48px] font-bold hidden md:block'>
                   {matrixStaked.length}
                 </div>
               </div>
@@ -926,7 +954,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -937,7 +965,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -948,22 +976,27 @@ const StakePage: NextPage = () => {
             </div>
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
               <div className='flex w-full justify-between'>
-                <div className='flex gap-6 items-center'>
+                <div className='flex gap-6 items-center w-full'>
                   <img
                     src='/images/stake/ai-agent-pro.png'
                     alt=''
-                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                    className='w-[86px] h-[86px]'
                   />
-                  <span className='uppercase text-[16px] md:text-[20px] font-bold text-gray-a5'>
-                    AI Agent One
-                  </span>
+                  <div>
+                    <span className='uppercase text-[20px] font-bold text-gray-a5'>
+                      AI Agent One
+                    </span>
+                    <div className='text-[24px] font-bold mb:hidden'>
+                      {agentOneStaked.length}
+                    </div>
+                  </div>
                 </div>
-                <div className='text-[48px] font-bold'>
+                <div className='text-[48px] font-bold hidden md:block'>
                   {agentOneStaked.length}
                 </div>
               </div>
@@ -971,7 +1004,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] md:text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -993,7 +1026,7 @@ const StakePage: NextPage = () => {
             </div>
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
@@ -1002,13 +1035,18 @@ const StakePage: NextPage = () => {
                   <img
                     src='/images/stake/ai-agent-pro-02.png'
                     alt=''
-                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                    className='w-[86px] h-[86px]'
                   />
-                  <span className='uppercase text-[16px] md:text-[20px] font-bold text-gray-a5'>
-                    AI Agent Pro
-                  </span>
+                  <div>
+                    <span className='uppercase text-[20px] font-bold text-gray-a5'>
+                      AI Agent Pro
+                    </span>
+                    <div className='text-[24px] font-bold md:hidden'>
+                      {agentProStaked.length}
+                    </div>
+                  </div>
                 </div>
-                <div className='text-[48px] font-bold'>
+                <div className='text-[48px] font-bold hidden md:block'>
                   {agentProStaked.length}
                 </div>
               </div>
@@ -1016,7 +1054,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -1027,7 +1065,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -1038,7 +1076,7 @@ const StakePage: NextPage = () => {
             </div>
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
@@ -1047,13 +1085,18 @@ const StakePage: NextPage = () => {
                   <img
                     src='/images/stake/ai-agent-pro-03.png'
                     alt=''
-                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                    className='w-[86px] h-[86px]'
                   />
-                  <span className='uppercase text-[16px] md:text-[20px] font-bold text-gray-a5'>
-                    AI Agent Ultra
-                  </span>
+                  <div>
+                    <span className='uppercase text-[20px] font-bold text-gray-a5'>
+                      AI Agent Ultra
+                    </span>
+                    <div className='text-[24px] font-bold md:hidden'>
+                      {agentUltraStaked.length}
+                    </div>
+                  </div>
                 </div>
-                <div className='text-[48px] font-bold'>
+                <div className='text-[48px] font-bold hidden md:block'>
                   {agentUltraStaked.length}
                 </div>
               </div>
@@ -1061,7 +1104,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -1072,7 +1115,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -1284,6 +1327,7 @@ const StakePage: NextPage = () => {
           </div>
 
           <div
+            ref={stakeSectionRef}
             className={clsx(
               `py-8 border-2 mt-8 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
               GradientBorderClass
@@ -1372,18 +1416,15 @@ const StakePage: NextPage = () => {
                 })}
               {currentTab === 'stake' && !tokenOwned.length && (
                 <div className='font-bold text-[16px] md:text-[32px] text-center w-full md:w-[50%] mx-auto'>
-                  You don&apos;t own any{' '}
+                  You don&apos;t have any{' '}
                   <span className={clsx(GradientTextClass, 'font-extra-bold')}>
-                    NFTs
-                  </span>
-                  , buy{' '}
-                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
-                    NFTs
+                    NFT
                   </span>{' '}
-                  to start your journey with $MLP/ earn $MLP
+                  to stake
                 </div>
               )}
               {currentTab === 'unstake' &&
+                !!stakedTokens.length &&
                 stakedTokens.map((stake) => {
                   return (
                     <div
@@ -1421,6 +1462,15 @@ const StakePage: NextPage = () => {
                     </div>
                   )
                 })}
+              {currentTab === 'unstake' && !stakedTokens.length && (
+                <div className='font-bold text-[16px] md:text-[32px] text-center w-full md:w-[50%] mx-auto'>
+                  You don&apos;t have any{' '}
+                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
+                    NFT
+                  </span>{' '}
+                  to unstake
+                </div>
+              )}
             </div>
           </div>
 
