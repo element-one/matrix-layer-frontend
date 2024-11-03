@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/navigation'
 import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import clsx from 'clsx'
@@ -31,15 +32,15 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
       isOpen={isModalShown(ModalType.BUY_NFT_MODAL)}
       onClose={handleClose}
       isDismissable={false}
-      size='xl'
+      size={isMobile ? 'full' : 'xl'}
       placement='center'
       classNames={{
-        base: 'w-[1000px] !max-w-[80vw]',
+        base: 'w-[1000px] max-w-[100vw] md:!max-w-[80vw]',
         closeButton:
           'top-4 right-4 md:right-8 md:top-8 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
     >
-      <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
+      <ModalContent className='bg-black-15 md:border md:border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
           <div className='flex flex-col items-center justify-center gap-6'>
             <img
@@ -48,7 +49,7 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
               className='w-[588px]'
             />
 
-            <div className='font-bold text-[32px] text-center'>
+            <div className='font-bold text-[26px] md:text-[32px] text-center'>
               You don&apos;t own any{' '}
               <span className={clsx(GradientTextClass, 'font-extra-bold')}>
                 NFTs

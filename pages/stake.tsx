@@ -130,6 +130,7 @@ const StakePage: NextPage = () => {
   const [referralCode, setReferralCode] = useState('')
   const { signMessage } = useSignMessage()
   const [usdtHistoryModalVisible, setUsdtHistoryModalVisible] = useState(false)
+  const [stakeNFTCardVisible, setStakeNFTCardVisible] = useState(true)
 
   const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
@@ -147,7 +148,11 @@ const StakePage: NextPage = () => {
   }
 
   const handleStakeNFT = () => {
-    showModal(ModalType.BUY_NFT_MODAL)
+    if (stakedTokens.length) {
+      setStakeNFTCardVisible(false)
+    } else {
+      showModal(ModalType.BUY_NFT_MODAL)
+    }
   }
 
   const handleOpenAccelerationPoolModal = () => {
@@ -439,6 +444,7 @@ const StakePage: NextPage = () => {
     if (stakeReceipt) {
       refetchTotalNfts()
       refetchNftBalances()
+      onCloseChangeStakeConfirm()
     }
   }, [stakeReceipt, refetchNftBalances, refetchTotalNfts])
 
@@ -497,7 +503,7 @@ const StakePage: NextPage = () => {
       },
       {
         onSuccess() {
-          console.log('claim success')
+          toast.success('claim success')
         },
         onError(err: Error) {
           const serializedError = serializeError(err)
@@ -535,6 +541,9 @@ const StakePage: NextPage = () => {
           toast.error(
             (serializedError?.data as any)?.originalError?.shortMessage
           )
+        },
+        onSuccess() {
+          toast.success('Claim success')
         }
       }
     )
@@ -614,6 +623,7 @@ const StakePage: NextPage = () => {
     if (unstakeReceipt) {
       refetchTotalNfts()
       refetchNftBalances()
+      onCloseChangeStakeConfirm()
     }
   }, [unstakeReceipt, refetchNftBalances, refetchTotalNfts])
 
@@ -683,7 +693,7 @@ const StakePage: NextPage = () => {
         </Content>
       </Container>
       <Container>
-        <Content>
+        <Content className='px-2 md:px-4'>
           <Text
             className={clsx(
               'mb-6 md:pt-[78px] text-[24px] text-center md:text-left md:text-5xl font-semibold',
@@ -693,18 +703,18 @@ const StakePage: NextPage = () => {
             My Account
           </Text>
           <div
-            className='grid grid-cols-1 md:grid-cols-2 gap-11 border-2 md:border-none rounded-[20px]
-              border-referral-gradient p-8 md:p-0'
+            className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-11 rounded-[20px] py-2 md:py-8 px-2
+              md:p-0'
           >
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `py-2 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
               <Text
-                className='mb-[11px] text-2xl font-semibold bg-clip-text text-transparent
-                  bg-gradient-text-1 md:bg-white'
+                className='mb-0 md:mb-[11px] px-2 md:px-0 text-lg md:text-2xl font-semibold bg-clip-text
+                  text-transparent bg-gradient-text-1 md:bg-white'
               >
                 Referral Code
               </Text>
@@ -728,13 +738,13 @@ const StakePage: NextPage = () => {
             </div>
             <div
               className={clsx(
-                'md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]',
+                'md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]',
                 GradientBorderClass
               )}
             >
               <Text
-                className='mb-[11px] text-2xl font-semibold bg-clip-text text-transparent
-                  bg-gradient-text-1'
+                className='mb-0 md:mb-[11px] p-2 md:p-0 text-lg md:text-2xl font-semibold bg-clip-text
+                  text-transparent bg-gradient-text-1'
               >
                 Referral Link
               </Text>
@@ -760,12 +770,12 @@ const StakePage: NextPage = () => {
             </div>
           </div>
 
-          <div className='flex items-center justify-end w-full mt-2'>
+          <div className='flex items-center justify-end w-full md:mt-2'>
             {!userData?.referredByUserAddress && (
-              <div className='w-[50%] flex items-center justify-between pl-10 pr-4'>
+              <div className='w-full md:w-[50%] flex items-center justify-between pl-2 pr-2 md:pl-10 md:pr-4'>
                 <Input
                   placeholder='Enter invite code'
-                  wrapperClassName='w-[70%]'
+                  wrapperClassName='w-[80%] md:w-[70%]'
                   inputClassName='border-[#282828] !outline-none !ring-0 bg-[#151515]'
                   type='text'
                   value={referralCode}
@@ -776,14 +786,14 @@ const StakePage: NextPage = () => {
                   onClick={handleVerify}
                   isLoading={isPending}
                   disabled={!referralCode}
-                  className='rounded-full text-[16px] h-[40px] ml-10'
+                  className='rounded-full text-[14px] md:text-[16px] h-[32px] md:h-[40px] ml-10'
                 >
                   Verify Link
                 </Button>
               </div>
             )}
             {!!userData?.referredByUserAddress && (
-              <span className='pr-4 opacity-60 text-[16px]'>
+              <span className='pr-4 opacity-60 text-[12px] md:text-[16px]'>
                 {userData.referredByUserAddress}
               </span>
             )}
@@ -792,31 +802,33 @@ const StakePage: NextPage = () => {
       </Container>
 
       <Container>
-        <Content>
+        <Content className='px-4 md:px-4'>
           <Text
             className={clsx(
-              'mb-6 md:pt-[78px] text-[24px] text-center md:text-left md:text-5xl font-semibold',
+              `mb-6 md:pt-[78px] mt-6 md:mt-0 text-[24px] text-center md:text-left md:text-5xl
+                font-semibold`,
               GradientTextClass
             )}
           >
             My NFT Inventory
           </Text>
-          <div
-            className='grid grid-cols-1 border-2 md:border-none rounded-[20px] border-referral-gradient
-              p-8 md:p-0'
-          >
+          <div className='grid grid-cols-1'>
             <div
               className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                `md:p-8 border-2 p-4 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                 GradientBorderClass
               )}
             >
               <div className='flex w-full justify-between'>
-                <div className='flex gap-6 items-center'>
-                  <img src='/images/stake/ai-agent-pro.png' alt='' />
+                <div className='flex gap-2 md:gap-6 items-center'>
+                  <img
+                    src='/images/stake/ai-agent-pro.png'
+                    alt=''
+                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                  />
                   <span
-                    className='uppercase flex items-center justify-center gap-2 text-[20px] font-bold
-                      text-gray-a5'
+                    className='uppercase flex items-center justify-center gap-2 text-[16px] md:text-[20px]
+                      font-bold text-gray-a5'
                   >
                     MLPhone NFT
                     <Tooltip
@@ -845,7 +857,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -856,7 +868,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -868,7 +880,7 @@ const StakePage: NextPage = () => {
           </div>
           <div
             className='grid grid-cols-1 mt-8 md:grid-cols-2 gap-8 border-2 md:border-none
-              rounded-[20px] border-referral-gradient p-8 md:p-0'
+              rounded-[20px] border-referral-gradient p-4 md:p-0'
           >
             <div
               className={clsx(
@@ -878,10 +890,14 @@ const StakePage: NextPage = () => {
             >
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
-                  <img src='/images/stake/matrix.png' alt='' />
+                  <img
+                    src='/images/stake/matrix.png'
+                    alt=''
+                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                  />
                   <span
-                    className='uppercase flex items-center justify-center gap-2 text-[20px] font-bold
-                      text-gray-a5'
+                    className='uppercase flex items-center justify-center gap-2 text-[16px] md:text-[20px]
+                      font-bold text-gray-a5'
                   >
                     Matrix
                     <Tooltip
@@ -910,7 +926,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -921,7 +937,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -938,8 +954,12 @@ const StakePage: NextPage = () => {
             >
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
-                  <img src='/images/stake/ai-agent-pro.png' alt='' />
-                  <span className='uppercase text-[20px] font-bold text-gray-a5'>
+                  <img
+                    src='/images/stake/ai-agent-pro.png'
+                    alt=''
+                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                  />
+                  <span className='uppercase text-[16px] md:text-[20px] font-bold text-gray-a5'>
                     AI Agent One
                   </span>
                 </div>
@@ -951,7 +971,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] md:text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -979,8 +999,12 @@ const StakePage: NextPage = () => {
             >
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
-                  <img src='/images/stake/ai-agent-pro-02.png' alt='' />
-                  <span className='uppercase text-[20px] font-bold text-gray-a5'>
+                  <img
+                    src='/images/stake/ai-agent-pro-02.png'
+                    alt=''
+                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                  />
+                  <span className='uppercase text-[16px] md:text-[20px] font-bold text-gray-a5'>
                     AI Agent Pro
                   </span>
                 </div>
@@ -992,7 +1016,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -1003,7 +1027,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -1020,8 +1044,12 @@ const StakePage: NextPage = () => {
             >
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
-                  <img src='/images/stake/ai-agent-pro-03.png' alt='' />
-                  <span className='uppercase text-[20px] font-bold text-gray-a5'>
+                  <img
+                    src='/images/stake/ai-agent-pro-03.png'
+                    alt=''
+                    className='md:w-[86px] md:h-[86px] w-[60px] h-[60px]'
+                  />
+                  <span className='uppercase text-[16px] md:text-[20px] font-bold text-gray-a5'>
                     AI Agent Ultra
                   </span>
                 </div>
@@ -1033,7 +1061,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold'>
                   Ordinary
                 </div>
                 <div className='text-[18px] font-bold'>
@@ -1044,7 +1072,7 @@ const StakePage: NextPage = () => {
                 className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
                   gap-[20px] md:gap-[62px]'
               >
-                <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
+                <div className='text-gray-a5 text-[16px] md:text-[18px] font-bold flex items-center gap-2'>
                   Stake
                   <LockIcon />
                 </div>
@@ -1056,19 +1084,23 @@ const StakePage: NextPage = () => {
           </div>
           <div
             className={clsx(
-              `md:p-8 md:border-2 mt-8 rounded-[20px] items-center flex justify-between gap-4
-                md:backdrop-filter md:backdrop-blur-[10px]`,
+              `md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px] py-4 md:py-8`,
               GradientBorderClass
             )}
           >
-            <div className='flex items-center gap-10'>
-              <img src='/images/stake/usdt.png' alt='usdt' />
-              <div className='flex flex-col text-gray-a5 text-[20px] uppercase'>
+            <div className='flex items-center gap-4 md:gap-10'>
+              <img
+                src='/images/stake/usdt.png'
+                alt='usdt'
+                className='w-[70px] md:w-[112px]'
+              />
+              <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
                 <span>USDT</span>
                 <span>Node Rewards</span>
               </div>
             </div>
-            <div className='flex flex-col items-end'>
+            <div className='flex flex-col items-center md:items-end'>
               <div className='flex items-center gap-1'>
                 <span className='text-[48px] font-bold'>
                   {referralRewards
@@ -1096,14 +1128,18 @@ const StakePage: NextPage = () => {
           </div>
           <div
             className={clsx(
-              `md:p-8 md:border-2 mt-8 rounded-[20px] items-center flex justify-between gap-4
-                md:backdrop-filter md:backdrop-blur-[10px]`,
+              `md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px] py-4 md:py-8`,
               GradientBorderClass
             )}
           >
-            <div className='flex items-center gap-10'>
-              <img src='/images/stake/mlp.png' alt='mlp' />
-              <div className='flex flex-col text-gray-a5 text-[20px] uppercase'>
+            <div className='flex items-center gap-4 md:gap-10'>
+              <img
+                src='/images/stake/mlp.png'
+                alt='mlp'
+                className='w-[70px] md:w-[112px]'
+              />
+              <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
                 <span>MLP</span>
                 <span>CLAIMABLE</span>
               </div>
@@ -1138,10 +1174,11 @@ const StakePage: NextPage = () => {
       </Container>
 
       <Container>
-        <Content>
+        <Content className='px-4 md:px-4'>
           <Text
             className={clsx(
-              'mb-6 md:pt-[78px] text-[24px] text-center md:text-left md:text-5xl font-semibold',
+              `mb-4 md:pt-[78px] mt-5 md:mt-0 text-[24px] text-center md:text-left md:text-5xl
+                font-semibold`,
               GradientTextClass
             )}
           >
@@ -1149,91 +1186,91 @@ const StakePage: NextPage = () => {
           </Text>
 
           <div className='relative'>
-            <div
-              className={clsx(
-                `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter absolute z-10 w-full h-full
-                  backdrop-blur-lg bg-opacity-60 md:backdrop-blur-[10px] flex items-center
-                  justify-center flex-col gap-6 border-1`
-                // GradientBorderClass
-              )}
-            >
-              <div className='flex items-center justify-center gap-4'>
-                <LockIcon width={36} height={36} color='#FFFFFF' />
-                <div className='text-[48px] font-bold'>
-                  Stake your{' '}
-                  <span className={clsx('', GradientTextClass)}>NFT</span> to
-                  unlock this pool
-                </div>
-              </div>
-              <Button
-                onClick={handleStakeNFT}
-                className='rounded-full w-[60%] text-[16px] h-[48px]'
-              >
-                STAKE NFT
-              </Button>
-            </div>
-            <div
-              className='grid mt-8 grid-cols-1 md:grid-cols-2 gap-8 border-2 md:border-none
-                rounded-[20px] border-referral-gradient p-8 md:p-0'
-            >
+            {stakeNFTCardVisible && (
               <div
                 className={clsx(
-                  `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                  `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter absolute z-10 w-full h-full
+                    backdrop-blur-lg bg-opacity-60 md:backdrop-blur-[10px] flex items-center
+                    justify-center flex-col gap-6 border-1`
+                )}
+              >
+                <div className='flex items-center flex-col md:flex-row justify-center gap-4'>
+                  <LockIcon width={36} height={36} color='#FFFFFF' />
+                  <div className='text-[32px] md:text-[48px] font-bold text-center'>
+                    Stake your{' '}
+                    <span className={clsx('', GradientTextClass)}>NFT</span> to
+                    unlock this pool
+                  </div>
+                </div>
+                <Button
+                  onClick={handleStakeNFT}
+                  className='rounded-full w-[60%] text-[16px] h-[48px]'
+                >
+                  STAKE NFT
+                </Button>
+              </div>
+            )}
+            <div className='grid mt-8 grid-cols-1 md:grid-cols-2 gap-8 rounded-[20px] md:p-0'>
+              <div
+                className={clsx(
+                  `p-4 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                   GradientBorderClass
                 )}
               >
                 <div className='flex justify-between items-center'>
                   <span className='text-gray-a5'>Total NFT</span>
-                  <span className='text-[48px] font-bold'>4</span>
+                  <span className='text-[48px] font-bold'>
+                    {stakedTokens.length}
+                  </span>
                 </div>
-                <div className='flex items-center justify-center gap-4 mt-2'>
+                <div className='grid grid-cols-2 md:flex md:items-center md:justify-center gap-4 mt-2'>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix Phone</div>
-                    <span>1</span>
+                    <span>{phoneStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix NFT</div>
-                    <span>1</span>
+                    <span>{matrixStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent One</div>
-                    <span>1</span>
+                    <span>{agentOneStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Pro</div>
-                    <span>1</span>
+                    <span>{agentProStaked.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Ultra</div>
-                    <span>1</span>
+                    <span>{agentUltraStaked.length}</span>
                   </div>
                 </div>
               </div>
 
               <div
                 className={clsx(
-                  `md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+                  `p-4 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
                   GradientBorderClass
                 )}
               >
-                <div className='flex justify-between items-center'>
+                <div className='flex flex-col md:flex-row justify-between items-center'>
                   <span className='text-gray-a5'>Daily MLP Distribution</span>
-                  <span className='text-[48px] font-bold'>1,106.9032</span>
+                  <span className='text-[48px] font-bold'>1,106.92</span>
                 </div>
                 <div
                   className='bg-black h-[96px] mt-2 rounded-md flex items-center justify-center text-[18px]
@@ -1248,7 +1285,7 @@ const StakePage: NextPage = () => {
 
           <div
             className={clsx(
-              `py-8 md:border-2 mt-8 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+              `py-8 border-2 mt-8 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
@@ -1289,9 +1326,9 @@ const StakePage: NextPage = () => {
 
             <div
               className={clsx(
-                `border-1 mx-8 my-6 border-gray-500 rounded-xl border-opacity-50 grid`,
-                'gap-y-4 gap-x-4 p-8 max-h-[437px] overflow-y-auto transparent-scrollbar',
-                !!tokenOwned.length && 'grid-cols-2'
+                `md:border-1 md:mx-8 my-6 border-gray-500 rounded-xl border-opacity-50 grid`,
+                'gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto transparent-scrollbar',
+                !!tokenOwned.length && 'grid-cols-1 md:grid-cols-2'
               )}
             >
               {currentTab === 'stake' &&
@@ -1308,31 +1345,25 @@ const StakePage: NextPage = () => {
                           alt='matrix'
                           className={
                             stake.name === 'Matrix Phone'
-                              ? 'ml-1 w-[74px] h-[66px]'
-                              : 'w-[87px] h-[80px]'
+                              ? 'ml-1 w-[54px] h-[50px] md:w-[74px] md:h-[66px]'
+                              : 'w-[66px] h-[60px] md:w-[87px] md:h-[80px]'
                           }
                         />
                         <div className='flex flex-col'>
-                          <span className='text-[32px] font-bold'>
+                          <span className='text-16px md:text-[32px] font-bold'>
                             {stake.name}
                           </span>
-                          <span className='text-gray-a5 text-[24px]'>
+                          <span className='text-gray-a5 text-[12px] md:text-[24px]'>
                             {stake.id}
                           </span>
                         </div>
                       </div>
                       <Button
-                        isLoading={
-                          stake.id === selectedToken?.id &&
-                          (isApprovingStake ||
-                            isWaitingApprovingStake ||
-                            isWaitingStakingToken ||
-                            isStakingToken)
-                        }
                         onClick={() => {
                           handleShowConfirmModal(stake, StakeTypeEnum.STAKE)
                         }}
-                        className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'
+                        className='bg-white rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px]
+                          md:w-[128px]'
                       >
                         STAKE
                       </Button>
@@ -1340,7 +1371,7 @@ const StakePage: NextPage = () => {
                   )
                 })}
               {currentTab === 'stake' && !tokenOwned.length && (
-                <div className='font-bold text-[32px] text-center w-[50%] mx-auto'>
+                <div className='font-bold text-[16px] md:text-[32px] text-center w-full md:w-[50%] mx-auto'>
                   You don&apos;t own any{' '}
                   <span className={clsx(GradientTextClass, 'font-extra-bold')}>
                     NFTs
@@ -1365,28 +1396,25 @@ const StakePage: NextPage = () => {
                           alt='matrix'
                           className={
                             stake.name === 'Matrix Phone'
-                              ? 'ml-1 w-[74px] h-[66px]'
-                              : 'w-[87px] h-[80px]'
+                              ? 'ml-1 w-[54px] h-[50px] md:w-[74px] md:h-[66px]'
+                              : 'w-[66px] h-[60px] md:w-[87px] md:h-[80px]'
                           }
                         />
                         <div className='flex flex-col'>
-                          <span className='text-[32px] font-bold'>
+                          <span className='text-16px md:text-[32px] font-bold'>
                             {stake.name}
                           </span>
-                          <span className='text-gray-a5 text-[24px]'>
+                          <span className='text-gray-a5 text-[12px] md:text-[24px]'>
                             {stake.id}
                           </span>
                         </div>
                       </div>
                       <Button
-                        isLoading={
-                          stake.id === selectedToken?.id &&
-                          (isWaitingUnstakingToken || isUnstakingToken)
-                        }
                         onClick={() => {
                           handleShowConfirmModal(stake, StakeTypeEnum.UNSTAKE)
                         }}
-                        className='bg-white rounded-full text-[16px] h-[40px] w-[128px]'
+                        className='bg-white rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px]
+                          md:w-[128px]'
                       >
                         UNSTAKE
                       </Button>
@@ -1398,15 +1426,15 @@ const StakePage: NextPage = () => {
 
           <div
             className={clsx(
-              `md:p-8 md:border-2 mt-8 rounded-[20px] md:backdrop-filter
+              `p-2 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
                 md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
-            <div className='flex justify-between'>
+            <div className='flex flex-col md:flex-row items-center gap-2 md:justify-between'>
               <Text
                 className={clsx(
-                  'text-[28px] text-center font-bold flex items-center gap-2',
+                  'text-[24px] md:text-[28px] text-center font-bold flex items-center gap-2',
                   GradientTextClass
                 )}
               >
@@ -1436,21 +1464,30 @@ const StakePage: NextPage = () => {
                 <span>19,687.89</span>
               </div>
             </div>
-            <div className='flex items-center justify-around gap-8 mt-4'>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+            <div className='flex items-center flex-col md:flex-row justify-around gap-2 md:gap-8 mt-4'>
+              <div
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Yesterday’s Staking Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00 MLP</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
-              <div className='flex-1'></div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div className='flex-1 hidden md:block'></div>
+              <div
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
@@ -1461,15 +1498,15 @@ const StakePage: NextPage = () => {
 
           <div
             className={clsx(
-              `md:p-8 md:border-2 mt-8 rounded-[20px] md:backdrop-filter
+              `p-2 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
                 md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
-            <div className='flex justify-between'>
+            <div className='flex flex-col md:flex-row items-center justify-between'>
               <Text
                 className={clsx(
-                  'text-[28px] flex gap-2 items-center text-center font-bold',
+                  'text-[24px] md:text-[28px] flex gap-2 items-center text-center font-bold',
                   GradientTextClass
                 )}
               >
@@ -1489,7 +1526,7 @@ const StakePage: NextPage = () => {
                   </span>
                 </Tooltip>
               </Text>
-              <div className='flex gap-10 items-center'>
+              <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
                 <span className='text-[28px] font-bold'>$2,345.89 USDT</span>
                 <div
                   className={clsx(
@@ -1505,39 +1542,51 @@ const StakePage: NextPage = () => {
             <div className='w-full mt-20 flex items-center justify-between'>
               <Text
                 className={clsx(
-                  'text-[28px] text-center font-bold',
+                  'text-[24px] md:text-[28px] text-center font-bold',
                   GradientTextClass
                 )}
               >
                 NFT Boosted Pool
               </Text>
               <Button
-                className='rounded-full text-[12px] h-8 w-[152px]'
+                className='rounded-full text-[12px] h-8 w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationPoolModal}
               >
                 Accelerate
               </Button>
             </div>
-            <div className='flex items-center justify-around gap-8 mt-4'>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+            <div className='flex items-center flex-col md:flex-row justify-around gap-2 md:gap-8 mt-4'>
+              <div
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Yesterday’s Staking Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00 MLP</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Holding NFT
                 </span>
                 <div className='text-[18px] font-bold'>12</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
@@ -1550,34 +1599,43 @@ const StakePage: NextPage = () => {
             <div className='w-full mt-7 flex items-center justify-between'>
               <Text
                 className={clsx(
-                  'text-[28px] text-center font-bold',
+                  'text-[24px] md:text-[28px] text-center font-bold',
                   GradientTextClass
                 )}
               >
                 MLP Boosted Pool
               </Text>
               <Button
-                className='rounded-full text-[12px] h-8 w-[152px]'
+                className='rounded-full text-[12px] h-8 w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationPoolModal}
               >
                 Accelerate
               </Button>
             </div>
-            <div className='flex items-center justify-around gap-8 mt-4'>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+            <div className='flex items-center justify-around flex-col md:flex-row gap-2 md:gap-8 mt-4'>
+              <div
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Yesterday’s Staking Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00 MLP</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
-              <div className='flex-1'></div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div className='flex-1 hidden md:block'></div>
+              <div
+                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
@@ -1653,7 +1711,7 @@ const StakePage: NextPage = () => {
                 onClick={() => {
                   setIsShowDetails(!isShowDetails)
                 }}
-                className='rounded-[35px] text-[16px] h-[48px] w-[480px] font-bold'
+                className='rounded-[35px] text-[16px] h-[48px] w-full md:w-[480px] font-bold'
               >
                 {isShowDetails ? 'HIDE DETAILS' : 'STAKING DETAILS'}
               </Button>
@@ -1662,12 +1720,12 @@ const StakePage: NextPage = () => {
 
           <div
             className={clsx(
-              `md:p-8 md:border-2 mt-8 rounded-[20px] md:backdrop-filter
+              `p-2 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
                 md:backdrop-blur-[10px]`,
               GradientBorderClass
             )}
           >
-            <div className='flex justify-between'>
+            <div className='flex flex-col md:flex-row items-center justify-between'>
               <Text
                 className={clsx(
                   'text-[28px] flex gap-2 items-center text-center font-bold',
@@ -1700,26 +1758,38 @@ const StakePage: NextPage = () => {
                 <span>19,687.89</span>
               </div>
             </div>
-            <div className='flex items-center justify-around gap-8 mt-4'>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+            <div className='flex items-center flex-col md:flex-row justify-around gap-2 md:gap-8 mt-4'>
+              <div
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Yesterday’s Staking Rewards
                 </span>
                 <div className='text-[18px] font-bold'>999.00 MLP</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Holding NFT
                 </span>
                 <div className='text-[18px] font-bold'>12</div>
               </div>
-              <div className='bg-black flex-1 rounded-xl flex flex-col items-center justify-center px-8 py-4'>
+              <div
+                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                  py-4'
+              >
                 <span className='text-[14px] text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
