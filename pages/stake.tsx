@@ -1572,7 +1572,7 @@ const StakePage: NextPage = () => {
                     py-4'
                 >
                   <span className='text-[14px] text-center text-gray-a5 font-bold'>
-                    Holding NFT
+                    Accelerated MLP
                   </span>
                   <div className='text-[18px] font-bold'>
                     {formatUSDT(userRewardsSummary?.stakingAmount ?? 0)}
@@ -1607,7 +1607,7 @@ const StakePage: NextPage = () => {
               <Text
                 className={clsx(
                   `text-[16px] md:text-[28px] w-full md:w-fit flex justify-center relative gap-2
-                  items-center text-center font-bold`,
+                    items-center text-center font-bold`,
                   GradientTextClass
                 )}
               >
@@ -1849,7 +1849,7 @@ const StakePage: NextPage = () => {
               <Text
                 className={clsx(
                   `text-[16px] flex gap-2 items-center w-full md:w-fit justify-center relative
-                  text-center font-bold`,
+                    text-center font-bold`,
                   GradientTextClass
                 )}
               >
