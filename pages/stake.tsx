@@ -1139,7 +1139,7 @@ const StakePage: NextPage = () => {
                 className='w-[70px] md:w-[112px]'
               />
               <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
-                <span>USDT</span>
+                <span className='hidden md:block'>USDT</span>
                 <span>Node Rewards</span>
               </div>
             </div>
@@ -1370,52 +1370,61 @@ const StakePage: NextPage = () => {
 
             <div
               className={clsx(
-                `md:border-1 md:mx-8 my-6 border-gray-500 rounded-xl border-opacity-50 grid`,
-                'gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto transparent-scrollbar',
-                !!tokenOwned.length && 'grid-cols-1 md:grid-cols-2'
+                `md:border-1 md:mx-8 my-6 border-gray-500 rounded-xl border-opacity-50`
               )}
             >
-              {currentTab === 'stake' &&
-                !!tokenOwned.length &&
-                tokenOwned.map((stake) => {
-                  return (
-                    <div
-                      key={stake.name + stake.id}
-                      className='flex justify-between items-center pr-4'
-                    >
-                      <div className='flex items-center gap-4'>
-                        <img
-                          src={stake.img}
-                          alt='matrix'
-                          className={
-                            stake.name === 'Matrix Phone'
-                              ? 'ml-1 w-[54px] h-[50px] md:w-[74px] md:h-[66px]'
-                              : 'w-[66px] h-[60px] md:w-[87px] md:h-[80px]'
-                          }
-                        />
-                        <div className='flex flex-col'>
-                          <span className='text-16px md:text-[32px] font-bold'>
-                            {stake.name}
-                          </span>
-                          <span className='text-gray-a5 text-[12px] md:text-[24px]'>
-                            {stake.id}
-                          </span>
-                        </div>
-                      </div>
-                      <Button
-                        onClick={() => {
-                          handleShowConfirmModal(stake, StakeTypeEnum.STAKE)
-                        }}
-                        className='bg-white rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px]
-                          md:w-[128px]'
+              {currentTab === 'stake' && !!tokenOwned.length && (
+                <div
+                  className={clsx(
+                    `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
+                    transparent-scrollbar`,
+                    !!tokenOwned.length && 'grid-cols-1 md:grid-cols-2'
+                  )}
+                >
+                  {tokenOwned.map((stake) => {
+                    return (
+                      <div
+                        key={stake.name + stake.id}
+                        className='flex justify-between items-center pr-4'
                       >
-                        STAKE
-                      </Button>
-                    </div>
-                  )
-                })}
+                        <div className='flex items-center gap-4'>
+                          <img
+                            src={stake.img}
+                            alt='matrix'
+                            className={
+                              stake.name === 'Matrix Phone'
+                                ? 'ml-1 w-[54px] h-[50px] md:w-[74px] md:h-[66px]'
+                                : 'w-[66px] h-[60px] md:w-[87px] md:h-[80px]'
+                            }
+                          />
+                          <div className='flex flex-col'>
+                            <span className='text-16px md:text-[32px] font-bold'>
+                              {stake.name}
+                            </span>
+                            <span className='text-gray-a5 text-[12px] md:text-[24px]'>
+                              {stake.id}
+                            </span>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => {
+                            handleShowConfirmModal(stake, StakeTypeEnum.STAKE)
+                          }}
+                          className='bg-white rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px]
+                            md:w-[128px]'
+                        >
+                          STAKE
+                        </Button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
               {currentTab === 'stake' && !tokenOwned.length && (
-                <div className='font-bold text-[16px] md:text-[32px] text-center w-full md:w-[50%] mx-auto'>
+                <div
+                  className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
+                    mx-auto'
+                >
                   You don&apos;t have any{' '}
                   <span className={clsx(GradientTextClass, 'font-extra-bold')}>
                     NFT
@@ -1423,52 +1432,67 @@ const StakePage: NextPage = () => {
                   to stake
                 </div>
               )}
-              {currentTab === 'unstake' &&
-                !!stakedTokens.length &&
-                stakedTokens.map((stake) => {
-                  return (
-                    <div
-                      key={stake.name + stake.id}
-                      className='flex justify-between items-center pr-4'
-                    >
-                      <div className='flex items-center gap-4'>
-                        <img
-                          src={stake.img}
-                          alt='matrix'
-                          className={
-                            stake.name === 'Matrix Phone'
-                              ? 'ml-1 w-[54px] h-[50px] md:w-[74px] md:h-[66px]'
-                              : 'w-[66px] h-[60px] md:w-[87px] md:h-[80px]'
-                          }
-                        />
-                        <div className='flex flex-col'>
-                          <span className='text-16px md:text-[32px] font-bold'>
-                            {stake.name}
-                          </span>
-                          <span className='text-gray-a5 text-[12px] md:text-[24px]'>
-                            {stake.id}
-                          </span>
-                        </div>
-                      </div>
-                      <Button
-                        onClick={() => {
-                          handleShowConfirmModal(stake, StakeTypeEnum.UNSTAKE)
-                        }}
-                        className='bg-white rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px]
-                          md:w-[128px]'
+              {currentTab === 'unstake' && !!stakedTokens.length && (
+                <div
+                  className={clsx(
+                    `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
+                    transparent-scrollbar`,
+                    !!stakedTokens.length && 'grid-cols-1 md:grid-cols-2'
+                  )}
+                >
+                  {stakedTokens.map((stake) => {
+                    return (
+                      <div
+                        key={stake.name + stake.id}
+                        className='flex justify-between items-center pr-4'
                       >
-                        UNSTAKE
-                      </Button>
-                    </div>
-                  )
-                })}
+                        <div className='flex items-center gap-4'>
+                          <img
+                            src={stake.img}
+                            alt='matrix'
+                            className={
+                              stake.name === 'Matrix Phone'
+                                ? 'ml-1 w-[54px] h-[50px] md:w-[74px] md:h-[66px]'
+                                : 'w-[66px] h-[60px] md:w-[87px] md:h-[80px]'
+                            }
+                          />
+                          <div className='flex flex-col'>
+                            <span className='text-16px md:text-[32px] font-bold'>
+                              {stake.name}
+                            </span>
+                            <span className='text-gray-a5 text-[12px] md:text-[24px]'>
+                              {stake.id}
+                            </span>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => {
+                            handleShowConfirmModal(stake, StakeTypeEnum.UNSTAKE)
+                          }}
+                          className='bg-white rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px]
+                            md:w-[128px]'
+                        >
+                          UNSTAKE
+                        </Button>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
               {currentTab === 'unstake' && !stakedTokens.length && (
-                <div className='font-bold text-[16px] md:text-[32px] text-center w-full md:w-[50%] mx-auto'>
-                  You don&apos;t have any{' '}
-                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
-                    NFT
-                  </span>{' '}
-                  to unstake
+                <div
+                  className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
+                    mx-auto'
+                >
+                  <div>
+                    You don&apos;t have any{' '}
+                    <span
+                      className={clsx(GradientTextClass, 'font-extra-bold')}
+                    >
+                      NFT
+                    </span>{' '}
+                    to unstake
+                  </div>
                 </div>
               )}
             </div>
@@ -1504,15 +1528,6 @@ const StakePage: NextPage = () => {
                   </span>
                 </Tooltip>
               </Text>
-              <div
-                className={clsx(
-                  'flex items-center rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
-                  GradientBorderClass
-                )}
-              >
-                <span className='text-gray-a5'>$MLP Amount</span>
-                <span>19,687.89</span>
-              </div>
             </div>
             <div className='flex items-center flex-col md:flex-row justify-around gap-2 md:gap-8 mt-4'>
               <div
