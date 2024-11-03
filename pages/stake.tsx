@@ -1572,7 +1572,7 @@ const StakePage: NextPage = () => {
                     py-4'
                 >
                   <span className='text-[14px] text-center text-gray-a5 font-bold'>
-                    Accelerated MLP
+                    NFT Computing Power
                   </span>
                   <div className='text-[18px] font-bold'>
                     {formatUSDT(userRewardsSummary?.stakingAmount ?? 0)}
