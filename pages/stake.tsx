@@ -328,8 +328,6 @@ const StakePage: NextPage = () => {
 
   const { data: userRewardsSummary } = useGetUserRewardsSummary(address)
 
-  console.log(userRewardsSummary)
-
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
       {
@@ -1568,8 +1566,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                    py-4'
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
                 >
                   <span className='text-[14px] text-center text-gray-a5 font-bold'>
                     NFT Computing Power
