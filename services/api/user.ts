@@ -149,3 +149,31 @@ export const useGetIsInWhitelist = (
     ...options
   })
 }
+
+export interface ApiGetUserRewardsSummaryResponse {
+  rewards: string
+  totalRewards: string
+  stakingAmount: string
+}
+
+export const getUserRewardsSummary = async (address?: string) => {
+  try {
+    const url = `/users/rewards-summary/${address}`
+    const { data } = await axios.get<ApiGetUserRewardsSummaryResponse>(url)
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const useGetUserRewardsSummary = (
+  address?: Address,
+  options?: Partial<UseQueryOptions<ApiGetUserRewardsSummaryResponse, Error>>
+) => {
+  return useQuery<ApiGetUserRewardsSummaryResponse, Error>({
+    queryKey: ['user', 'rewards-summary', address],
+    queryFn: () => getUserRewardsSummary(address),
+    enabled: !!address,
+    ...options
+  })
+}
