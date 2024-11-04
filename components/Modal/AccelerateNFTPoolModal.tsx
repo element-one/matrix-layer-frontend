@@ -1,49 +1,23 @@
 import { FC, useState } from 'react'
 import { Modal, ModalBody, ModalContent, Tooltip } from '@nextui-org/react'
-import clsx from 'clsx'
 
 import { Button } from '@components/Button'
 import { QuestionColorIcon } from '@components/Icon/QuestionColorIcon'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 
-const default_options = [
-  {
-    day: '30',
-    title: 'Stake for 30 Days',
-    content: '37% APY'
-  },
-  {
-    day: '60',
-    title: 'Stake for 60 Days',
-    content: '121% APY'
-  },
-  {
-    day: '90',
-    title: 'Stake for 90 Days',
-    content: '577% APY'
-  },
-  {
-    day: '180',
-    title: 'Stake for 180 Days',
-    content: '1988% APY'
-  }
-]
-
-export interface AcceleratePoolModalProps {
+export interface AccelerateNFTPoolModalProps {
   onClose?: () => void
   onConfirm?: () => void
 }
 
-export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
+export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
   onClose,
   onConfirm
 }) => {
   const { isModalShown, hideModal } = useModal()
 
   const [amount, setAmount] = useState('')
-
-  const [stakeDay, setStakeDay] = useState('30')
 
   const handleClose = () => {
     onClose && onClose()
@@ -52,7 +26,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
 
   return (
     <Modal
-      isOpen={isModalShown(ModalType.ACCELERATE_POOL_MODAL)}
+      isOpen={isModalShown(ModalType.ACCELERATE_NFT_POOL_MODAL)}
       onClose={handleClose}
       size='xl'
       placement='center'
@@ -70,7 +44,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
         >
           <div className='flex gap-x-5 items-center'>
             <Text className='text-[14px] md:text-[32px] font-bold'>
-              <span>Accelerate MLP Boosted Pool</span>
+              <span>Accelerate NFT Boosted Pool</span>
             </Text>
             <Tooltip
               placement='bottom'
@@ -87,47 +61,6 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
                 <QuestionColorIcon />
               </span>
             </Tooltip>
-          </div>
-          <div className='flex justify-center items-center'>
-            <label className='flex gap-x-[10px] items-center'>
-              <input type='checkbox' className='accelerate-checkbox' />
-              <Text className='text-[10px] md:text-[18px] font-semibold text-co-gray-7'>
-                Will the earnings be reinvested? Reinvestment will lock your
-                funds and you will not be able to withdraw early during the
-                lock-up period.
-              </Text>
-            </label>
-          </div>
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-[10px] w-full'>
-            {default_options.map((item) => (
-              <div
-                key={item.day}
-                className={clsx(
-                  `flex flex-col h-[120px] md:h-[252px] px-6 py-4 justify-center items-center gap-3
-                    bg-black rounded-[16px] border cursor-pointer`,
-                  item.day === stakeDay
-                    ? 'border-skate-day-item-active-gradient'
-                    : 'border-transparent'
-                )}
-                onClick={() => {
-                  setStakeDay(stakeDay === item.day ? '' : item.day)
-                }}
-              >
-                <Text className='w-[130px] text-[12px] md:text-[24px] font-bold text-co-gray-7 text-center'>
-                  {item.title}
-                </Text>
-                <Text className='text-[12px] md:text-[24px] font-bold text-co-green-2 text-center'>
-                  {item.content}
-                </Text>
-              </div>
-            ))}
-          </div>
-          <div className='text-[12px] md:text-[18px] font-semibold text-co-gray-7 text-center'>
-            Disclaimer : APY Rates are calculated based on yesterday’s the pool
-            status as an approzimate reference and{' '}
-            <span className='clip-text bg-gradient-home-text-1 font-bold'>
-              might not be 100% accurate
-            </span>
           </div>
           <div className='w-full'>
             <div className='p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between gap-x-10'>

@@ -137,6 +137,7 @@ const StakePage: NextPage = () => {
 
   const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
+  const [isShowNFTDetails, setIsShowNFTDetails] = useState(false)
 
   const handleHistoryModalClose = () => {
     setUsdtHistoryModalVisible(false)
@@ -164,6 +165,14 @@ const StakePage: NextPage = () => {
 
   const handleOpenAccelerationPoolModal = () => {
     showModal(ModalType.ACCELERATE_POOL_MODAL, {
+      onConfirm: () => {
+        hideModal()
+      }
+    })
+  }
+
+  const handleOpenAccelerationNFTPoolModal = () => {
+    showModal(ModalType.ACCELERATE_NFT_POOL_MODAL, {
       onConfirm: () => {
         hideModal()
       }
@@ -1666,7 +1675,7 @@ const StakePage: NextPage = () => {
               </Text>
               <Button
                 className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
-                onClick={handleOpenAccelerationPoolModal}
+                onClick={handleOpenAccelerationNFTPoolModal}
               >
                 Accelerate
               </Button>
@@ -1708,6 +1717,93 @@ const StakePage: NextPage = () => {
                 </span>
                 <div className='text-[18px] font-bold'>999.00</div>
               </div>
+            </div>
+
+            <div className='flex flex-col gap-y-8 mt-8 items-center h-fit transition-height'>
+              {isShowNFTDetails && (
+                <Table
+                  aria-label='Details'
+                  classNames={{
+                    wrapper:
+                      'rounded-[12px] border border-purple-500 bg-black-15 backdrop-blur-[6px] p-0 w-full',
+                    th: 'bg-black text-white text-[18px] font-bold text-white text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
+                    td: ' py-5 px-3 text-[14px] font-medium text-center',
+                    tr: 'odd:bg-black-15 even:bg-black-19 hover:bg-black-15 font-chakraPetch'
+                  }}
+                >
+                  <TableHeader>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Skating Date
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Skating Period
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Number of staked tokens
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Cumulative income
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Reinvestment
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      Action
+                    </TableColumn>
+                  </TableHeader>
+                  <TableBody>
+                    {mock_details.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                          {item.date}
+                        </TableCell>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                          {item.period}
+                        </TableCell>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                          {item.tokens}
+                        </TableCell>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                          {item.income}
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={clsx(
+                              `w-[74px] h-[30px] rounded-[24px] flex items-center justify-center border
+                                font-bold text-[14px] md:text-[16px] mx-auto`,
+                              statusClass(item.status)
+                            )}
+                          >
+                            {item.status ? 'Yes' : 'No'}
+                          </span>
+                        </TableCell>
+                        <TableCell className='text-gray-150'>
+                          <Button
+                            isDisabled={!item.status}
+                            className={twMerge(
+                              clsx(
+                                'rounded-full text-[12px] h-8 w-[152px] font-bold',
+                                !item.status && 'bg-co-gray-7 text-white'
+                              )
+                            )}
+                          >
+                            Withdraw
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+              <Button
+                onClick={() => {
+                  setIsShowNFTDetails(!isShowNFTDetails)
+                }}
+                className='rounded-[35px] text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-full
+                  md:w-[480px] font-bold'
+              >
+                {isShowNFTDetails ? 'HIDE DETAILS' : 'STAKING DETAILS'}
+              </Button>
             </div>
 
             <div className='h-[1px] bg-gray-500 w-full mt-7'></div>
