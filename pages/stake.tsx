@@ -1474,7 +1474,6 @@ const StakePage: NextPage = () => {
                   )}
                 >
                   {tokenOwned.map((stake) => {
-                    console.log(stake)
                     return (
                       <div
                         key={stake.name + stake.id}
