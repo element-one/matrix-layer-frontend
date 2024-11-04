@@ -78,7 +78,7 @@ interface StakeToken {
 const mock_details = [
   {
     id: 0,
-    date: '2024-09-12 11:58:59',
+    date: '9.12.2024',
     period: '30',
     tokens: 5000,
     income: 123.85,
@@ -86,7 +86,7 @@ const mock_details = [
   },
   {
     id: 0,
-    date: '2024-09-12 11:58:59',
+    date: '9.12.2024',
     period: '30',
     tokens: 5000,
     income: 123.85,
@@ -94,7 +94,7 @@ const mock_details = [
   },
   {
     id: 0,
-    date: '2024-09-12 11:58:59',
+    date: '9.12.2024',
     period: '30',
     tokens: 5000,
     income: 123.85,
@@ -102,10 +102,49 @@ const mock_details = [
   },
   {
     id: 0,
-    date: '2024-09-12 11:58:59',
+    date: '9.12.2024',
     period: '30',
     tokens: 5000,
     income: 123.85,
+    status: 0
+  }
+]
+
+const NFT_POOL_MOCK_DETAILS = [
+  {
+    id: 0,
+    date: '11.05.24',
+    amount: 5000,
+    income: 123.85,
+    unstakeDate: '-',
+    action: 'Withdraw',
+    status: 1
+  },
+  {
+    id: 1,
+    date: '9.12.2024',
+    amount: 5000,
+    income: 320.0,
+    unstakeDate: '-',
+    action: 'Withdraw',
+    status: 1
+  },
+  {
+    id: 2,
+    date: '7.25.2024',
+    amount: 5000,
+    income: 999.22,
+    unstakeDate: '-',
+    action: 'Withdraw',
+    status: 1
+  },
+  {
+    id: 3,
+    date: '7.20.2024',
+    amount: 5000,
+    income: '84.41',
+    unstakeDate: '8.21.2024',
+    action: 'Withdrawn',
     status: 0
   }
 ]
@@ -138,6 +177,10 @@ const StakePage: NextPage = () => {
   const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
   const [isShowNFTDetails, setIsShowNFTDetails] = useState(false)
+
+  const handleWithdrawClick = () => {
+    showModal(ModalType.WITHDRAW_MODAL)
+  }
 
   const handleHistoryModalClose = () => {
     setUsdtHistoryModalVisible(false)
@@ -1431,6 +1474,7 @@ const StakePage: NextPage = () => {
                   )}
                 >
                   {tokenOwned.map((stake) => {
+                    console.log(stake)
                     return (
                       <div
                         key={stake.name + stake.id}
@@ -1451,7 +1495,7 @@ const StakePage: NextPage = () => {
                               {stake.name}
                             </span>
                             <span className='text-gray-a5 text-[12px] md:text-[24px]'>
-                              {stake.id}
+                              # {stake.id.toString()}
                             </span>
                           </div>
                         </div>
@@ -1510,7 +1554,7 @@ const StakePage: NextPage = () => {
                               {stake.name}
                             </span>
                             <span className='text-gray-a5 text-[12px] md:text-[24px]'>
-                              {stake.id}
+                              # {stake.id.toString()}
                             </span>
                           </div>
                         </div>
@@ -1739,46 +1783,32 @@ const StakePage: NextPage = () => {
                       Skating Date
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
-                      Skating Period
-                    </TableColumn>
-                    <TableColumn className='text-[14px] md:text-[16px]'>
-                      Number of staked tokens
+                      Skating Amount
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
                       Cumulative income
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
-                      Reinvestment
+                      Unstaked Date
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
                       Action
                     </TableColumn>
                   </TableHeader>
                   <TableBody>
-                    {mock_details.map((item) => (
+                    {NFT_POOL_MOCK_DETAILS.map((item) => (
                       <TableRow key={item.id}>
                         <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                           {item.date}
                         </TableCell>
                         <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.period}
-                        </TableCell>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.tokens}
+                          {item.amount}
                         </TableCell>
                         <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                           {item.income}
                         </TableCell>
-                        <TableCell>
-                          <span
-                            className={clsx(
-                              `w-[74px] h-[30px] rounded-[24px] flex items-center justify-center border
-                                font-bold text-[14px] md:text-[16px] mx-auto`,
-                              statusClass(item.status)
-                            )}
-                          >
-                            {item.status ? 'Yes' : 'No'}
-                          </span>
+                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                          {item.unstakeDate}
                         </TableCell>
                         <TableCell className='text-gray-150'>
                           <Button
@@ -1789,8 +1819,9 @@ const StakePage: NextPage = () => {
                                 !item.status && 'bg-co-gray-7 text-white'
                               )
                             )}
+                            onClick={handleWithdrawClick}
                           >
-                            Withdraw
+                            {item.action}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -1929,6 +1960,7 @@ const StakePage: NextPage = () => {
                                 !item.status && 'bg-co-gray-7 text-white'
                               )
                             )}
+                            onClick={handleWithdrawClick}
                           >
                             Withdraw
                           </Button>
@@ -1960,8 +1992,8 @@ const StakePage: NextPage = () => {
             <div className='flex flex-col md:flex-row items-center justify-between'>
               <Text
                 className={clsx(
-                  `text-[16px] flex gap-2 items-center w-full md:w-fit justify-center relative
-                    text-center font-bold`,
+                  `text-[16px] md:text-[28px] flex gap-2 items-center w-full md:w-fit
+                    justify-center relative text-center font-bold`,
                   GradientTextClass
                 )}
               >
@@ -1976,7 +2008,7 @@ const StakePage: NextPage = () => {
                     </span>
                   }
                 >
-                  <span className='absolute right-0'>
+                  <span className='absolute right-0 md:relative'>
                     <InfoIcon />
                   </span>
                 </Tooltip>
