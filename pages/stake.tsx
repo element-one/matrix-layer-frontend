@@ -572,6 +572,9 @@ const StakePage: NextPage = () => {
 
   useEffect(() => {
     if (txRewardMLP && !isWaitingClaimMLPReceipt) {
+      setTimeout(() => {
+        refetchUserData()
+      }, 2 * 1000)
       refetchUserData()
     }
   }, [txRewardMLP, isWaitingClaimMLPReceipt, refetchUserData])
