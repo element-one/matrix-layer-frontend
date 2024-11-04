@@ -326,7 +326,8 @@ const StakePage: NextPage = () => {
     setStakeNFTCardVisible(!stakedTokens.length)
   }, [stakedTokens])
 
-  const { data: userRewardsSummary } = useGetUserRewardsSummary(address)
+  const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
+    useGetUserRewardsSummary(address)
 
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
@@ -457,13 +458,15 @@ const StakePage: NextPage = () => {
     if (stakeReceipt) {
       refetchTotalNfts()
       refetchNftBalances()
+      refetchUserRewardsSummary()
       onCloseChangeStakeConfirm()
     }
   }, [
     stakeReceipt,
     refetchNftBalances,
     refetchTotalNfts,
-    onCloseChangeStakeConfirm
+    onCloseChangeStakeConfirm,
+    refetchUserRewardsSummary
   ])
 
   const {
@@ -641,13 +644,15 @@ const StakePage: NextPage = () => {
     if (unstakeReceipt) {
       refetchTotalNfts()
       refetchNftBalances()
+      refetchUserRewardsSummary()
       onCloseChangeStakeConfirm()
     }
   }, [
     unstakeReceipt,
     refetchNftBalances,
     refetchTotalNfts,
-    onCloseChangeStakeConfirm
+    onCloseChangeStakeConfirm,
+    refetchUserRewardsSummary
   ])
 
   const handleUnstakeToken = async (token: StakeToken) => {
@@ -1336,14 +1341,23 @@ const StakePage: NextPage = () => {
               >
                 <div className='flex flex-col md:flex-row justify-between items-center'>
                   <span className='text-gray-a5'>Daily MLP Distribution</span>
-                  <span className='text-[48px] font-bold'>1,106.92</span>
+                  <span className='text-[48px] font-bold'>
+                    {formatUSDT(
+                      userRewardsSummary?.currentDayAllPoolTotalRewards ?? 0
+                    )}
+                  </span>
                 </div>
                 <div
                   className='bg-black h-[96px] mt-2 rounded-md flex items-center justify-center text-[18px]
                     flex-col px-4 py-2 text-gray-a5'
                 >
                   <div className='text-center'>Staking</div>
-                  <span className='text-white'>1,105.9032</span>
+                  <span className='text-white'>
+                    {formatUSDT(
+                      userRewardsSummary?.currentDayAllPoolTotalStakingAmount ??
+                        0
+                    )}
+                  </span>
                 </div>
               </div>
             </div>
@@ -1562,7 +1576,8 @@ const StakePage: NextPage = () => {
                     Yesterday’s Rewards
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {formatUSDT(userRewardsSummary?.rewards ?? 0)} MLP
+                    {formatUSDT(userRewardsSummary?.yesterdayPoolARewards ?? 0)}{' '}
+                    MLP
                   </div>
                 </div>
                 <div
@@ -1573,7 +1588,7 @@ const StakePage: NextPage = () => {
                     NFT Computing Power
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {formatUSDT(userRewardsSummary?.stakingAmount ?? 0)}
+                    {formatUSDT(userRewardsSummary?.poolAStakingAmount ?? 0)}
                   </div>
                 </div>
               </div>
@@ -1587,7 +1602,7 @@ const StakePage: NextPage = () => {
                     Total MLP Rewards
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {formatUSDT(userRewardsSummary?.totalRewards ?? 0)}
+                    {formatUSDT(userRewardsSummary?.poolATotalRewards ?? 0)}
                   </div>
                 </div>
               </div>
