@@ -26,3 +26,18 @@ export const useGetPoolRewardSummary = (
     ...options
   })
 }
+
+export const getPoolAUserDailyRewards = async (address: string) => {
+  const url = `/users/reward-details/${address}`
+  const { data } = await axios.get<any>(url)
+
+  return data
+}
+
+export const useGetPoolAUserDailyRewards = (address: string) => {
+  return useQuery({
+    queryKey: ['poola', 'userDailyRewards', address],
+    queryFn: () => getPoolAUserDailyRewards(address),
+    enabled: !!address
+  })
+}

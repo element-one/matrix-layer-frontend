@@ -48,6 +48,7 @@ import {
   useGetUserRewardsSummary,
   usePatchReferralCode
 } from '@services/api'
+import { useGetPoolAUserDailyRewards } from '@services/api/pool'
 import { formatCurrency, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
 import { serializeError } from 'eth-rpc-errors'
@@ -128,6 +129,12 @@ const StakePage: NextPage = () => {
   const { data: userData, refetch: refetchUserData } = useGetUser(address, {
     enabled: !!address
   })
+
+  const { data: userDailyRewardsData } = useGetPoolAUserDailyRewards(
+    address as string
+  )
+  console.log(userDailyRewardsData)
+
   const [referralCode, setReferralCode] = useState('')
   const { signMessage } = useSignMessage()
   const [usdtHistoryModalVisible, setUsdtHistoryModalVisible] = useState(false)
