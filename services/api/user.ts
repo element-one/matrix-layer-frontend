@@ -151,9 +151,18 @@ export const useGetIsInWhitelist = (
 }
 
 export interface ApiGetUserRewardsSummaryResponse {
-  rewards: string
-  totalRewards: string
-  stakingAmount: string
+  currentDayAllPoolTotalRewards: string
+  currentDayAllPoolTotalStakingAmount: string
+  poolAStakingAmount: string
+  poolATotalRewards: string
+  poolB1StakingAmount: string
+  poolB1TotalRewards: string
+  poolB2StakingAmount: string
+  poolB2TotalRewards: string
+  poolCStakingAmount: string
+  poolCTotalRewards: string
+  poolPhoneTotalRewards: string
+  yesterdayPoolARewards: string
 }
 
 export const getUserRewardsSummary = async (address?: string) => {
