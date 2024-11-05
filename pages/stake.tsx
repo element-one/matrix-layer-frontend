@@ -1707,7 +1707,7 @@ const StakePage: NextPage = () => {
                   )}
                 >
                   <span className='text-gray-a5'>$MLP Amount</span>
-                  <span>19,687.89</span>
+                  <span>0.00</span>
                 </div>
               </div>
             </div>
@@ -1736,7 +1736,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
                   Yesterday’s Staking Rewards
                 </span>
-                <div className='text-[18px] font-bold'>999.00 MLP</div>
+                <div className='text-[18px] font-bold'>0.00 MLP</div>
               </div>
               <div
                 className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1745,7 +1745,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
-                <div className='text-[18px] font-bold'>999.00</div>
+                <div className='text-[18px] font-bold'>0.00</div>
               </div>
               <div
                 className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1754,7 +1754,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                   Holding NFT
                 </span>
-                <div className='text-[18px] font-bold'>12</div>
+                <div className='text-[18px] font-bold'>0</div>
               </div>
               <div
                 className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1763,7 +1763,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
-                <div className='text-[18px] font-bold'>999.00</div>
+                <div className='text-[18px] font-bold'>0.00</div>
               </div>
             </div>
 
@@ -1870,7 +1870,7 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                     Yesterday’s Staking Rewards
                   </span>
-                  <div className='text-[18px] font-bold'>999.00 MLP</div>
+                  <div className='text-[18px] font-bold'>0.00 MLP</div>
                 </div>
                 <div
                   className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1879,7 +1879,7 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                     Accelerated MLP
                   </span>
-                  <div className='text-[18px] font-bold'>999.00</div>
+                  <div className='text-[18px] font-bold'>0.00</div>
                 </div>
               </div>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8'>
@@ -1891,7 +1891,7 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     Total MLP Rewards
                   </span>
-                  <div className='text-[18px] font-bold'>999.00</div>
+                  <div className='text-[18px] font-bold'>0.00</div>
                 </div>
               </div>
             </div>
@@ -2024,7 +2024,7 @@ const StakePage: NextPage = () => {
                 )}
               >
                 <span className='text-gray-a5'>$MLP Amount</span>
-                <span>19,687.89</span>
+                <span>0.00</span>
               </div>
             </div>
             <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-8 mt-4'>
@@ -2035,7 +2035,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Yesterday’s Staking Rewards
                 </span>
-                <div className='text-[18px] font-bold'>999.00 MLP</div>
+                <div className='text-[18px] font-bold'>0.00 MLP</div>
               </div>
               <div
                 className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
@@ -2044,7 +2044,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Accelerated MLP
                 </span>
-                <div className='text-[18px] font-bold'>999.00</div>
+                <div className='text-[18px] font-bold'>0.00</div>
               </div>
               <div
                 className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
@@ -2053,7 +2053,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Holding NFT
                 </span>
-                <div className='text-[18px] font-bold'>12</div>
+                <div className='text-[18px] font-bold'>0</div>
               </div>
               <div
                 className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
@@ -2062,7 +2062,7 @@ const StakePage: NextPage = () => {
                 <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                   Total MLP Rewards
                 </span>
-                <div className='text-[18px] font-bold'>999.00</div>
+                <div className='text-[18px] font-bold'>0.00</div>
               </div>
             </div>
           </div>
