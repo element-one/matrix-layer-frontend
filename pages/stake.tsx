@@ -58,7 +58,7 @@ const GradientBorderClass =
   'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
-const STAKE_ADDRESS = process.env.NEXT_PUBLIC_STAKE_ADDRESS as Address
+const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS as Address
 const MATRIX_ADDRESS = process.env.NEXT_PUBLIC_MATRIX_ADDRESS as Address
 const AI_AGENT_PRO_ADDRESS = process.env
@@ -68,7 +68,7 @@ const AI_AGENT_ONE_ADDRESS = process.env
 const AI_AGENT_ULTRA_ADDRESS = process.env
   .NEXT_PUBLIC_AI_AGENT_ULTRA_ADDRESS as Address
 const PHONE_ADDRESS = process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address
-const POOLB_POOLC_ENABLE = process.env.NEXT_PUBLIC_POOLB_POOLC_ENABLE === 'true'
+const POOL_B_ENABLE = process.env.NEXT_PUBLIC_POOL_B_ENABLE === 'true'
 
 interface StakeToken {
   id: number
@@ -271,31 +271,31 @@ const StakePage: NextPage = () => {
     contracts: [
       {
         abi: STAKE_ABI,
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         functionName: 'getUserStakedTokenIds',
         args: [address, 0]
       },
       {
         abi: STAKE_ABI,
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         functionName: 'getUserStakedTokenIds',
         args: [address, 1]
       },
       {
         abi: STAKE_ABI,
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         functionName: 'getUserStakedTokenIds',
         args: [address, 2]
       },
       {
         abi: STAKE_ABI,
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         functionName: 'getUserStakedTokenIds',
         args: [address, 3]
       },
       {
         abi: STAKE_ABI,
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         functionName: 'getUserStakedTokenIds',
         args: [address, 4]
       }
@@ -604,7 +604,7 @@ const StakePage: NextPage = () => {
     claimRewardMLP(
       {
         abi: STAKE_ABI,
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         functionName: 'claimReward',
         args: [userData.mlpTokenAmountPoolA, signatureData.signature]
       },
@@ -651,7 +651,7 @@ const StakePage: NextPage = () => {
                 : 4
 
       stakeToken({
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         abi: STAKE_ABI,
         functionName: 'stakeNFT',
         args: [nftType, selectedToken?.id]
@@ -683,7 +683,7 @@ const StakePage: NextPage = () => {
       address: contractAddress,
       abi: NFT_ABI,
       functionName: 'approve',
-      args: [STAKE_ADDRESS, token.id]
+      args: [STAKE_A_ADDRESS, token.id]
     })
   }
 
@@ -726,7 +726,7 @@ const StakePage: NextPage = () => {
 
     unstakeToken(
       {
-        address: STAKE_ADDRESS,
+        address: STAKE_A_ADDRESS,
         abi: STAKE_ABI,
         functionName: 'unstakeNFT',
         args: [nftType, token.id]
@@ -1721,7 +1721,7 @@ const StakePage: NextPage = () => {
                 NFT Boosted Pool
               </Text>
               <Button
-                disabled={!POOLB_POOLC_ENABLE}
+                disabled={!POOL_B_ENABLE}
                 className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationNFTPoolModal}
               >
@@ -1831,7 +1831,7 @@ const StakePage: NextPage = () => {
                 </Table>
               )}
               <Button
-                disabled={!POOLB_POOLC_ENABLE}
+                disabled={!POOL_B_ENABLE}
                 onClick={() => {
                   setIsShowNFTDetails(!isShowNFTDetails)
                 }}
@@ -1854,7 +1854,7 @@ const StakePage: NextPage = () => {
                 MLP Boosted Pool
               </Text>
               <Button
-                disabled={!POOLB_POOLC_ENABLE}
+                disabled={!POOL_B_ENABLE}
                 className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationPoolModal}
               >
@@ -1974,7 +1974,7 @@ const StakePage: NextPage = () => {
                 </Table>
               )}
               <Button
-                disabled={!POOLB_POOLC_ENABLE}
+                disabled={!POOL_B_ENABLE}
                 onClick={() => {
                   setIsShowDetails(!isShowDetails)
                 }}
