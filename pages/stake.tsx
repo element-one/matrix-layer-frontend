@@ -583,7 +583,7 @@ const StakePage: NextPage = () => {
           const serializedError = serializeError(err)
           console.log({ serializedError })
           toast.error(
-            (serializedError?.data as any)?.originalError?.shortMessage
+            (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
           )
         }
       }
@@ -613,7 +613,7 @@ const StakePage: NextPage = () => {
           const serializedError = serializeError(err)
           console.log({ serializedError })
           toast.error(
-            (serializedError?.data as any)?.originalError?.shortMessage
+            (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
           )
         },
         onSuccess() {
