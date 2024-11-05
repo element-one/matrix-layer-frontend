@@ -39,6 +39,9 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
       case 'myAccount':
         router.push('my-account')
         break
+      case 'stake':
+        router.push('stake')
+        break
       default:
         break
     }
@@ -74,6 +77,9 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
           >
             <DropdownItem key='myAccount' className='h-10'>
               My Account
+            </DropdownItem>
+            <DropdownItem key='stake' className='h-10'>
+              Stake
             </DropdownItem>
             <DropdownItem key='logout' className='h-10'>
               Log out

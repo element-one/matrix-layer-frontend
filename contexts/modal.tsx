@@ -16,11 +16,19 @@ import {
   ShippingAddressModal,
   ShippingAddressModalProps
 } from '@components/Modal'
+import { AccelerateNFTPoolModal } from '@components/Modal/AccelerateNFTPoolModal'
+import {
+  AcceleratePoolModal,
+  AcceleratePoolModalProps
+} from '@components/Modal/AcceleratePoolModal'
+import { BuyNFTModal } from '@components/Modal/BuyNFTModal'
 import {
   ManageAddressModal,
   ManageAddressModalProps
 } from '@components/Modal/ManageAddressModal'
+import { RewardsMLPHistoryModal } from '@components/Modal/RewardsMLPHistoryModal'
 import { RewardsModal, RewardsModalProps } from '@components/Modal/RewardsModal'
+import { WithdrawModal } from '@components/Modal/WithdrawModal'
 
 export enum ModalType {
   CONNECT_WALLET_MODAL = 'CONNECT_WALLET_MODAL',
@@ -28,7 +36,12 @@ export enum ModalType {
   REFERRAL_CODE_MODAL = 'REFERRAL_CODE_MODAL',
   SHIPPING_ADDRESS_MODAL = 'SHIPPING_ADDRESS_MODAL',
   MANAGE_ADDRESS_MODAL = 'MANAGE_ADDRESS_MODAL',
-  REWARDS_MODAL = 'REWARDS_MODAL'
+  REWARDS_MODAL = 'REWARDS_MODAL',
+  ACCELERATE_POOL_MODAL = 'ACCELERATE_POOL_MODAL',
+  REWARDS_MLP_HISTORY_MODAL = 'REWARDS_MLP_HISTORY_MODAL',
+  BUY_NFT_MODAL = 'BUY_NFT_MODAL',
+  ACCELERATE_NFT_POOL_MODAL = 'ACCELERATE_NFT_POOL_MODAL',
+  WITHDRAW_MODAL = 'WITHDRAW_MODAL'
 }
 
 const MODAL_COMPONENTS = {
@@ -37,7 +50,12 @@ const MODAL_COMPONENTS = {
   [ModalType.REFERRAL_CODE_MODAL]: ReferralCodeModal,
   [ModalType.SHIPPING_ADDRESS_MODAL]: ShippingAddressModal,
   [ModalType.MANAGE_ADDRESS_MODAL]: ManageAddressModal,
-  [ModalType.REWARDS_MODAL]: RewardsModal
+  [ModalType.REWARDS_MODAL]: RewardsModal,
+  [ModalType.ACCELERATE_POOL_MODAL]: AcceleratePoolModal,
+  [ModalType.ACCELERATE_NFT_POOL_MODAL]: AccelerateNFTPoolModal,
+  [ModalType.REWARDS_MLP_HISTORY_MODAL]: RewardsMLPHistoryModal,
+  [ModalType.BUY_NFT_MODAL]: BuyNFTModal,
+  [ModalType.WITHDRAW_MODAL]: WithdrawModal
 }
 
 type ModalProps =
@@ -47,6 +65,7 @@ type ModalProps =
   | ShippingAddressModalProps
   | ManageAddressModalProps
   | RewardsModalProps
+  | AcceleratePoolModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }

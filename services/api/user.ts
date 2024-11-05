@@ -84,6 +84,30 @@ export const useGetRewardsHistory = (
   })
 }
 
+export const getMLPRewardsHistory = async (
+  address: Address,
+  page = 1,
+  pageSize = 20
+) => {
+  const url = `/users/rewards/mlp-token/${address}`
+  const { data } = await axios.get(url, { params: { page, pageSize } })
+
+  return data
+}
+
+export const useGetMLPRewardsHistory = (
+  address: Address,
+  page: number,
+  pageSize = 6,
+  options?: Partial<UseQueryOptions<ApiRewardHistoryResponse, Error>>
+) => {
+  return useQuery<ApiRewardHistoryResponse, Error>({
+    queryKey: ['history', 'rewards', 'mlp-token', address, page, pageSize],
+    queryFn: () => getMLPRewardsHistory(address, page, pageSize),
+    ...options
+  })
+}
+
 export const getUserHolding = async (
   address?: Address
 ): Promise<ApiHoldingsResponse> => {
@@ -122,6 +146,43 @@ export const useGetIsInWhitelist = (
   return useQuery<ApiInWhitelistResponse, Error>({
     queryKey: ['user', 'whitelist', address],
     queryFn: () => getIsInWhitelist(address),
+    ...options
+  })
+}
+
+export interface ApiGetUserRewardsSummaryResponse {
+  currentDayAllPoolTotalRewards: string
+  currentDayAllPoolTotalStakingAmount: string
+  poolAStakingAmount: string
+  poolATotalRewards: string
+  poolB1StakingAmount: string
+  poolB1TotalRewards: string
+  poolB2StakingAmount: string
+  poolB2TotalRewards: string
+  poolCStakingAmount: string
+  poolCTotalRewards: string
+  poolPhoneTotalRewards: string
+  yesterdayPoolARewards: string
+}
+
+export const getUserRewardsSummary = async (address?: string) => {
+  try {
+    const url = `/users/rewards-summary/${address}`
+    const { data } = await axios.get<ApiGetUserRewardsSummaryResponse>(url)
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const useGetUserRewardsSummary = (
+  address?: Address,
+  options?: Partial<UseQueryOptions<ApiGetUserRewardsSummaryResponse, Error>>
+) => {
+  return useQuery<ApiGetUserRewardsSummaryResponse, Error>({
+    queryKey: ['user', 'rewards-summary', address],
+    queryFn: () => getUserRewardsSummary(address),
+    enabled: !!address,
     ...options
   })
 }
