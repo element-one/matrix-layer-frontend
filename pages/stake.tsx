@@ -68,6 +68,7 @@ const AI_AGENT_ONE_ADDRESS = process.env
 const AI_AGENT_ULTRA_ADDRESS = process.env
   .NEXT_PUBLIC_AI_AGENT_ULTRA_ADDRESS as Address
 const PHONE_ADDRESS = process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address
+const POOLB_POOLC_ENABLE = process.env.NEXT_PUBLIC_POOLB_POOLC_ENABLE === 'true'
 
 interface StakeToken {
   id: number
@@ -1720,6 +1721,7 @@ const StakePage: NextPage = () => {
                 NFT Boosted Pool
               </Text>
               <Button
+                disabled={!POOLB_POOLC_ENABLE}
                 className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationNFTPoolModal}
               >
@@ -1829,6 +1831,7 @@ const StakePage: NextPage = () => {
                 </Table>
               )}
               <Button
+                disabled={!POOLB_POOLC_ENABLE}
                 onClick={() => {
                   setIsShowNFTDetails(!isShowNFTDetails)
                 }}
@@ -1851,6 +1854,7 @@ const StakePage: NextPage = () => {
                 MLP Boosted Pool
               </Text>
               <Button
+                disabled={!POOLB_POOLC_ENABLE}
                 className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
                 onClick={handleOpenAccelerationPoolModal}
               >
@@ -1970,6 +1974,7 @@ const StakePage: NextPage = () => {
                 </Table>
               )}
               <Button
+                disabled={!POOLB_POOLC_ENABLE}
                 onClick={() => {
                   setIsShowDetails(!isShowDetails)
                 }}
