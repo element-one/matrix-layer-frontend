@@ -123,6 +123,8 @@ const CheckoutPage = () => {
     }
   }, [txData, showModal, successModalHasShown])
 
+  console.log(accountBalance)
+
   useEffect(() => {
     if (allProducts.length) {
       setProducts(() =>
