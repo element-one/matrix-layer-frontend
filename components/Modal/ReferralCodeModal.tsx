@@ -1,5 +1,6 @@
 import { ChangeEventHandler, FC, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import clsx from 'clsx'
 import { useSignMessage } from 'wagmi'
@@ -23,6 +24,8 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
   code,
   userHasReferred
 }) => {
+  const t = useTranslations('ReferralCodeModal')
+
   const [referralCode, setReferralCode] = useState<string | undefined>(code)
   const { hideModal, isModalShown } = useModal()
   const [verifySuccess, setVerifySuccess] = useState(false)
@@ -95,7 +98,7 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
       <ModalContent className='bg-co-bg-1 border border-co-border-gray'>
         <ModalBody>
           <div className='flex flex-col gap-5 items-center py-10 px-6 text-co-text-1'>
-            <div className='text-xl leading-9'>Referral Code</div>
+            <div className='text-xl leading-9'>{t('referralCode')}</div>
             <div className='w-full flex flex-col gap-y-4 pt-[100px] pb-[60px]'>
               <input
                 placeholder='12345678'
@@ -114,23 +117,23 @@ export const ReferralCodeModal: FC<ReferralCodeModalProps> = ({
                 isLoading={isPending}
                 onClick={handleVerify}
               >
-                Verify
+                {t('verify')}
               </Button>
               {userHasReferred && (
                 <div className='text-co-text-success text-xs text-center md:text-sm font-semibold leading-6'>
-                  You&apos;ve already bound the referrer
+                  {t('hadReferrer')}
                 </div>
               )}
               {verifySuccess ? (
                 <div className='text-co-text-success text-xs text-center md:text-sm font-semibold leading-6'>
-                  Code Valid and Invitation successfully recorded
+                  {t('hadReferrer')}
                 </div>
               ) : (
                 <div
                   className='text-base leading-6 px-4 mx-auto underline cursor-pointer'
                   onClick={handleSkip}
                 >
-                  {userHasReferred ? 'Back to Home' : 'Skip'}
+                  {userHasReferred ? t('back') : t('skip')}
                 </div>
               )}
             </div>

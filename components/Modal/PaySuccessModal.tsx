@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useInterval } from 'react-use'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
 
 import { Button } from '@components/Button'
@@ -11,6 +12,8 @@ export interface PaySuccessModalProps {
 }
 
 export const PaySuccessModal = () => {
+  const t = useTranslations('Checkout')
+
   const { hideModal, isModalShown } = useModal()
   const router = useRouter()
   const [count, setCount] = useState(5)
@@ -43,7 +46,9 @@ export const PaySuccessModal = () => {
     >
       <ModalContent className='bg-co-bg-1 border border-co-border-gray text-co-text-1 py-10'>
         <ModalBody className='flex flex-col items-center justify-center gap-8'>
-          <div className='font-semibold text-[32px]'>Payment successful</div>
+          <div className='font-semibold text-[32px]'>
+            {t('paymentSuccessful')}
+          </div>
 
           <div className='flex flex-col items-center justify-center gap-2'>
             <Button
@@ -52,7 +57,7 @@ export const PaySuccessModal = () => {
               className='font-semibold mb-2 text-lg px-10 h-[48px]'
               onClick={handleButtonClick}
             >
-              View My Orders
+              {t('ViewMyOrders')}
             </Button>
             {count > 0 && (
               <div className='text-sm text-co-text-3'>{count} S</div>

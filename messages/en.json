@@ -206,7 +206,9 @@
     "verify": "Verify",
     "statement": "I understand that this is a non-refundable pre-order deposit.",
     "disclaimer": "By clicking ‘PAY NOW’, I acknowledge that I am committing to pre-ordering a product that is not immediately available. I also confirm that I have reviewed and agree to the terms outlined in the <policy>Privacy Policy</policy> and <terms>Terms & Conditions</terms>.",
-    "entercode": "Enter your referral code"
+    "entercode": "Enter your referral code",
+    "paymentSuccessful": "Payment successful",
+    "ViewMyOrders": "View My Orders"
   },
   "Terms": {
     "termsAndConditions": "Terms & Conditions",
@@ -258,6 +260,7 @@
   "Stake": {
     "skateTitle": "Stake",
     "myAccount": "My Account",
+    "enterInviteCode": "Enter invite code",
     "referralCode": "My referral code",
     "copyCode": "Copy code",
     "referralLink": "Referral Link",
@@ -268,7 +271,7 @@
     "referralAddress": "Your Referrer’s Wallet Address",
     "NFTinventory": "My NFT Inventory",
     "ordinary": "Ordinary",
-    "stake": "Stake",
+    "stake": "Staked",
     "phoneInfo": "MLPhone NFT come with 10 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
     "matrixInfo": "Matrix NFTs come with 7 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
     "usdt": "USDT",
@@ -297,7 +300,8 @@
       "info": "Your mining power in the accelerated pool is determined by the amount of $MLP you have staked."
     },
     "NFTBoostedPool": "NFT Boosted Pool",
-    "yesterdayRewards": "Yesterday’s Staking Rewards",
+    "yesterdayStakingRewards": "Yesterday’s Staking Rewards",
+    "yesterdayRewards": "Yesterday’s Rewards",
     "acceleratedMLP": "Accelerated MLP",
     "holdingNFT": "Holding NFT",
     "totalMLPRewards": "Total MLP Rewards",
@@ -306,7 +310,8 @@
     "amount": "Amount",
     "bestAccelerationRate": "Best Acceleration Rate",
     "confirm": "confirm",
-    "stakingDetails": "staking details",
+    "stakingDetails": "STAKING DETAILS",
+    "hideDetails": "HIDE DETAILS",
     "stakedDate": "staked date",
     "stakedAmount": "staked amount",
     "cumulativeIncome": "cumulative income",
@@ -315,12 +320,53 @@
     "NumberOfStakedTokens": "Number of staked tokens",
     "withdraw": "withdraw",
     "withdrawn": "withdrawn",
-    "hideDetails": "hide details",
     "MLPBoostedPool": "MLP Boosted Pool",
     "stakingPeriod": "staking period",
     "reinvestment": "reinvestment",
     "promotionPool": "Promotion Pool",
-    "promotionPoolInfo": "Your mining power in the referral pool is determined by the mining power of the friends you have invited."
+    "promotionPoolInfo": "Your mining power in the referral pool is determined by the mining power of the friends you have invited.",
+    "noNFTStakeAlert": "You don't have any <nft>NFT</nft> to stake",
+    "noNFTUnstakeAlert": "You don't have any <nft>NFT</nft> to unstake",
+    "unlockPool": "Stake your <nft>NFT</nft> to unlock this pool",
+    "stakeNFT": "STAKE NFT",
+    "AccelerateNFTBoostedPool": {
+      "title": "Accelerate NFT Boosted Pool",
+      "info": "MLPhone NFT come with 10 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid. ",
+      "input": "INPUT",
+      "amount": "AMOUNT",
+      "confirm": "CONFIRM",
+      "bestRate": "Best Acceleration Rate"
+    },
+    "accelerateMLPBoostedPool": {
+      "title": "Accelerate MLP Boosted Pool",
+      "info": "MLPhone NFT come with 10 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
+      "statement": "Will the earnings be reinvested? Reinvestment will lock your funds and you will not be able to withdraw early during the lock-up period.",
+      "disclaimer": "Disclaimer : APY Rates are calculated based on yesterday’s the pool status as an approzimate reference and <gradient>might not be 100% accurate</gradient>",
+      "input": "INPUT",
+      "amount": "AMOUNT",
+      "confirm": "CONFIRM",
+      "bestRate": "Best Acceleration Rate"
+    }
+  },
+  "ReferralCodeModal": {
+    "referralCode": "Referral Code",
+    "verify": "Verify",
+    "hadReferrer": "You've already bound the referrer",
+    "success": "Code Valid and Invitation successfully recorded ",
+    "back": "Back to Home",
+    "skip": "Skip"
+  },
+  "BuyNFTModal": {
+    "statement": "You don't own any <text1>NFTs</text1>, buy <text2>NFTs</text2> to start your journey with $MLP/ earn $MLP",
+    "cancel": "Cancel",
+    "buyNFT": "Buy NFT"
+  },
+  "WithdrawModal": {
+    "withdraw": "Withdraw",
+    "desc": "You are getting back staked 5000 $MLP along with the staking rewards {amount} $MLP.",
+    "total": "{amount} &MLP in total, continue?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   },
   "Modals": {
     "rewardModal": {

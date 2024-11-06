@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import clsx from 'clsx'
 
@@ -14,6 +15,8 @@ export interface BuyNFTModalProps {
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
+  const t = useTranslations('BuyNFTModal')
+
   const { hideModal, isModalShown } = useModal()
   const router = useRouter()
 
@@ -50,15 +53,18 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
             />
 
             <div className='font-bold text-[26px] md:text-[32px] text-center'>
-              You don&apos;t own any{' '}
-              <span className={clsx(GradientTextClass, 'font-extra-bold')}>
-                NFTs
-              </span>
-              , buy{' '}
-              <span className={clsx(GradientTextClass, 'font-extra-bold')}>
-                NFTs
-              </span>{' '}
-              to start your journey with $MLP/ earn $MLP
+              {t.rich('statement', {
+                text1: (chunks) => (
+                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
+                    {chunks}
+                  </span>
+                ),
+                text2: (chunks) => (
+                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
+                    {chunks}
+                  </span>
+                )
+              })}
             </div>
 
             <div className='w-full gap-4 flex items-center justify-center'>
@@ -67,13 +73,13 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
                   bg-img-inherit !bg-black !bg-opacity-0 border-white border-opacity-60'
                 onClick={handleClose}
               >
-                Cancel
+                {t('cancel')}
               </button>
               <Button
                 className='rounded-full uppercase text-[16px] h-[48px] w-[300px]'
                 onClick={handleBuyNFT}
               >
-                Buy NFT
+                {t('buyNFT')}
               </Button>
             </div>
           </div>

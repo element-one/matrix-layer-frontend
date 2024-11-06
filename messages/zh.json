@@ -206,7 +206,9 @@
     "verify": "验证",
     "statement": "我了解这是一笔不可退还的预订金",
     "disclaimer": "点击“立即支付”即表示我同意我正在预订一个不是立即可用的产品。我还确认我已经阅读并同意<policy>隐私政策</policy>和<terms>条款及条件中所列出的条款</terms>。",
-    "entercode": "输入你的邀请码"
+    "entercode": "输入你的邀请码",
+    "paymentSuccessful": "支付成功",
+    "ViewMyOrders": "查看我的订单"
   },
   "Terms": {
     "termsAndConditions": "条款和条件",
@@ -258,6 +260,7 @@
   "Stake": {
     "skateTitle": "质押",
     "myAccount": "我的账户",
+    "enterInviteCode": "输入邀请码",
     "referralCode": "邀请码",
     "copyCode": "复制邀请码",
     "referralLink": "邀请链接",
@@ -283,10 +286,10 @@
     "staking": "质押",
     "tab": {
       "stake": "质押",
-      "unStake": "未质押"
+      "unStake": "已质押"
     },
-    "stakeBtn": "STAKE",
-    "unstakeBtn": "UNSTAKE",
+    "stakeBtn": "质押",
+    "unstakeBtn": "取消质押",
     "basicPool": "基础池（PoW）",
     "NFTComputingPower": "NFT算力",
     "TotalMLPRewards": "MLP 总奖励",
@@ -297,7 +300,8 @@
       "info": "您在加速池中的挖矿算力取决于您质押的 $MLP 数量。"
     },
     "NFTBoostedPool": "NFT 加速池",
-    "yesterdayRewards": "昨日质押奖励",
+    "yesterdayStakingRewards": "昨日质押奖励",
+    "yesterdayRewards": "昨日奖励",
     "acceleratedMLP": "MLP 加速",
     "holdingNFT": "持有 NFT",
     "totalMLPRewards": "MLP 总奖励",
@@ -306,7 +310,6 @@
     "amount": "金额",
     "bestAccelerationRate": "最佳加速率",
     "confirm": "确认",
-    "stakingDetails": "质押详情",
     "stakedDate": "质押日期",
     "stakedAmount": "质押金额",
     "cumulativeIncome": "累计收益",
@@ -315,12 +318,55 @@
     "NumberOfStakedTokens": "质押代币数量",
     "withdraw": "提现",
     "withdrawn": "已提现",
+    "stakingDetails": "质押详情",
     "hideDetails": "隐藏详情",
     "MLPBoostedPool": "MLP 加速池",
     "stakingPeriod": "质押期",
     "reinvestment": "复投",
     "promotionPool": "推广池",
-    "promotionPoolInfo": "您在推广池中的挖矿算力由您邀请的朋友的挖矿算力决定。"
+    "promotionPoolInfo": "您在推广池中的挖矿算力由您邀请的朋友的挖矿算力决定。",
+    "noNFTStakeAlert": "您没有<nft>NFT</nft>质押",
+    "noNFTUnstakeAlert": "您没有<nft>NFT</nft>取消质押",
+    "unlockPool": "质押您的<nft>NFT</nft>以解锁此池",
+    "stakeNFT": "质押 NFT",
+    "AccelerateNFTBoostedPool": {
+      "title": "加速NFT池",
+      "info": "MLPhone NFT附带10天的基础池挖矿权。一旦开始质押，不能提前结束；提前取消质押将使NFT失效。",
+      "input": "输入",
+      "amount": "金额",
+      "confirm": "确认",
+      "bestRate": "最佳加速率"
+    },
+    "accelerateMLPBoostedPool": {
+      "title": "MLP加速器",
+      "info": "MLPhone NFT附带10天的基础池挖矿权。一旦开始质押，无法提前结束；若提前取消质押，将导致NFT失效。",
+      "statement": "收益是否会再投资？再投资将锁定您的资金，在锁定期内您将无法提前提取。",
+      "disclaimer": "免责声明：APY收益率是基于昨日池子状态计算的近似参考， <gradient>可能并非100%准确</gradient>。",
+      "input": "输入",
+      "amount": "金额",
+      "confirm": "确认",
+      "bestRate": "最佳加速率"
+    }
+  },
+  "ReferralCodeModal": {
+    "referralCode": "邀请码",
+    "verify": "验证",
+    "hadReferrer": "您已绑定推荐人",
+    "success": "邀请码有效，邀请已成功记录",
+    "back": "返回首页",
+    "skip": "跳过"
+  },
+  "BuyNFTModal": {
+    "statement": "您尚未拥有任何<text1>NFT</text1>，购买<text2>NFT</text2>以开始您的$MLP之旅/赚取$MLP",
+    "cancel": "取消",
+    "buyNFT": "购买NFT"
+  },
+  "WithdrawModal": {
+    "withdraw": "提款",
+    "desc": "您将收回质押的5000 $MLP以及质押奖励{amount} $MLP。",
+    "total": "共计{amount} $MLP，是否继续？",
+    "cancel": "取消",
+    "confirm": "确认"
   },
   "Modals": {
     "rewardModal": {

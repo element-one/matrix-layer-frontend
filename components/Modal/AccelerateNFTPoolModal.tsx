@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent, Tooltip } from '@nextui-org/react'
 
 import { Button } from '@components/Button'
@@ -15,6 +16,8 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
   onClose,
   onConfirm
 }) => {
+  const t = useTranslations('Stake')
+
   const { isModalShown, hideModal } = useModal()
 
   const [amount, setAmount] = useState('')
@@ -44,16 +47,14 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
         >
           <div className='flex gap-x-5 items-center'>
             <Text className='text-[14px] md:text-[32px] font-bold'>
-              <span>Accelerate NFT Boosted Pool</span>
+              <span>{t('AccelerateNFTBoostedPool.title')}</span>
             </Text>
             <Tooltip
               placement='bottom'
               className='bg-co-bg-black'
               content={
                 <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                  MLPhone NFT come with 10 days of mining rights in the basic
-                  pool. Once staking begins, it cannot be ended prematurely;
-                  canceling the stake early will render the NFT invalid.
+                  {t('AccelerateNFTBoostedPool.info')}
                 </span>
               }
             >
@@ -65,12 +66,15 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
           <div className='w-full'>
             <div className='p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between gap-x-10'>
               <Text className='text-[10px] md:text-[24px] text-co-gray-7 font-bold'>
-                <span className='hidden md:inline-block'>INPUT </span>AMOUNT :
+                <span className='hidden md:inline-block'>
+                  {t('AccelerateNFTBoostedPool.input')}{' '}
+                </span>
+                {t('AccelerateNFTBoostedPool.amount')} :
               </Text>
               <input
                 className='grow bg-transparent text-right text-[10px] md:text-[24px] text-white font-bold
                   placeholder:text-co-gray-8'
-                placeholder='$MLP AMOUNT'
+                placeholder={`$MLP ${t('AccelerateNFTBoostedPool.amount')}`}
                 value={amount}
                 onChange={(e) => {
                   setAmount(e.target.value)
@@ -78,7 +82,7 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
               />
             </div>
             <Text className='mt-[10px] text-right text-[10px] md:text-[18px] text-co-gray-7 font-bold'>
-              Best Acceleration Rate : 998 MLP
+              {t('AccelerateNFTBoostedPool.bestRate')} : 998 MLP
             </Text>
           </div>
           <Button
@@ -86,7 +90,7 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
               md:text-[16px] font-bold'
             onClick={onConfirm}
           >
-            CONFIRM
+            {t('AccelerateNFTBoostedPool.confirm')}
           </Button>
         </ModalBody>
       </ModalContent>

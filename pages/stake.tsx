@@ -84,7 +84,8 @@ const mock_details = [
     period: '30',
     tokens: 5000,
     income: 123.85,
-    status: 1
+    status: 1,
+    action: 'withdraw'
   },
   {
     id: 0,
@@ -92,7 +93,8 @@ const mock_details = [
     period: '30',
     tokens: 5000,
     income: 123.85,
-    status: 0
+    status: 0,
+    action: 'withdrawn'
   },
   {
     id: 0,
@@ -100,7 +102,8 @@ const mock_details = [
     period: '30',
     tokens: 5000,
     income: 123.85,
-    status: 1
+    status: 1,
+    action: 'withdraw'
   },
   {
     id: 0,
@@ -108,7 +111,8 @@ const mock_details = [
     period: '30',
     tokens: 5000,
     income: 123.85,
-    status: 0
+    status: 0,
+    action: 'withdrawn'
   }
 ]
 
@@ -119,7 +123,7 @@ const NFT_POOL_MOCK_DETAILS = [
     amount: 5000,
     income: 123.85,
     unstakeDate: '-',
-    action: 'Withdraw',
+    action: 'withdraw',
     status: 1
   },
   {
@@ -128,7 +132,7 @@ const NFT_POOL_MOCK_DETAILS = [
     amount: 5000,
     income: 320.0,
     unstakeDate: '-',
-    action: 'Withdraw',
+    action: 'withdraw',
     status: 1
   },
   {
@@ -137,7 +141,7 @@ const NFT_POOL_MOCK_DETAILS = [
     amount: 5000,
     income: 999.22,
     unstakeDate: '-',
-    action: 'Withdraw',
+    action: 'withdraw',
     status: 1
   },
   {
@@ -146,7 +150,7 @@ const NFT_POOL_MOCK_DETAILS = [
     amount: 5000,
     income: '84.41',
     unstakeDate: '8.21.2024',
-    action: 'Withdrawn',
+    action: 'withdrawn',
     status: 0
   }
 ]
@@ -861,7 +865,7 @@ const StakePage: NextPage = () => {
             {!userData?.referredByUserAddress && (
               <div className='w-full md:w-[50%] flex items-center justify-between pl-2 pr-2 md:pl-10 md:pr-4'>
                 <Input
-                  placeholder='Enter invite code'
+                  placeholder={t('enterInviteCode')}
                   wrapperClassName='w-[80%] md:w-[70%]'
                   inputClassName='border-[#282828] placeholder:text-[#666] !h-[32px] md:!h-[38px] !text-[14px] !outline-none !ring-0 bg-[#151515]'
                   type='text'
@@ -1321,16 +1325,20 @@ const StakePage: NextPage = () => {
                 <div className='flex items-center flex-col md:flex-row justify-center gap-4'>
                   <LockIcon width={36} height={36} color='#FFFFFF' />
                   <div className='text-[32px] md:text-[48px] font-bold text-center'>
-                    Stake your{' '}
-                    <span className={clsx('', GradientTextClass)}>NFT</span> to
-                    unlock this pool
+                    {t.rich('unlockPool', {
+                      nft: (chunks) => (
+                        <span className={clsx(GradientTextClass)}>
+                          {chunks}
+                        </span>
+                      )
+                    })}
                   </div>
                 </div>
                 <Button
                   onClick={handleStakeNFT}
                   className='rounded-full w-[60%] text-[16px] h-[48px]'
                 >
-                  STAKE NFT
+                  {t('stakeNFT')}
                 </Button>
               </div>
             )}
@@ -1517,11 +1525,15 @@ const StakePage: NextPage = () => {
                   className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
                     mx-auto'
                 >
-                  You don&apos;t have any{' '}
-                  <span className={clsx(GradientTextClass, 'font-extra-bold')}>
-                    NFT
-                  </span>{' '}
-                  to stake
+                  {t.rich('noNFTStakeAlert', {
+                    nft: (chunks) => (
+                      <span
+                        className={clsx(GradientTextClass, 'font-extra-bold')}
+                      >
+                        {chunks}
+                      </span>
+                    )
+                  })}
                 </div>
               )}
               {currentTab === 'unstake' && !!stakedTokens.length && (
@@ -1576,15 +1588,15 @@ const StakePage: NextPage = () => {
                   className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
                     mx-auto'
                 >
-                  <div>
-                    You don&apos;t have any{' '}
-                    <span
-                      className={clsx(GradientTextClass, 'font-extra-bold')}
-                    >
-                      NFT
-                    </span>{' '}
-                    to unstake
-                  </div>
+                  {t.rich('noNFTUnstakeAlert', {
+                    nft: (chunks) => (
+                      <span
+                        className={clsx(GradientTextClass, 'font-extra-bold')}
+                      >
+                        {chunks}
+                      </span>
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -1731,7 +1743,7 @@ const StakePage: NextPage = () => {
                   md:px-8 py-4'
               >
                 <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
-                  {t('yesterdayRewards')}
+                  {t('yesterdayStakingRewards')}
                 </span>
                 <div className='text-[18px] font-bold'>0.00 MLP</div>
               </div>
@@ -1819,7 +1831,7 @@ const StakePage: NextPage = () => {
                             )}
                             onClick={handleWithdrawClick}
                           >
-                            {item.action}
+                            {t(item.action as any)}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -1835,7 +1847,7 @@ const StakePage: NextPage = () => {
                 className='rounded-[35px] text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-full
                   md:w-[480px] font-bold'
               >
-                {isShowNFTDetails ? 'HIDE DETAILS' : 'STAKING DETAILS'}
+                {isShowNFTDetails ? t('hideDetails') : t('stakingDetails')}
               </Button>
             </div>
 
@@ -1865,7 +1877,7 @@ const StakePage: NextPage = () => {
                     md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('yesterdayRewards')}
+                    {t('yesterdayStakingRewards')}
                   </span>
                   <div className='text-[18px] font-bold'>0.00 MLP</div>
                 </div>
@@ -1962,7 +1974,7 @@ const StakePage: NextPage = () => {
                             )}
                             onClick={handleWithdrawClick}
                           >
-                            {t('withdraw')}
+                            {t(item.action as any)}
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -1978,7 +1990,7 @@ const StakePage: NextPage = () => {
                 className='rounded-[35px] text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-full
                   md:w-[480px] font-bold'
               >
-                {isShowDetails ? 'HIDE DETAILS' : 'STAKING DETAILS'}
+                {isShowDetails ? t('hideDetails') : t('stakingDetails')}
               </Button>
             </div>
           </div>
@@ -2029,7 +2041,7 @@ const StakePage: NextPage = () => {
                   md:px-8 py-4'
               >
                 <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                  {t('yesterdayRewards')}
+                  {t('yesterdayStakingRewards')}
                 </span>
                 <div className='text-[18px] font-bold'>0.00 MLP</div>
               </div>
