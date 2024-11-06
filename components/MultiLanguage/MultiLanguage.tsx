@@ -18,6 +18,7 @@ export const MultiLanguage = () => {
 
     router.push(pathname, pathname, {
       locale: key as string
+      // scroll: false
     })
   }
 

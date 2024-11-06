@@ -321,5 +321,27 @@
     "reinvestment": "复投",
     "promotionPool": "推广池",
     "promotionPoolInfo": "您在推广池中的挖矿算力由您邀请的朋友的挖矿算力决定。"
+  },
+  "Modals": {
+    "rewardModal": {
+      "title": "奖励明细",
+      "info": "Collect your rewards for sharing Matrix Layer Protocol with your frens & fam.",
+      "totalReward": "总奖励",
+      "claimableReward": "可领取奖励",
+      "history": "历史记录",
+      "claim": "领取"
+    },
+    "rewardHistoryModal": {
+      "title": "历史记录",
+      "time": "时间",
+      "address": "地址",
+      "reward": "奖励",
+      "status": "状态"
+    },
+    "rewardClaimSuccessModal": {
+      "title": "领取奖励",
+      "success": "成功",
+      "second": "秒"
+    }
   }
 }

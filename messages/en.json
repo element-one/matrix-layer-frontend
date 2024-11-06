@@ -321,5 +321,27 @@
     "reinvestment": "reinvestment",
     "promotionPool": "Promotion Pool",
     "promotionPoolInfo": "Your mining power in the referral pool is determined by the mining power of the friends you have invited."
+  },
+  "Modals": {
+    "rewardModal": {
+      "title": "Reward Details",
+      "info": "Collect your rewards for sharing Matrix Layer Protocol with your frens & fam.",
+      "totalReward": "TOTAL REWARD",
+      "claimableReward": "CLAIMABLE REWARD",
+      "history": "HISTORY",
+      "claim": "CLAIM"
+    },
+    "rewardHistoryModal": {
+      "title": "History",
+      "time": "Time",
+      "address": "Address",
+      "reward": "Reward",
+      "status": "Status"
+    },
+    "rewardClaimSuccessModal": {
+      "title": "Claim Reward",
+      "success": "Success",
+      "second": "S"
+    }
   }
 }
