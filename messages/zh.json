@@ -9,5 +9,67 @@
   },
   "Footer": {
     "copyright": "版权归 © Matrix Layer Protocol 2024 所有– 将保留所有权利"
+  },
+  "Index": {
+    "section1": {
+      "unlock1": "用双眼解锁，连接区块链",
+      "unlock2": ""
+    },
+    "section2": {
+      "title1": "全球首款全链路融合的智能手机",
+      "title2": "",
+      "intro": "Matrix Layer Phone旨在通过创新的硬件和软件将区块链技术深度集成到智能手机中，打破传统移动设备的限制性，简化用户对Web3的访问并提升他们的整体体验。",
+      "footer": "重新定义通往区块链生态系统的门户"
+    },
+    "section2-sub": {
+      "title1": "为什么选择",
+      "title2": " MLPhone",
+      "info1": "全球首个具备虹膜认证的区块链移动网络节点",
+      "footer1": "安全与盈利共存",
+      "info2": "终极隐私与行业标准的保密性",
+      "footer2": "虹膜登录，身份信息零知识证明（ZK）加密",
+      "info3": "首款全链生态Web3手机",
+      "footer3": "一部设备轻松连接全球生态"
+    },
+    "section3": {
+      "imgSrc": "/images/home/home_image_6_zh.webp",
+      "title": "智能手机助手",
+      "info": "追随 Sam Altman 的思想，让科技服务生活"
+    },
+    "section3-sub": {
+      "title1": "一部手机，",
+      "title2": "六大好处",
+      "imgSrc": "/images/home/home_image_7_zh.webp",
+      "mobileImgSrc": "/images/home/home_image_7_mobile_zh.webp"
+    },
+    "section4": {
+      "title1": "如何加入",
+      "title2": " Matrix Layer Protocol ",
+      "title3": "的增长实现收益最大化？",
+      "purchaseHardware": {
+        "title": "购买硬件",
+        "description": "立即获得网络节点激励"
+      },
+      "ecosystemAirdrops": {
+        "title": "生态系统空投",
+        "description": "随着项目发展，陆续获得来自生态合作伙伴的资产空投收益"
+      },
+      "promoteHardware": {
+        "title": "推广硬件",
+        "description": "立即获得网络节点激励的推广收益，并持续获得"
+      },
+      "profitSharing": {
+        "title": "收益分红",
+        "description": "推广的用户越多，他们获得的空投和其他生态收益，你也将获得越多奖励"
+      },
+      "stakingRewards": {
+        "title": "质押收益",
+        "description": "成为网络节点后，进行资产质押，获得激励"
+      },
+      "AIFinancialManagement": {
+        "title": "AI理财",
+        "description": "可以更加简单的作为一个硬件钱包使用MLPhone，只不过这个硬件钱包会帮你持续的创造收入"
+      }
+    }
   }
 }

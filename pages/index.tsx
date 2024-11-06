@@ -1,43 +1,23 @@
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { useTranslations } from 'next-intl'
 
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 
 const advantages = [
-  {
-    title: 'Purchase Hardware',
-    description: 'Instantly receive rewards as a network node.'
-  },
-  {
-    title: 'Ecosystem Airdrops',
-    description:
-      'Receive airdrops from ecosystem partners over time as part of the rewards.'
-  },
-  {
-    title: 'Promote Hardware',
-    description:
-      'Earn promotional rewards for expanding the network node ecosystem. Continue earning over time.'
-  },
-  {
-    title: 'Profit Sharing',
-    description:
-      'The more users you bring in, the more airdrops and ecosystem rewards they earn, and you’ll receive a share of those rewards.'
-  },
-  {
-    title: 'Staking Rewards',
-    description:
-      'After becoming a network node, you can stake assets and receive additional incentives.'
-  },
-  {
-    title: 'AI Financial Management',
-    description:
-      'Matrix Layer Phone serves as a hardware wallet that not only stores assets but continuously generates income for you through automated AI-driven investments.'
-  }
-]
+  'purchaseHardware',
+  'ecosystemAirdrops',
+  'promoteHardware',
+  'profitSharing',
+  'stakingRewards',
+  'AIFinancialManagement'
+] as const
 
 const HomePage = () => {
+  const t = useTranslations('Index')
+
   const { ref: section1Ref, inView: section1InView } = useInView({
     threshold: 0
   })
@@ -135,8 +115,9 @@ const HomePage = () => {
                   rounded-[15px] sm:rounded-[20px] translate-y-0 sm:translate-y-[-6px]
                   whitespace-normal font-semibold'
               >
-                Unlock with Your Eyes,
-                <br className='sm:hidden' /> Connect with the Blockchain
+                {t('section1.unlock1')}
+                <br className='sm:hidden' />
+                {t('section1.unlock2')}
               </div>
             </div>
           </Content>
@@ -178,19 +159,15 @@ const HomePage = () => {
                 className='text-[18px] text-left sm:text-[48px] clip-text bg-gradient-home-text-1
                   font-semibold'
               >
-                The World&apos;s First Smartphone <br />
-                with Full-Chain Network Integration
+                {t('section2.title1')} <br />
+                {t('section2.title2')}
               </Text>
               <Text className='text-[14px] font-normal lg:text-[22px] text-left w-[279px] sm:w-auto'>
-                Matrix Layer Phone is designed to break the limitations of
-                traditional mobile devices by deeply integrating blockchain
-                technology into smartphones through innovative hardware and
-                software, simplifying users&apos; access to Web3 and enhancing
-                their overall experience.
+                {t('section2.intro')}
               </Text>
               <div className='w-[65px] h-[1px] bg-white'></div>
               <Text className='text-[12px] font-normal lg:text-[28px] text-left uppercase tracking-[2px]'>
-                Redefining the Gateway to the Blockchain Ecosystem
+                {t('section2.footer')}
               </Text>
             </div>
           </Content>
@@ -217,11 +194,11 @@ const HomePage = () => {
         <Content className='pb-[70px]'>
           <Text className='text-[24px] lg:text-[64px] mb-[12px] font-semibold text-center'>
             <span className='clip-text bg-gradient-home-text-1'>
-              Why choose
+              {t('section2-sub.title1')}
             </span>
             <span className='hidden sm:inline'> </span>
             <br className='sm:hidden' />
-            <span className='#fff'>Matrix Layer Phone</span>
+            <span className='#fff'>{t('section2-sub.title2')}</span>
           </Text>
           <div className='flex flex-col-reverse sm:flex-row justify-between items-center mb-[50px]'>
             <div className='w-full sm:w-[630px]'>
@@ -229,14 +206,13 @@ const HomePage = () => {
                 className='text-[18px] sm:text-[48px] text-center sm:text-left mb-2.5 sm:mb-10
                   font-semibold text-white'
               >
-                The world&apos;s first mobile blockchain network node with iris
-                authentication.
+                {t('section2-sub.info1')}
               </Text>
               <div
                 className='bg-gradient-button-1 text-black h-fit font-chakraPetch w-full p-2.5 rounded-lg
                   text-[12px] sm:text-[24px] font-semibold text-center'
               >
-                Safety and profitability coexist
+                {t('section2-sub.footer1')}
               </div>
             </div>
             <img
@@ -256,13 +232,13 @@ const HomePage = () => {
                 className='text-[18px] sm:text-[48px] text-center mb-2.5 sm:mb-10 font-semibold text-white
                   sm:text-right'
               >
-                Ultimate privacy and industry-standard confidentiality.
+                {t('section2-sub.info2')}
               </Text>
               <div
                 className='bg-gradient-button-1 text-black h-fit font-chakraPetch w-full p-2.5 rounded-lg
                   text-[12px] sm:text-[24px] text-center font-semibold'
               >
-                Iris login, identification information ZK encryption
+                {t('section2-sub.footer2')}
               </div>
             </div>
           </div>
@@ -271,14 +247,14 @@ const HomePage = () => {
               className='text-[18px] sm:text-[48px] mb-[20px] font-semibold text-white text-left
                 sm:text-center whitespace-normal sm:whitespace-nowrap'
             >
-              The first full-chain ecological Web3 mobile phone
+              {t('section2-sub.info3')}
             </Text>
             <Text
               className='text-[12px] sm:text-[28px] mb-8 sm:mb-[30px] font-semibold clip-text
                 bg-gradient-home-text-1 sm:text-center sm:whitespace-nowrap uppercase w-[222px]
                 sm:w-auto text-left whitespace-normal'
             >
-              One device in hand, interacts with the global ecosystem.
+              {t('section2-sub.footer3')}
             </Text>
             <img
               className='w-full object-cover hidden sm:inline-block'
@@ -321,20 +297,19 @@ const HomePage = () => {
               />
               <div className='grow flex sm:block flex-col items-center'>
                 <img
-                  src='/images/home/home_image_6.webp'
+                  src={t('section3.imgSrc')}
                   alt='home_image_6'
                   className='w-[157px] sm:w-[425px] object-cover'
                 />
                 <Text className='sm:w-auto text-[18px] sm:text-[48px] font-semibold text-white'>
-                  smartphone assistant
+                  {t('section3.title')}
                 </Text>
                 <div className='w-[65px] h-[1px] bg-white my-2.5 sm:my-4'></div>
                 <Text
                   className='text-[18px] lg:text-[28px] text-center lg:text-left uppercase clip-text
                     bg-gradient-home-text-1 font-semibold'
                 >
-                  Follow Sam Altman&apos;s thoughts and let technology serve
-                  life
+                  {t('section3.info')}
                 </Text>
               </div>
             </div>
@@ -362,19 +337,19 @@ const HomePage = () => {
         </ImagesField>
         <Content className='pb-11 sm:pb-[185px]'>
           <Text className='text-[24px] lg:text-[64px] mb-[35px] sm:mb-[40px] font-semibold text-center'>
-            <span className='#fff'>One Mobile Phone, </span>
+            <span className='#fff'>{t('section3-sub.title1')}</span>
             <br className='sm:hidden' />
             <span className='clip-text bg-gradient-home-text-1'>
-              6 Benefits
+              {t('section3-sub.title2')}
             </span>
           </Text>
           <img
-            src='/images/home/home_image_7.webp'
+            src={t('section3-sub.imgSrc')}
             alt='home_image_7'
             className='w-full object-cover hidden sm:inline-block'
           />
           <img
-            src='/images/home/home_image_7_mobile.webp'
+            src={t('section3-sub.mobileImgSrc')}
             alt='home_image_7'
             className='w-full object-cover sm:hidden'
           />
@@ -396,17 +371,17 @@ const HomePage = () => {
         </ImagesField>
         <Content className='pb-[185px]'>
           <Text className='text-[24px] lg:text-[64px] mb-[57px] sm:mb-[40px] font-semibold text-center'>
-            <span className='#fff'>How to join</span>
+            <span className='#fff'>{t('section4.title1')}</span>
             <br className='sm:hidden' />
             <span className='clip-text bg-gradient-home-text-1'>
-              &nbsp;Matrix Layer Phone&nbsp;
+              {t('section4.title2')}
             </span>
-            <span className='#fff'>growth and maximize earnings? </span>
+            <span className='#fff'>{t('section4.title3')} </span>
           </Text>
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-[30px] gap-x-[20px] sm:gap-y-[50px]'>
-            {advantages.map((item) => (
+            {advantages.map((key) => (
               <div
-                key={item.title}
+                key={key}
                 className='relative flex justify-center items-center border-2 border-purple-500 h-fit
                   sm:h-[184px] rounded-[10px] sm:rounded-[20px] p-[20px]'
               >
@@ -419,11 +394,11 @@ const HomePage = () => {
                     as='span'
                     className='leading-none text-[16px] sm:text-[20px] font-semibold text-black'
                   >
-                    {item.title}
+                    {t(`section4.${key}.title` as any)}
                   </Text>
                 </div>
                 <Text className='text-[14px] sm:text-[20px] font-semibold text-white text-center'>
-                  {item.description}
+                  {t(`section4.${key}.description` as any)}
                 </Text>
               </div>
             ))}

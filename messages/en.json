@@ -9,5 +9,67 @@
   },
   "Footer": {
     "copyright": "Copyright © Matrix Layer Protocol 2024 – All rights reserved."
+  },
+  "Index": {
+    "section1": {
+      "unlock1": "Unlock with Your Eyes,",
+      "unlock2": " Connect with the Blockchain"
+    },
+    "section2": {
+      "title1": "The World's First Smartphone",
+      "title2": "with Full-Chain Network Integration",
+      "intro": "Matrix Layer Phone is designed to break the limitations of traditional mobile devices by deeply integrating blockchain technology into smartphones through innovative hardware and software, simplifying users' access to Web3 and enhancing their overall experience.",
+      "footer": "Redefining the Gateway to the Blockchain Ecosystem"
+    },
+    "section2-sub": {
+      "title1": "Why choose",
+      "title2": "Matrix Layer Phone",
+      "info1": "The world's first mobile blockchain network node with iris authentication.",
+      "footer1": "Safety and profitability coexist",
+      "info2": "Ultimate privacy and industry-standard confidentiality.",
+      "footer2": "Iris login, identification information ZK encryption",
+      "info3": "The first full-chain ecological Web3 mobile phone",
+      "footer3": "One device in hand, interacts with the global ecosystem."
+    },
+    "section3": {
+      "imgSrc": "/images/home/home_image_6.webp",
+      "title": "smartphone assistant",
+      "info": "Follow Sam Altman's thoughts and let technology serve life"
+    },
+    "section3-sub": {
+      "title1": "One Mobile Phone, ",
+      "title2": "6 Benefits",
+      "imgSrc": "/images/home/home_image_7.webp",
+      "mobileImgSrc": "/images/home/home_image_7_mobile.webp"
+    },
+    "section4": {
+      "title1": "How to join",
+      "title2": " Matrix Layer Phone ",
+      "title3": "growth and maximize earnings?",
+      "purchaseHardware": {
+        "title": "Purchase Hardware",
+        "description": "Instantly receive rewards as a network node."
+      },
+      "ecosystemAirdrops": {
+        "title": "Ecosystem Airdrops",
+        "description": "Receive airdrops from ecosystem partners over time as part of the rewards."
+      },
+      "promoteHardware": {
+        "title": "Promote Hardware",
+        "description": "Earn promotional rewards for expanding the network node ecosystem. Continue earning over time."
+      },
+      "profitSharing": {
+        "title": "Profit Sharing",
+        "description": "The more users you bring in, the more airdrops and ecosystem rewards they earn, and you’ll receive a share of those rewards."
+      },
+      "stakingRewards": {
+        "title": "Staking Rewards",
+        "description": "After becoming a network node, you can stake assets and receive additional incentives."
+      },
+      "AIFinancialManagement": {
+        "title": "AI Financial Management",
+        "description": "Matrix Layer Phone serves as a hardware wallet that not only stores assets but continuously generates income for you through automated AI-driven investments."
+      }
+    }
   }
 }
