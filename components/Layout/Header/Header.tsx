@@ -15,7 +15,10 @@ import { useAccount, useDisconnect } from 'wagmi'
 
 import { Button, ConnectWalletButton } from '@components/Button'
 import { MenuItemIcon } from '@components/Icon/MenuItemsIcon'
-import { MultiLanguage } from '@components/MultiLanguage/MultiLanguage'
+import {
+  MultiLanguageMobile,
+  MultiLanguagePC
+} from '@components/MultiLanguage/MultiLanguage'
 import { ModalType, useModal } from '@contexts/modal'
 
 import { MenuList } from './ProfileMenu'
@@ -88,7 +91,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
         })}
       </div>
       <div className='flex items-center justify-end gap-2'>
-        <MultiLanguage />
+        <MultiLanguagePC />
         <ConnectWalletButton />
         <Popover
           backdrop='opaque'
@@ -130,6 +133,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                     </Link>
                   )
                 })}
+                <MultiLanguageMobile />
               </div>
 
               {isConnected ? (
