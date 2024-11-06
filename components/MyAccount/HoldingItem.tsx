@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
 
 import { Button } from '@components/Button'
@@ -19,6 +20,8 @@ interface HoldingItemProps {
 }
 
 const HoldingItem: FC<HoldingItemProps> = ({ item, group, OnClickItem }) => {
+  const t = useTranslations('MyAccount')
+
   return (
     <div
       className={`px-8 py-6 border-2 rounded-[20px] flex flex-row justify-between items-center
@@ -42,7 +45,7 @@ const HoldingItem: FC<HoldingItemProps> = ({ item, group, OnClickItem }) => {
           )}
         >
           <Text className='text-[14px] md:text-[20px] text-gray-a5 font-semibold whitespace-nowrap'>
-            {item.title}
+            {t(item.key as any)}
           </Text>
           <Text
             className={clsx(
@@ -59,7 +62,7 @@ const HoldingItem: FC<HoldingItemProps> = ({ item, group, OnClickItem }) => {
               onClick={OnClickItem}
               className='text-[12px] py-1 md:py-2 px-4'
             >
-              REWARD DETAILS
+              {t('rewardDetails')}
             </Button>
           )}
         </div>

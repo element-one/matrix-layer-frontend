@@ -9,5 +9,164 @@
   },
   "Footer": {
     "copyright": "Copyright © Matrix Layer Protocol 2024 – All rights reserved."
+  },
+  "MyAccount": {
+    "myAccount": "My Account",
+    "referralCode": "Referral Code",
+    "copyCode": "Copy Code",
+    "referralLink": "Referral Link",
+    "copyLink": "Copy Link",
+    "verify Code": "Verify Code",
+    "IOwn": "I own",
+    "phone": "MATRIX LAYER PHONE",
+    "mlpTokenAmount": "MLP TOKEN",
+    "availableRewards": "Rewards",
+    "matrix": "MATRIX",
+    "agent_one": "AI AGENT ONE",
+    "agent_pro": "AI AGENT PRO",
+    "agent_ultra": "AI AGENT ULTRA",
+    "myOrder": "My Order",
+    "date": "Date",
+    "receiverAddress": "Receiver Address",
+    "total": "Total",
+    "status": "Status",
+    "paid": "Paid",
+    "completed": "Completed",
+    "shipped": "Shipped",
+    "unpaid": "Unpaid",
+    "item": "item",
+    "rewardDetails": "REWARD DETAILS",
+    "submitAddress": "Submit Address",
+    "confirmReceipt": "Confirm Receipt"
+  },
+  "Checkout": {
+    "checkout": "Checkout",
+    "customerDetails": "Customer Details",
+    "connectWallet": "Connect Wallet",
+    "copy": "Copy",
+    "copied": "Copied",
+    "selectItem": "Select Item",
+    "selectQuantity": "Select Quantity",
+    "item": "item",
+    "subtotal": "subtotal",
+    "payment": "Payment",
+    "payNow": "Pay Now",
+    "verify": "Verify",
+    "statement": "I understand that this is a non-refundable pre-order deposit.",
+    "disclaimer": "By clicking ‘PAY NOW’, I acknowledge that I am committing to pre-ordering a product that is not immediately available. I also confirm that I have reviewed and agree to the terms outlined in the <policy>Privacy Policy</policy> and <terms>Terms & Conditions</terms>."
+  },
+  "Terms": {
+    "termsAndConditions": "Terms & Conditions",
+    "term-1": {
+      "title": "1. Introduction",
+      "content": "Welcome to Matrix Layer Protocol. These Terms & Conditions govern your use of our website and services. By accessing or using our website, you agree to be bound by these terms."
+    },
+    "term-2": {
+      "title": "2. Description of Services",
+      "content": "MLPhone, integrating cutting-edge AI and Depin technology to usher in a new era of the Web3 ecosystem. With advanced iris recognition technology, MLPhone provides you with a unique digital identity while ensuring the safety of your privacy. Relying on the Matrix Layer Protocol, a new decentralized ecosystem is constructed, with the MLP underlying protocol offering robust security for network communications. The diverse intelligent hardware and application scenarios of MLPhone make it easy to access decentralized networks."
+    },
+    "term-3": {
+      "title": "3. Use of Services",
+      "content": "You agree to use our services in compliance with all applicable laws and regulations. Unauthorized use of our services, including but not limited to reverse engineering or unauthorized distribution, is strictly prohibited."
+    },
+    "term-4": {
+      "title": "4. User Accounts",
+      "content": "To access certain features of our services, you may need to create a user account. You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account."
+    },
+    "term-5": {
+      "title": "5. Intellectual Property",
+      "content": "All content, trademarks, service marks, logos, and software on this website are the property of Matrix Layer Protocol or its licensors and are protected by intellectual property laws. Unauthorized use of this content is prohibited."
+    },
+    "term-6": {
+      "title": "6. Privacy Policy",
+      "content": "Your privacy is important to us. Please refer to our Privacy Policy for information on how we collect, use, and protect your personal information."
+    },
+    "term-7": {
+      "title": "7. Disclaimers",
+      "content": "Our services are provided “as is” without warranties of any kind. We do not guarantee the accuracy, completeness, or reliability of any information on our website or through our products."
+    },
+    "term-8": {
+      "title": "8. Limitation of Liability",
+      "content": "Matrix Layer Protocol shall not be liable for any damages arising from the use or inability to use our services, including but not limited to direct, indirect, incidental, and consequential damages."
+    },
+    "term-9": {
+      "title": "9. Changes to Terms",
+      "content": "We reserve the right to modify these Terms & Conditions at any time. Any changes will be effective immediately upon posting on our website. Your continued use of the website constitutes acceptance of the modified terms."
+    },
+    "term-10": {
+      "title": "10. Governing Law",
+      "content": "These Terms & Conditions are governed by the laws of [Your Jurisdiction]. Any disputes arising from these terms shall be resolved in the courts of [Your Jurisdiction]."
+    },
+    "term-11": {
+      "title": "11. Contact Us",
+      "content": "If you have any questions about these Terms & Conditions, please contact us at <email>info@matrixlayer.ai</email>"
+    }
+  },
+  "Stake": {
+    "skateTitle": "Stake",
+    "myAccount": "My Account",
+    "referralCode": "My referral code",
+    "copyCode": "Copy code",
+    "referralLink": "Referral Link",
+    "copyLink": "Copy Link",
+    "verifyLink": "Verify Link",
+    "invitationSystem": "Invitation System",
+    "ReferralCodeUsed": "Referral Code used",
+    "referralAddress": "Your Referrer’s Wallet Address",
+    "NFTinventory": "My NFT Inventory",
+    "ordinary": "Ordinary",
+    "stake": "Stake",
+    "phoneInfo": "MLPhone NFT come with 10 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
+    "matrixInfo": "Matrix NFTs come with 7 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
+    "usdt": "USDT",
+    "nodeRewards": "Node Rewards",
+    "history": "History",
+    "claim": "CLAIM",
+    "mlp": "MLP",
+    "claimable": "CLAIMABLE",
+    "hashRateInfo": "MLP's Hashrate Information",
+    "totalNFT": "Total NFT",
+    "dailyMLPDistribution": "Daily MLP Distribution",
+    "staking": "Staking",
+    "tab": {
+      "stake": "STAKE",
+      "unStake": "UNSTAKE"
+    },
+    "stakeBtn": "STAKE",
+    "unstakeBtn": "UNSTAKE",
+    "basicPool": "Basic Pool (PoW)",
+    "NFTComputingPower": "NFT Computing Power",
+    "TotalMLPRewards": "Total MLP Rewards",
+    "DailyRewardsHistory": "Daily rewards history",
+    "basicPoolInfo": "Your mining power in the basic pool is determined by the number and value of the NFTs you have staked.",
+    "AccelerationPool": {
+      "title": "Acceleration Pool (PoS)",
+      "info": "Your mining power in the accelerated pool is determined by the amount of $MLP you have staked."
+    },
+    "NFTBoostedPool": "NFT Boosted Pool",
+    "yesterdayRewards": "Yesterday’s Staking Rewards",
+    "acceleratedMLP": "Accelerated MLP",
+    "holdingNFT": "Holding NFT",
+    "totalMLPRewards": "Total MLP Rewards",
+    "dailyRewardsHistory": "Daily rewards history",
+    "accelerate": "Accelerate",
+    "amount": "Amount",
+    "bestAccelerationRate": "Best Acceleration Rate",
+    "confirm": "confirm",
+    "stakingDetails": "staking details",
+    "stakedDate": "staked date",
+    "stakedAmount": "staked amount",
+    "cumulativeIncome": "cumulative income",
+    "unstakedDate": "unstaked date",
+    "action": "action",
+    "NumberOfStakedTokens": "Number of staked tokens",
+    "withdraw": "withdraw",
+    "withdrawn": "withdrawn",
+    "hideDetails": "hide details",
+    "MLPBoostedPool": "MLP Boosted Pool",
+    "stakingPeriod": "staking period",
+    "reinvestment": "reinvestment",
+    "promotionPool": "Promotion Pool",
+    "promotionPoolInfo": "Your mining power in the referral pool is determined by the mining power of the friends you have invited."
   }
 }
