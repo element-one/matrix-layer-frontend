@@ -111,7 +111,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
               <MenuItemIcon />
             </div>
           </PopoverTrigger>
-          <PopoverContent className='w-screen left-0'>
+          <PopoverContent className='w-screen left-0 relative'>
             <div
               className='border-gradient w-full h-full flex flex-col gap-7 items-center justify-start
                 py-[30px] px-[25px]'
