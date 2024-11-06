@@ -49,6 +49,11 @@ const ProductPage = () => {
   const [currentPage, setCurrentPage] = useState<'product' | 'ai-agent-nft'>(
     tab === 'nft' ? 'ai-agent-nft' : 'product'
   )
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     if (tab) {
@@ -321,11 +326,13 @@ const ProductPage = () => {
                                 {t('product.section2.cpu.name')}
                               </Text>
                               <Text className='text-[12px] sm:text-base text-gray-a5'>
-                                <div
-                                  dangerouslySetInnerHTML={{
-                                    __html: t('product.section2.cpu.value')
-                                  }}
-                                />
+                                {isClient && (
+                                  <span
+                                    dangerouslySetInnerHTML={{
+                                      __html: t('product.section2.cpu.value')
+                                    }}
+                                  />
+                                )}
                               </Text>
                             </div>
                           </div>
@@ -340,11 +347,13 @@ const ProductPage = () => {
                             {t('product.section2.cpu.name')}
                           </Text>
                           <Text className='text-[12px] sm:text-base text-gray-a5'>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: t('product.section2.cpu.value')
-                              }}
-                            />
+                            {isClient && (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: t('product.section2.cpu.value')
+                                }}
+                              />
+                            )}
                           </Text>
                         </div>
                         <div className='flex flex-col gap-1 sm:gap-5'>
@@ -352,11 +361,13 @@ const ProductPage = () => {
                             {t('product.section2.simCard.name')}
                           </Text>
                           <Text className='text-[12px] sm:text-base text-gray-a5'>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: t('product.section2.simCard.value')
-                              }}
-                            />
+                            {isClient && (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: t('product.section2.simCard.value')
+                                }}
+                              />
+                            )}
                           </Text>
                         </div>
                       </div>
