@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
+import { useTranslations } from 'next-intl'
 import {
   Modal,
   ModalBody,
@@ -31,6 +32,8 @@ export const RewardsModal: FC<RewardsModalProps> = ({
   onClose,
   onClaimSuccess
 }) => {
+  const t = useTranslations('Modals.rewardModal')
+
   const { holdings } = useStore((state) => ({
     holdings: state.holdings
   }))
@@ -141,11 +144,10 @@ export const RewardsModal: FC<RewardsModalProps> = ({
       <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-0 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
           <Text className='text-white text-[32px] md:text-[48px] font-bold'>
-            Reward Details
+            {t('title')}
           </Text>
           <Text className='text-white text-[12px] md:text-[22px]'>
-            Collect your rewards for sharing Matrix Layer Protocol with your
-            frens & fam.
+            {t('info')}
           </Text>
           <div
             className='grid grid-cols-1 md:grid-cols-2 justify-between items-center gap-x-8 gap-y-4
@@ -155,7 +157,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
               className={`p-4 md:p-7 border-2 rounded-[20px] flex flex-col border-gradient gap-y-3`}
             >
               <Text className='text-[14px] md:text-[20px] text-gray-a5 font-semibold whitespace-nowrap'>
-                TOTAL REWARD
+                {t('totalReward')}
               </Text>
               <div className='flex flex-row justify-between items-center'>
                 <div className='flex flex-row items-center gap-x-3'>
@@ -179,7 +181,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                   variant='bordered'
                   onClick={handleShowHistoryModal}
                 >
-                  HISTORY
+                  {t('history')}
                 </Button>
               </div>
             </div>
@@ -187,7 +189,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
               className={`p-4 md:p-7 border-2 rounded-[20px] flex flex-col gap-y-2 border-gradient`}
             >
               <Text className='text-[14px] md:text-[20px] text-gray-a5 font-semibold whitespace-nowrap'>
-                CLAIMABLE REWARD
+                {t('claimableReward')}
               </Text>
               <div className='flex flex-row justify-between items-center'>
                 <Text
@@ -204,7 +206,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                   className='text-[12px] md:text-[14px] py-2 md:py-3 px-4 md:px-8 rounded-[35px] md:w-[154px]'
                   onClick={handleShowClaimModal}
                 >
-                  CLAIM
+                  {t('claim')}
                 </Button>
               </div>
             </div>

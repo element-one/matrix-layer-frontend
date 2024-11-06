@@ -3,6 +3,8 @@ import { ToastContainer } from 'react-toastify'
 import type { AppProps } from 'next/app'
 import { Chakra_Petch, Inter, Poppins, Press_Start_2P } from 'next/font/google'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { AbstractIntlMessages, NextIntlClientProvider } from 'next-intl'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { NextUIProvider } from '@nextui-org/react'
 import {
@@ -17,6 +19,9 @@ import { WagmiProvider } from 'wagmi'
 
 import { ModalProvider } from '@contexts/modal'
 import { UserProvider } from '@contexts/user'
+
+import enMessages from '../messages/en.json'
+import zhMessages from '../messages/zh.json'
 
 import '@rainbow-me/rainbowkit/styles.css'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -67,7 +72,14 @@ const config = getDefaultConfig({
 
 const queryClient = new QueryClient()
 
+const messagesMap: Record<string, AbstractIntlMessages> = {
+  en: enMessages,
+  zh: zhMessages
+}
+
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter()
+  const messages = messagesMap[router.locale ?? 'en'] ?? messagesMap.en
   return (
     <>
       <style jsx global>{`
@@ -81,23 +93,39 @@ export default function App({ Component, pageProps }: AppProps) {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
-            <NextUIProvider>
-              <NextThemesProvider attribute='class' defaultTheme='light'>
-                <UserProvider>
-                  <ModalProvider>
-                    <Head>
-                      <title>Matrix Layer Protocol</title>
-                      <meta
-                        name='viewport'
-                        content='width=device-width, initial-scale=1'
-                      />
-                    </Head>
-                    <Component {...pageProps} />
-                    <ToastContainer />
-                  </ModalProvider>
-                </UserProvider>
-              </NextThemesProvider>
-            </NextUIProvider>
+            <NextIntlClientProvider
+              locale={router.locale}
+              messages={messages}
+              formats={{
+                dateTime: {
+                  short: {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                  }
+                }
+              }}
+              now={new Date(pageProps.now)}
+              timeZone='asia/shanghai'
+            >
+              <NextUIProvider>
+                <NextThemesProvider attribute='class' defaultTheme='light'>
+                  <UserProvider>
+                    <ModalProvider>
+                      <Head>
+                        <title>Matrix Layer Protocol</title>
+                        <meta
+                          name='viewport'
+                          content='width=device-width, initial-scale=1'
+                        />
+                      </Head>
+                      <Component {...pageProps} />
+                      <ToastContainer />
+                    </ModalProvider>
+                  </UserProvider>
+                </NextThemesProvider>
+              </NextUIProvider>
+            </NextIntlClientProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

@@ -1,0 +1,393 @@
+{
+  "Navigation": {
+    "home": "主页",
+    "presale": "购买",
+    "myAccount": "我的账户",
+    "stake": "质押",
+    "logout": "登出",
+    "connectWallet": "连接钱包"
+  },
+  "Footer": {
+    "copyright": "版权归 © Matrix Layer Protocol 2024 所有– 将保留所有权利"
+  },
+  "Index": {
+    "section1": {
+      "unlock1": "用双眼解锁，连接区块链",
+      "unlock2": ""
+    },
+    "section2": {
+      "title1": "全球首款全链路融合的智能手机",
+      "title2": "",
+      "intro": "Matrix Layer Phone旨在通过创新的硬件和软件将区块链技术深度集成到智能手机中，打破传统移动设备的限制性，简化用户对Web3的访问并提升他们的整体体验。",
+      "footer": "重新定义通往区块链生态系统的门户"
+    },
+    "section2-sub": {
+      "title1": "为什么选择",
+      "title2": " MLPhone",
+      "info1": "全球首个具备虹膜认证的区块链移动网络节点",
+      "footer1": "安全与盈利共存",
+      "info2": "终极隐私与行业标准的保密性",
+      "footer2": "虹膜登录，身份信息零知识证明（ZK）加密",
+      "info3": "首款全链生态Web3手机",
+      "footer3": "一部设备轻松连接全球生态"
+    },
+    "section3": {
+      "imgSrc": "/images/home/home_image_6_zh.webp",
+      "title": "智能手机助手",
+      "info": "追随 Sam Altman 的思想，让科技服务生活"
+    },
+    "section3-sub": {
+      "title1": "一部手机，",
+      "title2": "六大好处",
+      "imgSrc": "/images/home/home_image_7_zh.webp",
+      "mobileImgSrc": "/images/home/home_image_7_mobile_zh.webp"
+    },
+    "section4": {
+      "title1": "如何加入",
+      "title2": " Matrix Layer Protocol ",
+      "title3": "的增长实现收益最大化？",
+      "purchaseHardware": {
+        "title": "购买硬件",
+        "description": "立即获得网络节点激励"
+      },
+      "ecosystemAirdrops": {
+        "title": "生态系统空投",
+        "description": "随着项目发展，陆续获得来自生态合作伙伴的资产空投收益"
+      },
+      "promoteHardware": {
+        "title": "推广硬件",
+        "description": "立即获得网络节点激励的推广收益，并持续获得"
+      },
+      "profitSharing": {
+        "title": "收益分红",
+        "description": "推广的用户越多，他们获得的空投和其他生态收益，你也将获得越多奖励"
+      },
+      "stakingRewards": {
+        "title": "质押收益",
+        "description": "成为网络节点后，进行资产质押，获得激励"
+      },
+      "AIFinancialManagement": {
+        "title": "AI理财",
+        "description": "可以更加简单的作为一个硬件钱包使用MLPhone，只不过这个硬件钱包会帮你持续的创造收入"
+      }
+    }
+  },
+  "Presale": {
+    "tabs": {
+      "product": "产品",
+      "ai-agent-nft": "AI AGENT NFT"
+    },
+    "product": {
+      "section1": {
+        "subtitle": "移动硬件",
+        "info": "MLPhone是一款集成了虹膜识别技术的全链生态智能手机，旨在将区块链技术与日常生活无缝融合，为用户提供安全、便捷的Web3体验。通过强大的虹膜识别功能，MLPhone不仅确保用户身份的唯一性和隐私安全，还将手机转化为一个区块链节点，支持Web3和DeFi生态中的各类应用。",
+        "sold": "已售 {quantity}",
+        "connectToOrder": "连接钱包并订购",
+        "order": "立即订购"
+      },
+      "section2": {
+        "subtitle": "MLPHONE",
+        "title": "规格",
+        "dimensions": {
+          "name": "尺寸",
+          "value": "162.23x73.6x8.55 mm"
+        },
+        "operationSystem": {
+          "name": "操作系统",
+          "value": "基于Android 14"
+        },
+        "display": {
+          "name": "显示屏",
+          "value": "6.67 英寸 AMOLED，120Hz"
+        },
+        "batteryCapacity": {
+          "name": "电池容量",
+          "value": "5050mAh"
+        },
+        "gpu": {
+          "name": "GPU",
+          "value": "Arm Mali-G57"
+        },
+        "cpu": {
+          "name": "CPU",
+          "value": "MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz"
+        },
+        "simCard": {
+          "name": "SIM 卡",
+          "value": "双 SIM 卡 <br /> (Nano SIM、双待机)"
+        }
+      },
+      "benefits": {
+        "title": "用户权益",
+        "bottom": "由于物料供应限制和其他不可控因素，交付产品的实际规格可能与官方描述有所不同。MatrixLayerProtocol 保留在不提前通知的情况下更改产品规格的权利。",
+        "tokens": {
+          "title": "内置代币",
+          "description": "每部手机预装 20,000 个 $MLP 代币，将在 1.5 年内线性释放"
+        },
+        "experience": {
+          "title": "挖矿体验",
+          "description": "手机用户可获得10天基础池挖矿权（限时优惠），挖矿系数与AI Agent One一致"
+        },
+        "airdrops": {
+          "title": "生态系统代币空投",
+          "description": "手机持有者有资格获得未来整个链上生态系统的代币空投"
+        },
+        "node": {
+          "title": "平台节点",
+          "description": "手机作为平台节点，参与网络运营"
+        }
+      }
+    },
+    "aiAgent": {
+      "sold": "已售 {quantity}",
+      "orderNow": "立即订购",
+      "connectToOrder": "连接钱包并订购",
+      "agentOne": {
+        "title": "AI Agent One",
+        "desc1": "用 199 USDT激活NFT",
+        "desc2": "解锁基础池挖矿",
+        "desc3": "挖矿系数：11"
+      },
+      "agentPro": {
+        "title": "AI Agent Pro",
+        "desc1": "用 699 USDT激活NFT",
+        "desc2": "解锁基础池挖矿",
+        "desc3": "挖矿系数：1.2"
+      },
+      "agentUltra": {
+        "title": "AI Agent Ultra",
+        "desc1": "用 899 USDT激活NFT",
+        "desc2": "解锁基础池挖矿",
+        "desc3": "挖矿系数：1.5"
+      }
+    }
+  },
+  "MyAccount": {
+    "myAccount": "我的账户",
+    "referralCode": "邀请码",
+    "copyCode": "复制邀请码",
+    "referralLink": "邀请链接",
+    "copyLink": "复制链接",
+    "verify Code": "验证码",
+    "IOwn": "我持有的",
+    "phone": "MLPhone",
+    "mlpTokenAmount": "MLP 代币",
+    "availableRewards": "奖励",
+    "matrix": "MATRIX",
+    "agent_one": "AI AGENT ONE",
+    "agent_pro": "AI AGENT PRO",
+    "agent_ultra": "AI AGENT ULTRA",
+    "myOrder": "我的订单",
+    "date": "日期",
+    "receiverAddress": "接收地址",
+    "total": "总数",
+    "status": "状态",
+    "paid": "已支付",
+    "completed": "已完成",
+    "shipped": "已发货",
+    "unpaid": "未支付",
+    "item": "产品",
+    "rewardDetails": "奖励明细",
+    "submitAddress": "提交地址",
+    "confirmReceipt": "确认收货"
+  },
+  "Checkout": {
+    "checkout": "结算",
+    "customerDetails": "客户信息详情",
+    "connectWallet": "连接钱包",
+    "copy": "复制",
+    "copied": "已复制",
+    "selectItem": "选择项目",
+    "selectQuantity": "选择数量",
+    "item": "个",
+    "subtotal": "小计",
+    "payment": "支付",
+    "payNow": "立即支付",
+    "verify": "验证",
+    "statement": "我了解这是一笔不可退还的预订金",
+    "disclaimer": "点击“立即支付”即表示我同意我正在预订一个不是立即可用的产品。我还确认我已经阅读并同意<policy>隐私政策</policy>和<terms>条款及条件中所列出的条款</terms>。",
+    "entercode": "输入你的邀请码",
+    "paymentSuccessful": "支付成功",
+    "ViewMyOrders": "查看我的订单"
+  },
+  "Terms": {
+    "termsAndConditions": "条款和条件",
+    "term-1": {
+      "title": "1. 引言",
+      "content": "欢迎来到 Matrix Layer Protocol。这些条款和条件管理您对我们网站和服务的使用。通过访问或使用我们的网站，您同意受这些条款的约束。"
+    },
+    "term-2": {
+      "title": "2. 服务描述",
+      "content": "MLPhone，融合前沿AI与Depin技术，开启Web3生态新纪元。MLPhone采用先进的虹膜识别技术，为您提供独一无二的数字身份，同时保证您的隐私安全。依托Matrix Layer Protocol，构建全新的去中心化生态，MLP底层协议为网络通信提供强大的安全保障。MLPhone丰富的智能硬件和应用场景，让您轻松接入去中心化网络。"
+    },
+    "term-3": {
+      "title": "3. 服务使用",
+      "content": "您同意遵守所有适用法律法规使用我们的服务。严禁未经授权使用我们的服务，包括但不限于逆向工程或未经授权的分发。"
+    },
+    "term-4": {
+      "title": "4. 用户帐户",
+      "content": "用户帐户 为了访问我们的某些服务功能，您可能需要创建一个用户帐户。您有责任维护您的帐户信息的机密性以及对您帐户下发生的所有活动负责。"
+    },
+    "term-5": {
+      "title": "5. 知识产权",
+      "content": "本网站上的所有内容、商标、服务标记、徽标及软件均为 Matrix Layer Protocol 或其授权方的财产，并受到知识产权法律的保护。禁止未经授权使用这些内容。"
+    },
+    "term-6": {
+      "title": "6. 隐私政策",
+      "content": "您的隐私对我们来说非常重要。请参阅我们的隐私政策，了解我们如何收集、使用和保护您的个人信息。"
+    },
+    "term-7": {
+      "title": "7. 免责声明",
+      "content": "我们提供的服务是“按现状”提供的，不包含任何形式的保证。我们不保证网站或产品中的任何信息的准确性、完整性或可靠性。"
+    },
+    "term-8": {
+      "title": "8. 责任限制",
+      "content": "Matrix Layer Protocol对于因使用或无法使用我们的服务而产生的任何损害不承担责任，包括但不限于直接、间接、偶然和必然的损害。"
+    },
+    "term-9": {
+      "title": "9. 条款变更",
+      "content": "我们保留随时修改这些条款和条件的权利。任何变更将在我们网站上发布后立即生效。您继续使用本网站即表示您接受修改后的条款。"
+    },
+    "term-10": {
+      "title": "10. 管辖法律",
+      "content": "本条款与条件受 [您所在司法辖区] 法律管辖。因本条款引起的任何争议应由 [您所在司法辖区] 法院解决。"
+    },
+    "term-11": {
+      "title": "11. 联系我们",
+      "content": "如果您对这些条款和条件有任何疑问，请通过 <email>info@matrixlayer.ai</email> 与我们联系。"
+    }
+  },
+  "Stake": {
+    "skateTitle": "质押",
+    "myAccount": "我的账户",
+    "enterInviteCode": "输入邀请码",
+    "referralCode": "邀请码",
+    "copyCode": "复制邀请码",
+    "referralLink": "邀请链接",
+    "copyLink": "复制链接",
+    "verifyLink": "验证链接",
+    "invitationSystem": "邀请系统",
+    "ReferralCodeUsed": "使用的邀请码",
+    "referralAddress": "您的推荐人的钱包地址",
+    "NFTinventory": "我的 NFT 库存",
+    "ordinary": "普通",
+    "stake": "质押",
+    "phoneInfo": "MLPhone NFT 在基础池中享有 10 天的挖矿权。质押一旦开始，就不能提前结束；提前取消质押将导致 NFT 无效。",
+    "matrixInfo": "Matrix NFT 在基础池中享有 7 天的挖矿权。质押一旦开始，就不能提前结束；提前取消质押将导致 NFT 无效。",
+    "usdt": "USDT",
+    "nodeRewards": "节点收益",
+    "history": "历史记录",
+    "claim": "领取",
+    "mlp": "MLP",
+    "claimable": "可索赔",
+    "hashRateInfo": "MLP 的哈希率信息",
+    "totalNFT": "NFT总数",
+    "dailyMLPDistribution": "每日挖矿奖励",
+    "staking": "质押",
+    "tab": {
+      "stake": "质押",
+      "unStake": "已质押"
+    },
+    "stakeBtn": "质押",
+    "unstakeBtn": "取消质押",
+    "basicPool": "基础池（PoW）",
+    "NFTComputingPower": "NFT算力",
+    "TotalMLPRewards": "MLP 总奖励",
+    "DailyRewardsHistory": "每日奖励历史",
+    "basicPoolInfo": "您在基础池中的挖矿算力取决于您质押的 NFT 的数量和价值。",
+    "AccelerationPool": {
+      "title": "加速池（PoS）",
+      "info": "您在加速池中的挖矿算力取决于您质押的 $MLP 数量。"
+    },
+    "NFTBoostedPool": "NFT 加速池",
+    "yesterdayStakingRewards": "昨日质押奖励",
+    "yesterdayRewards": "昨日奖励",
+    "acceleratedMLP": "MLP 加速",
+    "holdingNFT": "持有 NFT",
+    "totalMLPRewards": "MLP 总奖励",
+    "dailyRewardsHistory": "每日奖励历史",
+    "accelerate": "加速",
+    "amount": "金额",
+    "bestAccelerationRate": "最佳加速率",
+    "confirm": "确认",
+    "stakedDate": "质押日期",
+    "stakedAmount": "质押金额",
+    "cumulativeIncome": "累计收益",
+    "unstakedDate": "取消质押日期",
+    "action": "操作",
+    "NumberOfStakedTokens": "质押代币数量",
+    "withdraw": "提现",
+    "withdrawn": "已提现",
+    "stakingDetails": "质押详情",
+    "hideDetails": "隐藏详情",
+    "MLPBoostedPool": "MLP 加速池",
+    "stakingPeriod": "质押期",
+    "reinvestment": "复投",
+    "promotionPool": "推广池",
+    "promotionPoolInfo": "您在推广池中的挖矿算力由您邀请的朋友的挖矿算力决定。",
+    "noNFTStakeAlert": "您没有<nft>NFT</nft>可以质押",
+    "noNFTUnstakeAlert": "您没有<nft>NFT</nft>可以取消质押",
+    "unlockPool": "质押您的<nft>NFT</nft>以解锁此池",
+    "stakeNFT": "质押 NFT",
+    "AccelerateNFTBoostedPool": {
+      "title": "加速NFT池",
+      "info": "MLPhone NFT附带10天的基础池挖矿权。一旦开始质押，不能提前结束；提前取消质押将使NFT失效。",
+      "input": "输入",
+      "amount": "金额",
+      "confirm": "确认",
+      "bestRate": "最佳加速率"
+    },
+    "accelerateMLPBoostedPool": {
+      "title": "MLP加速器",
+      "info": "MLPhone NFT附带10天的基础池挖矿权。一旦开始质押，无法提前结束；若提前取消质押，将导致NFT失效。",
+      "statement": "收益是否会再投资？再投资将锁定您的资金，在锁定期内您将无法提前提取。",
+      "disclaimer": "免责声明：APY收益率是基于昨日池子状态计算的近似参考， <gradient>可能并非100%准确</gradient>。",
+      "input": "输入",
+      "amount": "金额",
+      "confirm": "确认",
+      "bestRate": "最佳加速率"
+    }
+  },
+  "ReferralCodeModal": {
+    "referralCode": "邀请码",
+    "verify": "验证",
+    "hadReferrer": "您已绑定推荐人",
+    "success": "邀请码有效，邀请已成功记录",
+    "back": "返回首页",
+    "skip": "跳过"
+  },
+  "BuyNFTModal": {
+    "statement": "您尚未拥有任何<text1>NFT</text1>，购买<text2>NFT</text2>以开始您的$MLP之旅/赚取$MLP",
+    "cancel": "取消",
+    "buyNFT": "购买NFT"
+  },
+  "WithdrawModal": {
+    "withdraw": "提款",
+    "desc": "您将收回质押的5000 $MLP以及质押奖励{amount} $MLP。",
+    "total": "共计{amount} $MLP，是否继续？",
+    "cancel": "取消",
+    "confirm": "确认"
+  },
+  "Modals": {
+    "rewardModal": {
+      "title": "奖励明细",
+      "info": "分享 Matrix Layer 协议给你的朋友和家人，收获奖励。",
+      "totalReward": "总奖励",
+      "claimableReward": "可领取奖励",
+      "history": "历史记录",
+      "claim": "领取"
+    },
+    "rewardHistoryModal": {
+      "title": "历史记录",
+      "time": "时间",
+      "address": "地址",
+      "reward": "奖励",
+      "status": "状态"
+    },
+    "rewardClaimSuccessModal": {
+      "title": "领取奖励",
+      "success": "成功",
+      "second": "秒"
+    }
+  }
+}

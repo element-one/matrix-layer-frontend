@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import { useInterval } from 'react-use'
+import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent, ModalProps } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
@@ -12,6 +13,8 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
   onOpenChange,
   onClose
 }) => {
+  const t = useTranslations('Modals.rewardClaimSuccessModal')
+
   const [count, setCount] = useState(5)
 
   useInterval(
@@ -49,13 +52,13 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
             alt='claim-success'
           />
           <Text className='text-white text-[24px] font-chakraPetch'>
-            Claim Reward
+            {t('title')}
           </Text>
           <Text className='text-white text-[48px] font-bold font-chakraPetch'>
-            Success
+            {t('success')}
           </Text>
           <Text className='text-white text-[24px] font-chakraPetch'>
-            {count} S
+            {count} {t('second')}
           </Text>
         </ModalBody>
       </ModalContent>

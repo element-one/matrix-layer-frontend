@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent, Tooltip } from '@nextui-org/react'
 import clsx from 'clsx'
 
@@ -39,6 +40,8 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
   onClose,
   onConfirm
 }) => {
+  const t = useTranslations('Stake')
+
   const { isModalShown, hideModal } = useModal()
 
   const [amount, setAmount] = useState('')
@@ -70,16 +73,14 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
         >
           <div className='flex gap-x-5 items-center'>
             <Text className='text-[14px] md:text-[32px] font-bold'>
-              <span>Accelerate MLP Boosted Pool</span>
+              <span>{t('accelerateMLPBoostedPool.title')}</span>
             </Text>
             <Tooltip
               placement='bottom'
               className='bg-co-bg-black'
               content={
                 <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                  MLPhone NFT come with 10 days of mining rights in the basic
-                  pool. Once staking begins, it cannot be ended prematurely;
-                  canceling the stake early will render the NFT invalid.
+                  {t('accelerateMLPBoostedPool.info')}
                 </span>
               }
             >
@@ -92,9 +93,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
             <label className='flex gap-x-[10px] items-center'>
               <input type='checkbox' className='accelerate-checkbox' />
               <Text className='text-[10px] md:text-[18px] font-semibold text-co-gray-7'>
-                Will the earnings be reinvested? Reinvestment will lock your
-                funds and you will not be able to withdraw early during the
-                lock-up period.
+                {t('accelerateMLPBoostedPool.statement')}
               </Text>
             </label>
           </div>
@@ -123,21 +122,26 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
             ))}
           </div>
           <div className='text-[12px] md:text-[18px] font-semibold text-co-gray-7 text-center'>
-            Disclaimer : APY Rates are calculated based on yesterday’s the pool
-            status as an approzimate reference and{' '}
-            <span className='clip-text bg-gradient-home-text-1 font-bold'>
-              might not be 100% accurate
-            </span>
+            {t.rich('accelerateMLPBoostedPool.disclaimer', {
+              gradient: (chunks) => (
+                <span className='clip-text bg-gradient-home-text-1 font-bold'>
+                  {chunks}
+                </span>
+              )
+            })}
           </div>
           <div className='w-full'>
             <div className='p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between gap-x-10'>
               <Text className='text-[10px] md:text-[24px] text-co-gray-7 font-bold'>
-                <span className='hidden md:inline-block'>INPUT </span>AMOUNT :
+                <span className='hidden md:inline-block'>
+                  {t('AccelerateNFTBoostedPool.input')}{' '}
+                </span>
+                {t('AccelerateNFTBoostedPool.amount')} :
               </Text>
               <input
                 className='grow bg-transparent text-right text-[10px] md:text-[24px] text-white font-bold
                   placeholder:text-co-gray-8'
-                placeholder='$MLP AMOUNT'
+                placeholder={`$MLP ${t('AccelerateNFTBoostedPool.amount')}`}
                 value={amount}
                 onChange={(e) => {
                   setAmount(e.target.value)
@@ -145,7 +149,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
               />
             </div>
             <Text className='mt-[10px] text-right text-[10px] md:text-[18px] text-co-gray-7 font-bold'>
-              Best Acceleration Rate : 998 MLP
+              {t('AccelerateNFTBoostedPool.bestRate')} : 998 MLP
             </Text>
           </div>
           <Button
@@ -153,7 +157,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
               md:text-[16px] font-bold'
             onClick={onConfirm}
           >
-            CONFIRM
+            {t('accelerateMLPBoostedPool.confirm')}
           </Button>
         </ModalBody>
       </ModalContent>

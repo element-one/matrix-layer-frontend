@@ -1,6 +1,7 @@
 import { ChangeEventHandler, FC, useState } from 'react'
 import { toast } from 'react-toastify'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useAccount, useSignMessage } from 'wagmi'
 
 import { Button } from '@components/Button'
@@ -35,6 +36,8 @@ const PaymentField: FC<PaymentFieldProps> = ({
   userInfo,
   onVerifyReferralCodeSuccess
 }) => {
+  const t = useTranslations('Checkout')
+
   const [understandTerm, setUnderstandTerm] = useState(false)
   const { isConnected } = useAccount()
   const [referralCode, setReferralCode] = useState('')
@@ -103,7 +106,7 @@ const PaymentField: FC<PaymentFieldProps> = ({
             value={referralCode.toUpperCase()}
             onChange={setReferralCode}
             id='referralCode'
-            placeholder='Enter your referral code'
+            placeholder={t('entercode')}
             inputClassName='focus:outline-none  h-[40px] !rounded-[16px] focus:!ring-0 w-[224px]'
             wrapperClassName='m-0'
           />
@@ -113,7 +116,7 @@ const PaymentField: FC<PaymentFieldProps> = ({
             disabled={!referralCode}
             className='p-[10px] font-semibold text-[16px] mt-2 rounded-[35px]'
           >
-            Verify
+            {t('verify')}
           </Button>
         </div>
       )}
@@ -124,7 +127,7 @@ const PaymentField: FC<PaymentFieldProps> = ({
         isLoading={isPaying}
         disabled={!understandTerm || !isConnected || amount <= 0}
       >
-        Pay Now
+        {t('payNow')}
       </Button>
       <div className='mt-[16px] mb-[8px] md:my-[10px] flex justify-center items-center'>
         <label className='flex gap-2 items-center'>
@@ -135,7 +138,7 @@ const PaymentField: FC<PaymentFieldProps> = ({
             className='term-checkbox'
           />
           <Text className='text-[10px] md:text-[16px] md:font-bold'>
-            I understand that this is a non-refundable pre-order deposit.
+            {t('statement')}
           </Text>
         </label>
       </div>
@@ -143,17 +146,18 @@ const PaymentField: FC<PaymentFieldProps> = ({
         as='div'
         className='text-[12px] text-center leading-[20px] font-normal'
       >
-        By clicking ‘PAY NOW’, I acknowledge that I am committing to
-        pre-ordering a product that is not immediately available. I also confirm
-        that I have reviewed and agree to the terms outlined in the{' '}
-        <Link href='/privacy'>
-          <GradientText>Privacy Policy</GradientText>
-        </Link>{' '}
-        and{' '}
-        <Link href='/terms'>
-          <GradientText>Terms & Conditions</GradientText>{' '}
-        </Link>
-        .
+        {t.rich('disclaimer', {
+          policy: (chunks) => (
+            <Link href='/privacy'>
+              <GradientText>{chunks}</GradientText>
+            </Link>
+          ),
+          terms: (chunks) => (
+            <Link href='/terms'>
+              <GradientText>{chunks}</GradientText>{' '}
+            </Link>
+          )
+        })}
       </Text>
     </div>
   )
