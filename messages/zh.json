@@ -145,20 +145,19 @@
       "agentOne": {
         "title": "AI Agent One",
         "desc1": "用 199 USDT激活NFT",
-        "desc2": "解锁基础池挖矿",
-        "desc3": "挖矿系数：11"
+        "desc2": "解锁基础池挖矿"
       },
       "agentPro": {
         "title": "AI Agent Pro",
         "desc1": "用 699 USDT激活NFT",
         "desc2": "解锁基础池挖矿",
-        "desc3": "挖矿系数：1.2"
+        "desc3": "挖矿系数：x 1.2"
       },
       "agentUltra": {
         "title": "AI Agent Ultra",
         "desc1": "用 899 USDT激活NFT",
         "desc2": "解锁基础池挖矿",
-        "desc3": "挖矿系数：1.5"
+        "desc3": "挖矿系数：x 1.5"
       }
     }
   },
@@ -279,7 +278,7 @@
     "history": "历史记录",
     "claim": "领取",
     "mlp": "MLP",
-    "claimable": "可索赔",
+    "claimable": "可领取",
     "hashRateInfo": "MLP 的哈希率信息",
     "totalNFT": "NFT总数",
     "dailyMLPDistribution": "每日挖矿奖励",

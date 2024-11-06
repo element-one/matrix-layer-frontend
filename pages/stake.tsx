@@ -986,7 +986,7 @@ const StakePage: NextPage = () => {
                     alt=''
                     className='w-[86px] h-[86px]'
                   />
-                  <div className='flex-1'>
+                  <div>
                     <span
                       className='uppercase flex items-center w-full justify-between md:justify-center gap-2
                         text-[20px] font-bold text-gray-a5'
