@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import {
   Pagination,
   Table,
@@ -54,6 +55,8 @@ const statusCommonClass =
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 
 const MyAccount = () => {
+  const t = useTranslations('MyAccount')
+
   const { isConnected, address } = useAccount()
   const router = useRouter()
   const [page, setPage] = useState(1)
@@ -230,7 +233,7 @@ const MyAccount = () => {
         <TopSectionBackground />
         <Content className='pt-[150px] md:pt-[220px] md:pb-[97px]'>
           <Text className='text-center text-[24px] md:text-4xl font-pressStart2P leading-10'>
-            MY ACCOUNT
+            {t('myAccount')}
           </Text>
         </Content>
       </Container>
@@ -240,7 +243,7 @@ const MyAccount = () => {
             className={`mb-6 md:pt-[78px] text-[24px] text-center md:text-left md:text-5xl font-semibold
               ${gradientTextClass}`}
           >
-            My Account
+            {t('myAccount')}
           </Text>
           <div
             className='grid grid-cols-1 md:grid-cols-2 gap-11 border-2 md:border-none rounded-[20px]
@@ -254,7 +257,7 @@ const MyAccount = () => {
                 className='mb-[11px] text-2xl font-semibold bg-clip-text text-transparent
                   bg-gradient-text-1 md:bg-white'
               >
-                Referral Code
+                {t('referralCode')}
               </Text>
               <div
                 className='bg-black pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
@@ -269,7 +272,7 @@ const MyAccount = () => {
                   variant='bordered'
                   onClick={handleCopy(userData?.referralCode || '')}
                 >
-                  <span className='md:inline hidden'>Copy Code</span>
+                  <span className='md:inline hidden'>{t('copyCode')}</span>
                   <CopyIcon />
                 </Button>
               </div>
@@ -282,7 +285,7 @@ const MyAccount = () => {
                 className='mb-[11px] text-2xl font-semibold bg-clip-text text-transparent
                   bg-gradient-text-1'
               >
-                Referral Link
+                {t('referralLink')}
               </Text>
               <div
                 className='bg-black pl-6 pr-4 rounded-[10px] md:rounded-2xl h-[60px] md:h-[72px] flex
@@ -299,7 +302,7 @@ const MyAccount = () => {
                     WEB_URL + '/referral?code=' + userData?.referralCode ?? ''
                   )}
                 >
-                  <span className='md:inline hidden'>Copy Link</span>
+                  <span className='md:inline hidden'> {t('copyLink')}</span>
                   <CopyIcon />
                 </Button>
               </div>
@@ -313,7 +316,7 @@ const MyAccount = () => {
             className={`mb-6 mt-[32px] md:mt-[64px] text-[24px] text-center md:text-left md:text-5xl
               font-semibold ${gradientTextClass}`}
           >
-            I own
+            {t('IOwn')}
           </Text>
           {processHoldings(holdings).map((group, index) => (
             <div
@@ -362,7 +365,7 @@ const MyAccount = () => {
             <Text
               className={`text-[24px] md:text-5xl font-semibold leading-tight ${gradientTextClass}`}
             >
-              My Order
+              {t('myOrder')}
             </Text>
           </div>
           <Table
@@ -393,11 +396,11 @@ const MyAccount = () => {
             }
           >
             <TableHeader>
-              <TableColumn>Date</TableColumn>
-              <TableColumn>Item</TableColumn>
-              <TableColumn>Receiver Address</TableColumn>
-              <TableColumn>Total</TableColumn>
-              <TableColumn>Status</TableColumn>
+              <TableColumn>{t('date')}</TableColumn>
+              <TableColumn>{t('item')}</TableColumn>
+              <TableColumn>{t('receiverAddress')}</TableColumn>
+              <TableColumn>{t('total')}</TableColumn>
+              <TableColumn>{t('status')}</TableColumn>
             </TableHeader>
             <TableBody>
               {orders.map((order, index) => (
@@ -429,12 +432,12 @@ const MyAccount = () => {
                           onClick={handleOpenShippingModal(order.id)}
                           className='text-[14px] p-2 hidden'
                         >
-                          Submit Address
+                          {t('submitAddress')}
                         </Button>
                         <span
                           className={`${statusCommonClass} ${statusClass(order.status)}`}
                         >
-                          {order?.status}
+                          {t(order?.status as any)}
                         </span>
                       </>
                     )}
@@ -447,7 +450,7 @@ const MyAccount = () => {
                         onClick={handleConfirmDeliveryModal(order.id)}
                         className='text-[14px] p-2'
                       >
-                        Confirm Receipt
+                        {t('confirmReceipt')}
                       </Button>
                     )}
 
@@ -457,10 +460,11 @@ const MyAccount = () => {
                       >
                         {order?.status === 'received' ? (
                           <Tooltip content='Once your phone is ready to ship you will be asked to submit a shipping address.'>
-                            {order?.status}
+                            {t(order?.status as any)}
                           </Tooltip>
                         ) : (
-                          order?.status
+                          // order?.status
+                          t(order?.status as any)
                         )}
                       </span>
                     )}

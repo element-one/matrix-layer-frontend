@@ -161,5 +161,164 @@
         "desc3": "挖矿系数：1.5"
       }
     }
+  },
+  "MyAccount": {
+    "myAccount": "我的账户",
+    "referralCode": "邀请码",
+    "copyCode": "复制邀请码",
+    "referralLink": "邀请链接",
+    "copyLink": "复制链接",
+    "verify Code": "验证码",
+    "IOwn": "我持有的",
+    "phone": "MLPhone",
+    "mlpTokenAmount": "MLP 代币",
+    "availableRewards": "奖励",
+    "matrix": "MATRIX",
+    "agent_one": "AI AGENT ONE",
+    "agent_pro": "AI AGENT PRO",
+    "agent_ultra": "AI AGENT ULTRA",
+    "myOrder": "我的订单",
+    "date": "日期",
+    "receiverAddress": "接收地址",
+    "total": "总数",
+    "status": "状态",
+    "paid": "已支付",
+    "completed": "已完成",
+    "shipped": "已发货",
+    "unpaid": "未支付",
+    "item": "产品",
+    "rewardDetails": "奖励明细",
+    "submitAddress": "提交地址",
+    "confirmReceipt": "确认收货"
+  },
+  "Checkout": {
+    "checkout": "结算",
+    "customerDetails": "客户信息详情",
+    "connectWallet": "连接钱包",
+    "copy": "复制",
+    "copied": "已复制",
+    "selectItem": "选择项目",
+    "selectQuantity": "选择数量",
+    "item": "个",
+    "subtotal": "小计",
+    "payment": "支付",
+    "payNow": "立即支付",
+    "verify": "验证",
+    "statement": "我了解这是一笔不可退还的预订金",
+    "disclaimer": "点击“立即支付”即表示我同意我正在预订一个不是立即可用的产品。我还确认我已经阅读并同意<policy>隐私政策</policy>和<terms>条款及条件中所列出的条款</terms>。"
+  },
+  "Terms": {
+    "termsAndConditions": "条款和条件",
+    "term-1": {
+      "title": "1. 引言",
+      "content": "欢迎来到 Matrix Layer Protocol。这些条款和条件管理您对我们网站和服务的使用。通过访问或使用我们的网站，您同意受这些条款的约束。"
+    },
+    "term-2": {
+      "title": "2. 服务描述",
+      "content": "MLPhone，融合前沿AI与Depin技术，开启Web3生态新纪元。MLPhone采用先进的虹膜识别技术，为您提供独一无二的数字身份，同时保证您的隐私安全。依托Matrix Layer Protocol，构建全新的去中心化生态，MLP底层协议为网络通信提供强大的安全保障。MLPhone丰富的智能硬件和应用场景，让您轻松接入去中心化网络。"
+    },
+    "term-3": {
+      "title": "3. 服务使用",
+      "content": "您同意遵守所有适用法律法规使用我们的服务。严禁未经授权使用我们的服务，包括但不限于逆向工程或未经授权的分发。"
+    },
+    "term-4": {
+      "title": "4. 用户帐户",
+      "content": "用户帐户 为了访问我们的某些服务功能，您可能需要创建一个用户帐户。您有责任维护您的帐户信息的机密性以及对您帐户下发生的所有活动负责。"
+    },
+    "term-5": {
+      "title": "5. 知识产权",
+      "content": "本网站上的所有内容、商标、服务标记、徽标及软件均为 Matrix Layer Protocol 或其授权方的财产，并受到知识产权法律的保护。禁止未经授权使用这些内容。"
+    },
+    "term-6": {
+      "title": "6. 隐私政策",
+      "content": "您的隐私对我们来说非常重要。请参阅我们的隐私政策，了解我们如何收集、使用和保护您的个人信息。"
+    },
+    "term-7": {
+      "title": "7. 免责声明",
+      "content": "我们提供的服务是“按现状”提供的，不包含任何形式的保证。我们不保证网站或产品中的任何信息的准确性、完整性或可靠性。"
+    },
+    "term-8": {
+      "title": "8. 责任限制",
+      "content": "Matrix Layer Protocol对于因使用或无法使用我们的服务而产生的任何损害不承担责任，包括但不限于直接、间接、偶然和必然的损害。"
+    },
+    "term-9": {
+      "title": "9. 条款变更",
+      "content": "我们保留随时修改这些条款和条件的权利。任何变更将在我们网站上发布后立即生效。您继续使用本网站即表示您接受修改后的条款。"
+    },
+    "term-10": {
+      "title": "10. 管辖法律",
+      "content": "本条款与条件受 [您所在司法辖区] 法律管辖。因本条款引起的任何争议应由 [您所在司法辖区] 法院解决。"
+    },
+    "term-11": {
+      "title": "11. 联系我们",
+      "content": "如果您对这些条款和条件有任何疑问，请通过 <email>info@matrixlayer.ai</email> 与我们联系。"
+    }
+  },
+  "Stake": {
+    "skateTitle": "质押",
+    "myAccount": "我的账户",
+    "referralCode": "邀请码",
+    "copyCode": "复制邀请码",
+    "referralLink": "邀请链接",
+    "copyLink": "复制链接",
+    "verifyLink": "验证链接",
+    "invitationSystem": "邀请系统",
+    "ReferralCodeUsed": "使用的邀请码",
+    "referralAddress": "您的推荐人的钱包地址",
+    "NFTinventory": "我的 NFT 库存",
+    "ordinary": "普通",
+    "stake": "质押",
+    "phoneInfo": "MLPhone NFT 在基础池中享有 10 天的挖矿权。质押一旦开始，就不能提前结束；提前取消质押将导致 NFT 无效。",
+    "matrixInfo": "Matrix NFT 在基础池中享有 7 天的挖矿权。质押一旦开始，就不能提前结束；提前取消质押将导致 NFT 无效。",
+    "usdt": "USDT",
+    "nodeRewards": "节点收益",
+    "history": "历史记录",
+    "claim": "领取",
+    "mlp": "MLP",
+    "claimable": "可索赔",
+    "hashRateInfo": "MLP 的哈希率信息",
+    "totalNFT": "NFT总数",
+    "dailyMLPDistribution": "每日挖矿奖励",
+    "staking": "质押",
+    "tab": {
+      "stake": "质押",
+      "unStake": "未质押"
+    },
+    "stakeBtn": "STAKE",
+    "unstakeBtn": "UNSTAKE",
+    "basicPool": "基础池（PoW）",
+    "NFTComputingPower": "NFT算力",
+    "TotalMLPRewards": "MLP 总奖励",
+    "DailyRewardsHistory": "每日奖励历史",
+    "basicPoolInfo": "您在基础池中的挖矿算力取决于您质押的 NFT 的数量和价值。",
+    "AccelerationPool": {
+      "title": "加速池（PoS）",
+      "info": "您在加速池中的挖矿算力取决于您质押的 $MLP 数量。"
+    },
+    "NFTBoostedPool": "NFT 加速池",
+    "yesterdayRewards": "昨日质押奖励",
+    "acceleratedMLP": "MLP 加速",
+    "holdingNFT": "持有 NFT",
+    "totalMLPRewards": "MLP 总奖励",
+    "dailyRewardsHistory": "每日奖励历史",
+    "accelerate": "加速",
+    "amount": "金额",
+    "bestAccelerationRate": "最佳加速率",
+    "confirm": "确认",
+    "stakingDetails": "质押详情",
+    "stakedDate": "质押日期",
+    "stakedAmount": "质押金额",
+    "cumulativeIncome": "累计收益",
+    "unstakedDate": "取消质押日期",
+    "action": "操作",
+    "NumberOfStakedTokens": "质押代币数量",
+    "withdraw": "提现",
+    "withdrawn": "已提现",
+    "hideDetails": "隐藏详情",
+    "MLPBoostedPool": "MLP 加速池",
+    "stakingPeriod": "质押期",
+    "reinvestment": "复投",
+    "promotionPool": "推广池",
+    "promotionPoolInfo": "您在推广池中的挖矿算力由您邀请的朋友的挖矿算力决定。"
   }
 }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import { Address } from 'viem'
 import {
   useAccount,
@@ -34,6 +35,7 @@ const IS_PRIVATE = process.env.NEXT_PUBLIC_IS_PRIVATE === 'true'
 const TARGET_CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID
 
 const CheckoutPage = () => {
+  const t = useTranslations('Checkout')
   const { isConnected, address } = useAccount()
   const { switchChain } = useSwitchChain()
   const chainId = useChainId()
@@ -344,7 +346,7 @@ const CheckoutPage = () => {
         <Content>
           <div className='flex flex-col items-center justify-center pt-[150px] md:pt-[220px]'>
             <Text className='mb-5 font-pressStart2P text-white text-[24px] md:text-[36px]'>
-              CHECKOUT
+              {t('checkout')}
             </Text>
           </div>
         </Content>
@@ -356,7 +358,7 @@ const CheckoutPage = () => {
               md:items-center border-b border-co-gray-2 py-[32px] md:py-[64px]'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
-              Customer Details
+              {t('customerDetails')}
             </Text>
             <div
               className='flex flex-row border-gradient-desktop justify-between items-center p-[8px]
@@ -372,7 +374,7 @@ const CheckoutPage = () => {
                   className='text-[12px] md:text-[16px] py-[10px] px-[20px] rounded-[35px] font-semibold'
                   onClick={handleConnectButtonClick}
                 >
-                  Connect Wallet
+                  {t('connectWallet')}
                 </Button>
               ) : (
                 <Button
@@ -381,7 +383,7 @@ const CheckoutPage = () => {
                     font-semibold'
                   onClick={handleCopy}
                 >
-                  {isCopied ? 'Copied' : 'Copy'}
+                  {isCopied ? t('copied') : t('copy')}
                 </Button>
               )}
             </div>
@@ -402,7 +404,7 @@ const CheckoutPage = () => {
               items-start py-[32px] md:py-[64px] border-b border-co-gray-2'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
-              Select Item
+              {t('selectItem')}
             </Text>
             <div className='w-full md:w-fit grid grid-cols-1 md:grid-cols-2 gap-x-[24px] gap-y-[32px]'>
               {isLoadingProducts ? (
@@ -433,7 +435,7 @@ const CheckoutPage = () => {
               border-co-gray-2'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
-              Subtotal
+              {t('subtotal')}
             </Text>
             <div>
               <div>
@@ -487,7 +489,7 @@ const CheckoutPage = () => {
               md:pt-[64px] pb-[150px] md:pb-[300px] gap-y-[20px]'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
-              Payment
+              {t('payment')}
             </Text>
             <PaymentField
               isPaying={isPaying}

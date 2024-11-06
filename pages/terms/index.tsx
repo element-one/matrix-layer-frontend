@@ -1,10 +1,13 @@
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 import { Container, Content } from '@components/Home/Container'
 import Layout from '@components/Layout/Layout'
 import { Text } from '@components/Text'
 
 const TermsPage = () => {
+  const t = useTranslations('Terms')
+
   return (
     <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
       <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>
@@ -14,7 +17,7 @@ const TermsPage = () => {
               as='h1'
               className='text-4xl md:text-5xl font-bold mb-8 text-white'
             >
-              Terms & Conditions
+              {t('termsAndConditions')}
             </Text>
             <div className='max-w-3xl mx-auto text-gray-300'>
               <section className='mb-8'>
@@ -22,13 +25,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  1. Introduction
+                  {t('term-1.title')}
                 </Text>
-                <Text>
-                  Welcome to Matrix Layer Protocol. These Terms & Conditions
-                  govern your use of our website and services. By accessing or
-                  using our website, you agree to be bound by these terms.
-                </Text>
+                <Text>{t('term-1.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -36,19 +35,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  2. Description of Services
+                  {t('term-2.title')}
                 </Text>
-                <Text>
-                  MLPhone, integrating cutting-edge AI and Depin technology to
-                  usher in a new era of the Web3 ecosystem. With advanced iris
-                  recognition technology, MLPhone provides you with a unique
-                  digital identity while ensuring the safety of your privacy.
-                  Relying on the Matrix Layer Protocol, a new decentralized
-                  ecosystem is constructed, with the MLP underlying protocol
-                  offering robust security for network communications. The
-                  diverse intelligent hardware and application scenarios of
-                  MLPhone make it easy to access decentralized networks.
-                </Text>
+                <Text>{t('term-2.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -56,14 +45,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  3. Use of Services
+                  {t('term-3.title')}
                 </Text>
-                <Text>
-                  You agree to use our services in compliance with all
-                  applicable laws and regulations. Unauthorized use of our
-                  services, including but not limited to reverse engineering or
-                  unauthorized distribution, is strictly prohibited.
-                </Text>
+                <Text>{t('term-3.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -71,14 +55,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  4. User Accounts
+                  {t('term-4.title')}
                 </Text>
-                <Text>
-                  To access certain features of our services, you may need to
-                  create a user account. You are responsible for maintaining the
-                  confidentiality of your account information and for all
-                  activities that occur under your account.
-                </Text>
+                <Text>{t('term-4.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -86,14 +65,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  5. Intellectual Property
+                  {t('term-5.title')}
                 </Text>
-                <Text>
-                  All content, trademarks, service marks, logos, and software on
-                  this website are the property of Matrix Layer Protocol or its
-                  licensors and are protected by intellectual property laws.
-                  Unauthorized use of this content is prohibited.
-                </Text>
+                <Text>{t('term-5.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -101,13 +75,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  6. Privacy Policy
+                  {t('term-6.title')}
                 </Text>
-                <Text>
-                  Your privacy is important to us. Please refer to our Privacy
-                  Policy for information on how we collect, use, and protect
-                  your personal information.
-                </Text>
+                <Text>{t('term-6.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -115,14 +85,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  7. Disclaimers
+                  {t('term-7.title')}
                 </Text>
-                <Text>
-                  Our services are provided “as is” without warranties of any
-                  kind. We do not guarantee the accuracy, completeness, or
-                  reliability of any information on our website or through our
-                  products.
-                </Text>
+                <Text>{t('term-7.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -130,14 +95,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  8. Limitation of Liability
+                  {t('term-8.title')}
                 </Text>
-                <Text>
-                  Matrix Layer Protocol shall not be liable for any damages
-                  arising from the use or inability to use our services,
-                  including but not limited to direct, indirect, incidental, and
-                  consequential damages.
-                </Text>
+                <Text>{t('term-8.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -145,14 +105,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  9. Changes to Terms
+                  {t('term-9.title')}
                 </Text>
-                <Text>
-                  We reserve the right to modify these Terms & Conditions at any
-                  time. Any changes will be effective immediately upon posting
-                  on our website. Your continued use of the website constitutes
-                  acceptance of the modified terms.
-                </Text>
+                <Text>{t('term-9.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -160,13 +115,9 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  10. Governing Law
+                  {t('term-10.title')}
                 </Text>
-                <Text>
-                  These Terms & Conditions are governed by the laws of [Your
-                  Jurisdiction]. Any disputes arising from these terms shall be
-                  resolved in the courts of [Your Jurisdiction].
-                </Text>
+                <Text>{t('term-10.content')}</Text>
               </section>
 
               <section className='mb-8'>
@@ -174,18 +125,20 @@ const TermsPage = () => {
                   as='h2'
                   className='text-2xl font-semibold mb-4 text-white'
                 >
-                  11. Contact Us
+                  {t('term-11.title')}
                 </Text>
                 <Text>
-                  If you have any questions about these Terms & Conditions,
-                  please contact us at{' '}
-                  <Link
-                    href='mailto:info@matrixlayer.ai'
-                    className='text-blue-500 hover:underline'
-                    target='_blank'
-                  >
-                    info@matrixlayer.ai
-                  </Link>
+                  {t.rich('term-11.content', {
+                    email: (chunks) => (
+                      <Link
+                        href='mailto:info@matrixlayer.ai'
+                        className='text-blue-500 hover:underline'
+                        target='_blank'
+                      >
+                        {chunks}
+                      </Link>
+                    )
+                  })}
                 </Text>
               </section>
             </div>
