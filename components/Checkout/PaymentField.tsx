@@ -106,7 +106,7 @@ const PaymentField: FC<PaymentFieldProps> = ({
             value={referralCode.toUpperCase()}
             onChange={setReferralCode}
             id='referralCode'
-            placeholder='Enter your referral code'
+            placeholder={t('entercode')}
             inputClassName='focus:outline-none  h-[40px] !rounded-[16px] focus:!ring-0 w-[224px]'
             wrapperClassName='m-0'
           />

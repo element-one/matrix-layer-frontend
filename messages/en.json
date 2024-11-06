@@ -205,7 +205,8 @@
     "payNow": "Pay Now",
     "verify": "Verify",
     "statement": "I understand that this is a non-refundable pre-order deposit.",
-    "disclaimer": "By clicking ‘PAY NOW’, I acknowledge that I am committing to pre-ordering a product that is not immediately available. I also confirm that I have reviewed and agree to the terms outlined in the <policy>Privacy Policy</policy> and <terms>Terms & Conditions</terms>."
+    "disclaimer": "By clicking ‘PAY NOW’, I acknowledge that I am committing to pre-ordering a product that is not immediately available. I also confirm that I have reviewed and agree to the terms outlined in the <policy>Privacy Policy</policy> and <terms>Terms & Conditions</terms>.",
+    "entercode": "Enter your referral code"
   },
   "Terms": {
     "termsAndConditions": "Terms & Conditions",

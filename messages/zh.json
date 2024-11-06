@@ -205,7 +205,8 @@
     "payNow": "立即支付",
     "verify": "验证",
     "statement": "我了解这是一笔不可退还的预订金",
-    "disclaimer": "点击“立即支付”即表示我同意我正在预订一个不是立即可用的产品。我还确认我已经阅读并同意<policy>隐私政策</policy>和<terms>条款及条件中所列出的条款</terms>。"
+    "disclaimer": "点击“立即支付”即表示我同意我正在预订一个不是立即可用的产品。我还确认我已经阅读并同意<policy>隐私政策</policy>和<terms>条款及条件中所列出的条款</terms>。",
+    "entercode": "输入你的邀请码"
   },
   "Terms": {
     "termsAndConditions": "条款和条件",
