@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import { isMobile } from 'react-device-detect'
-import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Button, Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import clsx from 'clsx'
@@ -14,7 +13,6 @@ export interface BuyNFTModalProps {
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
-  const router = useRouter()
   const t = useTranslations('BuyNFTModal')
 
   const { hideModal, isModalShown } = useModal()
@@ -26,8 +24,9 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
 
   const handleBuyNFT = () => {
     handleClose()
-    router.push('/presale?tab=nft')
-    router.refresh()
+    if (window) {
+      window.location.replace('/presale?tab=nft')
+    }
   }
 
   return (
