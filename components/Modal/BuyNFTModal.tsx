@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { isMobile } from 'react-device-detect'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
+import { Button, Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import clsx from 'clsx'
 
 import { ModalType, useModal } from '@contexts/modal'
@@ -14,6 +14,7 @@ export interface BuyNFTModalProps {
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
+  const router = useRouter()
   const t = useTranslations('BuyNFTModal')
 
   const { hideModal, isModalShown } = useModal()
@@ -21,6 +22,12 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
   const handleClose = () => {
     hideModal()
     onClose?.()
+  }
+
+  const handleBuyNFT = () => {
+    handleClose()
+    router.push('/presale?tab=nft')
+    router.refresh()
   }
 
   return (
@@ -68,12 +75,13 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
               >
                 {t('cancel')}
               </button>
-              <Link
+              <Button
                 href='/presale?tab=nft'
                 className='rounded-full uppercase text-[16px] h-[48px] w-[300px]'
+                onClick={handleBuyNFT}
               >
                 {t('buyNFT')}
-              </Link>
+              </Button>
             </div>
           </div>
         </ModalBody>
