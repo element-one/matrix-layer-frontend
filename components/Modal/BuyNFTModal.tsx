@@ -1,11 +1,10 @@
 import { FC } from 'react'
 import { isMobile } from 'react-device-detect'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import clsx from 'clsx'
 
-import { Button } from '@components/Button'
 import { ModalType, useModal } from '@contexts/modal'
 
 export interface BuyNFTModalProps {
@@ -18,16 +17,10 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
   const t = useTranslations('BuyNFTModal')
 
   const { hideModal, isModalShown } = useModal()
-  const router = useRouter()
 
   const handleClose = () => {
     hideModal()
     onClose?.()
-  }
-
-  const handleBuyNFT = () => {
-    handleClose()
-    router.push('/presale?tab=nft')
   }
 
   return (
@@ -75,12 +68,12 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
               >
                 {t('cancel')}
               </button>
-              <Button
+              <Link
+                href='/presale?tab=nft'
                 className='rounded-full uppercase text-[16px] h-[48px] w-[300px]'
-                onClick={handleBuyNFT}
               >
                 {t('buyNFT')}
-              </Button>
+              </Link>
             </div>
           </div>
         </ModalBody>
