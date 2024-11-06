@@ -440,7 +440,7 @@ const ProductPage = () => {
                     </div>
                     <Text
                       className='text-center text-[12px] sm:text-[22px] mt-5 sm:mt-10 max-w-[1107px]
-                        shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'
+                        shadow-[0px_4px_4px_rgba(0,0,0,0.25)] pb-32'
                       size='bold'
                     >
                       {t('product.benefits.bottom')}
@@ -472,7 +472,7 @@ const ProductPage = () => {
                           ?.soldQuantity,
                         key: ProductEnum.AGENT_ONE,
                         tKey: 'agentOne', // for i18n
-                        tDescKey: ['desc1', 'desc2', 'desc3'] // for i18n
+                        tDescKey: ['desc1', 'desc2'] // for i18n
                       },
                       {
                         img: '/images/product/ai_agent_pro.png',
