@@ -70,6 +70,7 @@ const AI_AGENT_ULTRA_ADDRESS = process.env
   .NEXT_PUBLIC_AI_AGENT_ULTRA_ADDRESS as Address
 const PHONE_ADDRESS = process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address
 const POOL_B_ENABLE = process.env.NEXT_PUBLIC_POOL_B_ENABLE === 'true'
+const POOL_C_ENABLE = process.env.NEXT_PUBLIC_POOL_C_ENABLE === 'true'
 
 interface StakeToken {
   id: number
@@ -1705,20 +1706,22 @@ const StakePage: NextPage = () => {
                   </span>
                 </Tooltip>
               </Text>
-              <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
-                <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
-                  $2,345.89 USDT
-                </span>
-                <div
-                  className={clsx(
-                    'flex rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
-                    GradientBorderClass
-                  )}
-                >
-                  <span className='text-gray-a5'>$MLP {t('amount')}</span>
-                  <span>0.00</span>
+              {POOL_B_ENABLE && (
+                <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
+                  <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
+                    $2,345.89 USDT
+                  </span>
+                  <div
+                    className={clsx(
+                      'flex rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
+                      GradientBorderClass
+                    )}
+                  >
+                    <span className='text-gray-a5'>$MLP {t('amount')}</span>
+                    <span>0.00</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className='w-full mt-5 md:mt-20 flex items-center justify-between'>
               <Text
@@ -1737,44 +1740,54 @@ const StakePage: NextPage = () => {
                 {t('accelerate')}
               </Button>
             </div>
-            <div className='grid grid-cols-2 md:grid-cols-4 justify-around gap-2 md:gap-8 mt-4'>
+            {!POOL_B_ENABLE && (
               <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
+                className='bg-black mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
+                  text-gray-a5'
               >
-                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
-                  {t('yesterdayStakingRewards')}
-                </span>
-                <div className='text-[18px] font-bold'>0.00 MLP</div>
+                Coming soon
               </div>
-              <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
-              >
-                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
-                  {t('acceleratedMLP')}
-                </span>
-                <div className='text-[18px] font-bold'>0.00</div>
+            )}
+            {POOL_B_ENABLE && (
+              <div className='grid grid-cols-2 md:grid-cols-4 justify-around gap-2 md:gap-8 mt-4'>
+                <div
+                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
+                    {t('yesterdayStakingRewards')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0.00 MLP</div>
+                </div>
+                <div
+                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
+                    {t('acceleratedMLP')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0.00</div>
+                </div>
+                <div
+                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
+                    {t('holdingNFT')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0</div>
+                </div>
+                <div
+                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
+                    {t('totalMLPRewards')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0.00</div>
+                </div>
               </div>
-              <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
-              >
-                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
-                  {t('holdingNFT')}
-                </span>
-                <div className='text-[18px] font-bold'>0</div>
-              </div>
-              <div
-                className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
-              >
-                <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
-                  {t('totalMLPRewards')}
-                </span>
-                <div className='text-[18px] font-bold'>0.00</div>
-              </div>
-            </div>
+            )}
 
             <div className='flex flex-col gap-y-8 mt-8 items-center h-fit transition-height'>
               {isShowNFTDetails && (
@@ -1870,40 +1883,51 @@ const StakePage: NextPage = () => {
                 {t('accelerate')}
               </Button>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 mt-4'>
-              <div className='grid grid-cols-2 gap-2 md:gap-8'>
-                <div
-                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
-                >
-                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('yesterdayStakingRewards')}
-                  </span>
-                  <div className='text-[18px] font-bold'>0.00 MLP</div>
+
+            {!POOL_B_ENABLE && (
+              <div
+                className='bg-black mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
+                  text-gray-a5'
+              >
+                Coming soon
+              </div>
+            )}
+            {POOL_B_ENABLE && (
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 mt-4'>
+                <div className='grid grid-cols-2 gap-2 md:gap-8'>
+                  <div
+                    className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                      md:px-8 py-4'
+                  >
+                    <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                      {t('yesterdayStakingRewards')}
+                    </span>
+                    <div className='text-[18px] font-bold'>0.00 MLP</div>
+                  </div>
+                  <div
+                    className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
+                      md:px-8 py-4'
+                  >
+                    <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                      {t('acceleratedMLP')}
+                    </span>
+                    <div className='text-[18px] font-bold'>0.00</div>
+                  </div>
                 </div>
-                <div
-                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
-                >
-                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('acceleratedMLP')}
-                  </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8'>
+                  <div className='flex-1 hidden md:block'></div>
+                  <div
+                    className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
+                      py-4'
+                  >
+                    <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
+                      {t('TotalMLPRewards')}
+                    </span>
+                    <div className='text-[18px] font-bold'>0.00</div>
+                  </div>
                 </div>
               </div>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8'>
-                <div className='flex-1 hidden md:block'></div>
-                <div
-                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                    py-4'
-                >
-                  <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
-                    {t('TotalMLPRewards')}
-                  </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
-                </div>
-              </div>
-            </div>
+            )}
 
             <div className='flex flex-col gap-y-8 mt-8 items-center h-fit transition-height'>
               {isShowDetails && (
@@ -2025,54 +2049,66 @@ const StakePage: NextPage = () => {
                   </span>
                 </Tooltip>
               </Text>
-              <div
-                className={clsx(
-                  'flex items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
-                  GradientBorderClass
-                )}
-              >
-                <span className='text-gray-a5'>$MLP {t('amount')}</span>
-                <span>0.00</span>
-              </div>
+              {POOL_C_ENABLE && (
+                <div
+                  className={clsx(
+                    'flex items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
+                    GradientBorderClass
+                  )}
+                >
+                  <span className='text-gray-a5'>$MLP {t('amount')}</span>
+                  <span>0.00</span>
+                </div>
+              )}
             </div>
-            <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-8 mt-4'>
+            {!POOL_C_ENABLE && (
               <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
+                className='bg-black mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
+                  text-gray-a5'
               >
-                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                  {t('yesterdayStakingRewards')}
-                </span>
-                <div className='text-[18px] font-bold'>0.00 MLP</div>
+                Coming soon
               </div>
-              <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
-              >
-                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                  {t('acceleratedMLP')}
-                </span>
-                <div className='text-[18px] font-bold'>0.00</div>
+            )}
+            {POOL_C_ENABLE && (
+              <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-8 mt-4'>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                    {t('yesterdayStakingRewards')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0.00 MLP</div>
+                </div>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                    {t('acceleratedMLP')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0.00</div>
+                </div>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                    {t('holdingNFT')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0</div>
+                </div>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
+                    {t('totalMLPRewards')}
+                  </span>
+                  <div className='text-[18px] font-bold'>0.00</div>
+                </div>
               </div>
-              <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
-              >
-                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                  {t('holdingNFT')}
-                </span>
-                <div className='text-[18px] font-bold'>0</div>
-              </div>
-              <div
-                className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                  md:px-8 py-4'
-              >
-                <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                  {t('totalMLPRewards')}
-                </span>
-                <div className='text-[18px] font-bold'>0.00</div>
-              </div>
-            </div>
+            )}
           </div>
         </Content>
       </Container>

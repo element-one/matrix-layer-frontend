@@ -81,9 +81,6 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
             <DropdownItem key='myAccount' className='h-10'>
               {t('myAccount')}
             </DropdownItem>
-            <DropdownItem key='stake' className='h-10'>
-              {t('stake')}
-            </DropdownItem>
             <DropdownItem key='logout' className='h-10'>
               {t('logout')}
             </DropdownItem>

@@ -25,6 +25,12 @@ const holding_temp = [
   ],
   [
     {
+      title: 'Matrix',
+      count: 0,
+      icon: '/images/stake/matrix.png',
+      key: 'matrix'
+    },
+    {
       title: 'AI AGENT ONE',
       count: 0,
       icon: '/images/product/ai_agent_one.png',

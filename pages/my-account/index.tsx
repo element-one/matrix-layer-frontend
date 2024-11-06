@@ -12,11 +12,13 @@ import {
   TableRow,
   Tooltip
 } from '@nextui-org/react'
+import clsx from 'clsx'
 import { Address } from 'viem'
 import { useAccount, useReadContracts } from 'wagmi'
 
 import NFT_ABI from '@abis/NFT.json'
 import PAYMENT_ABI from '@abis/Payment.json'
+import STAKE_ABI from '@abis/Stake.json'
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
@@ -43,6 +45,8 @@ import {
 import { convertTypeToName } from '@utils/payment'
 import { tn } from '@utils/tn'
 import dayjs from 'dayjs'
+
+const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
 
 const gradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
@@ -94,6 +98,12 @@ const MyAccount = () => {
         abi: PAYMENT_ABI,
         functionName: 'getReferralRewards',
         args: [address]
+      },
+      {
+        address: process.env.NEXT_PUBLIC_MATRIX_ADDRESS as Address,
+        abi: NFT_ABI,
+        functionName: 'balanceOf',
+        args: [address]
       }
     ],
     query: {
@@ -102,13 +112,67 @@ const MyAccount = () => {
   })
   const { data: userData } = useGetUser(address, { enabled: !!address })
 
+  const { data: totalNfts } = useReadContracts({
+    contracts: [
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 0]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 1]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 2]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 3]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 4]
+      }
+    ],
+    query: {
+      enabled: !!address
+    }
+  })
+
+  const [
+    phoneStaked,
+    matrixStaked,
+    agentOneStaked,
+    agentProStaked,
+    agentUltraStaked
+  ] = totalNfts?.map((result) => result.result as number[]) ?? [
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+
   const [
     phoneBalance,
     aiAgentOneBalance,
     aiAgentProBalance,
     aiAgentUltraBalance,
-    referralRewards
+    referralRewards,
+    matrixBalance
   ] = nftBalances?.map((result) => result.result) ?? [
+    BigInt(0),
     BigInt(0),
     BigInt(0),
     BigInt(0),
@@ -121,18 +185,23 @@ const MyAccount = () => {
     aiAgentOneBalance?.toString(),
     aiAgentProBalance?.toString(),
     aiAgentUltraBalance?.toString(),
-    referralRewards?.toString()
+    referralRewards?.toString(),
+    matrixBalance?.toString()
   )
 
   const holdings = useMemo(() => {
     return {
-      phone: phoneBalance?.toString(),
+      phone: Number(phoneBalance?.toString() ?? 0) + phoneStaked.length,
       mlpTokenAmount: userData?.mlpTokenAmountPoolA,
       totalRewards: referralRewards?.toString(),
+      matrix: Number(matrixBalance?.toString() ?? 0) + matrixStaked.length,
       availableRewards: referralRewards?.toString(),
-      agent_one: aiAgentOneBalance?.toString(),
-      agent_pro: aiAgentProBalance?.toString(),
-      agent_ultra: aiAgentUltraBalance?.toString()
+      agent_one:
+        Number(aiAgentOneBalance?.toString() ?? 0) + agentOneStaked.length,
+      agent_pro:
+        Number(aiAgentProBalance?.toString() ?? 0) + agentProStaked.length,
+      agent_ultra:
+        Number(aiAgentUltraBalance?.toString() ?? 0) + agentUltraStaked.length
     }
   }, [
     phoneBalance,
@@ -140,7 +209,13 @@ const MyAccount = () => {
     aiAgentOneBalance,
     aiAgentProBalance,
     aiAgentUltraBalance,
-    userData?.mlpTokenAmountPoolA
+    matrixBalance,
+    userData?.mlpTokenAmountPoolA,
+    phoneStaked.length,
+    matrixStaked.length,
+    agentOneStaked.length,
+    agentProStaked.length,
+    agentUltraStaked.length
   ])
 
   const [selectedOrderId, setSelectedOrderId] = useState('')
@@ -321,7 +396,12 @@ const MyAccount = () => {
           {processHoldings(holdings).map((group, index) => (
             <div
               key={index}
-              className='grid mt-6 gap-6 grid-cols-1 md:grid-cols-3'
+              className={clsx(
+                'grid mt-6 gap-6',
+                index === 0
+                  ? 'grid-cols-1 md:grid-cols-3'
+                  : 'grid-cols-2 md:grid-cols-4'
+              )}
             >
               {group.map((item) => (
                 <HoldingItem
