@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 
 import { Container, Content, ImagesField } from '@components/Home/Container'
@@ -17,6 +18,8 @@ const advantages = [
 
 const HomePage = () => {
   const t = useTranslations('Index')
+
+  const router = useRouter()
 
   const { ref: section1Ref, inView: section1InView } = useInView({
     threshold: 0
@@ -297,6 +300,7 @@ const HomePage = () => {
               />
               <div className='grow flex sm:block flex-col items-center'>
                 <img
+                  key={router.locale}
                   src={t('section3.imgSrc')}
                   alt='home_image_6'
                   className='w-[157px] sm:w-[425px] object-cover'
