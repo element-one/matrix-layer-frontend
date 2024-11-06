@@ -71,5 +71,95 @@
         "description": "可以更加简单的作为一个硬件钱包使用MLPhone，只不过这个硬件钱包会帮你持续的创造收入"
       }
     }
+  },
+  "Presale": {
+    "tabs": {
+      "product": "产品",
+      "ai-agent-nft": "AI AGENT NFT"
+    },
+    "product": {
+      "section1": {
+        "subtitle": "移动硬件",
+        "info": "MLPhone是一款集成了虹膜识别技术的全链生态智能手机，旨在将区块链技术与日常生活无缝融合，为用户提供安全、便捷的Web3体验。通过强大的虹膜识别功能，MLPhone不仅确保用户身份的唯一性和隐私安全，还将手机转化为一个区块链节点，支持Web3和DeFi生态中的各类应用。",
+        "sold": "已售 {quantity}",
+        "connectToOrder": "连接钱包并订购",
+        "order": "立即订购"
+      },
+      "section2": {
+        "subtitle": "MLPHONE",
+        "title": "规格",
+        "dimensions": {
+          "name": "尺寸",
+          "value": "162.23x73.6x8.55 mm"
+        },
+        "operationSystem": {
+          "name": "操作系统",
+          "value": "基于Android 14"
+        },
+        "display": {
+          "name": "显示屏",
+          "value": "6.67 英寸 AMOLED，120Hz"
+        },
+        "batteryCapacity": {
+          "name": "电池容量",
+          "value": "5050mAh"
+        },
+        "gpu": {
+          "name": "GPU",
+          "value": "Arm Mali-G57"
+        },
+        "cpu": {
+          "name": "CPU",
+          "value": "MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz"
+        },
+        "simCard": {
+          "name": "SIM 卡",
+          "value": "双 SIM 卡 <br /> (Nano SIM、双待机)"
+        }
+      },
+      "benefits": {
+        "title": "用户权益",
+        "bottom": "由于物料供应限制和其他不可控因素，交付产品的实际规格可能与官方描述有所不同。MatrixLayerProtocol 保留在不提前通知的情况下更改产品规格的权利。",
+        "tokens": {
+          "title": "内置代币",
+          "description": "每部手机预装 20,000 个 $MLP 代币，将在 1.5 年内线性释放"
+        },
+        "experience": {
+          "title": "挖矿体验",
+          "description": "手机用户可获得10天基础池挖矿权（限时优惠），挖矿系数与AI Agent One一致"
+        },
+        "airdrops": {
+          "title": "生态系统代币空投",
+          "description": "手机持有者有资格获得未来整个链上生态系统的代币空投"
+        },
+        "node": {
+          "title": "平台节点",
+          "description": "手机作为平台节点，参与网络运营"
+        }
+      }
+    },
+    "aiAgent": {
+      "sold": "已售 {quantity}",
+      "orderNow": "立即订购",
+      "connectToOrder": "连接钱包并订购",
+      "agentOne": {
+        "title": "AI Agent One",
+        "desc1": "用 199 USDT激活NFT",
+        "desc2": "解锁基础池挖矿",
+        "desc3": "挖矿系数：11"
+      },
+      "agentPro": {
+        "title": "AI Agent Pro",
+        "desc1": "用 699 USDT激活NFT",
+        "desc2": "解锁基础池挖矿",
+        "desc3": "挖矿系数：1.2"
+      },
+      "agentUltra": {
+        "title": "AI Agent Ultra",
+        "desc1": "用 899 USDT激活NFT",
+        "desc2": "解锁基础池挖矿",
+        "desc3": "挖矿系数：1.5"
+      }
+    }
   }
 }

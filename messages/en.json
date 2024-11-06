@@ -1,7 +1,7 @@
 {
   "Navigation": {
     "home": "HOME",
-    "presale": "PRESALE/SALE",
+    "presale": "PRESALE",
     "myAccount": "My Account",
     "stake": "Stake",
     "logout": "Log out",
@@ -69,6 +69,96 @@
       "AIFinancialManagement": {
         "title": "AI Financial Management",
         "description": "Matrix Layer Phone serves as a hardware wallet that not only stores assets but continuously generates income for you through automated AI-driven investments."
+      }
+    }
+  },
+  "Presale": {
+    "tabs": {
+      "product": "PRODUCT",
+      "ai-agent-nft": "AI AGENT NFT"
+    },
+    "product": {
+      "section1": {
+        "subtitle": "mobile hardware",
+        "info": "MatrixLayerPhone is an intelligent hardware and owns diverse application scenarios, offers users a convenient entry point for accessing decentralized networks and Web3 applications in their daily lives. MLPhone brings an unprecedented experience for individuals and infinite opportunities for businesses, developers, and society as a whole.",
+        "sold": "{quantity} sold",
+        "connectToOrder": "Connect Wallet to Order",
+        "order": "Order Now"
+      },
+      "section2": {
+        "subtitle": "MATRIX LAYER PHONE",
+        "title": "Spesification",
+        "dimensions": {
+          "name": "Dimensions",
+          "value": "162.23x73.6x8.55 mm"
+        },
+        "operationSystem": {
+          "name": "Operating System",
+          "value": "Based on Android 14"
+        },
+        "display": {
+          "name": "Display",
+          "value": "AMOLED 6.67 inches, 120Hz"
+        },
+        "batteryCapacity": {
+          "name": "Battery Capacity",
+          "value": "5050mAh"
+        },
+        "gpu": {
+          "name": "GPU",
+          "value": "Arm Mali-G57"
+        },
+        "cpu": {
+          "name": "CPU",
+          "value": "MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz"
+        },
+        "simCard": {
+          "name": "SIM Cards",
+          "value": "Dual SIM <br /> (Nano SIM, dual standby)"
+        }
+      },
+      "benefits": {
+        "title": "User Benefits",
+        "bottom": "The actual specifications of the delivered product may differ from the official descriptions due to material supply constraints and other uncontrollable factors. MatrixLayerProtocol reserves the right to make changes to the product specifications without prior notice.",
+        "tokens": {
+          "title": "Built-in Tokens",
+          "description": "Each phone comes pre-installed with 20,000 $MLP tokens, to be released linearly over a period of 1.5 years."
+        },
+        "experience": {
+          "title": "Mining Experience",
+          "description": "Phone holders are granted 10 days of basic pool mining rights (a limited-time offer), with mining speeds matching that of AI Agent One"
+        },
+        "airdrops": {
+          "title": "Ecosystem Token Airdrops",
+          "description": "Holders of the phone are eligible for future ecosystem token airdrops across the entire chain"
+        },
+        "node": {
+          "title": "Platform Node",
+          "description": "The phone serves as a platform node, participating in network operations"
+        }
+      }
+    },
+    "aiAgent": {
+      "sold": "{quantity} sold",
+      "orderNow": "Order Now",
+      "connectToOrder": "Connect Wallet to Order",
+      "agentOne": {
+        "title": "AI Agent One",
+        "desc1": "Purchase $199 worth of $MLP to activate the NFT (the tokens will be burned after activation).",
+        "desc2": "Unlocks basic pool mining",
+        "desc3": "Mining coefficient: 1"
+      },
+      "agentPro": {
+        "title": "AI Agent Pro",
+        "desc1": "Purchase $699 worth of $MLP to activate the NFT (the tokens will be burned after activation).",
+        "desc2": "Unlocks basic pool mining",
+        "desc3": "Mining coefficient: 1.2"
+      },
+      "agentUltra": {
+        "title": "AI Agent Ultra",
+        "desc1": "Purchase $899 worth of $MLP to activate the NFT (the tokens will be burned after activation).",
+        "desc2": "Unlocks basic pool mining",
+        "desc3": "Mining coefficient: 1.5"
       }
     }
   }
