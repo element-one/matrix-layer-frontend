@@ -81,7 +81,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
               href={href}
               key={key}
             >
-              {t(key)}
+              {t(key as any)}
             </Link>
           )
         })}
