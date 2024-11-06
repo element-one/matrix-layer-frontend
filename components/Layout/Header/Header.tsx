@@ -3,6 +3,7 @@
 import React, { FC, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import {
   Divider,
   Popover,
@@ -23,6 +24,8 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ className }) => {
+  const t = useTranslations('Navigation')
+
   const { asPath } = useRouter()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
@@ -68,7 +71,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
         </Link>
       </div>
       <div className='hidden md:flex items-center justify-center gap-[80px]'>
-        {MenuList.map(({ key, label, href }) => {
+        {MenuList.map(({ key, href }) => {
           return (
             <Link
               className={clsx(
@@ -78,7 +81,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
               href={href}
               key={key}
             >
-              {label}
+              {t(key)}
             </Link>
           )
         })}

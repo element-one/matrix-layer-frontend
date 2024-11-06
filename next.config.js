@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  i18n: {
+    locales: ['en', 'zh'],
+    defaultLocale: 'zh',
+    localeDetection: false,
+  },
   reactStrictMode: false,
   webpack: (config) => {
     // Add rule for SVG files
