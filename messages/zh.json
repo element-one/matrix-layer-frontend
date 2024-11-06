@@ -325,8 +325,8 @@
     "reinvestment": "复投",
     "promotionPool": "推广池",
     "promotionPoolInfo": "您在推广池中的挖矿算力由您邀请的朋友的挖矿算力决定。",
-    "noNFTStakeAlert": "您没有<nft>NFT</nft>质押",
-    "noNFTUnstakeAlert": "您没有<nft>NFT</nft>取消质押",
+    "noNFTStakeAlert": "您没有<nft>NFT</nft>可以质押",
+    "noNFTUnstakeAlert": "您没有<nft>NFT</nft>可以取消质押",
     "unlockPool": "质押您的<nft>NFT</nft>以解锁此池",
     "stakeNFT": "质押 NFT",
     "AccelerateNFTBoostedPool": {
