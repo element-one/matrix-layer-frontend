@@ -112,7 +112,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                 py-[30px] px-[25px]'
             >
               <div className='flex flex-col items-center justify-center gap-4'>
-                {MenuList.map(({ key, label, href }) => {
+                {MenuList.map(({ key, href }) => {
                   return (
                     <Link
                       className={clsx(
@@ -124,7 +124,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                       key={key}
                       onClick={hideMenu}
                     >
-                      {label}
+                      {t(key as any)}
                     </Link>
                   )
                 })}
@@ -137,7 +137,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                     color='primary'
                     className='w-full h-[50px] !rounded-full text-[20px]'
                   >
-                    My Account
+                    {t('myAccount')}
                   </Button>
                   <div className='w-full'>
                     <Divider className='bg-co-bg-3' />
@@ -145,7 +145,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                       onClick={handleLogout}
                       className='cursor-pointer mt-5 text-center w-fit px-12 mx-auto text-xl'
                     >
-                      Log out
+                      {t('logout')}
                     </div>
                   </div>
                 </>
@@ -154,7 +154,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                   onClick={handleConnectWalletButtonClick}
                   className='w-full h-[50px] !rounded-full text-[20px]'
                 >
-                  Connect Wallet
+                  {t('connectWallet')}
                 </Button>
               )}
             </div>

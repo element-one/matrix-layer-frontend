@@ -1,6 +1,13 @@
 {
   "Navigation": {
     "home": "主页",
-    "presale": "购买"
+    "presale": "购买",
+    "myAccount": "我的账户",
+    "stake": "质押",
+    "logout": "登出",
+    "connectWallet": "连接钱包"
+  },
+  "Footer": {
+    "copyright": "版权归 © Matrix Layer Protocol 2024 所有– 将保留所有权利"
   }
 }

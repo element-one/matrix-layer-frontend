@@ -1,6 +1,13 @@
 {
   "Navigation": {
     "home": "HOME",
-    "presale": "PRESALE/SALE"
+    "presale": "PRESALE/SALE",
+    "myAccount": "My Account",
+    "stake": "Stake",
+    "logout": "Log out",
+    "connectWallet": "Connect Wallet"
+  },
+  "Footer": {
+    "copyright": "Copyright © Matrix Layer Protocol 2024 – All rights reserved."
   }
 }
