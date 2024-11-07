@@ -23,6 +23,7 @@ const LANGS = [
   }
 ]
 
+// larger than lg
 export const MultiLanguagePC = () => {
   const router = useRouter()
 
@@ -36,7 +37,7 @@ export const MultiLanguagePC = () => {
   }
 
   return (
-    <div className='items-center hidden sm:flex'>
+    <div className='items-center hidden lg:flex'>
       <Dropdown className='bg-transparent' placement='bottom' offset={28}>
         <DropdownTrigger>
           <Button isIconOnly={true} variant='light'>
@@ -66,6 +67,7 @@ export const MultiLanguagePC = () => {
   )
 }
 
+// smaller than lg
 export const MultiLanguageMobile = () => {
   const router = useRouter()
   const locale = router.locale ?? 'en'
@@ -86,7 +88,7 @@ export const MultiLanguageMobile = () => {
   }
 
   return (
-    <div className='items-center sm:hidden text-co-text-1 text-xl pb-1 pt-1'>
+    <div className='items-center lg:hidden text-co-text-1 text-xl pb-1 pt-1'>
       <div onClick={() => setIsChoosing(true)}>
         {locale === 'en' ? 'LANGUAGE' : '语言'}
       </div>

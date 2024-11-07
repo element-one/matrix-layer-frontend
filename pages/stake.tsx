@@ -769,6 +769,9 @@ const StakePage: NextPage = () => {
     }
   }
 
+  const cardClsx =
+    'p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]'
+
   return (
     <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
       <Container
@@ -784,6 +787,7 @@ const StakePage: NextPage = () => {
           </div>
         </Content>
       </Container>
+      {/* account */}
       <Container>
         <Content className='px-2 md:px-4'>
           <Text
@@ -795,15 +799,10 @@ const StakePage: NextPage = () => {
             {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-11 rounded-[20px] py-2 md:py-8 px-2
-              md:p-0'
+            className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8 px-2
+              lg:p-0'
           >
-            <div
-              className={clsx(
-                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
-                GradientBorderClass
-              )}
-            >
+            <div className={clsx(cardClsx, GradientBorderClass)}>
               <Text
                 className='mb-0 md:mb-[11px] px-2 md:px-0 text-lg md:text-2xl font-semibold bg-clip-text
                   text-transparent bg-gradient-text-1 md:bg-white'
@@ -828,12 +827,7 @@ const StakePage: NextPage = () => {
                 </Button>
               </div>
             </div>
-            <div
-              className={clsx(
-                'p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]',
-                GradientBorderClass
-              )}
-            >
+            <div className={clsx(cardClsx, GradientBorderClass)}>
               <Text
                 className='mb-0 md:mb-[11px] p-2 md:p-0 text-lg md:text-2xl font-semibold bg-clip-text
                   text-transparent bg-gradient-text-1'
@@ -893,6 +887,7 @@ const StakePage: NextPage = () => {
         </Content>
       </Container>
 
+      {/* nft inventory */}
       <Container>
         <Content className='px-4 md:px-4'>
           <Text
@@ -973,12 +968,7 @@ const StakePage: NextPage = () => {
             </div>
           </div>
           <div className='grid grid-cols-1 mt-8 md:grid-cols-2 gap-8 md:border-none rounded-[20px] p-0'>
-            <div
-              className={clsx(
-                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
-                GradientBorderClass
-              )}
-            >
+            <div className={clsx(cardClsx, GradientBorderClass)}>
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center w-full'>
                   <img
@@ -1007,12 +997,12 @@ const StakePage: NextPage = () => {
                       </Tooltip>
                     </span>
 
-                    <div className='text-[24px] mt-3 font-bold md:hidden'>
+                    <div className='text-[24px] mt-3 font-bold lg:hidden'>
                       {matrixStaked.length}
                     </div>
                   </div>
                 </div>
-                <div className='text-[48px] font-bold hidden md:block'>
+                <div className='text-[48px] font-bold hidden lg:block'>
                   {matrixStaked.length}
                 </div>
               </div>
@@ -1040,12 +1030,7 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div
-              className={clsx(
-                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
-                GradientBorderClass
-              )}
-            >
+            <div className={clsx(cardClsx, GradientBorderClass)}>
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center w-full'>
                   <img
@@ -1057,12 +1042,12 @@ const StakePage: NextPage = () => {
                     <span className='uppercase text-[20px] font-bold text-gray-a5'>
                       AI Agent One
                     </span>
-                    <div className='text-[24px] font-bold mb:hidden'>
+                    <div className='text-[24px] font-bold lg:hidden'>
                       {agentOneStaked.length}
                     </div>
                   </div>
                 </div>
-                <div className='text-[48px] font-bold hidden md:block'>
+                <div className='text-[48px] font-bold hidden lg:block'>
                   {agentOneStaked.length}
                 </div>
               </div>
@@ -1090,12 +1075,7 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div
-              className={clsx(
-                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
-                GradientBorderClass
-              )}
-            >
+            <div className={clsx(cardClsx, GradientBorderClass)}>
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
                   <img
@@ -1107,12 +1087,12 @@ const StakePage: NextPage = () => {
                     <span className='uppercase text-[20px] font-bold text-gray-a5'>
                       AI Agent Pro
                     </span>
-                    <div className='text-[24px] font-bold md:hidden'>
+                    <div className='text-[24px] font-bold lg:hidden'>
                       {agentProStaked.length}
                     </div>
                   </div>
                 </div>
-                <div className='text-[48px] font-bold hidden md:block'>
+                <div className='text-[48px] font-bold hidden lg:block'>
                   {agentProStaked.length}
                 </div>
               </div>
@@ -1140,12 +1120,7 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
             </div>
-            <div
-              className={clsx(
-                `p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
-                GradientBorderClass
-              )}
-            >
+            <div className={clsx(cardClsx, GradientBorderClass)}>
               <div className='flex w-full justify-between'>
                 <div className='flex gap-6 items-center'>
                   <img
@@ -1157,12 +1132,12 @@ const StakePage: NextPage = () => {
                     <span className='uppercase text-[20px] font-bold text-gray-a5'>
                       AI Agent Ultra
                     </span>
-                    <div className='text-[24px] font-bold md:hidden'>
+                    <div className='text-[24px] font-bold lg:hidden'>
                       {agentUltraStaked.length}
                     </div>
                   </div>
                 </div>
-                <div className='text-[48px] font-bold hidden md:block'>
+                <div className='text-[48px] font-bold hidden lg:block'>
                   {agentUltraStaked.length}
                 </div>
               </div>
@@ -1302,6 +1277,7 @@ const StakePage: NextPage = () => {
         </Content>
       </Container>
 
+      {/* hashrate information */}
       <Container>
         <Content className='px-4 md:px-4'>
           <Text
@@ -1343,7 +1319,7 @@ const StakePage: NextPage = () => {
                 </Button>
               </div>
             )}
-            <div className='grid mt-8 grid-cols-1 md:grid-cols-2 gap-8 rounded-[20px] md:p-0'>
+            <div className='grid mt-8 grid-cols-1 lg:grid-cols-2 gap-8 rounded-[20px] md:p-0'>
               <div
                 className={clsx(
                   `p-4 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
@@ -1356,7 +1332,7 @@ const StakePage: NextPage = () => {
                     {stakedTokens.length}
                   </span>
                 </div>
-                <div className='grid grid-cols-2 md:flex md:items-center md:justify-center gap-4 mt-2'>
+                <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-2'>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
