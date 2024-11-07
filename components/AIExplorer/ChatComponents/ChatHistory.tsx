@@ -14,19 +14,17 @@ export default function ChatHistory({
   isChatTyping
 }: ChatHistoryProps) {
   return (
-    <div className='pt-10 px-5'>
-      {conversation && (
-        <div className='flex flex-col gap-8'>
-          {conversation.messages.map((message, index) => (
-            <ChatMessage
-              key={index}
-              message={message}
-              chatLoading={chatLoading}
-              isChatTyping={isChatTyping}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    conversation && (
+      <div className='flex flex-col gap-8'>
+        {conversation.messages.map((message, index) => (
+          <ChatMessage
+            key={index}
+            message={message}
+            chatLoading={chatLoading}
+            isChatTyping={isChatTyping}
+          />
+        ))}
+      </div>
+    )
   )
 }

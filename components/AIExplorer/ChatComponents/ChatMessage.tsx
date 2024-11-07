@@ -8,6 +8,7 @@ import {
   getSingleSelectionNewsTimeScope
 } from '@helpers/components/message'
 import { Message, Role } from '@type/internal/message'
+import dayjs from 'dayjs'
 import rehypeRaw from 'rehype-raw'
 
 import ChatLink from './Markdown/ChatLink'
@@ -21,8 +22,8 @@ interface ChatMessageProps {
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({
   message,
-  // loading,
-  // chatLoading,
+  loading,
+  chatLoading,
   isChatTyping
 }: ChatMessageProps) => {
   const { createdAt, role } = message
@@ -32,7 +33,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   const isUserMessage = role === Role.User
   const alignment = isUserMessage ? 'flex-end' : 'flex-start'
   const createdDate = new Date(createdAt)
-  console.log(createdDate)
 
   const resolveRehypePlugins = (message: Message) => {
     const plugins = []
@@ -44,31 +44,31 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     return plugins
   }
 
-  // const formatDate = () => {
-  //   if (chatLoading) return 'Just now'
+  const formatDate = () => {
+    if (chatLoading) return 'Just now'
 
-  //   const now = new Date()
-  //   const timeDifference = now.getTime() - createdDate.getTime()
-  //   const minutesAgo = Math.floor(timeDifference / 60000)
+    const now = new Date()
+    const timeDifference = now.getTime() - createdDate.getTime()
+    const minutesAgo = Math.floor(timeDifference / 60000)
 
-  //   const isToday = (createdDate: Date) => {
-  //     const today = dayjs()
-  //     return today.isSame(createdDate, 'day')
-  //   }
+    const isToday = (createdDate: Date) => {
+      const today = dayjs()
+      return today.isSame(createdDate, 'day')
+    }
 
-  //   if (minutesAgo < 1) {
-  //     return 'Just Now'
-  //   } else if (minutesAgo < 15) {
-  //     return `${minutesAgo} minutes ago`
-  //   } else if (isToday(createdDate)) {
-  //     return dayjs(createdDate).format('hh:mm a')
-  //   } else {
-  //     return dayjs(createdDate).format('MM/dd/yyyy hh:mm a')
-  //   }
-  // }
+    if (minutesAgo < 1) {
+      return 'Just Now'
+    } else if (minutesAgo < 15) {
+      return `${minutesAgo} minutes ago`
+    } else if (isToday(createdDate)) {
+      return dayjs(createdDate).format('hh:mm a')
+    } else {
+      return dayjs(createdDate).format('MM/dd/yyyy hh:mm a')
+    }
+  }
 
-  const DotCharacter = '⚫'
-  const DOT_DISAPPEAR_DELAY = 1000
+  const DotCharacter = `    ⚪`
+  const DOT_DISAPPEAR_DELAY = 500
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>
@@ -116,28 +116,36 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         alignItems: alignment
       }}
     >
-      <div>
-        {!isUserMessage && (
+      {!isUserMessage && (
+        <div className='max-w-[800px] w-[80%] flex flex-col gap-y-1'>
           <div className='flex gap-x-5'>
             <Avatar className='w-6 h-6 shrink-0' />
-            <div className='whitespace-normal gap-5'>
-              <div>
-                <Text>
-                  <Markdown
-                    rehypePlugins={resolveRehypePlugins(message)}
-                    components={{
-                      a: (props) => <ChatLink {...props} />
-                    }}
-                  >
-                    {parsedContent}
-                  </Markdown>
-                </Text>
-              </div>
+            <div className='whitespace-normal rounded-[24px] px-6 py-4 markdown-body'>
+              <Markdown
+                rehypePlugins={resolveRehypePlugins(message)}
+                components={{
+                  a: (props) => <ChatLink {...props} />
+                }}
+              >
+                {parsedContent}
+              </Markdown>
             </div>
           </div>
-        )}
-        {isUserMessage && <div>{messageText}</div>}
-      </div>
+          {!loading && (
+            <div className='self-end text-[12px]'>{formatDate()}</div>
+          )}
+        </div>
+      )}
+      {isUserMessage && (
+        <div className='max-w-[800px] w-[80%] flex flex-col items-end gap-y-1'>
+          <Text className='w-fit text-[16px] rounded-[24px] px-6 py-[10px] bg-gray-32'>
+            {messageText}
+          </Text>
+          {!loading && (
+            <div className='self-end text-[12px]'>{formatDate()}</div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

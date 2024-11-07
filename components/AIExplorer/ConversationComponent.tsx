@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 
 import { chatSubscription } from '@graphql/client/resolvers/langchain'
 import { getCurrentPageContent, getCurrentUrl } from '@helpers/chrome'
@@ -21,8 +21,8 @@ import {
 } from 'helpers/components/message'
 
 import ChatHistory from './ChatComponents/ChatHistory'
+import TypingIndicator from './ChatComponents/TypingIndicator'
 import ChatBox from './ChatBox'
-import ScrollArea from './ScrollArea'
 
 interface ConversationComponentProps {
   conversationId: string
@@ -49,6 +49,8 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
 
   const [lastSystemMessageId, setLastSystemMessageId] = useState('')
 
+  const chatScrollRef = useRef<HTMLDivElement>(null)
+
   const [
     fetchChat,
     {
@@ -62,9 +64,18 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   ] = useLazySubscription(chatSubscription)
 
   useEffect(() => {
+    setStreamingMessage(undefined)
+    setLastSystemMessageId('')
+
     stopSubscription()
     // eslint-disable-next-line
   }, [conversationId])
+
+  useEffect(() => {
+    if (conversation) {
+      setMessages(conversation.messages)
+    }
+  }, [conversation])
 
   useEffect(() => {
     if (!chatData) {
@@ -130,7 +141,6 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   const handleSend = async (text: string) => {
     const pageUrl = await getCurrentUrl()
     const pageContent = await getCurrentPageContent()
-    console.log(pageUrl)
 
     const lastAiMessage = getLastAiMessage(conversations, conversationId)
 
@@ -167,20 +177,33 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
     })
   }
 
+  useEffect(() => {
+    const scrollAreaElement = chatScrollRef.current
+    if (scrollAreaElement) {
+      scrollAreaElement.scrollTo({
+        top: scrollAreaElement.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  }, [messages])
+
   return (
     <div
       className='w-full h-full border-2 border-[#666] rounded-[32px] flex flex-col
         overflow-hidden'
     >
-      <ScrollArea>
-        {conversation && (
-          <ChatHistory
-            conversation={{ ...conversation }}
-            chatLoading={chatPreLoading}
-            isChatTyping={chatLoading}
-          />
-        )}
-      </ScrollArea>
+      <div className='w-full h-full overflow-auto pt-10 px-5'>
+        <div ref={chatScrollRef}>
+          {conversation && (
+            <ChatHistory
+              conversation={{ ...conversation }}
+              chatLoading={chatPreLoading}
+              isChatTyping={chatLoading}
+            />
+          )}
+          {chatLoading && <TypingIndicator chatLoading={chatPreLoading} />}
+        </div>
+      </div>
       <ChatBox
         disabled={chatLoading}
         message={message}

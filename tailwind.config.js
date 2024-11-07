@@ -30,6 +30,7 @@ module.exports = {
         'red-255': '#FF6363',
         'purple-500': "#E789FF",
         'gray-a5': '#A5A5A5',
+        "gray-32": "#323232"
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui'],

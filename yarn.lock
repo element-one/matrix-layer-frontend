@@ -9610,6 +9610,11 @@ giget@^1.0.0:
     pathe "^1.1.1"
     tar "^6.2.0"
 
+github-markdown-css@^5.7.0:
+  version "5.7.0"
+  resolved "https://registry.npmjs.org/github-markdown-css/-/github-markdown-css-5.7.0.tgz#40fa19a8b9826a22874f305c40a5260d4d57e90a"
+  integrity sha512-GoYhaqELL4YUjz4tZ00PQ4JzFQkMfrBVuEeRB8W74HoikHWNiaGqSgynpwJEc+xom5uf04qoD/tUSS6ziZltaQ==
+
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
