@@ -6,21 +6,28 @@ import {
   getLastAiMessage,
   updateConversationMessages
 } from '@helpers/components/conversation'
+import { sendMessageToRemove } from '@helpers/components/messageSelection'
 import { messageToChatMessage } from '@helpers/dto/conversation/chat/request'
 import { chatMessageToMessage } from '@helpers/dto/conversation/chat/response'
 import { useLazySubscription } from '@hooks/useLazySubscription'
 import { useStore } from '@store/store'
+import { ChatFollowUpOptionInput } from '@type/graphqlApiSchema'
 import { Conversation } from '@type/internal/conversation'
 import { Message } from '@type/internal/message'
+import { MessageSelection } from '@type/internal/messageSelection'
 import {
   createActiveTabInteraction,
   createMessage,
   createPromptInteraction,
+  getErrorInteractionByUiCategory,
+  getFollowUpInteractionByUiCategory,
   mergeRequestMessages,
   mergeResponseMessages
 } from 'helpers/components/message'
+import { useDebouncedCallback } from 'use-debounce'
 
 import ChatHistory from './ChatComponents/ChatHistory'
+import FollowUpQuestion from './ChatComponents/FollowUpQuestion'
 import TypingIndicator from './ChatComponents/TypingIndicator'
 import ChatBox from './ChatBox'
 
@@ -42,14 +49,26 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
 
   const [conversation, setConversation] = useState<Conversation | null>(null)
   const [messages, setMessages] = useState(conversation?.messages || [])
-
   const [message, setMessage] = useState('')
-
   const [streamingMessage, setStreamingMessage] = useState<Message>()
+
+  const [followUpQuestions, setFollowUpQuestions] = useState<
+    ChatFollowUpOptionInput[]
+  >([])
+  const [followUpQuestionsIndex, setFollowUpQuestionsIndex] = useState(-1)
+  const [showFollowUpQuestions, setShowFollowUpQuestions] = useState(false)
+
+  const [userIdle, setUserIdle] = useState(false)
 
   const [lastSystemMessageId, setLastSystemMessageId] = useState('')
 
+  const [messageSelections, setMessageSelections] = useState<
+    MessageSelection[]
+  >([])
+
   const chatScrollRef = useRef<HTMLDivElement>(null)
+  const chatContentRef = useRef<HTMLDivElement>(null)
+  const chatBoxInputRef = useRef<HTMLInputElement>(null)
 
   const [
     fetchChat,
@@ -64,6 +83,10 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   ] = useLazySubscription(chatSubscription)
 
   useEffect(() => {
+    setShowFollowUpQuestions(false)
+    setFollowUpQuestions([])
+    setFollowUpQuestionsIndex(-1)
+
     setStreamingMessage(undefined)
     setLastSystemMessageId('')
 
@@ -76,6 +99,35 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       setMessages(conversation.messages)
     }
   }, [conversation])
+
+  useEffect(() => {
+    if (userIdle) {
+      if (followUpQuestions.length) {
+        setShowFollowUpQuestions(true)
+      }
+    }
+    // eslint-disable-next-line
+  }, [userIdle])
+
+  useEffect(() => {
+    const conversation = conversations.find(
+      (conversation) => conversation.id === conversationId
+    )
+    if (conversation) {
+      setConversation({ ...conversation })
+    }
+  }, [conversationId, conversations])
+
+  useEffect(() => {
+    const scrollAreaElement = chatScrollRef.current
+    const scrollContentElement = chatContentRef.current
+    if (scrollAreaElement && scrollContentElement) {
+      scrollAreaElement.scrollTo({
+        top: scrollContentElement.scrollHeight,
+        behavior: 'smooth'
+      })
+    }
+  }, [messages, showFollowUpQuestions])
 
   useEffect(() => {
     if (!chatData) {
@@ -126,17 +178,39 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
     if (chatComplete) {
       setLastSystemMessageId('')
       setStreamingMessage(undefined)
+
+      const interactionFollowUpQuestions = getFollowUpInteractionByUiCategory(
+        responseMessageMerged
+      )
+      if (interactionFollowUpQuestions) {
+        setFollowUpQuestions(interactionFollowUpQuestions.content.options)
+        setFollowUpQuestionsIndex(
+          interactionFollowUpQuestions.content.selected_option_index
+        )
+      }
+
+      if (getErrorInteractionByUiCategory(responseMessageMerged)) {
+        // setIsError(true)
+      } else {
+        handleRemoveAllSelections()
+      }
+
+      setShowFollowUpQuestions(false)
+      setUserIdle(false)
+      debouncedUserIdle(true)
     }
   }, [streamingMessage, chatComplete])
 
-  useEffect(() => {
-    const conversation = conversations.find(
-      (conversation) => conversation.id === conversationId
-    )
-    if (conversation) {
-      setConversation({ ...conversation })
-    }
-  }, [conversationId, conversations])
+  const messageProcess = async (sendMessage: Message) => {
+    setFollowUpQuestions([])
+    setFollowUpQuestionsIndex(-1)
+
+    const variables = messageToChatMessage(sendMessage, conversationId, userId)
+
+    await fetchChat({
+      variables
+    })
+  }
 
   const handleSend = async (text: string) => {
     const pageUrl = await getCurrentUrl()
@@ -169,31 +243,45 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
     messageProcess(sendMessageMerged)
   }
 
-  const messageProcess = async (sendMessage: Message) => {
-    const variables = messageToChatMessage(sendMessage, conversationId, userId)
+  const handleFollowUpQuestionSelect = (index: number) => {
+    const text = followUpQuestions[index].displayed_value
+    setFollowUpQuestions([])
+    setFollowUpQuestionsIndex(index)
 
-    await fetchChat({
-      variables
-    })
+    setMessage(text)
+    chatBoxInputRef.current?.focus()
   }
 
-  useEffect(() => {
-    const scrollAreaElement = chatScrollRef.current
-    if (scrollAreaElement) {
-      scrollAreaElement.scrollTo({
-        top: scrollAreaElement.scrollHeight,
-        behavior: 'smooth'
-      })
-    }
-  }, [messages])
+  const debouncedUserIdle = useDebouncedCallback((value) => {
+    setUserIdle(value)
+  }, 5000)
+
+  const handleOnChatBoxChange = () => {
+    setUserIdle(false)
+    debouncedUserIdle(true)
+  }
+
+  const handleOnScroll = () => {
+    setUserIdle(false)
+    debouncedUserIdle(true)
+  }
+
+  const handleRemoveAllSelections = () => {
+    sendMessageToRemove(messageSelections)
+    setMessageSelections([])
+  }
 
   return (
     <div
       className='w-full h-full border-2 border-[#666] rounded-[32px] flex flex-col
         overflow-hidden'
     >
-      <div className='w-full h-full overflow-auto pt-10 px-5'>
-        <div ref={chatScrollRef}>
+      <div
+        className='w-full h-full overflow-auto pt-10 px-5'
+        ref={chatScrollRef}
+        onScroll={handleOnScroll}
+      >
+        <div ref={chatContentRef}>
           {conversation && (
             <ChatHistory
               conversation={{ ...conversation }}
@@ -202,13 +290,22 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
             />
           )}
           {chatLoading && <TypingIndicator chatLoading={chatPreLoading} />}
+          {followUpQuestions.length > 0 && showFollowUpQuestions && (
+            <FollowUpQuestion
+              followUpQuestions={followUpQuestions}
+              followUpQuestionsIndex={followUpQuestionsIndex}
+              onSelect={handleFollowUpQuestionSelect}
+            />
+          )}
         </div>
       </div>
       <ChatBox
+        inputRef={chatBoxInputRef}
         disabled={chatLoading}
         message={message}
         onSend={handleSend}
         setMessage={setMessage}
+        onChange={handleOnChatBoxChange}
       ></ChatBox>
     </div>
   )

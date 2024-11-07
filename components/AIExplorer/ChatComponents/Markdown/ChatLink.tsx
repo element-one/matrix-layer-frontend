@@ -11,7 +11,7 @@ export default function ChatLink({
       target='_blank'
       rel='noopener noreferrer'
       {...props}
-      className='text-[#428ae3] underline'
+      className='text-blue-500 underline'
     >
       {children}
     </a>
