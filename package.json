@@ -52,6 +52,7 @@
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.4",
     "react-use": "^17.4.3",
+    "rehype-raw": "^7.0.0",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.5.2",
     "uuid": "^11.0.2",

@@ -130,6 +130,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   const handleSend = async (text: string) => {
     const pageUrl = await getCurrentUrl()
     const pageContent = await getCurrentPageContent()
+    console.log(pageUrl)
 
     const lastAiMessage = getLastAiMessage(conversations, conversationId)
 
@@ -181,6 +182,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
         )}
       </ScrollArea>
       <ChatBox
+        disabled={chatLoading}
         message={message}
         onSend={handleSend}
         setMessage={setMessage}

@@ -3,8 +3,14 @@ import Markdown from 'react-markdown'
 import { Avatar } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
-import { getMessageText } from '@helpers/components/message'
+import {
+  getMessageText,
+  getSingleSelectionNewsTimeScope
+} from '@helpers/components/message'
 import { Message, Role } from '@type/internal/message'
+import rehypeRaw from 'rehype-raw'
+
+import ChatLink from './Markdown/ChatLink'
 
 interface ChatMessageProps {
   message: Message
@@ -27,6 +33,16 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   const alignment = isUserMessage ? 'flex-end' : 'flex-start'
   const createdDate = new Date(createdAt)
   console.log(createdDate)
+
+  const resolveRehypePlugins = (message: Message) => {
+    const plugins = []
+
+    if (getSingleSelectionNewsTimeScope(message)) {
+      plugins.push(rehypeRaw)
+    }
+
+    return plugins
+  }
 
   // const formatDate = () => {
   //   if (chatLoading) return 'Just now'
@@ -93,8 +109,6 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
   const parsedContent = parseContent(messageText, message, showDot)
 
-  console.log(messageText)
-
   return (
     <div
       className='flex flex-col'
@@ -109,7 +123,14 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             <div className='whitespace-normal gap-5'>
               <div>
                 <Text>
-                  <Markdown>{parsedContent}</Markdown>
+                  <Markdown
+                    rehypePlugins={resolveRehypePlugins(message)}
+                    components={{
+                      a: (props) => <ChatLink {...props} />
+                    }}
+                  >
+                    {parsedContent}
+                  </Markdown>
                 </Text>
               </div>
             </div>

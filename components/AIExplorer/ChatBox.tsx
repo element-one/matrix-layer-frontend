@@ -7,9 +7,15 @@ interface ChatBoxProps {
   onSend: (content: string) => void
   message: string
   setMessage: (value: string) => void
+  disabled?: boolean
 }
 
-const ChatBox: FC<ChatBoxProps> = ({ onSend, message, setMessage }) => {
+const ChatBox: FC<ChatBoxProps> = ({
+  onSend,
+  message,
+  setMessage,
+  disabled
+}) => {
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
   }
@@ -35,8 +41,19 @@ const ChatBox: FC<ChatBoxProps> = ({ onSend, message, setMessage }) => {
         }}
         value={message}
         onChange={handleChangeMessage}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey && !disabled && message.trim()) {
+            e.preventDefault()
+            handleSend()
+          }
+        }}
       />
-      <Button isIconOnly variant='bordered' onClick={handleSend}>
+      <Button
+        isDisabled={disabled || !message.trim()}
+        isIconOnly
+        variant='bordered'
+        onClick={handleSend}
+      >
         <SendMessageIcon />
       </Button>
     </div>
