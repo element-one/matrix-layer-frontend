@@ -29,6 +29,8 @@
     "eth-rpc-errors": "^4.0.3",
     "ethers": "^6.13.2",
     "framer-motion": "^11.3.28",
+    "graphql": "^16.9.0",
+    "graphql-sse": "^2.5.3",
     "headlessui": "^0.0.0",
     "jszip": "^3.10.1",
     "next": "^14.0.4",
