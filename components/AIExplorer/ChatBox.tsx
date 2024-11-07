@@ -1,15 +1,28 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FC } from 'react'
 import { Button, Input } from '@nextui-org/react'
 
 import { SendMessageIcon } from '@components/Icon/SendMessage'
 
-const ChatBox = () => {
-  const [message, setMessage] = useState('')
+interface ChatBoxProps {
+  onSend: (content: string) => void
+  message: string
+  setMessage: (value: string) => void
+}
 
+const ChatBox: FC<ChatBoxProps> = ({ onSend, message, setMessage }) => {
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
   }
 
+  const handleSend = () => {
+    if (message.trim() === '') {
+      return
+    }
+
+    setMessage('')
+
+    onSend(message)
+  }
   return (
     <div className='w-full py-5 px-5 flex gap-x-4 items-center'>
       <Input
@@ -23,7 +36,7 @@ const ChatBox = () => {
         value={message}
         onChange={handleChangeMessage}
       />
-      <Button isIconOnly variant='bordered'>
+      <Button isIconOnly variant='bordered' onClick={handleSend}>
         <SendMessageIcon />
       </Button>
     </div>
