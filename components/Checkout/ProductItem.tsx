@@ -62,7 +62,7 @@ const ProductItem: FC<ProductItemProps> = ({
           : 'border-product-item-gradient'
       )}
     >
-      <div className='w-[80%] md:w-[430px]'>
+      <div className='w-[80%] lg:w-[430px]'>
         <div className='flex flex-row justify-between items-center mb-[14px]'>
           <Text className='text-[20px] md:text-[32px] font-bold text-white'>
             {product.name}

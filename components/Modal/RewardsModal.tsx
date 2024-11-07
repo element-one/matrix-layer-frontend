@@ -150,7 +150,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
             {t('info')}
           </Text>
           <div
-            className='grid grid-cols-1 md:grid-cols-2 justify-between items-center gap-x-8 gap-y-4
+            className='grid grid-cols-1 lg:grid-cols-2 justify-between items-center gap-x-8 gap-y-4
               mt-8'
           >
             <div

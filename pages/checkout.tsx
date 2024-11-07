@@ -400,13 +400,13 @@ const CheckoutPage = () => {
         </ImagesField>
         <Content>
           <div
-            className='flex flex-col gap-y-[10px] md:flex-row md:items-center justify-between
-              items-start py-[32px] md:py-[64px] border-b border-co-gray-2'
+            className='flex flex-col gap-y-[10px] xl:flex-row xl:items-center justify-between
+              items-start py-[32px] xl:py-[64px] border-b border-co-gray-2'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
               {t('selectItem')}
             </Text>
-            <div className='w-full md:w-fit grid grid-cols-1 md:grid-cols-2 gap-x-[24px] gap-y-[32px]'>
+            <div className='w-full md:w-fit grid grid-cols-1 lg:grid-cols-2 gap-x-[24px] gap-y-[32px]'>
               {isLoadingProducts ? (
                 <>
                   <SelectItemSkeleton />
@@ -463,7 +463,7 @@ const CheckoutPage = () => {
       </Container>
       <Container>
         <ImagesField>
-          <div className='hidden md:block absolute bottom-[100px] left-0 w-screen object-cover h-[1200px]'>
+          <div className='hidden lg:block absolute bottom-[100px] left-0 w-screen object-cover h-[1200px]'>
             <video
               className='w-fit absolute left-1/2 top-0 translate-x-[-50%] h-[1200px] object-cover
                 opacity-15'
@@ -485,7 +485,7 @@ const CheckoutPage = () => {
         </ImagesField>
         <Content>
           <div
-            className='flex flex-col md:flex-row justify-between items-start md:items-center pt-[32px]
+            className='flex flex-col lg:flex-row justify-between items-start lg:items-center pt-[32px]
               md:pt-[64px] pb-[150px] md:pb-[300px] gap-y-[20px]'
           >
             <Text className='text-[20px] font-semibold text-co-gray-7'>
