@@ -1,5 +1,6 @@
 import { FC, Key } from 'react'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import {
   Dropdown,
   DropdownItem,
@@ -26,6 +27,8 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
   const { showModal } = useModal()
   const { isConnected, isConnecting, isReconnecting, address } = useAccount()
   const { disconnect } = useDisconnect()
+
+  const t = useTranslations('Navigation')
 
   const handleClick = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
@@ -76,13 +79,10 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
             className='bg-co-bg-1 text-co-text-1 py-2 border rounded-2xl border-co-border-gray'
           >
             <DropdownItem key='myAccount' className='h-10'>
-              My Account
-            </DropdownItem>
-            <DropdownItem key='stake' className='h-10'>
-              Stake
+              {t('myAccount')}
             </DropdownItem>
             <DropdownItem key='logout' className='h-10'>
-              Log out
+              {t('logout')}
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -115,7 +115,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
       onClick={handleClick}
       isLoading={isConnecting || isReconnecting}
     >
-      <span>Connect Wallet</span>
+      <span>{t('connectWallet')}</span>
     </Button>
   )
 }

@@ -15,8 +15,8 @@ export const TopSectionBackground = () => {
         alt='product-dot'
       />
       <img
-        className='hidden sm:inline-block absolute rotate-[45deg] top-[250px] -left-[73px]
-          w-[245px] h-[245px]'
+        className='hidden sm:inline-block absolute rotate-[45deg] top-[160px] lg:top-[250px]
+          -left-[73px] w-[245px] h-[245px]'
         src='/images/product/product-dot.png'
         alt='product-dot'
       />

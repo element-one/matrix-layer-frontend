@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
+import { useTranslations } from 'next-intl'
 import {
   Modal,
   ModalBody,
@@ -50,6 +51,8 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
   onClose,
   title
 }) => {
+  const t = useTranslations('Modals.rewardHistoryModal')
+
   const { address } = useAccount()
   const [page, setPage] = useState(1)
 
@@ -92,7 +95,7 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
       <ModalContent className='bg-black-15 md:border md:border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
           <Text className='text-white text-[24px] md:text-[32px] font-bold'>
-            {title ?? 'History'}
+            {title ?? t('title')}
           </Text>
           <Table
             aria-label='Reward History'
@@ -105,10 +108,10 @@ export const RewardsHistoryModal: FC<RewardsHistoryModalProps> = ({
             }}
           >
             <TableHeader>
-              <TableColumn>Time</TableColumn>
-              <TableColumn>Address</TableColumn>
-              <TableColumn>Reward</TableColumn>
-              <TableColumn>Status</TableColumn>
+              <TableColumn>{t('time')}</TableColumn>
+              <TableColumn>{t('address')}</TableColumn>
+              <TableColumn>{t('reward')}</TableColumn>
+              <TableColumn>{t('status')}</TableColumn>
             </TableHeader>
             <TableBody
               isLoading={isLoading || isRefetching}

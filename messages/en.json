@@ -1,0 +1,392 @@
+{
+  "Navigation": {
+    "home": "HOME",
+    "presale": "PRESALE",
+    "myAccount": "My Account",
+    "stake": "STAKE",
+    "logout": "Log out",
+    "connectWallet": "Connect Wallet"
+  },
+  "Footer": {
+    "copyright": "Copyright © Matrix Layer Protocol 2024 – All rights reserved."
+  },
+  "Index": {
+    "section1": {
+      "unlock1": "Unlock with Your Eyes,",
+      "unlock2": " Connect with the Blockchain"
+    },
+    "section2": {
+      "title1": "The World's First Smartphone",
+      "title2": "with Full-Chain Network Integration",
+      "intro": "Matrix Layer Phone is designed to break the limitations of traditional mobile devices by deeply integrating blockchain technology into smartphones through innovative hardware and software, simplifying users' access to Web3 and enhancing their overall experience.",
+      "footer": "Redefining the Gateway to the Blockchain Ecosystem"
+    },
+    "section2-sub": {
+      "title1": "Why choose",
+      "title2": "Matrix Layer Phone",
+      "info1": "The world's first mobile blockchain network node with iris authentication.",
+      "footer1": "Safety and profitability coexist",
+      "info2": "Ultimate privacy and industry-standard confidentiality.",
+      "footer2": "Iris login, identification information ZK encryption",
+      "info3": "The first full-chain ecological Web3 mobile phone",
+      "footer3": "One device in hand, interacts with the global ecosystem."
+    },
+    "section3": {
+      "imgSrc": "/images/home/home_image_6.webp",
+      "title": "smartphone assistant",
+      "info": "Follow Sam Altman's thoughts and let technology serve life"
+    },
+    "section3-sub": {
+      "title1": "One Mobile Phone, ",
+      "title2": "6 Benefits",
+      "imgSrc": "/images/home/home_image_7.webp",
+      "mobileImgSrc": "/images/home/home_image_7_mobile.webp"
+    },
+    "section4": {
+      "title1": "How to join",
+      "title2": " Matrix Layer Phone ",
+      "title3": "growth and maximize earnings?",
+      "purchaseHardware": {
+        "title": "Purchase Hardware",
+        "description": "Instantly receive rewards as a network node."
+      },
+      "ecosystemAirdrops": {
+        "title": "Ecosystem Airdrops",
+        "description": "Receive airdrops from ecosystem partners over time as part of the rewards."
+      },
+      "promoteHardware": {
+        "title": "Promote Hardware",
+        "description": "Earn promotional rewards for expanding the network node ecosystem. Continue earning over time."
+      },
+      "profitSharing": {
+        "title": "Profit Sharing",
+        "description": "The more users you bring in, the more airdrops and ecosystem rewards they earn, and you’ll receive a share of those rewards."
+      },
+      "stakingRewards": {
+        "title": "Staking Rewards",
+        "description": "After becoming a network node, you can stake assets and receive additional incentives."
+      },
+      "AIFinancialManagement": {
+        "title": "AI Financial Management",
+        "description": "Matrix Layer Phone serves as a hardware wallet that not only stores assets but continuously generates income for you through automated AI-driven investments."
+      }
+    }
+  },
+  "Presale": {
+    "tabs": {
+      "product": "PRODUCT",
+      "ai-agent-nft": "AI AGENT NFT"
+    },
+    "product": {
+      "section1": {
+        "subtitle": "mobile hardware",
+        "info": "MatrixLayerPhone is an intelligent hardware and owns diverse application scenarios, offers users a convenient entry point for accessing decentralized networks and Web3 applications in their daily lives. MLPhone brings an unprecedented experience for individuals and infinite opportunities for businesses, developers, and society as a whole.",
+        "sold": "{quantity} sold",
+        "connectToOrder": "Connect Wallet to Order",
+        "order": "Order Now"
+      },
+      "section2": {
+        "subtitle": "MATRIX LAYER PHONE",
+        "title": "Spesification",
+        "dimensions": {
+          "name": "Dimensions",
+          "value": "162.23x73.6x8.55 mm"
+        },
+        "operationSystem": {
+          "name": "Operating System",
+          "value": "Based on Android 14"
+        },
+        "display": {
+          "name": "Display",
+          "value": "AMOLED 6.67 inches, 120Hz"
+        },
+        "batteryCapacity": {
+          "name": "Battery Capacity",
+          "value": "5050mAh"
+        },
+        "gpu": {
+          "name": "GPU",
+          "value": "Arm Mali-G57"
+        },
+        "cpu": {
+          "name": "CPU",
+          "value": "MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz"
+        },
+        "simCard": {
+          "name": "SIM Cards",
+          "value": "Dual SIM <br /> (Nano SIM, dual standby)"
+        }
+      },
+      "benefits": {
+        "title": "User Benefits",
+        "bottom": "The actual specifications of the delivered product may differ from the official descriptions due to material supply constraints and other uncontrollable factors. MatrixLayerProtocol reserves the right to make changes to the product specifications without prior notice.",
+        "tokens": {
+          "title": "Built-in Tokens",
+          "description": "Each phone comes pre-installed with 20,000 $MLP tokens, to be released linearly over a period of 1.5 years."
+        },
+        "experience": {
+          "title": "Mining Experience",
+          "description": "Phone holders are granted 10 days of basic pool mining rights (a limited-time offer), with mining speeds matching that of AI Agent One"
+        },
+        "airdrops": {
+          "title": "Ecosystem Token Airdrops",
+          "description": "Holders of the phone are eligible for future ecosystem token airdrops across the entire chain"
+        },
+        "node": {
+          "title": "Platform Node",
+          "description": "The phone serves as a platform node, participating in network operations"
+        }
+      }
+    },
+    "aiAgent": {
+      "sold": "{quantity} sold",
+      "orderNow": "Order Now",
+      "connectToOrder": "Connect Wallet to Order",
+      "agentOne": {
+        "title": "AI Agent One",
+        "desc1": "Purchase $199 worth of $MLP to activate the NFT (the tokens will be burned after activation).",
+        "desc2": "Unlocks basic pool mining"
+      },
+      "agentPro": {
+        "title": "AI Agent Pro",
+        "desc1": "Purchase $699 worth of $MLP to activate the NFT (the tokens will be burned after activation).",
+        "desc2": "Unlocks basic pool mining",
+        "desc3": "Mining coefficient: x 1.2"
+      },
+      "agentUltra": {
+        "title": "AI Agent Ultra",
+        "desc1": "Purchase $899 worth of $MLP to activate the NFT (the tokens will be burned after activation).",
+        "desc2": "Unlocks basic pool mining",
+        "desc3": "Mining coefficient: x 1.5"
+      }
+    }
+  },
+  "MyAccount": {
+    "myAccount": "My Account",
+    "referralCode": "Referral Code",
+    "copyCode": "Copy Code",
+    "referralLink": "Referral Link",
+    "copyLink": "Copy Link",
+    "verify Code": "Verify Code",
+    "IOwn": "I own",
+    "phone": "MATRIX LAYER PHONE",
+    "mlpTokenAmount": "MLP TOKEN",
+    "availableRewards": "Rewards",
+    "matrix": "MATRIX",
+    "agent_one": "AI AGENT ONE",
+    "agent_pro": "AI AGENT PRO",
+    "agent_ultra": "AI AGENT ULTRA",
+    "myOrder": "My Order",
+    "date": "Date",
+    "receiverAddress": "Receiver Address",
+    "total": "Total",
+    "status": "Status",
+    "paid": "Paid",
+    "completed": "Completed",
+    "shipped": "Shipped",
+    "unpaid": "Unpaid",
+    "item": "item",
+    "rewardDetails": "REWARD DETAILS",
+    "submitAddress": "Submit Address",
+    "confirmReceipt": "Confirm Receipt"
+  },
+  "Checkout": {
+    "checkout": "Checkout",
+    "customerDetails": "Customer Details",
+    "connectWallet": "Connect Wallet",
+    "copy": "Copy",
+    "copied": "Copied",
+    "selectItem": "Select Item",
+    "selectQuantity": "Select Quantity",
+    "item": "item",
+    "subtotal": "subtotal",
+    "payment": "Payment",
+    "payNow": "Pay Now",
+    "verify": "Verify",
+    "statement": "I understand that this is a non-refundable pre-order deposit.",
+    "disclaimer": "By clicking ‘PAY NOW’, I acknowledge that I am committing to pre-ordering a product that is not immediately available. I also confirm that I have reviewed and agree to the terms outlined in the <policy>Privacy Policy</policy> and <terms>Terms & Conditions</terms>.",
+    "entercode": "Enter your referral code",
+    "paymentSuccessful": "Payment successful",
+    "ViewMyOrders": "View My Orders"
+  },
+  "Terms": {
+    "termsAndConditions": "Terms & Conditions",
+    "term-1": {
+      "title": "1. Introduction",
+      "content": "Welcome to Matrix Layer Protocol. These Terms & Conditions govern your use of our website and services. By accessing or using our website, you agree to be bound by these terms."
+    },
+    "term-2": {
+      "title": "2. Description of Services",
+      "content": "MLPhone, integrating cutting-edge AI and Depin technology to usher in a new era of the Web3 ecosystem. With advanced iris recognition technology, MLPhone provides you with a unique digital identity while ensuring the safety of your privacy. Relying on the Matrix Layer Protocol, a new decentralized ecosystem is constructed, with the MLP underlying protocol offering robust security for network communications. The diverse intelligent hardware and application scenarios of MLPhone make it easy to access decentralized networks."
+    },
+    "term-3": {
+      "title": "3. Use of Services",
+      "content": "You agree to use our services in compliance with all applicable laws and regulations. Unauthorized use of our services, including but not limited to reverse engineering or unauthorized distribution, is strictly prohibited."
+    },
+    "term-4": {
+      "title": "4. User Accounts",
+      "content": "To access certain features of our services, you may need to create a user account. You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account."
+    },
+    "term-5": {
+      "title": "5. Intellectual Property",
+      "content": "All content, trademarks, service marks, logos, and software on this website are the property of Matrix Layer Protocol or its licensors and are protected by intellectual property laws. Unauthorized use of this content is prohibited."
+    },
+    "term-6": {
+      "title": "6. Privacy Policy",
+      "content": "Your privacy is important to us. Please refer to our Privacy Policy for information on how we collect, use, and protect your personal information."
+    },
+    "term-7": {
+      "title": "7. Disclaimers",
+      "content": "Our services are provided “as is” without warranties of any kind. We do not guarantee the accuracy, completeness, or reliability of any information on our website or through our products."
+    },
+    "term-8": {
+      "title": "8. Limitation of Liability",
+      "content": "Matrix Layer Protocol shall not be liable for any damages arising from the use or inability to use our services, including but not limited to direct, indirect, incidental, and consequential damages."
+    },
+    "term-9": {
+      "title": "9. Changes to Terms",
+      "content": "We reserve the right to modify these Terms & Conditions at any time. Any changes will be effective immediately upon posting on our website. Your continued use of the website constitutes acceptance of the modified terms."
+    },
+    "term-10": {
+      "title": "10. Governing Law",
+      "content": "These Terms & Conditions are governed by the laws of [Your Jurisdiction]. Any disputes arising from these terms shall be resolved in the courts of [Your Jurisdiction]."
+    },
+    "term-11": {
+      "title": "11. Contact Us",
+      "content": "If you have any questions about these Terms & Conditions, please contact us at <email>info@matrixlayer.ai</email>"
+    }
+  },
+  "Stake": {
+    "skateTitle": "Stake",
+    "myAccount": "My Account",
+    "enterInviteCode": "Enter invite code",
+    "referralCode": "My referral code",
+    "copyCode": "Copy code",
+    "referralLink": "Referral Link",
+    "copyLink": "Copy Link",
+    "verifyLink": "Verify Link",
+    "invitationSystem": "Invitation System",
+    "ReferralCodeUsed": "Referral Code used",
+    "referralAddress": "Your Referrer’s Wallet Address",
+    "NFTinventory": "My NFT Inventory",
+    "ordinary": "Ordinary",
+    "stake": "Staked",
+    "phoneInfo": "MLPhone NFT come with 10 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
+    "matrixInfo": "Matrix NFTs come with 7 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
+    "usdt": "USDT",
+    "nodeRewards": "Node Rewards",
+    "history": "History",
+    "claim": "CLAIM",
+    "mlp": "MLP",
+    "claimable": "CLAIMABLE",
+    "hashRateInfo": "MLP's Hashrate Information",
+    "totalNFT": "Total NFT",
+    "dailyMLPDistribution": "Daily MLP Distribution",
+    "staking": "Staking",
+    "tab": {
+      "stake": "STAKE",
+      "unStake": "UNSTAKE"
+    },
+    "stakeBtn": "STAKE",
+    "unstakeBtn": "UNSTAKE",
+    "basicPool": "Basic Pool (PoW)",
+    "NFTComputingPower": "NFT Computing Power",
+    "TotalMLPRewards": "Total MLP Rewards",
+    "DailyRewardsHistory": "Daily rewards history",
+    "basicPoolInfo": "Your mining power in the basic pool is determined by the number and value of the NFTs you have staked.",
+    "AccelerationPool": {
+      "title": "Acceleration Pool (PoS)",
+      "info": "Your mining power in the accelerated pool is determined by the amount of $MLP you have staked."
+    },
+    "NFTBoostedPool": "NFT Boosted Pool",
+    "yesterdayStakingRewards": "Yesterday’s Staking Rewards",
+    "yesterdayRewards": "Yesterday’s Rewards",
+    "acceleratedMLP": "Accelerated MLP",
+    "holdingNFT": "Holding NFT",
+    "totalMLPRewards": "Total MLP Rewards",
+    "dailyRewardsHistory": "Daily rewards history",
+    "accelerate": "Accelerate",
+    "amount": "Amount",
+    "bestAccelerationRate": "Best Acceleration Rate",
+    "confirm": "confirm",
+    "stakingDetails": "STAKING DETAILS",
+    "hideDetails": "HIDE DETAILS",
+    "stakedDate": "staked date",
+    "stakedAmount": "staked amount",
+    "cumulativeIncome": "cumulative income",
+    "unstakedDate": "unstaked date",
+    "action": "action",
+    "NumberOfStakedTokens": "Number of staked tokens",
+    "withdraw": "withdraw",
+    "withdrawn": "withdrawn",
+    "MLPBoostedPool": "MLP Boosted Pool",
+    "stakingPeriod": "staking period",
+    "reinvestment": "reinvestment",
+    "promotionPool": "Promotion Pool",
+    "promotionPoolInfo": "Your mining power in the referral pool is determined by the mining power of the friends you have invited.",
+    "noNFTStakeAlert": "You don't have any <nft>NFT</nft> to stake",
+    "noNFTUnstakeAlert": "You don't have any <nft>NFT</nft> to unstake",
+    "unlockPool": "Stake your <nft>NFT</nft> to unlock this pool",
+    "stakeNFT": "STAKE NFT",
+    "AccelerateNFTBoostedPool": {
+      "title": "Accelerate NFT Boosted Pool",
+      "info": "MLPhone NFT come with 10 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid. ",
+      "input": "INPUT",
+      "amount": "AMOUNT",
+      "confirm": "CONFIRM",
+      "bestRate": "Best Acceleration Rate"
+    },
+    "accelerateMLPBoostedPool": {
+      "title": "Accelerate MLP Boosted Pool",
+      "info": "MLPhone NFT come with 10 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
+      "statement": "Will the earnings be reinvested? Reinvestment will lock your funds and you will not be able to withdraw early during the lock-up period.",
+      "disclaimer": "Disclaimer : APY Rates are calculated based on yesterday’s the pool status as an approzimate reference and <gradient>might not be 100% accurate</gradient>",
+      "input": "INPUT",
+      "amount": "AMOUNT",
+      "confirm": "CONFIRM",
+      "bestRate": "Best Acceleration Rate"
+    }
+  },
+  "ReferralCodeModal": {
+    "referralCode": "Referral Code",
+    "verify": "Verify",
+    "hadReferrer": "You've already bound the referrer",
+    "success": "Code Valid and Invitation successfully recorded ",
+    "back": "Back to Home",
+    "skip": "Skip"
+  },
+  "BuyNFTModal": {
+    "statement": "You don't own any <text1>NFTs</text1>, buy <text2>NFTs</text2> to start your journey with $MLP/ earn $MLP",
+    "cancel": "Cancel",
+    "buyNFT": "Buy NFT"
+  },
+  "WithdrawModal": {
+    "withdraw": "Withdraw",
+    "desc": "You are getting back staked 5000 $MLP along with the staking rewards {amount} $MLP.",
+    "total": "{amount} &MLP in total, continue?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "Modals": {
+    "rewardModal": {
+      "title": "Reward Details",
+      "info": "Collect your rewards for sharing Matrix Layer Protocol with your frens & fam.",
+      "totalReward": "TOTAL REWARD",
+      "claimableReward": "CLAIMABLE REWARD",
+      "history": "HISTORY",
+      "claim": "CLAIM"
+    },
+    "rewardHistoryModal": {
+      "title": "History",
+      "time": "Time",
+      "address": "Address",
+      "reward": "Reward",
+      "status": "Status"
+    },
+    "rewardClaimSuccessModal": {
+      "title": "Claim Reward",
+      "success": "Success",
+      "second": "S"
+    }
+  }
+}

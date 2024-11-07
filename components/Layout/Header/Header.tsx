@@ -3,6 +3,7 @@
 import React, { FC, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import {
   Divider,
   Popover,
@@ -14,6 +15,10 @@ import { useAccount, useDisconnect } from 'wagmi'
 
 import { Button, ConnectWalletButton } from '@components/Button'
 import { MenuItemIcon } from '@components/Icon/MenuItemsIcon'
+import {
+  MultiLanguageMobile,
+  MultiLanguagePC
+} from '@components/MultiLanguage/MultiLanguage'
 import { ModalType, useModal } from '@contexts/modal'
 
 import { MenuList } from './ProfileMenu'
@@ -23,6 +28,8 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ className }) => {
+  const t = useTranslations('Navigation')
+
   const { asPath } = useRouter()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
@@ -54,7 +61,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
     <div
       className={clsx(
         `flex items-center w-full border-co-border-1 bg-opacity-5 backdrop-blur-md py-3
-          md:py-6 px-4 md:px-[60px] justify-between rounded-[32px] border`,
+          lg:py-6 px-4 lg:px-[60px] justify-between rounded-[32px] border`,
         className
       )}
     >
@@ -67,8 +74,8 @@ const Header: FC<HeaderProps> = ({ className }) => {
           />
         </Link>
       </div>
-      <div className='hidden md:flex items-center justify-center gap-[80px]'>
-        {MenuList.map(({ key, label, href }) => {
+      <div className='hidden lg:flex items-center justify-center gap-[50px]'>
+        {MenuList.map(({ key, href }) => {
           return (
             <Link
               className={clsx(
@@ -78,12 +85,13 @@ const Header: FC<HeaderProps> = ({ className }) => {
               href={href}
               key={key}
             >
-              {label}
+              {t(key as any)}
             </Link>
           )
         })}
       </div>
       <div className='flex items-center justify-end gap-2'>
+        <MultiLanguagePC />
         <ConnectWalletButton />
         <Popover
           backdrop='opaque'
@@ -98,18 +106,18 @@ const Header: FC<HeaderProps> = ({ className }) => {
           isOpen={menuVisible}
           onClose={hideMenu}
         >
-          <PopoverTrigger className='md:hidden'>
+          <PopoverTrigger className='lg:hidden'>
             <div onClick={() => setMenuVisible(true)}>
               <MenuItemIcon />
             </div>
           </PopoverTrigger>
-          <PopoverContent className='w-screen left-0'>
+          <PopoverContent className='w-screen left-0 relative md:px-10'>
             <div
               className='border-gradient w-full h-full flex flex-col gap-7 items-center justify-start
                 py-[30px] px-[25px]'
             >
               <div className='flex flex-col items-center justify-center gap-4'>
-                {MenuList.map(({ key, label, href }) => {
+                {MenuList.map(({ key, href }) => {
                   return (
                     <Link
                       className={clsx(
@@ -121,10 +129,11 @@ const Header: FC<HeaderProps> = ({ className }) => {
                       key={key}
                       onClick={hideMenu}
                     >
-                      {label}
+                      {t(key as any)}
                     </Link>
                   )
                 })}
+                <MultiLanguageMobile />
               </div>
 
               {isConnected ? (
@@ -134,7 +143,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                     color='primary'
                     className='w-full h-[50px] !rounded-full text-[20px]'
                   >
-                    My Account
+                    {t('myAccount')}
                   </Button>
                   <div className='w-full'>
                     <Divider className='bg-co-bg-3' />
@@ -142,7 +151,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                       onClick={handleLogout}
                       className='cursor-pointer mt-5 text-center w-fit px-12 mx-auto text-xl'
                     >
-                      Log out
+                      {t('logout')}
                     </div>
                   </div>
                 </>
@@ -151,7 +160,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                   onClick={handleConnectWalletButtonClick}
                   className='w-full h-[50px] !rounded-full text-[20px]'
                 >
-                  Connect Wallet
+                  {t('connectWallet')}
                 </Button>
               )}
             </div>

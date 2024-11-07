@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
 
 export interface FooterProps {
@@ -6,10 +7,11 @@ export interface FooterProps {
 }
 
 const Footer: FC<FooterProps> = ({ className }) => {
+  const t = useTranslations('Footer')
   return (
     <div
       className={clsx(
-        `w-full md:px-14 flex flex-col md:flex-row gap-2 items-center justify-between
+        `w-full lg:px-14 flex flex-col lg:flex-row gap-2 items-center justify-between
           text-co-text-1 pb-[58px]`,
         className
       )}
@@ -32,9 +34,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
           <span>MatrixLayerCommunity</span>
         </a>
       </div>
-      <div className='text-[10px] md:text-sm'>
-        Copyright © Matrix Layer Protocol 2024 – All rights reserved.
-      </div>
+      <div className='text-[10px] md:text-sm'>{t('copyright')}</div>
     </div>
   )
 }

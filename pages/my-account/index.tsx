@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import {
   Pagination,
   Table,
@@ -11,11 +12,13 @@ import {
   TableRow,
   Tooltip
 } from '@nextui-org/react'
+import clsx from 'clsx'
 import { Address } from 'viem'
 import { useAccount, useReadContracts } from 'wagmi'
 
 import NFT_ABI from '@abis/NFT.json'
 import PAYMENT_ABI from '@abis/Payment.json'
+import STAKE_ABI from '@abis/Stake.json'
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
@@ -43,6 +46,8 @@ import { convertTypeToName } from '@utils/payment'
 import { tn } from '@utils/tn'
 import dayjs from 'dayjs'
 
+const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
+
 const gradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 const gradientBorderClass =
@@ -54,6 +59,8 @@ const statusCommonClass =
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 
 const MyAccount = () => {
+  const t = useTranslations('MyAccount')
+
   const { isConnected, address } = useAccount()
   const router = useRouter()
   const [page, setPage] = useState(1)
@@ -91,6 +98,12 @@ const MyAccount = () => {
         abi: PAYMENT_ABI,
         functionName: 'getReferralRewards',
         args: [address]
+      },
+      {
+        address: process.env.NEXT_PUBLIC_MATRIX_ADDRESS as Address,
+        abi: NFT_ABI,
+        functionName: 'balanceOf',
+        args: [address]
       }
     ],
     query: {
@@ -99,13 +112,67 @@ const MyAccount = () => {
   })
   const { data: userData } = useGetUser(address, { enabled: !!address })
 
+  const { data: totalNfts } = useReadContracts({
+    contracts: [
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 0]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 1]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 2]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 3]
+      },
+      {
+        abi: STAKE_ABI,
+        address: STAKE_A_ADDRESS,
+        functionName: 'getUserStakedTokenIds',
+        args: [address, 4]
+      }
+    ],
+    query: {
+      enabled: !!address
+    }
+  })
+
+  const [
+    phoneStaked,
+    matrixStaked,
+    agentOneStaked,
+    agentProStaked,
+    agentUltraStaked
+  ] = totalNfts?.map((result) => result.result as number[]) ?? [
+    [],
+    [],
+    [],
+    [],
+    []
+  ]
+
   const [
     phoneBalance,
     aiAgentOneBalance,
     aiAgentProBalance,
     aiAgentUltraBalance,
-    referralRewards
+    referralRewards,
+    matrixBalance
   ] = nftBalances?.map((result) => result.result) ?? [
+    BigInt(0),
     BigInt(0),
     BigInt(0),
     BigInt(0),
@@ -118,18 +185,23 @@ const MyAccount = () => {
     aiAgentOneBalance?.toString(),
     aiAgentProBalance?.toString(),
     aiAgentUltraBalance?.toString(),
-    referralRewards?.toString()
+    referralRewards?.toString(),
+    matrixBalance?.toString()
   )
 
   const holdings = useMemo(() => {
     return {
-      phone: phoneBalance?.toString(),
+      phone: Number(phoneBalance?.toString() ?? 0) + phoneStaked.length,
       mlpTokenAmount: userData?.mlpTokenAmountPoolA,
       totalRewards: referralRewards?.toString(),
+      matrix: Number(matrixBalance?.toString() ?? 0) + matrixStaked.length,
       availableRewards: referralRewards?.toString(),
-      agent_one: aiAgentOneBalance?.toString(),
-      agent_pro: aiAgentProBalance?.toString(),
-      agent_ultra: aiAgentUltraBalance?.toString()
+      agent_one:
+        Number(aiAgentOneBalance?.toString() ?? 0) + agentOneStaked.length,
+      agent_pro:
+        Number(aiAgentProBalance?.toString() ?? 0) + agentProStaked.length,
+      agent_ultra:
+        Number(aiAgentUltraBalance?.toString() ?? 0) + agentUltraStaked.length
     }
   }, [
     phoneBalance,
@@ -137,7 +209,13 @@ const MyAccount = () => {
     aiAgentOneBalance,
     aiAgentProBalance,
     aiAgentUltraBalance,
-    userData?.mlpTokenAmountPoolA
+    matrixBalance,
+    userData?.mlpTokenAmountPoolA,
+    phoneStaked.length,
+    matrixStaked.length,
+    agentOneStaked.length,
+    agentProStaked.length,
+    agentUltraStaked.length
   ])
 
   const [selectedOrderId, setSelectedOrderId] = useState('')
@@ -230,7 +308,7 @@ const MyAccount = () => {
         <TopSectionBackground />
         <Content className='pt-[150px] md:pt-[220px] md:pb-[97px]'>
           <Text className='text-center text-[24px] md:text-4xl font-pressStart2P leading-10'>
-            MY ACCOUNT
+            {t('myAccount')}
           </Text>
         </Content>
       </Container>
@@ -240,11 +318,11 @@ const MyAccount = () => {
             className={`mb-6 md:pt-[78px] text-[24px] text-center md:text-left md:text-5xl font-semibold
               ${gradientTextClass}`}
           >
-            My Account
+            {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 md:grid-cols-2 gap-11 border-2 md:border-none rounded-[20px]
-              border-referral-gradient p-8 md:p-0'
+            className='grid grid-cols-1 lg:grid-cols-2 gap-11 border-2 md:border-none rounded-[20px]
+              p-8 md:p-0'
           >
             <div
               className={tn(`md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
@@ -254,7 +332,7 @@ const MyAccount = () => {
                 className='mb-[11px] text-2xl font-semibold bg-clip-text text-transparent
                   bg-gradient-text-1 md:bg-white'
               >
-                Referral Code
+                {t('referralCode')}
               </Text>
               <div
                 className='bg-black pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
@@ -269,7 +347,7 @@ const MyAccount = () => {
                   variant='bordered'
                   onClick={handleCopy(userData?.referralCode || '')}
                 >
-                  <span className='md:inline hidden'>Copy Code</span>
+                  <span className='md:inline hidden'>{t('copyCode')}</span>
                   <CopyIcon />
                 </Button>
               </div>
@@ -282,7 +360,7 @@ const MyAccount = () => {
                 className='mb-[11px] text-2xl font-semibold bg-clip-text text-transparent
                   bg-gradient-text-1'
               >
-                Referral Link
+                {t('referralLink')}
               </Text>
               <div
                 className='bg-black pl-6 pr-4 rounded-[10px] md:rounded-2xl h-[60px] md:h-[72px] flex
@@ -299,7 +377,7 @@ const MyAccount = () => {
                     WEB_URL + '/referral?code=' + userData?.referralCode ?? ''
                   )}
                 >
-                  <span className='md:inline hidden'>Copy Link</span>
+                  <span className='md:inline hidden'> {t('copyLink')}</span>
                   <CopyIcon />
                 </Button>
               </div>
@@ -313,12 +391,17 @@ const MyAccount = () => {
             className={`mb-6 mt-[32px] md:mt-[64px] text-[24px] text-center md:text-left md:text-5xl
               font-semibold ${gradientTextClass}`}
           >
-            I own
+            {t('IOwn')}
           </Text>
           {processHoldings(holdings).map((group, index) => (
             <div
               key={index}
-              className='grid mt-6 gap-6 grid-cols-1 md:grid-cols-3'
+              className={clsx(
+                'grid mt-6 gap-6',
+                index === 0
+                  ? 'grid-cols-1 xl:grid-cols-3'
+                  : 'grid-cols-2 xl:grid-cols-4'
+              )}
             >
               {group.map((item) => (
                 <HoldingItem
@@ -362,7 +445,7 @@ const MyAccount = () => {
             <Text
               className={`text-[24px] md:text-5xl font-semibold leading-tight ${gradientTextClass}`}
             >
-              My Order
+              {t('myOrder')}
             </Text>
           </div>
           <Table
@@ -393,11 +476,11 @@ const MyAccount = () => {
             }
           >
             <TableHeader>
-              <TableColumn>Date</TableColumn>
-              <TableColumn>Item</TableColumn>
-              <TableColumn>Receiver Address</TableColumn>
-              <TableColumn>Total</TableColumn>
-              <TableColumn>Status</TableColumn>
+              <TableColumn>{t('date')}</TableColumn>
+              <TableColumn>{t('item')}</TableColumn>
+              <TableColumn>{t('receiverAddress')}</TableColumn>
+              <TableColumn>{t('total')}</TableColumn>
+              <TableColumn>{t('status')}</TableColumn>
             </TableHeader>
             <TableBody>
               {orders.map((order, index) => (
@@ -429,12 +512,12 @@ const MyAccount = () => {
                           onClick={handleOpenShippingModal(order.id)}
                           className='text-[14px] p-2 hidden'
                         >
-                          Submit Address
+                          {t('submitAddress')}
                         </Button>
                         <span
                           className={`${statusCommonClass} ${statusClass(order.status)}`}
                         >
-                          {order?.status}
+                          {t(order?.status as any)}
                         </span>
                       </>
                     )}
@@ -447,7 +530,7 @@ const MyAccount = () => {
                         onClick={handleConfirmDeliveryModal(order.id)}
                         className='text-[14px] p-2'
                       >
-                        Confirm Receipt
+                        {t('confirmReceipt')}
                       </Button>
                     )}
 
@@ -457,10 +540,11 @@ const MyAccount = () => {
                       >
                         {order?.status === 'received' ? (
                           <Tooltip content='Once your phone is ready to ship you will be asked to submit a shipping address.'>
-                            {order?.status}
+                            {t(order?.status as any)}
                           </Tooltip>
                         ) : (
-                          order?.status
+                          // order?.status
+                          t(order?.status as any)
                         )}
                       </span>
                     )}

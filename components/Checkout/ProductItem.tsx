@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
 
 import { MinusIcon } from '@components/Icon/MinusIcon'
@@ -25,6 +26,8 @@ const ProductItem: FC<ProductItemProps> = ({
 
   onChangeProductQuantity
 }) => {
+  const t = useTranslations('Checkout')
+
   const handleProductQuantityMinus = () => {
     if (product.quantity <= 0) return
 
@@ -59,7 +62,7 @@ const ProductItem: FC<ProductItemProps> = ({
           : 'border-product-item-gradient'
       )}
     >
-      <div className='w-[80%] md:w-[430px]'>
+      <div className='w-[80%] lg:w-[430px]'>
         <div className='flex flex-row justify-between items-center mb-[14px]'>
           <Text className='text-[20px] md:text-[32px] font-bold text-white'>
             {product.name}
@@ -67,7 +70,7 @@ const ProductItem: FC<ProductItemProps> = ({
         </div>
         <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
           <div>
-            <Text>Select quantity</Text>
+            <Text>{t('selectQuantity')}</Text>
             <div className='flex flex-row items-center gap-x-[12px] mt-[12px] mb-[20px]'>
               <div
                 className={clsx(
@@ -102,7 +105,7 @@ const ProductItem: FC<ProductItemProps> = ({
             </div>
             <Text className='text-[24px] md:text-[32px] text-white font-bold'>
               ${product.priceInUsdt}&nbsp;
-              <span className='text-[16px] text-co-gray-7'>/item</span>
+              <span className='text-[16px] text-co-gray-7'>/{t('item')}</span>
             </Text>
           </div>
           <img

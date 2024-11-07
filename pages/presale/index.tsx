@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAccount } from 'wagmi'
 
@@ -43,9 +44,16 @@ const ProductPage = () => {
   const searchParams = useSearchParams()
   const tab = searchParams.get('tab')
 
+  const t = useTranslations('Presale')
+
   const [currentPage, setCurrentPage] = useState<'product' | 'ai-agent-nft'>(
     tab === 'nft' ? 'ai-agent-nft' : 'product'
   )
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   useEffect(() => {
     if (tab) {
@@ -90,20 +98,22 @@ const ProductPage = () => {
   )
 
   const TabButton = useCallback(
-    ({ page }: { page: 'product' | 'ai-agent-nft' }) => (
-      <Button
-        color={currentPage === page ? 'primary' : 'secondary'}
-        variant={currentPage === page ? 'faded' : 'light'}
-        className={`focus:bg-gradient-button-1 border-none rounded-[30px] flex-1 w-auto sm:w-[200px]
-          h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
-            currentPage === page ? 'text-black' : 'text-white'
-          }`}
-        onClick={() => paginate(page)}
-      >
-        {page === 'product' ? 'PRODUCT' : 'AI AGENT NFT'}
-      </Button>
-    ),
-    [currentPage, paginate]
+    ({ page }: { page: 'product' | 'ai-agent-nft' }) => {
+      return (
+        <Button
+          color={currentPage === page ? 'primary' : 'secondary'}
+          variant={currentPage === page ? 'faded' : 'light'}
+          className={`focus:bg-gradient-button-1 border-none rounded-[30px] min-w-[140px] flex-1
+            w-auto sm:w-[200px] h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
+              currentPage === page ? 'text-black' : 'text-white'
+            }`}
+          onClick={() => paginate(page)}
+        >
+          {page === 'product' ? t('tabs.product') : t('tabs.ai-agent-nft')}
+        </Button>
+      )
+    },
+    [currentPage, paginate, t]
   )
 
   return (
@@ -133,13 +143,13 @@ const ProductPage = () => {
             <div className=''>
               <Container>
                 <Content>
-                  <div className='flex justify-between items-center pt-6 sm:pt-[171px]'>
-                    <div className='flex flex-col gap-2.5 sm:gap-5 max-w-[153px] sm:max-w-[612px]'>
+                  <div className='flex justify-between items-center pt-6 lg:pt-[171px]'>
+                    <div className='flex flex-col gap-2.5 lg:gap-5 max-w-[153px] lg:max-w-[612px]'>
                       <Text
                         className='text-white text-[14px] sm:text-[28px] font-semibold leading-normal
                           tracking-[2.8px] uppercase whitespace-nowrap'
                       >
-                        mobile hardware
+                        {t('product.section1.subtitle')}
                       </Text>
                       <Text className='text-white text-[18px] sm:text-7xl font-semibold'>
                         MATRIX <br />
@@ -149,13 +159,7 @@ const ProductPage = () => {
                         className='text-[12px] sm:text-base font-semibold text-gray-a5 pr-0 sm:pr-[20px]
                           line-clamp-3'
                       >
-                        MatrixLayerPhone is an intelligent hardware and owns
-                        diverse application scenarios, offers users a convenient
-                        entry point for accessing decentralized networks and
-                        Web3 applications in their daily lives. MLPhone brings
-                        an unprecedented experience for individuals and infinite
-                        opportunities for businesses, developers, and society as
-                        a whole.
+                        {t('product.section1.info')}
                       </Text>
                       <div className='flex items-end gap-2 sm:gap-4'>
                         <Text
@@ -166,7 +170,9 @@ const ProductPage = () => {
                         </Text>
                         {!!productSalesData?.phone?.soldQuantity && (
                           <Text className='text-gray-a5 text-[12px] sm:text-base mb-2 sm:mb-6 italic text-nowrap'>
-                            {productSalesData.phone.soldQuantity} sold
+                            {t('product.section1.sold', {
+                              quantity: productSalesData.phone.soldQuantity
+                            })}
                           </Text>
                         )}
                       </div>
@@ -174,10 +180,12 @@ const ProductPage = () => {
                         className='rounded-[35px] h-12 text-base font-semibold w-[218px] z-10'
                         onClick={handleToCheckout(ProductEnum.PHONE)}
                       >
-                        {isConnected ? 'Order Now' : 'Connect Wallet to Order'}
+                        {isConnected
+                          ? t('product.section1.order')
+                          : t('product.section1.connectToOrder')}
                       </Button>
                     </div>
-                    <div className='sm:relative absolute -right-[70px] sm:right-auto top-6 sm:top-auto'>
+                    <div className='lg:relative absolute -right-[70px] lg:right-auto top-6 lg:top-auto'>
                       <img
                         className='w-[226px] sm:w-[456px] h-[259px] sm:h-[521px]'
                         src='/images/product/phone21.png'
@@ -213,60 +221,70 @@ const ProductPage = () => {
                 </ImagesField>
                 <Content>
                   <div className='flex justify-between items-center'>
-                    <div className='gap-[54px] hidden sm:flex'>
+                    <div className='gap-[54px] hidden lg:flex translate-y-[65px] xl:translate-y-0'>
                       <img
-                        className='h-[554px]'
+                        className='h-[400px] xl:h-[554px]'
                         src='/images/product/phone4.png'
                         alt='phone4'
                       />
                       <img
-                        className='h-[554px]'
+                        className='h-[400px] xl:h-[554px]'
                         src='/images/product/phone-side.png'
                         alt='phone-side'
                       />
                     </div>
                     <div className='flex flex-col'>
-                      <div className='flex sm:flex-col flex-row items-center sm:items-start gap-x-[14px]'>
+                      <div className='flex lg:flex-col flex-row items-center lg:items-start gap-x-[14px]'>
                         <Text
-                          className='text-[12px] sm:text-[28px]'
+                          className='text-[12px] sm:text-[22px] lg:text-[28px] flex-1 pl-1 sm:pl-0'
                           size='bold'
                         >
-                          MATRIX LAYER PHONE
+                          {t('product.section2.subtitle')}
                         </Text>
                         <Text
-                          className={`text-[24px] sm:text-[64px] ${gradientTextClass}`}
+                          className={`text-[24px] sm:text-[32px] lg:text-[64px] flex-1 pl-1 sm:pl-0
+                            ${gradientTextClass}`}
                           size='bold'
                         >
-                          Spesification
+                          {t('product.section2.title')}
                         </Text>
                       </div>
-                      <div className='grid grid-cols-2 sm:grid-cols-1 gap-x-5'>
-                        <div className='gap-5 flex sm:hidden'>
+                      <div className='grid grid-cols-2 lg:grid-cols-1 gap-x-5'>
+                        <div className='gap-5 flex lg:hidden'>
                           <img
-                            className='h-[255px]'
+                            className='h-[255px] md:h-[380px]'
                             src='/images/product/phone4.png'
                             alt='phone4'
                           />
                           <img
-                            className='h-[255px]'
+                            className='h-[255px] md:h-[380px]'
                             src='/images/product/phone-side.png'
                             alt='phone-side'
                           />
                         </div>
                         <div>
                           <div
-                            className='py-0 sm:py-[20px] grid grid-cols-1 sm:grid-cols-[198px_198px_256px] gap-[7px]
-                              sm:gap-[20px] border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                            className='py-0 lg:py-[20px] grid grid-cols-1 lg:grid-cols-[198px_198px_256px] gap-[7px]
+                              lg:gap-[10px] border-b-0 lg:border-b border-[rgba(102,102,102,0.40)]'
                           >
                             {[
-                              ['Dimensions', '162.23x73.6x8.55 mm'],
-                              ['Operating System', 'Based on Android 14'],
-                              ['Display', 'AMOLED 6.67 inches, 120Hz']
+                              [
+                                t('product.section2.dimensions.name'),
+                                t('product.section2.dimensions.value')
+                              ],
+                              [
+                                t('product.section2.operationSystem.name'),
+                                t('product.section2.operationSystem.value')
+                              ],
+                              [
+                                t('product.section2.display.name'),
+                                t('product.section2.display.value')
+                              ]
                             ].map((item) => (
                               <div
                                 key={item[0]}
-                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b sm:border-0
-                                  border-[rgba(102,102,102,0.40)] pb-[7px] sm:pb-0'
+                                className='flex flex-col gap-1 lg:gap-5 col-span-1 border-b lg:border-0
+                                  border-[rgba(102,102,102,0.40)] pb-[7px] lg:pb-0'
                               >
                                 <Text className='text-[12px] sm:text-xl'>
                                   {item[0]}
@@ -278,17 +296,23 @@ const ProductPage = () => {
                             ))}
                           </div>
                           <div
-                            className='py-0 sm:py-[20px] grid grid-cols-1 sm:grid-cols-[198px_198px_256px] gap-[7px]
-                              sm:gap-[20px] border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                            className='py-0 lg:py-[20px] grid grid-cols-1 lg:grid-cols-[198px_198px_256px] gap-[7px]
+                              lg:gap-[20px] border-b-0 lg:border-b border-[rgba(102,102,102,0.40)]'
                           >
                             {[
-                              ['Battery Capacity', '5050mAh'],
-                              ['GPU', 'Arm Mali-G57']
+                              [
+                                t('product.section2.batteryCapacity.name'),
+                                t('product.section2.batteryCapacity.value')
+                              ],
+                              [
+                                t('product.section2.gpu.name'),
+                                t('product.section2.gpu.value')
+                              ]
                             ].map((item) => (
                               <div
                                 key={item[0]}
-                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b sm:border-0
-                                  border-[rgba(102,102,102,0.40)] pb-[7px] sm:pb-0'
+                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b lg:border-0
+                                  border-[rgba(102,102,102,0.40)] pb-[7px] lg:pb-0'
                               >
                                 <Text className='text-[12px] sm:text-xl'>
                                   {item[0]}
@@ -298,34 +322,53 @@ const ProductPage = () => {
                                 </Text>
                               </div>
                             ))}
-                            <div className='hidden sm:flex flex-col gap-1 sm:gap-5'>
+                            <div className='hidden lg:flex flex-col gap-1 lg:gap-5'>
                               <Text className='text-[12px] sm:text-xl'>
-                                CPU
+                                {t('product.section2.cpu.name')}
                               </Text>
-                              <Text className='text-[12px] sm:text-base text-gray-a5'>
-                                MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz
+                              <Text className='text-[12px] lg:text-base text-gray-a5'>
+                                {isClient && (
+                                  <span
+                                    dangerouslySetInnerHTML={{
+                                      __html: t('product.section2.cpu.value')
+                                    }}
+                                  />
+                                )}
                               </Text>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div
-                        className='py-[7px] sm:py-[20px] grid-cols-2 sm:grid-cols-1 grid gap-[7px] sm:gap-[20px]
-                          border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                        className='py-[7px] lg:py-[20px] grid-cols-2 lg:grid-cols-1 grid gap-[7px] lg:gap-[20px]
+                          border-b-0 lg:border-b border-[rgba(102,102,102,0.40)]'
                       >
-                        <div className='sm:hidden flex-col gap-1 sm:gap-5'>
-                          <Text className='text-[12px] sm:text-xl'>CPU</Text>
+                        <div className='lg:hidden flex-col gap-1 lg:gap-5'>
+                          <Text className='text-[12px] sm:text-xl'>
+                            {t('product.section2.cpu.name')}
+                          </Text>
                           <Text className='text-[12px] sm:text-base text-gray-a5'>
-                            MTK-G992 * 2A76 <br />@ 2.0GHz + 6A55 @ 2.0GHz
+                            {isClient && (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: t('product.section2.cpu.value')
+                                }}
+                              />
+                            )}
                           </Text>
                         </div>
-                        <div className='flex flex-col gap-1 sm:gap-5'>
+                        <div className='flex flex-col gap-1 lg:gap-5'>
                           <Text className='text-[12px] sm:text-xl'>
-                            SIM Cards
+                            {t('product.section2.simCard.name')}
                           </Text>
-                          <Text className='text-[12px] text-base text-gray-a5'>
-                            Dual SIM
-                            <br /> (Nano SIM, dual standby)
+                          <Text className='text-[12px] sm:text-base text-gray-a5'>
+                            {isClient && (
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: t('product.section2.simCard.value')
+                                }}
+                              />
+                            )}
                           </Text>
                         </div>
                       </div>
@@ -346,43 +389,38 @@ const ProductPage = () => {
                       className={`text-[24px] sm:text-[64px] ${gradientTextClass}`}
                       size='bold'
                     >
-                      User Benefits
+                      {t('product.benefits.title')}
                     </Text>
-                    <div className='mt-10 grid justify-center grid-cols-1 sm:grid-cols-[534px_554px] gap-[20px]'>
+                    <div
+                      className='mt-10 grid justify-center grid-cols-1 sm:grid-cols-2 xl:grid-cols-[534px_554px]
+                        gap-[20px]'
+                    >
                       {[
                         {
-                          img: '/images/svg/building-token.svg',
-                          title: 'Built-in Tokens',
-                          description:
-                            'Each phone comes pre-installed with 20,000 $MLP tokens, to be released linearly over a period of 1.5 years.'
+                          key: 'tokens',
+                          img: '/images/svg/building-token.svg'
                         },
                         {
-                          img: '/images/svg/mining-experience.svg',
-                          title: 'Mining Experience',
-                          description:
-                            'Phone holders are granted 10 days of basic pool mining rights (a limited-time offer), with mining speeds matching that of AI Agent One'
+                          key: 'experience',
+                          img: '/images/svg/mining-experience.svg'
                         },
                         {
-                          img: '/images/svg/bitcoin.svg',
-                          title: 'Ecosystem Token Airdrops',
-                          description:
-                            'Holders of the phone are eligible for future ecosystem token airdrops across the entire chain'
+                          key: 'airdrops',
+                          img: '/images/svg/bitcoin.svg'
                         },
                         {
-                          img: '/images/svg/platform-node.svg',
-                          title: 'Platform Node',
-                          description:
-                            'The phone serves as a platform node, participating in network operations'
+                          key: 'node',
+                          img: '/images/svg/platform-node.svg'
                         }
                       ].map((item) => (
                         <div
-                          key={item.title}
+                          key={item.key}
                           className={`bg-black flex gap-5 sm:gap-8 px-2.5 py-2.5 sm:px-5 rounded-[10px]
                             sm:rounded-[40px] items-center border-1 ${gradientBorderClass}`}
                         >
                           <img
                             src={item.img}
-                            alt={item.title}
+                            alt={item.key}
                             className='w-12 sm:w-[64px] shrink-0'
                           />
                           <div className='flex flex-col gap-1 sm:gap-[10px]'>
@@ -390,13 +428,15 @@ const ProductPage = () => {
                               className={`text-[16px] sm:text-[22px] ${gradientTextClass}`}
                               size='extrabold'
                             >
-                              {item.title}
+                              {t(`product.benefits.${item.key}.title` as any)}
                             </Text>
                             <Text
                               size='extrabold'
                               className='text-[12px] sm:text-base'
                             >
-                              {item.description}
+                              {t(
+                                `product.benefits.${item.key}.description` as any
+                              )}
                             </Text>
                           </div>
                         </div>
@@ -404,14 +444,10 @@ const ProductPage = () => {
                     </div>
                     <Text
                       className='text-center text-[12px] sm:text-[22px] mt-5 sm:mt-10 max-w-[1107px]
-                        shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'
+                        shadow-[0px_4px_4px_rgba(0,0,0,0.25)] pb-32'
                       size='bold'
                     >
-                      The actual specifications of the delivered product may
-                      differ from the official descriptions due to material
-                      supply constraints and other uncontrollable factors.
-                      MatrixLayerProtocol reserves the right to make changes to
-                      the product specifications without prior notice.
+                      {t('product.benefits.bottom')}
                     </Text>
                   </div>
                 </Content>
@@ -422,63 +458,51 @@ const ProductPage = () => {
         {currentPage === 'ai-agent-nft' && (
           <PageContent key='ai-agent-nft'>
             <div>
-              <Container className='pt-6 sm:pt-[160px] pb-[200px]'>
+              <Container className='pt-6 lg:pt-[160px] pb-[200px]'>
                 <Content>
                   <Text
-                    className='font-pressStart2P mb-[60px] sm:mb-[78px] text-center text-white text-[24px]
-                      sm:text-7xl'
+                    className='font-pressStart2P mb-[60px] lg:mb-[78px] text-center text-white text-[24px]
+                      lg:text-7xl'
                     size='bold'
                   >
                     AI AGENT
                   </Text>
-                  <div className='flex flex-col gap-5 sm:gap-12'>
+                  <div className='flex flex-col gap-5 lg:gap-12'>
                     {[
                       {
-                        title: 'AI Agent One',
                         img: '/images/product/ai_agent_one.png',
-                        descriptionList: [
-                          'Purchase $199 worth of $MLP to activate the NFT (the tokens will be burned after activation).',
-                          'Unlocks basic pool mining',
-                          'Mining coefficient: 1'
-                        ],
                         price: '$199',
                         sold: productSalesData?.[ProductEnum.AGENT_ONE]
                           ?.soldQuantity,
-                        key: ProductEnum.AGENT_ONE
+                        key: ProductEnum.AGENT_ONE,
+                        tKey: 'agentOne', // for i18n
+                        tDescKey: ['desc1', 'desc2'] // for i18n
                       },
                       {
-                        title: 'AI Agent Pro',
                         img: '/images/product/ai_agent_pro.png',
-                        descriptionList: [
-                          'Purchase $699 worth of $MLP to activate the NFT (the tokens will be burned after activation).',
-                          'Unlocks basic pool mining',
-                          'Mining coefficient: 1.2'
-                        ],
                         price: '$699',
                         sold: productSalesData?.[ProductEnum.AGENT_PRO]
                           ?.soldQuantity,
-                        key: ProductEnum.AGENT_PRO
+                        key: ProductEnum.AGENT_PRO,
+                        tKey: 'agentPro', // for i18n
+                        tDescKey: ['desc1', 'desc2', 'desc3'] // for i18n
                       },
                       {
-                        title: 'AI Agent Ultra',
                         img: '/images/product/ai_agent_ultra.png',
-                        descriptionList: [
-                          'Purchase $899 worth of $MLP to activate the NFT (the tokens will be burned after activation).',
-                          'Unlocks basic pool mining',
-                          'Mining coefficient: 1.5'
-                        ],
                         price: '$899',
                         sold: productSalesData?.[ProductEnum.AGENT_ULTRA]
                           ?.soldQuantity,
-                        key: ProductEnum.AGENT_ULTRA
+                        key: ProductEnum.AGENT_ULTRA,
+                        tKey: 'agentUltra', // for i18n
+                        tDescKey: ['desc1', 'desc2', 'desc3'] // for i18n
                       }
                     ].map((item) => (
                       <div key={item.key}>
                         <div className='flex items-center'>
                           <img
-                            className='w-[121px] h-[121px] sm:w-[250px] sm:h-[250px] mr-[11px] sm:mr-10'
+                            className='w-[121px] h-[121px] sm:w-[250px] sm:h-[250px] mr-[11px] lg:mr-10'
                             src={item.img}
-                            alt={item.title}
+                            alt={item.key}
                           />
                           <div className='grow w-full sm:w-[526px]'>
                             <Text
@@ -486,45 +510,48 @@ const ProductPage = () => {
                                 leading-tight`}
                               size='semibold'
                             >
-                              {item.title}
+                              {t(`aiAgent.${item.tKey}.title` as any)}
                             </Text>
-                            {/* show smaller than sm */}
-                            <div className='sm:hidden flex-col items-start'>
+                            {/* show smaller than lg */}
+                            <div className='lg:hidden flex-col items-start'>
                               <div className='flex items-end gap-2 sm:gap-4'>
                                 <Text
-                                  className={`text-[24px] mb-2 ${gradientTextClass}`}
+                                  className={`text-[24px] sm:text-[32px] mb-2 ${gradientTextClass}`}
                                   size='bold'
                                 >
                                   {item.price}
                                 </Text>
                                 {!!item.sold && (
-                                  <Text className='text-gray-a5 text-[12px] mb-[14px] italic text-nowrap'>
-                                    {item.sold} sold
+                                  <Text className='text-gray-a5 text-[12px] sm:text-[18px] mb-[14px] italic text-nowrap'>
+                                    {t('aiAgent.sold', { quantity: item.sold })}
                                   </Text>
                                 )}
                               </div>
                               <Button
-                                className='rounded-[35px] w-full h-7 text-[12px] font-semibold'
+                                className='rounded-[35px] w-full sm:w-fit h-7 text-[12px] sm:text-[20px] font-semibold'
                                 onClick={handleToCheckout(item.key)}
                               >
                                 {isConnected
-                                  ? 'Order Now'
-                                  : 'Connect Wallet to Order'}
+                                  ? t('aiAgent.orderNow')
+                                  : t('aiAgent.connectToOrder')}
                               </Button>
                             </div>
-                            {/* show larger than sm */}
-                            <ul className='hidden sm:block list-disc klist-outside pl-8 text-[22px] max-w-[526px]'>
-                              {item.descriptionList.map((description) => (
-                                <li key={description}>{description}</li>
-                              ))}
+                            {/* show larger than lg */}
+                            <ul className='hidden lg:block list-disc klist-outside pl-8 text-[22px] max-w-[526px]'>
+                              {item.tDescKey.map((key) => {
+                                const desc = t(
+                                  `aiAgent.${item.tKey}.${key}` as any
+                                )
+                                return <li key={desc}>{desc}</li>
+                              })}
                             </ul>
                           </div>
-                          {/* show larger than sm */}
-                          <div className='hidden sm:flex flex-col items-end'>
+                          {/* show larger than lg */}
+                          <div className='hidden lg:flex flex-col items-end'>
                             <div className='flex items-end gap-2 sm:gap-4'>
                               {!!item.sold && (
                                 <Text className='text-gray-a5 text-[12px] text-base mb-6 italic text-nowrap'>
-                                  {item.sold} sold
+                                  {t('aiAgent.sold', { quantity: item.sold })}
                                 </Text>
                               )}
                               <Text
@@ -539,16 +566,20 @@ const ProductPage = () => {
                               onClick={handleToCheckout(item.key)}
                             >
                               {isConnected
-                                ? 'Order Now'
-                                : 'Connect Wallet to Order'}
+                                ? t('aiAgent.orderNow')
+                                : t('aiAgent.connectToOrder')}
                             </Button>
                           </div>
                         </div>
-                        {/* show smaller than sm */}
-                        <ul className='mt-[15px] sm:hidden list-disc klist-outside pl-8 w-full text-[12px]'>
-                          {item.descriptionList.map((description) => (
-                            <li key={description}>{description}</li>
-                          ))}
+                        {/* show smaller than lg */}
+                        <ul
+                          className='mt-[15px] lg:hidden list-disc klist-outside pl-8 w-full text-[12px]
+                            sm:text-[24px]'
+                        >
+                          {item.tDescKey.map((key) => {
+                            const desc = t(`aiAgent.${item.tKey}.${key}` as any)
+                            return <li key={desc}>{desc}</li>
+                          })}
                         </ul>
                       </div>
                     ))}
