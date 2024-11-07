@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { ApolloProvider } from '@apollo/client'
 import ConversationComponent from '@components/AIExplorer/ConversationComponent'
@@ -11,6 +11,7 @@ import { Conversation } from '@type/internal/conversation'
 import { getRandomId } from '@utils/random'
 
 const AIExplorer = () => {
+  const isInitialLoad = useRef(false)
   const [activeConversationId, setActiveConversationId] = useState<string>('')
   const [isSidebarOpen, onSidebarChange] = useState(false)
 
@@ -22,16 +23,24 @@ const AIExplorer = () => {
   )
 
   const createNewConversation = useCallback(() => {
-    const conversation: Conversation = {
-      id: getRandomId(),
-      name: getRandomId(),
-      messages: [],
-      createdAt: new Date()
-    }
+    const emptyConversation = conversations.find(
+      (convo) => convo.messages.length === 0
+    )
 
-    setConversations([...conversations, conversation])
-    setActiveConversationId(conversation.id)
-  }, [conversations, setConversations])
+    if (!isInitialLoad.current && emptyConversation) {
+      setActiveConversationId(emptyConversation.id)
+    } else {
+      const conversation: Conversation = {
+        id: getRandomId(),
+        name: getRandomId(),
+        messages: [],
+        createdAt: new Date()
+      }
+
+      setConversations([...conversations, conversation])
+      setActiveConversationId(conversation.id)
+    }
+  }, [conversations, setConversations, setActiveConversationId])
 
   useEffect(() => {
     const noConversations = conversations.length === 0
@@ -42,6 +51,10 @@ const AIExplorer = () => {
 
     if (!activeConversationId && conversations.length > 0) {
       setActiveConversationId(conversations[0]?.id || '')
+    }
+
+    if (!isInitialLoad.current) {
+      isInitialLoad.current = true
     }
   }, [
     conversations,

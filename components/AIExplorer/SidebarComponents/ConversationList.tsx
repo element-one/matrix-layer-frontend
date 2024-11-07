@@ -49,15 +49,11 @@ function formatConversationDate(date: dayjs.Dayjs): string {
 
 interface IConversations {
   onSelect: (conversationId: string) => void
-  // toggleDrawer: () => void
   activeConversationId: string
   onDelete: (conversationId: string) => void
   searchQuery?: string
-  // notificationOpen: boolean;
-  // onToggleNotifications: () => void;
 }
 
-// TODO query
 export const ConversationList: FC<IConversations> = ({
   searchQuery = '',
   activeConversationId,

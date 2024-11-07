@@ -18,9 +18,6 @@ interface SidebarProps {
   createNewConversation: () => void
   isSidebarOpen: boolean
   onSidebarChange: (open: boolean) => void
-  // onToggleNotifications: () => void;
-  // notificationOpen: boolean;
-  // setSelected: (icon: "chat" | "tasks" | "notifications") => void;
 }
 const Sidebar: FC<SidebarProps> = ({
   activeConversationId,
@@ -63,12 +60,10 @@ const Sidebar: FC<SidebarProps> = ({
   const handleCreateNewConversation = () => {
     createNewConversation()
     onSidebarChange(false)
-    // setSelected("chat");
   }
 
   const handleSelect = (conversationId: string) => {
     setActiveConversationId(conversationId)
-    // setSelected("chat");
     onSidebarChange(false)
   }
 

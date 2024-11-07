@@ -14,8 +14,6 @@ import clsx from 'clsx'
 
 import { useStore } from '@store/store'
 
-// import type { Conversation } from '@/types/internal/message'
-
 interface IConversationDelete {
   conversationId: string
   onDelete: (conversationId: string) => void
