@@ -143,8 +143,8 @@ const ProductPage = () => {
             <div className=''>
               <Container>
                 <Content>
-                  <div className='flex justify-between items-center pt-6 sm:pt-[171px]'>
-                    <div className='flex flex-col gap-2.5 sm:gap-5 max-w-[153px] sm:max-w-[612px]'>
+                  <div className='flex justify-between items-center pt-6 lg:pt-[171px]'>
+                    <div className='flex flex-col gap-2.5 lg:gap-5 max-w-[153px] lg:max-w-[612px]'>
                       <Text
                         className='text-white text-[14px] sm:text-[28px] font-semibold leading-normal
                           tracking-[2.8px] uppercase whitespace-nowrap'
@@ -185,7 +185,7 @@ const ProductPage = () => {
                           : t('product.section1.connectToOrder')}
                       </Button>
                     </div>
-                    <div className='sm:relative absolute -right-[70px] sm:right-auto top-6 sm:top-auto'>
+                    <div className='lg:relative absolute -right-[70px] lg:right-auto top-6 lg:top-auto'>
                       <img
                         className='w-[226px] sm:w-[456px] h-[259px] sm:h-[521px]'
                         src='/images/product/phone21.png'
@@ -221,50 +221,51 @@ const ProductPage = () => {
                 </ImagesField>
                 <Content>
                   <div className='flex justify-between items-center'>
-                    <div className='gap-[54px] hidden sm:flex'>
+                    <div className='gap-[54px] hidden lg:flex translate-y-[65px] xl:translate-y-0'>
                       <img
-                        className='h-[554px]'
+                        className='h-[400px] xl:h-[554px]'
                         src='/images/product/phone4.png'
                         alt='phone4'
                       />
                       <img
-                        className='h-[554px]'
+                        className='h-[400px] xl:h-[554px]'
                         src='/images/product/phone-side.png'
                         alt='phone-side'
                       />
                     </div>
                     <div className='flex flex-col'>
-                      <div className='flex sm:flex-col flex-row items-center sm:items-start gap-x-[14px]'>
+                      <div className='flex lg:flex-col flex-row items-center lg:items-start gap-x-[14px]'>
                         <Text
-                          className='text-[12px] sm:text-[28px] flex-1 pl-1 sm:pl-0'
+                          className='text-[12px] sm:text-[22px] lg:text-[28px] flex-1 pl-1 sm:pl-0'
                           size='bold'
                         >
                           {t('product.section2.subtitle')}
                         </Text>
                         <Text
-                          className={`text-[24px] sm:text-[64px] flex-1 pl-1 sm:pl-0 ${gradientTextClass}`}
+                          className={`text-[24px] sm:text-[32px] lg:text-[64px] flex-1 pl-1 sm:pl-0
+                            ${gradientTextClass}`}
                           size='bold'
                         >
                           {t('product.section2.title')}
                         </Text>
                       </div>
-                      <div className='grid grid-cols-2 sm:grid-cols-1 gap-x-5'>
-                        <div className='gap-5 flex sm:hidden'>
+                      <div className='grid grid-cols-2 lg:grid-cols-1 gap-x-5'>
+                        <div className='gap-5 flex lg:hidden'>
                           <img
-                            className='h-[255px]'
+                            className='h-[255px] md:h-[380px]'
                             src='/images/product/phone4.png'
                             alt='phone4'
                           />
                           <img
-                            className='h-[255px]'
+                            className='h-[255px] md:h-[380px]'
                             src='/images/product/phone-side.png'
                             alt='phone-side'
                           />
                         </div>
                         <div>
                           <div
-                            className='py-0 sm:py-[20px] grid grid-cols-1 sm:grid-cols-[198px_198px_256px] gap-[7px]
-                              sm:gap-[20px] border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                            className='py-0 lg:py-[20px] grid grid-cols-1 lg:grid-cols-[198px_198px_256px] gap-[7px]
+                              lg:gap-[10px] border-b-0 lg:border-b border-[rgba(102,102,102,0.40)]'
                           >
                             {[
                               [
@@ -282,8 +283,8 @@ const ProductPage = () => {
                             ].map((item) => (
                               <div
                                 key={item[0]}
-                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b sm:border-0
-                                  border-[rgba(102,102,102,0.40)] pb-[7px] sm:pb-0'
+                                className='flex flex-col gap-1 lg:gap-5 col-span-1 border-b lg:border-0
+                                  border-[rgba(102,102,102,0.40)] pb-[7px] lg:pb-0'
                               >
                                 <Text className='text-[12px] sm:text-xl'>
                                   {item[0]}
@@ -295,8 +296,8 @@ const ProductPage = () => {
                             ))}
                           </div>
                           <div
-                            className='py-0 sm:py-[20px] grid grid-cols-1 sm:grid-cols-[198px_198px_256px] gap-[7px]
-                              sm:gap-[20px] border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                            className='py-0 lg:py-[20px] grid grid-cols-1 lg:grid-cols-[198px_198px_256px] gap-[7px]
+                              lg:gap-[20px] border-b-0 lg:border-b border-[rgba(102,102,102,0.40)]'
                           >
                             {[
                               [
@@ -310,8 +311,8 @@ const ProductPage = () => {
                             ].map((item) => (
                               <div
                                 key={item[0]}
-                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b sm:border-0
-                                  border-[rgba(102,102,102,0.40)] pb-[7px] sm:pb-0'
+                                className='flex flex-col gap-1 sm:gap-5 col-span-1 border-b lg:border-0
+                                  border-[rgba(102,102,102,0.40)] pb-[7px] lg:pb-0'
                               >
                                 <Text className='text-[12px] sm:text-xl'>
                                   {item[0]}
@@ -321,11 +322,11 @@ const ProductPage = () => {
                                 </Text>
                               </div>
                             ))}
-                            <div className='hidden sm:flex flex-col gap-1 sm:gap-5'>
+                            <div className='hidden lg:flex flex-col gap-1 lg:gap-5'>
                               <Text className='text-[12px] sm:text-xl'>
                                 {t('product.section2.cpu.name')}
                               </Text>
-                              <Text className='text-[12px] sm:text-base text-gray-a5'>
+                              <Text className='text-[12px] lg:text-base text-gray-a5'>
                                 {isClient && (
                                   <span
                                     dangerouslySetInnerHTML={{
@@ -339,10 +340,10 @@ const ProductPage = () => {
                         </div>
                       </div>
                       <div
-                        className='py-[7px] sm:py-[20px] grid-cols-2 sm:grid-cols-1 grid gap-[7px] sm:gap-[20px]
-                          border-b-0 sm:border-b border-[rgba(102,102,102,0.40)]'
+                        className='py-[7px] lg:py-[20px] grid-cols-2 lg:grid-cols-1 grid gap-[7px] lg:gap-[20px]
+                          border-b-0 lg:border-b border-[rgba(102,102,102,0.40)]'
                       >
-                        <div className='sm:hidden flex-col gap-1 sm:gap-5'>
+                        <div className='lg:hidden flex-col gap-1 lg:gap-5'>
                           <Text className='text-[12px] sm:text-xl'>
                             {t('product.section2.cpu.name')}
                           </Text>
@@ -356,7 +357,7 @@ const ProductPage = () => {
                             )}
                           </Text>
                         </div>
-                        <div className='flex flex-col gap-1 sm:gap-5'>
+                        <div className='flex flex-col gap-1 lg:gap-5'>
                           <Text className='text-[12px] sm:text-xl'>
                             {t('product.section2.simCard.name')}
                           </Text>
@@ -390,7 +391,10 @@ const ProductPage = () => {
                     >
                       {t('product.benefits.title')}
                     </Text>
-                    <div className='mt-10 grid justify-center grid-cols-1 sm:grid-cols-[534px_554px] gap-[20px]'>
+                    <div
+                      className='mt-10 grid justify-center grid-cols-1 sm:grid-cols-2 xl:grid-cols-[534px_554px]
+                        gap-[20px]'
+                    >
                       {[
                         {
                           key: 'tokens',
@@ -454,16 +458,16 @@ const ProductPage = () => {
         {currentPage === 'ai-agent-nft' && (
           <PageContent key='ai-agent-nft'>
             <div>
-              <Container className='pt-6 sm:pt-[160px] pb-[200px]'>
+              <Container className='pt-6 lg:pt-[160px] pb-[200px]'>
                 <Content>
                   <Text
-                    className='font-pressStart2P mb-[60px] sm:mb-[78px] text-center text-white text-[24px]
-                      sm:text-7xl'
+                    className='font-pressStart2P mb-[60px] lg:mb-[78px] text-center text-white text-[24px]
+                      lg:text-7xl'
                     size='bold'
                   >
                     AI AGENT
                   </Text>
-                  <div className='flex flex-col gap-5 sm:gap-12'>
+                  <div className='flex flex-col gap-5 lg:gap-12'>
                     {[
                       {
                         img: '/images/product/ai_agent_one.png',
@@ -496,7 +500,7 @@ const ProductPage = () => {
                       <div key={item.key}>
                         <div className='flex items-center'>
                           <img
-                            className='w-[121px] h-[121px] sm:w-[250px] sm:h-[250px] mr-[11px] sm:mr-10'
+                            className='w-[121px] h-[121px] sm:w-[250px] sm:h-[250px] mr-[11px] lg:mr-10'
                             src={item.img}
                             alt={item.key}
                           />
@@ -508,23 +512,23 @@ const ProductPage = () => {
                             >
                               {t(`aiAgent.${item.tKey}.title` as any)}
                             </Text>
-                            {/* show smaller than sm */}
-                            <div className='sm:hidden flex-col items-start'>
+                            {/* show smaller than lg */}
+                            <div className='lg:hidden flex-col items-start'>
                               <div className='flex items-end gap-2 sm:gap-4'>
                                 <Text
-                                  className={`text-[24px] mb-2 ${gradientTextClass}`}
+                                  className={`text-[24px] sm:text-[32px] mb-2 ${gradientTextClass}`}
                                   size='bold'
                                 >
                                   {item.price}
                                 </Text>
                                 {!!item.sold && (
-                                  <Text className='text-gray-a5 text-[12px] mb-[14px] italic text-nowrap'>
+                                  <Text className='text-gray-a5 text-[12px] sm:text-[18px] mb-[14px] italic text-nowrap'>
                                     {t('aiAgent.sold', { quantity: item.sold })}
                                   </Text>
                                 )}
                               </div>
                               <Button
-                                className='rounded-[35px] w-full h-7 text-[12px] font-semibold'
+                                className='rounded-[35px] w-full sm:w-fit h-7 text-[12px] sm:text-[20px] font-semibold'
                                 onClick={handleToCheckout(item.key)}
                               >
                                 {isConnected
@@ -532,8 +536,8 @@ const ProductPage = () => {
                                   : t('aiAgent.connectToOrder')}
                               </Button>
                             </div>
-                            {/* show larger than sm */}
-                            <ul className='hidden sm:block list-disc klist-outside pl-8 text-[22px] max-w-[526px]'>
+                            {/* show larger than lg */}
+                            <ul className='hidden lg:block list-disc klist-outside pl-8 text-[22px] max-w-[526px]'>
                               {item.tDescKey.map((key) => {
                                 const desc = t(
                                   `aiAgent.${item.tKey}.${key}` as any
@@ -542,8 +546,8 @@ const ProductPage = () => {
                               })}
                             </ul>
                           </div>
-                          {/* show larger than sm */}
-                          <div className='hidden sm:flex flex-col items-end'>
+                          {/* show larger than lg */}
+                          <div className='hidden lg:flex flex-col items-end'>
                             <div className='flex items-end gap-2 sm:gap-4'>
                               {!!item.sold && (
                                 <Text className='text-gray-a5 text-[12px] text-base mb-6 italic text-nowrap'>
@@ -567,8 +571,11 @@ const ProductPage = () => {
                             </Button>
                           </div>
                         </div>
-                        {/* show smaller than sm */}
-                        <ul className='mt-[15px] sm:hidden list-disc klist-outside pl-8 w-full text-[12px]'>
+                        {/* show smaller than lg */}
+                        <ul
+                          className='mt-[15px] lg:hidden list-disc klist-outside pl-8 w-full text-[12px]
+                            sm:text-[24px]'
+                        >
                           {item.tDescKey.map((key) => {
                             const desc = t(`aiAgent.${item.tKey}.${key}` as any)
                             return <li key={desc}>{desc}</li>

@@ -61,7 +61,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
     <div
       className={clsx(
         `flex items-center w-full border-co-border-1 bg-opacity-5 backdrop-blur-md py-3
-          md:py-6 px-4 md:px-[60px] justify-between rounded-[32px] border`,
+          lg:py-6 px-4 lg:px-[60px] justify-between rounded-[32px] border`,
         className
       )}
     >
@@ -74,7 +74,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
           />
         </Link>
       </div>
-      <div className='hidden md:flex items-center justify-center gap-[80px]'>
+      <div className='hidden lg:flex items-center justify-center gap-[50px]'>
         {MenuList.map(({ key, href }) => {
           return (
             <Link
@@ -106,12 +106,12 @@ const Header: FC<HeaderProps> = ({ className }) => {
           isOpen={menuVisible}
           onClose={hideMenu}
         >
-          <PopoverTrigger className='md:hidden'>
+          <PopoverTrigger className='lg:hidden'>
             <div onClick={() => setMenuVisible(true)}>
               <MenuItemIcon />
             </div>
           </PopoverTrigger>
-          <PopoverContent className='w-screen left-0 relative'>
+          <PopoverContent className='w-screen left-0 relative md:px-10'>
             <div
               className='border-gradient w-full h-full flex flex-col gap-7 items-center justify-start
                 py-[30px] px-[25px]'

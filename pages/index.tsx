@@ -93,7 +93,7 @@ const HomePage = () => {
             />
           </ImagesField>
           <Content
-            className='absolute left-1/2 top-[60%] sm:top-[55%] translate-x-[-50%] translate-y-[-50%]
+            className='absolute left-1/2 top-[60%] lg:top-[55%] translate-x-[-50%] translate-y-[-50%]
               flex justify-center items-center'
           >
             <div className='flex flex-col w-full lg:w-[1000px] relative mx-auto'>
@@ -157,7 +157,7 @@ const HomePage = () => {
             />
           </ImagesField>
           <Content className='relative sm:absolute left-1/2 top-0 sm:top-[50px] translate-x-[-50%]'>
-            <div className='flex flex-col gap-y-5 sm:gap-y-[30px] items-start lg:w-[920px]'>
+            <div className='flex flex-col gap-y-5 sm:gap-y-[30px] items-start md:w-[600px] lg:w-[920px]'>
               <Text
                 className='text-[18px] text-left sm:text-[48px] clip-text bg-gradient-home-text-1
                   font-semibold'
@@ -165,11 +165,14 @@ const HomePage = () => {
                 {t('section2.title1')} <br />
                 {t('section2.title2')}
               </Text>
-              <Text className='text-[14px] font-normal lg:text-[22px] text-left w-[279px] sm:w-auto'>
+              <Text className='text-[14px] font-normal md:text-[22px] text-left w-[279px] sm:w-auto'>
                 {t('section2.intro')}
               </Text>
               <div className='w-[65px] h-[1px] bg-white'></div>
-              <Text className='text-[12px] font-normal lg:text-[28px] text-left uppercase tracking-[2px]'>
+              <Text
+                className='text-[12px] font-normal md:text-[24px] lg:text-[28px] text-left uppercase
+                  tracking-[2px]'
+              >
                 {t('section2.footer')}
               </Text>
             </div>
@@ -203,11 +206,11 @@ const HomePage = () => {
             <br className='sm:hidden' />
             <span className='#fff'>{t('section2-sub.title2')}</span>
           </Text>
-          <div className='flex flex-col-reverse sm:flex-row justify-between items-center mb-[50px]'>
+          <div className='flex flex-col-reverse lg:flex-row justify-between items-center mb-[50px]'>
             <div className='w-full sm:w-[630px]'>
               <Text
-                className='text-[18px] sm:text-[48px] text-center sm:text-left mb-2.5 sm:mb-10
-                  font-semibold text-white'
+                className='text-[18px] sm:text-[30px] lg:text-[48px] text-center lg:text-left mb-2.5
+                  sm:mb-10 font-semibold text-white'
               >
                 {t('section2-sub.info1')}
               </Text>
@@ -224,7 +227,7 @@ const HomePage = () => {
               className='w-[560px] object-cover'
             />
           </div>
-          <div className='flex flex-col sm:flex-row justify-between items-center mb-[50px]'>
+          <div className='flex flex-col lg:flex-row justify-between items-center mb-[50px]'>
             <img
               src='/images/home/home_image_3.webp'
               alt='home_image_3'
@@ -232,8 +235,8 @@ const HomePage = () => {
             />
             <div className='w-full sm:w-[630px]'>
               <Text
-                className='text-[18px] sm:text-[48px] text-center mb-2.5 sm:mb-10 font-semibold text-white
-                  sm:text-right'
+                className='text-[18px] sm:text-[30px] lg:text-[48px] text-center mb-2.5 sm:mb-10
+                  font-semibold text-white lg:text-right'
               >
                 {t('section2-sub.info2')}
               </Text>
@@ -247,25 +250,25 @@ const HomePage = () => {
           </div>
           <div>
             <Text
-              className='text-[18px] sm:text-[48px] mb-[20px] font-semibold text-white text-left
-                sm:text-center whitespace-normal sm:whitespace-nowrap'
+              className='text-[18px] sm:text-[28px] lg:text-[48px] mb-[20px] font-semibold text-white
+                text-left lg:text-center whitespace-normal sm:whitespace-nowrap'
             >
               {t('section2-sub.info3')}
             </Text>
             <Text
-              className='text-[12px] sm:text-[28px] mb-8 sm:mb-[30px] font-semibold clip-text
-                bg-gradient-home-text-1 sm:text-center sm:whitespace-nowrap uppercase w-[222px]
-                sm:w-auto text-left whitespace-normal'
+              className='text-[12px] sm:text-[20px] lg:text-[28px] mb-8 lg:mb-[30px] font-semibold
+                clip-text bg-gradient-home-text-1 lg:text-center sm:whitespace-nowrap uppercase
+                w-[222px] sm:w-auto text-left whitespace-normal'
             >
               {t('section2-sub.footer3')}
             </Text>
             <img
-              className='w-full object-cover hidden sm:inline-block'
+              className='w-full object-cover hidden lg:inline-block'
               src='/images/home/home_image_4.webp'
               alt='home_image_4'
             />
             <img
-              className='w-full object-cover sm:hidden'
+              className='w-full object-cover lg:hidden'
               src='/images/home/home_image_4_mobile.webp'
               alt='home_image_4'
             />
@@ -275,7 +278,7 @@ const HomePage = () => {
       <Container>
         <div ref={section3Ref}>
           <ImagesField>
-            <div className='absolute left-0 top-0 sm:top-[-300px]'>
+            <div className='absolute left-0 top-0 lg:top-[-300px]'>
               <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
               <video
                 ref={video3Ref}
@@ -291,8 +294,8 @@ const HomePage = () => {
             </div>
             <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
           </ImagesField>
-          <Content className='flex justify-center pb-[66px] sm:pb-[235px]'>
-            <div className='flex flex-col sm:flex-row gap-x-[40px] justify-between items-center'>
+          <Content className='flex justify-center pb-[66px] lg:pb-[235px]'>
+            <div className='flex flex-col lg:flex-row gap-x-[40px] justify-between items-center'>
               <img
                 src='/images/home/home_image_5.webp'
                 alt='home_image_5'
@@ -303,12 +306,12 @@ const HomePage = () => {
                   key={router.locale}
                   src={t('section3.imgSrc')}
                   alt='home_image_6'
-                  className='w-[157px] sm:w-[425px] object-cover'
+                  className='w-[157px] sm:w-[200px] lg:w-[425px] object-cover'
                 />
-                <Text className='sm:w-auto text-[18px] sm:text-[48px] font-semibold text-white'>
+                <Text className='lg:w-auto text-[18px] sm:text-[32px] lg:text-[48px] font-semibold text-white'>
                   {t('section3.title')}
                 </Text>
-                <div className='w-[65px] h-[1px] bg-white my-2.5 sm:my-4'></div>
+                <div className='w-[65px] h-[1px] bg-white my-2.5 lg:my-4'></div>
                 <Text
                   className='text-[18px] lg:text-[28px] text-center lg:text-left uppercase clip-text
                     bg-gradient-home-text-1 font-semibold'
@@ -387,7 +390,7 @@ const HomePage = () => {
               <div
                 key={key}
                 className='relative flex justify-center items-center border-2 border-purple-500 h-fit
-                  sm:h-[184px] rounded-[10px] sm:rounded-[20px] p-[20px]'
+                  sm:h-[200px] lg:h-[184px] rounded-[10px] sm:rounded-[20px] p-[20px]'
               >
                 <div
                   className='absolute top-0 left-1/2 translate-x-[-50%] translate-y-[-50%] min-w-[172px]
@@ -401,7 +404,7 @@ const HomePage = () => {
                     {t(`section4.${key}.title` as any)}
                   </Text>
                 </div>
-                <Text className='text-[14px] sm:text-[20px] font-semibold text-white text-center'>
+                <Text className='text-[14px] sm:text-[18px] lg:text-[20px] font-semibold text-white text-center'>
                   {t(`section4.${key}.description` as any)}
                 </Text>
               </div>

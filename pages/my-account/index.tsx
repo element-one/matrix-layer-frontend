@@ -321,8 +321,8 @@ const MyAccount = () => {
             {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 md:grid-cols-2 gap-11 border-2 md:border-none rounded-[20px]
-              border-referral-gradient p-8 md:p-0'
+            className='grid grid-cols-1 lg:grid-cols-2 gap-11 border-2 md:border-none rounded-[20px]
+              p-8 md:p-0'
           >
             <div
               className={tn(`md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
@@ -399,8 +399,8 @@ const MyAccount = () => {
               className={clsx(
                 'grid mt-6 gap-6',
                 index === 0
-                  ? 'grid-cols-1 md:grid-cols-3'
-                  : 'grid-cols-2 md:grid-cols-4'
+                  ? 'grid-cols-1 xl:grid-cols-3'
+                  : 'grid-cols-2 xl:grid-cols-4'
               )}
             >
               {group.map((item) => (

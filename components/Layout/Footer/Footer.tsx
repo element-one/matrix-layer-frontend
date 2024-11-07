@@ -11,7 +11,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
   return (
     <div
       className={clsx(
-        `w-full md:px-14 flex flex-col md:flex-row gap-2 items-center justify-between
+        `w-full lg:px-14 flex flex-col lg:flex-row gap-2 items-center justify-between
           text-co-text-1 pb-[58px]`,
         className
       )}
