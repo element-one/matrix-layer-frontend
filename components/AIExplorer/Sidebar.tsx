@@ -79,7 +79,7 @@ const Sidebar: FC<SidebarProps> = ({
         size='sm'
         variant='light'
         radius='full'
-        className='m-5 absolute'
+        className='m-5 absolute z-20'
         onPress={() => onSidebarChange(true)}
       >
         <Bars3CenterLeftIcon className='w-6 h-6 text-co-text-1' />

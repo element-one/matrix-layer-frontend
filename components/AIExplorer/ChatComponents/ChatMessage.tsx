@@ -67,7 +67,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     }
   }
 
-  const DotCharacter = `    ⚪`
+  // const DotCharacter = `    ⚪`
   const DOT_DISAPPEAR_DELAY = 500
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     message: Message,
     showDot: boolean
   ) => {
-    let parsedContent = content
+    const parsedContent = content
 
     if (
       isChatTyping &&
@@ -99,7 +99,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       !message.internalMetaData?.isFinishedMessage &&
       !isUserMessage
     ) {
-      parsedContent += `${DotCharacter}`
+      // parsedContent += `${DotCharacter}`
     }
 
     return parsedContent
@@ -139,7 +139,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       {isUserMessage && (
         <div className='max-w-[800px] w-[80%] flex flex-col items-end gap-y-1'>
           <Text className='w-fit text-[16px] rounded-[24px] px-6 py-[10px] bg-gray-32'>
-            {messageText}
+            {parsedContent}
           </Text>
           {!loading && (
             <div className='self-end text-[12px]'>{formatDate()}</div>

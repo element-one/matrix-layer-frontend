@@ -34,6 +34,7 @@ const ChatBox: FC<ChatBoxProps> = ({
 
     onSend(message)
   }
+
   return (
     <div className='w-full py-5 px-5 flex gap-x-4 items-center'>
       <Input

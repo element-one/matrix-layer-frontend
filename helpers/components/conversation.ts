@@ -61,8 +61,9 @@ export function getLastAiMessage(
   }
 
   const AiFiltered = aiMessages(currentConversation.messages)
+
   return AiFiltered.sort(
-    (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   ).pop()
 }
 
