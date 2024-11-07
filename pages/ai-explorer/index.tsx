@@ -12,6 +12,8 @@ import { getRandomId } from '@utils/random'
 
 const AIExplorer = () => {
   const [activeConversationId, setActiveConversationId] = useState<string>('')
+  const [isSidebarOpen, onSidebarChange] = useState(false)
+
   const { conversations, setConversations } = useStore(
     ({ conversations, setConversations }) => ({
       conversations,
@@ -37,19 +39,47 @@ const AIExplorer = () => {
     if (noConversations) {
       createNewConversation()
     }
-  }, [conversations, createNewConversation])
+
+    if (!activeConversationId && conversations.length > 0) {
+      setActiveConversationId(conversations[0]?.id || '')
+    }
+  }, [
+    conversations,
+    createNewConversation,
+    setActiveConversationId,
+    activeConversationId
+  ])
+
+  const onDeleteConversation = (conversationId: string) => {
+    if (conversationId === activeConversationId) {
+      const remainingConversations = conversations.filter(
+        (conv) => conv.id !== conversationId
+      )
+      if (remainingConversations.length > 0) {
+        setActiveConversationId(remainingConversations[0]?.id || '')
+      } else {
+        setActiveConversationId('')
+      }
+    }
+  }
 
   return (
     <Layout className='flex justify-center'>
-      <Container
-        className='w-[1310px] max-auto h-[100vh] flex justify-center gap-x-8 py-[200px]
-          overflow-hidden'
-      >
-        <Sidebar />
-        <ConversationComponent
-          userId={getRandomId()}
-          conversationId={activeConversationId}
-        />
+      <Container className='w-[1310px] max-auto h-[100vh] py-[200px] overflow-hidden'>
+        <div className='w-full h-full relative overflow-hidden rounded-[32px]'>
+          <Sidebar
+            activeConversationId={activeConversationId}
+            createNewConversation={createNewConversation}
+            setActiveConversationId={setActiveConversationId}
+            onDeleteConversation={onDeleteConversation}
+            isSidebarOpen={isSidebarOpen}
+            onSidebarChange={onSidebarChange}
+          />
+          <ConversationComponent
+            userId={getRandomId()}
+            conversationId={activeConversationId}
+          />
+        </div>
       </Container>
     </Layout>
   )
