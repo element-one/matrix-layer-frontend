@@ -24,11 +24,6 @@ const nextConfig = {
     return process.env.NEXT_PUBLIC_APP_ENV === 'dev'
       ? [
           {
-            source: '/graphql/:path*',
-            destination: `${process.env.NEXT_PUBLIC_GRAPHQL_API_URL}/:path*`,
-            basePath: false
-          },
-          {
             source: '/api/:path*',
             destination: `${process.env.NEXT_PUBLIC_SERVER_URL}/:path*`
           }
