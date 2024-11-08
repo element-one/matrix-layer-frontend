@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
 
 import { getMessageText } from '@helpers/components/message'
@@ -23,28 +24,28 @@ const generateTitleFromMessages = (messages: Message[]) => {
   return 'New Conversation'
 }
 
-function formatConversationDate(date: dayjs.Dayjs): string {
+function getConversationGroupKey(date: dayjs.Dayjs): string {
   const today = dayjs()
   const oneWeekAgo = today.subtract(7, 'day')
   const oneMonthAgo = today.subtract(1, 'month')
 
   if (date.isSame(today, 'day')) {
-    return 'Today'
+    return 'today'
   }
 
   if (date.isSame(today.subtract(1, 'day'), 'day')) {
-    return 'Yesterday'
+    return 'yesterday'
   }
 
   if (date.isAfter(oneWeekAgo) && date.isBefore(today)) {
-    return 'Previous 1 week'
+    return 'oneWeekAgo'
   }
 
   if (date.isAfter(oneMonthAgo) && date.isBefore(today)) {
-    return 'Previous 1 month'
+    return 'oneMonthAgo'
   }
 
-  return 'All'
+  return 'all'
 }
 
 interface IConversations {
@@ -60,6 +61,8 @@ export const ConversationList: FC<IConversations> = ({
   onSelect,
   onDelete
 }) => {
+  const t = useTranslations('Ai.sidebar')
+
   const conversations = useStore((store) => store.conversations)
 
   const filteredConversations = useMemo(() => {
@@ -77,8 +80,8 @@ export const ConversationList: FC<IConversations> = ({
     return filteredConversations.reduce(
       (acc, conversation) => {
         const dateCategory = conversation.createdAt
-          ? formatConversationDate(dayjs(new Date(conversation.createdAt)))
-          : 'All'
+          ? getConversationGroupKey(dayjs(new Date(conversation.createdAt)))
+          : 'all'
 
         if (!acc[dateCategory]) {
           acc[dateCategory] = []
@@ -105,7 +108,7 @@ export const ConversationList: FC<IConversations> = ({
         return (
           <div key={group}>
             <div className='text-sm font-semibold text-gray-a5 px-1 mb-1'>
-              {group}
+              {t(`group.${group}` as any)}
             </div>
             <div className='flex flex-col gap-y-1'>
               {groupedConversations[group].map((conversation) => (

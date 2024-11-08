@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import {
   Button,
@@ -25,6 +26,8 @@ export default function ConversationDelete({
   conversationId,
   iconClass = ''
 }: IConversationDelete) {
+  const t = useTranslations('Ai.sidebar.delete')
+
   const conversations = useStore((store) => store.conversations)
   const setConversations = useStore((store) => store.setConversations)
   const [modalOpened, setModalOpened] = useState(false)
@@ -60,8 +63,8 @@ export default function ConversationDelete({
           disallowEmptySelection
           selectionMode='single'
         >
-          <DropdownItem key='delete' className='h-10 text-red-300'>
-            Delete
+          <DropdownItem key='delete' className='h-10 text-[#f31260]'>
+            {t('delete')}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
@@ -77,14 +80,16 @@ export default function ConversationDelete({
       >
         <ModalContent className='bg-co-bg-1 border border-co-border-gray text-co-text-1 py-10'>
           <ModalBody className='flex flex-col items-center justify-center gap-8'>
-            <div className='font-semibold text-[32px]'>Confirm Delete</div>
-            <div>Are you sure you want to delete this conversation?</div>
+            <div className='font-semibold text-[32px]'>{t('title')}</div>
+            <div>{t('info')}</div>
 
             <div className='flex flex-row items-center justify-center gap-2'>
               <Button onClick={handleDeleteClick} color='danger'>
-                Confirm
+                {t('confirm')}
               </Button>
-              <Button onClick={() => setModalOpened(false)}>Cancel</Button>
+              <Button onClick={() => setModalOpened(false)}>
+                {t('cancel')}
+              </Button>
             </div>
           </ModalBody>
         </ModalContent>

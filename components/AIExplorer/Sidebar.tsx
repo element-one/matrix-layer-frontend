@@ -1,4 +1,5 @@
-import { FC, MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   ArrowLeftIcon,
   Bars3CenterLeftIcon,
@@ -28,10 +29,11 @@ const Sidebar: FC<SidebarProps> = ({
   isSidebarOpen,
   onSidebarChange
 }) => {
+  const t = useTranslations('Ai.sidebar')
+
   const sidebarRef = useRef<HTMLDivElement>(null)
 
   const [searchQuery, setSearchQuery] = useState('')
-
   const [maxWidth, setMaxWidth] = useState(0)
 
   useEffect(() => {
@@ -48,33 +50,8 @@ const Sidebar: FC<SidebarProps> = ({
 
     window.addEventListener('resize', handleResize)
 
-    // 清理事件监听
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  const handleClickOutside = useCallback(
-    (event: MouseEvent<HTMLDivElement, MouseEvent>): void => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
-      ) {
-        onSidebarChange(false)
-      }
-    },
-    [onSidebarChange]
-  )
-
-  useEffect(() => {
-    document.addEventListener(
-      'mousedown',
-      handleClickOutside as unknown as EventListener
-    )
-
     return () => {
-      document.removeEventListener(
-        'mousedown',
-        handleClickOutside as unknown as EventListener
-      )
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
@@ -94,82 +71,91 @@ const Sidebar: FC<SidebarProps> = ({
   }
 
   return (
-    <div className='top-0 left-0 bottom-0 absolute text-co-text-1'>
-      <OriginButton
-        isIconOnly
-        size='sm'
-        variant='light'
-        radius='full'
-        className='m-5 absolute z-20'
-        onPress={() => onSidebarChange(true)}
-      >
-        <Bars3CenterLeftIcon className='w-6 h-6 text-co-text-1' />
-      </OriginButton>
-      <AnimatePresence>
-        {isSidebarOpen && (
-          <>
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: `${maxWidth}px`, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className='relative h-full z-[100]'
-            >
-              <div
-                className='w-full h-full p-5 border-2 border-[#666] rounded-[32px] bg-co-bg-1 flex flex-col'
-                ref={sidebarRef}
+    <>
+      {isSidebarOpen && (
+        <div
+          className='top-0 left-0 bottom-0 right-0 absolute bg-black/60 z-[99]'
+          onClick={() => onSidebarChange(false)}
+        />
+      )}
+      <div className='top-0 left-0 bottom-0 absolute text-co-text-1'>
+        <OriginButton
+          isIconOnly
+          size='sm'
+          variant='light'
+          radius='full'
+          className='m-5 absolute z-20'
+          onPress={() => onSidebarChange(true)}
+        >
+          <Bars3CenterLeftIcon className='w-6 h-6 text-co-text-1' />
+        </OriginButton>
+        <AnimatePresence>
+          {isSidebarOpen && (
+            <>
+              <motion.div
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: `${maxWidth}px`, opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className='relative h-full z-[100]'
               >
-                <div className='flex flex-row items-center justify-between'>
-                  <div className='bg-gradient-text-1 clip-text text-[24px] font-bold flex items-center gap-x-1'>
-                    <OriginButton
-                      isIconOnly
-                      size='sm'
-                      variant='light'
-                      radius='full'
-                      onPress={() => onSidebarChange(false)}
+                <div
+                  className='w-full h-full p-5 border-2 border-[#666] rounded-[32px] bg-co-bg-1 flex flex-col'
+                  ref={sidebarRef}
+                >
+                  <div className='flex flex-row items-center justify-between'>
+                    <div className='bg-gradient-text-1 clip-text text-[24px] font-bold flex items-center gap-x-1'>
+                      <OriginButton
+                        isIconOnly
+                        size='sm'
+                        variant='light'
+                        radius='full'
+                        onPress={() => onSidebarChange(false)}
+                      >
+                        <ArrowLeftIcon className='w-4 h-4 text-co-text-1' />
+                      </OriginButton>
+                      {t('history')}
+                    </div>
+                    <Button
+                      color='primary'
+                      className='text-lg font-semibold'
+                      startContent={<PlusIcon className='w-4 h-4' />}
+                      onPress={handleCreateNewConversation}
                     >
-                      <ArrowLeftIcon className='w-4 h-4 text-co-text-1' />
-                    </OriginButton>
-                    History
+                      <span>{t('new')}</span>
+                    </Button>
                   </div>
-                  <Button
-                    color='primary'
-                    className='text-lg font-semibold'
-                    startContent={<PlusIcon className='w-4 h-4' />}
-                    onPress={handleCreateNewConversation}
-                  >
-                    <span>New</span>
-                  </Button>
+                  <Divider className='bg-[rgba(102,102,102,0.40)] my-2' />
+                  <Input
+                    placeholder={t('searchMessage')}
+                    classNames={{
+                      mainWrapper: 'border border-gray-666 rounded-[12px] mb-3',
+                      inputWrapper:
+                        'bg-black-15 group-data-[focus=true]:bg-black-15 data-[hover=true]:bg-black-15',
+                      input:
+                        'text-[12px] group-data-[has-value=true]:text-white'
+                    }}
+                    value={searchQuery}
+                    onChange={(event) =>
+                      setSearchQuery(event.currentTarget.value)
+                    }
+                    endContent={
+                      <MagnifyingGlassIcon className='w-4 h-4 text-co-text-1' />
+                    }
+                  />
+                  <ConversationList
+                    activeConversationId={activeConversationId}
+                    onSelect={handleSelect}
+                    onDelete={handleDelete}
+                    searchQuery={searchQuery}
+                  />
                 </div>
-                <Divider className='bg-[rgba(102,102,102,0.40)] my-2' />
-                <Input
-                  placeholder='Search Message'
-                  classNames={{
-                    mainWrapper: 'border border-gray-666 rounded-[12px] mb-3',
-                    inputWrapper:
-                      'bg-black-15 group-data-[focus=true]:bg-black-15 data-[hover=true]:bg-black-15',
-                    input: 'text-[12px] group-data-[has-value=true]:text-white'
-                  }}
-                  value={searchQuery}
-                  onChange={(event) =>
-                    setSearchQuery(event.currentTarget.value)
-                  }
-                  endContent={
-                    <MagnifyingGlassIcon className='w-4 h-4 text-co-text-1' />
-                  }
-                />
-                <ConversationList
-                  activeConversationId={activeConversationId}
-                  onSelect={handleSelect}
-                  onDelete={handleDelete}
-                  searchQuery={searchQuery}
-                />
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
   )
 }
 

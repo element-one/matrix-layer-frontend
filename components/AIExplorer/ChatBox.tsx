@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, Ref } from 'react'
+import { useTranslations } from 'next-intl'
 import { Button, Input } from '@nextui-org/react'
 
 import { SendMessageIcon } from '@components/Icon/SendMessage'
@@ -20,6 +21,7 @@ const ChatBox: FC<ChatBoxProps> = ({
   onChange,
   inputRef
 }) => {
+  const t = useTranslations('Ai.conversation')
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value)
     onChange?.()
@@ -39,7 +41,7 @@ const ChatBox: FC<ChatBoxProps> = ({
     <div className='w-full py-5 px-5 flex gap-x-4 items-center'>
       <Input
         ref={inputRef}
-        placeholder='Your Sentence Here...'
+        placeholder={t('sentenceHere')}
         classNames={{
           mainWrapper: 'border border-gray-666 rounded-[12px]',
           inputWrapper:

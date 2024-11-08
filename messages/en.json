@@ -388,5 +388,34 @@
       "success": "Success",
       "second": "S"
     }
+  },
+  "Ai": {
+    "sidebar": {
+      "history": "History",
+      "new": "New",
+      "searchMessage": "Search Message",
+      "group": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "oneWeekAgo": "Previous 1 week",
+        "oneMonthAgo": "Previous 1 month",
+        "all": "All"
+      },
+      "delete": {
+        "delete": "Delete",
+        "title": "Confirm Delete",
+        "info": "Are you sure you want to delete this conversation?",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "conversation": {
+      "followUp": "You can continue asking the questions like...",
+      "timeSpan": {
+        "justNow": "Just Now",
+        "minuteAgo": "minutes ago"
+      },
+      "sentenceHere": "Your Sentence Here..."
+    }
   }
 }

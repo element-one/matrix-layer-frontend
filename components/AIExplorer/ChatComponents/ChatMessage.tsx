@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Markdown from 'react-markdown'
+import { useTranslations } from 'next-intl'
 import { Avatar } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
@@ -27,6 +28,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   isChatTyping
 }: ChatMessageProps) => {
   const { createdAt, role } = message
+
+  const t = useTranslations('Ai.conversation.timeSpan')
 
   const [showDot, setShowDot] = useState(false)
 
@@ -57,9 +60,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     }
 
     if (minutesAgo < 1) {
-      return 'Just Now'
+      return t('justNow')
     } else if (minutesAgo < 15) {
-      return `${minutesAgo} minutes ago`
+      return `${minutesAgo} ${t('minuteAgo')}`
     } else if (isToday(createdDate)) {
       return dayjs(createdDate).format('hh:mm a')
     } else {

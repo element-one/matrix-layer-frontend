@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import { MessageIcon } from '@components/Icon/Message'
 import { Text } from '@components/Text'
 import { ChatFollowUpOptionInput } from '@type/graphqlApiSchema'
@@ -12,11 +14,10 @@ const FollowUpQuestion = ({
   followUpQuestions,
   onSelect
 }: FollowUpQuestionProps) => {
+  const t = useTranslations('Ai.conversation')
   return (
     <div className='flex flex-col mx-10 gap-2'>
-      <Text className='text-[14px]'>
-        You can continue asking the questions like...
-      </Text>
+      <Text className='text-[14px]'>{t('followUp')}</Text>
       <div className='flex flex-col gap-y-3'>
         {followUpQuestions.map((followUpQuestion, index) => {
           return (

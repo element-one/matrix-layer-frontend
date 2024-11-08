@@ -388,5 +388,34 @@
       "success": "成功",
       "second": "秒"
     }
+  },
+  "Ai": {
+    "sidebar": {
+      "history": "历史",
+      "new": "新建",
+      "searchMessage": "搜索消息",
+      "group": {
+        "today": "今天",
+        "yesterday": "昨天",
+        "oneWeekAgo": "一周前",
+        "oneMonthAgo": "一月前",
+        "all": "全部"
+      },
+      "delete": {
+        "delete": "删除",
+        "title": "确认删除",
+        "info": "您确定要删除这组对话吗？",
+        "confirm": "确认",
+        "cancel": "取消"
+      }
+    },
+    "conversation": {
+      "followUp": "您可以继续提问，比如...",
+      "timeSpan": {
+        "justNow": "刚刚",
+        "minuteAgo": "分钟前"
+      },
+      "sentenceHere": "请输入您的对话内容..."
+    }
   }
 }
