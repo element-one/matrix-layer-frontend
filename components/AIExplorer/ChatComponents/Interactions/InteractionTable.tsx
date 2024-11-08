@@ -30,8 +30,8 @@ export const ChatTable: React.FC<TableProps> = ({ data }) => {
             ))}
           </TableHeader>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
+            {rows.map((row, row_i) => (
+              <TableRow key={`${row.id}-${row_i}`}>
                 {row.cells.map((cell, i) => (
                   <TableCell
                     key={`${row.id}-${i}`}
