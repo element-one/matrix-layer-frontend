@@ -5,8 +5,13 @@ import { Avatar } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
 import {
+  // getAllChartInteractionsByUiCategory,
+  // getAllIndicatorInteractionsByUiCategory,
+  // getAllTableInteractionsByUiCategory,
+  // getErrorInteractionByUiCategory,
   getMessageText,
   getSingleSelectionNewsTimeScope
+  // getXPostInteractionByUiCategory
 } from '@helpers/components/message'
 import { Message, Role } from '@type/internal/message'
 import dayjs from 'dayjs'
@@ -110,6 +115,12 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
   const messageText = getMessageText(message) || ''
 
+  // const xPostInteraction = getXPostInteractionByUiCategory(message)
+  // const errorInteraction = getErrorInteractionByUiCategory(message)
+  // const chartInteractions = getAllChartInteractionsByUiCategory(message)
+  // const tableInteractions = getAllTableInteractionsByUiCategory(message)
+  // const indicatorInteractions = getAllIndicatorInteractionsByUiCategory(message)
+
   const parsedContent = parseContent(messageText, message, showDot)
 
   return (
@@ -134,6 +145,42 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                   {parsedContent}
                 </Markdown>
               </div>
+              <>
+                {/* {chartInteractions.length > 0 && (
+                  <div >
+                    <div className='flex flex-col gap-4' style={{ maxWidth: "100%", overflow: "hidden" }}>
+                      {chartInteractions.map((interaction) => (
+                        <ChartInteraction key={interaction.id} data={interaction} />
+                      ))}
+                    </div>
+                  </div>
+                )} */}
+
+                {/* {tableInteractions.length > 0 && (
+                  <div>
+                    <div className='flex flex-col gap-4'>
+                      {tableInteractions.map((interaction) => (
+                        <Table key={interaction.id} data={interaction} />
+                      ))}
+                    </div>
+                  </div>
+                )} */}
+
+                {/* {indicatorInteractions.length > 0 && (
+                  <Box mt="md">
+                    <Stack gap="md">
+                      {indicatorInteractions.map((interaction) => (
+                        <Indicator key={interaction.id} data={interaction} />
+                      ))}
+                    </Stack>
+                  </Box>
+                )} */}
+
+                {/* Twitter Integration */}
+                {/* {xPostInteraction?.content.post_id && (
+                  <Twitter id={xPostInteraction.content.post_id} />
+                )} */}
+              </>
               {!loading && (
                 <div className='text-right text-[12px]'>{formatDate()}</div>
               )}
