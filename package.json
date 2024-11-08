@@ -52,6 +52,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-slick": "^0.30.2",
     "react-toastify": "^10.0.4",
+    "react-tweet": "^3.2.1",
     "react-use": "^17.4.3",
     "rehype-raw": "^7.0.0",
     "slick-carousel": "^1.8.1",

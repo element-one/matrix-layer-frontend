@@ -5,18 +5,19 @@ import { Avatar } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
 import {
-  // getAllChartInteractionsByUiCategory,
-  // getAllIndicatorInteractionsByUiCategory,
-  // getAllTableInteractionsByUiCategory,
-  // getErrorInteractionByUiCategory,
+  getAllIndicatorInteractionsByUiCategory,
+  getAllTableInteractionsByUiCategory,
   getMessageText,
-  getSingleSelectionNewsTimeScope
-  // getXPostInteractionByUiCategory
+  getSingleSelectionNewsTimeScope,
+  getXPostInteractionByUiCategory
 } from '@helpers/components/message'
 import { Message, Role } from '@type/internal/message'
 import dayjs from 'dayjs'
 import rehypeRaw from 'rehype-raw'
 
+import { Indicator } from './Interactions/InteractionIndicator'
+import { ChatTable } from './Interactions/InteractionTable'
+import Twitter from './Interactions/Twitter'
 import ChatLink from './Markdown/ChatLink'
 
 interface ChatMessageProps {
@@ -115,11 +116,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
   const messageText = getMessageText(message) || ''
 
-  // const xPostInteraction = getXPostInteractionByUiCategory(message)
+  const xPostInteraction = getXPostInteractionByUiCategory(message)
   // const errorInteraction = getErrorInteractionByUiCategory(message)
   // const chartInteractions = getAllChartInteractionsByUiCategory(message)
-  // const tableInteractions = getAllTableInteractionsByUiCategory(message)
-  // const indicatorInteractions = getAllIndicatorInteractionsByUiCategory(message)
+  const tableInteractions = getAllTableInteractionsByUiCategory(message)
+  const indicatorInteractions = getAllIndicatorInteractionsByUiCategory(message)
 
   const parsedContent = parseContent(messageText, message, showDot)
 
@@ -134,7 +135,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <div className='max-w-[800px] w-[80%] flex flex-col'>
           <div className='flex gap-x-5'>
             <Avatar className='w-6 h-6 shrink-0' />
-            <div className='flex flex-col gap-y-1'>
+            <div className='flex flex-col gap-y-4'>
               <div className='whitespace-normal rounded-[24px] px-6 py-4 markdown-body'>
                 <Markdown
                   rehypePlugins={resolveRehypePlugins(message)}
@@ -156,30 +157,26 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                   </div>
                 )} */}
 
-                {/* {tableInteractions.length > 0 && (
-                  <div>
-                    <div className='flex flex-col gap-4'>
-                      {tableInteractions.map((interaction) => (
-                        <Table key={interaction.id} data={interaction} />
-                      ))}
-                    </div>
+                {tableInteractions.length > 0 && (
+                  <div className='flex flex-col gap-3'>
+                    {tableInteractions.map((interaction) => (
+                      <ChatTable key={interaction.id} data={interaction} />
+                    ))}
                   </div>
-                )} */}
+                )}
 
-                {/* {indicatorInteractions.length > 0 && (
-                  <Box mt="md">
-                    <Stack gap="md">
-                      {indicatorInteractions.map((interaction) => (
-                        <Indicator key={interaction.id} data={interaction} />
-                      ))}
-                    </Stack>
-                  </Box>
-                )} */}
+                {indicatorInteractions.length > 0 && (
+                  <div className='flex flex-col gap-3'>
+                    {indicatorInteractions.map((interaction) => (
+                      <Indicator key={interaction.id} data={interaction} />
+                    ))}
+                  </div>
+                )}
 
                 {/* Twitter Integration */}
-                {/* {xPostInteraction?.content.post_id && (
+                {xPostInteraction?.content.post_id && (
                   <Twitter id={xPostInteraction.content.post_id} />
-                )} */}
+                )}
               </>
               {!loading && (
                 <div className='text-right text-[12px]'>{formatDate()}</div>

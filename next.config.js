@@ -6,6 +6,7 @@ const nextConfig = {
     localeDetection: false,
   },
   reactStrictMode: false,
+  transpilePackages: ["react-tweet"],
   webpack: (config) => {
     // Add rule for SVG files
     config.module.rules.push({
