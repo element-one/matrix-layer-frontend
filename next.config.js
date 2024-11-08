@@ -1,9 +1,3 @@
-const { execSync } = require("child_process");
-const os = require("os");
-
-const commitHash = execSync("git rev-parse --short HEAD").toString().trim();
-const osInfo = `${os.type()} ${os.arch()} ${os.release()}`;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   i18n: {
@@ -12,13 +6,6 @@ const nextConfig = {
     localeDetection: false,
   },
   reactStrictMode: false,
-  env: {
-    NEXT_PUBLIC_BUILD_EXTENSION_VERSION: process.env.npm_package_version,
-    NEXT_PUBLIC_BUILD_COMMIT_HASH: commitHash,
-    NEXT_PUBLIC_BUILD_DATE: new Date().toISOString(),
-    NEXT_PUBLIC_BUILD_NODE_VERSION: process.version,
-    NEXT_PUBLIC_BUILD_OS_INFO: osInfo,
-  },
   webpack: (config) => {
     // Add rule for SVG files
     config.module.rules.push({
