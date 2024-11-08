@@ -1,6 +1,5 @@
 import { createHttpLink, split } from '@apollo/client'
 import { getMainDefinition } from '@apollo/client/utilities'
-import { GRAPHQL_API_URL } from '@helpers/env'
 
 import createCustomChatFlowLink, {
   createCustomChatFlowHeaders
@@ -8,11 +7,11 @@ import createCustomChatFlowLink, {
 import { SSELink } from './sse'
 
 const httpLink = createHttpLink({
-  uri: GRAPHQL_API_URL
+  uri: '/graphql'
 })
 
 const sseLink = new SSELink({
-  url: GRAPHQL_API_URL,
+  url: '/graphql',
   headers: async () => {
     return createCustomChatFlowHeaders()
   }

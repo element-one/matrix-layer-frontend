@@ -27,6 +27,10 @@ const nextConfig = {
             source: '/api/:path*',
             destination: `${process.env.NEXT_PUBLIC_SERVER_URL}/:path*`,
           },
+          {
+            source: '/graphql/:path*',
+            destination: `${process.env.NEXT_PUBLIC_GRAPHQL_API_URL}/:path*`
+          }
         ]
       : []
   },
