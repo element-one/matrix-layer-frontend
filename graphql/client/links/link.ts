@@ -7,11 +7,11 @@ import createCustomChatFlowLink, {
 import { SSELink } from './sse'
 
 const httpLink = createHttpLink({
-  uri: '/api/graphql'
+  uri: '/graphql'
 })
 
 const sseLink = new SSELink({
-  url: '/api/graphql',
+  url: '/graphql',
   headers: async () => {
     return createCustomChatFlowHeaders()
   }
