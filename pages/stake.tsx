@@ -1521,7 +1521,7 @@ const StakePage: NextPage = () => {
                     !!stakedTokens?.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
-                  {stakedTokens.map((stake) => {
+                  {stakedTokens?.map((stake) => {
                     return (
                       <div
                         key={stake.name + stake.id}
