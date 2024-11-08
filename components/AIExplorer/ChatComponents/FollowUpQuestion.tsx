@@ -16,7 +16,7 @@ const FollowUpQuestion = ({
 }: FollowUpQuestionProps) => {
   const t = useTranslations('Ai.conversation')
   return (
-    <div className='flex flex-col mx-10 gap-2'>
+    <div className='flex flex-col mx-10 mt-4 gap-2'>
       <Text className='text-[14px]'>{t('followUp')}</Text>
       <div className='flex flex-col gap-y-3'>
         {followUpQuestions.map((followUpQuestion, index) => {

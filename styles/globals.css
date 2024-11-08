@@ -138,3 +138,7 @@ input {
   background-color: #323232;
   font-size: 16px;
 }
+
+.markdown-body pre {
+  background-color: #323232;
+}

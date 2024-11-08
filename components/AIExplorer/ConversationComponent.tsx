@@ -17,6 +17,7 @@ import { Message } from '@type/internal/message'
 import { MessageSelection } from '@type/internal/messageSelection'
 import {
   createActiveTabInteraction,
+  createFollowUpInteraction,
   createMessage,
   createPromptInteraction,
   getErrorInteractionByUiCategory,
@@ -150,11 +151,21 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       messageId = streamingMessage.id
     }
 
+    const streamingMessageWithMetadata: Message = {
+      ...streamingMessage,
+      internalMetaData: {
+        ...(streamingMessage.internalMetaData
+          ? streamingMessage.internalMetaData
+          : {}),
+        isFinishedMessage: chatComplete
+      }
+    }
+
     const lastSystemMessage = messages.find(
       (message) => message.id === messageId
     )
     const responseMessageMerged = mergeResponseMessages(
-      streamingMessage,
+      streamingMessageWithMetadata,
       lastSystemMessage
     )
 
@@ -217,11 +228,23 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
     const pageContent = await getCurrentPageContent()
 
     const lastAiMessage = getLastAiMessage(conversations, conversationId)
+    const followPreviousInteraction = lastAiMessage
+      ? getFollowUpInteractionByUiCategory(lastAiMessage)
+      : undefined
 
     const interactions = [
       createPromptInteraction(text),
       ...(pageUrl && pageContent
         ? [createActiveTabInteraction(pageContent, pageUrl)]
+        : []),
+      ...(followUpQuestionsIndex !== -1 && followPreviousInteraction
+        ? [
+            createFollowUpInteraction(
+              followPreviousInteraction?.content.options,
+              followUpQuestionsIndex,
+              followPreviousInteraction.id
+            )
+          ]
         : [])
     ]
 

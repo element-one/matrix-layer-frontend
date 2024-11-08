@@ -66,11 +66,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     } else if (isToday(createdDate)) {
       return dayjs(createdDate).format('hh:mm a')
     } else {
-      return dayjs(createdDate).format('MM/dd/yyyy hh:mm a')
+      return dayjs(createdDate).format('MM/dd/YYYY hh:mm a')
     }
   }
 
-  // const DotCharacter = `    ⚪`
+  const DotCharacter = `    ⚪`
   const DOT_DISAPPEAR_DELAY = 500
 
   useEffect(() => {
@@ -94,7 +94,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     message: Message,
     showDot: boolean
   ) => {
-    const parsedContent = content
+    let parsedContent = content
 
     if (
       isChatTyping &&
@@ -102,7 +102,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       !message.internalMetaData?.isFinishedMessage &&
       !isUserMessage
     ) {
-      // parsedContent += `${DotCharacter}`
+      parsedContent += `${DotCharacter}`
     }
 
     return parsedContent
@@ -120,23 +120,25 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       }}
     >
       {!isUserMessage && (
-        <div className='max-w-[800px] w-[80%] flex flex-col gap-y-1'>
+        <div className='max-w-[800px] w-[80%] flex flex-col'>
           <div className='flex gap-x-5'>
             <Avatar className='w-6 h-6 shrink-0' />
-            <div className='whitespace-normal rounded-[24px] px-6 py-4 markdown-body'>
-              <Markdown
-                rehypePlugins={resolveRehypePlugins(message)}
-                components={{
-                  a: (props) => <ChatLink {...props} />
-                }}
-              >
-                {parsedContent}
-              </Markdown>
+            <div className='flex flex-col gap-y-1'>
+              <div className='whitespace-normal rounded-[24px] px-6 py-4 markdown-body'>
+                <Markdown
+                  rehypePlugins={resolveRehypePlugins(message)}
+                  components={{
+                    a: (props) => <ChatLink {...props} />
+                  }}
+                >
+                  {parsedContent}
+                </Markdown>
+              </div>
+              {!loading && (
+                <div className='text-right text-[12px]'>{formatDate()}</div>
+              )}
             </div>
           </div>
-          {!loading && (
-            <div className='self-end text-[12px]'>{formatDate()}</div>
-          )}
         </div>
       )}
       {isUserMessage && (
