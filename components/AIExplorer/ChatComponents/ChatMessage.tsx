@@ -5,8 +5,10 @@ import { Avatar } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
 import {
+  getAllChartInteractionsByUiCategory,
   getAllIndicatorInteractionsByUiCategory,
   getAllTableInteractionsByUiCategory,
+  // getErrorInteractionByUiCategory,
   getMessageText,
   getSingleSelectionNewsTimeScope,
   getXPostInteractionByUiCategory
@@ -15,6 +17,7 @@ import { Message, Role } from '@type/internal/message'
 import dayjs from 'dayjs'
 import rehypeRaw from 'rehype-raw'
 
+import { ChartInteraction } from './Interactions/InteractionChart'
 import { Indicator } from './Interactions/InteractionIndicator'
 import { ChatTable } from './Interactions/InteractionTable'
 import Twitter from './Interactions/Twitter'
@@ -118,7 +121,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
 
   const xPostInteraction = getXPostInteractionByUiCategory(message)
   // const errorInteraction = getErrorInteractionByUiCategory(message)
-  // const chartInteractions = getAllChartInteractionsByUiCategory(message)
+  const chartInteractions = getAllChartInteractionsByUiCategory(message)
   const tableInteractions = getAllTableInteractionsByUiCategory(message)
   const indicatorInteractions = getAllIndicatorInteractionsByUiCategory(message)
 
@@ -135,7 +138,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         <div className='max-w-[800px] w-[80%] flex flex-col'>
           <div className='flex gap-x-5'>
             <Avatar className='w-6 h-6 shrink-0' />
-            <div className='flex flex-col gap-y-1'>
+            <div className='flex flex-col gap-y-4'>
               <div className='whitespace-normal rounded-[24px] px-6 py-4 markdown-body'>
                 <Markdown
                   rehypePlugins={resolveRehypePlugins(message)}
@@ -147,15 +150,21 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                 </Markdown>
               </div>
               <>
-                {/* {chartInteractions.length > 0 && (
-                  <div >
-                    <div className='flex flex-col gap-4' style={{ maxWidth: "100%", overflow: "hidden" }}>
+                {chartInteractions.length > 0 && (
+                  <div>
+                    <div
+                      className='flex flex-col gap-4'
+                      style={{ maxWidth: '100%', overflow: 'hidden' }}
+                    >
                       {chartInteractions.map((interaction) => (
-                        <ChartInteraction key={interaction.id} data={interaction} />
+                        <ChartInteraction
+                          key={interaction.id}
+                          data={interaction}
+                        />
                       ))}
                     </div>
                   </div>
-                )} */}
+                )}
 
                 {tableInteractions.length > 0 && (
                   <div className='flex flex-col gap-3'>
