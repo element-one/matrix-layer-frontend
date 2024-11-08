@@ -71,6 +71,7 @@ export default function ConversationDelete({
         placement='center'
         size='lg'
         classNames={{
+          wrapper: 'z-[1000]',
           closeButton: 'hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
         }}
       >

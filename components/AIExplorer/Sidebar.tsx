@@ -1,5 +1,6 @@
 import { FC, MouseEvent, useCallback, useEffect, useRef, useState } from 'react'
 import {
+  ArrowLeftIcon,
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
   PlusIcon
@@ -30,6 +31,26 @@ const Sidebar: FC<SidebarProps> = ({
   const sidebarRef = useRef<HTMLDivElement>(null)
 
   const [searchQuery, setSearchQuery] = useState('')
+
+  const [maxWidth, setMaxWidth] = useState(0)
+
+  useEffect(() => {
+    const handleResize = () => {
+      const windowWidth = window.innerWidth
+      if (windowWidth < 640) {
+        setMaxWidth(windowWidth - 16) // padding: 8 x 2
+      } else {
+        setMaxWidth(360)
+      }
+    }
+
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+
+    // 清理事件监听
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const handleClickOutside = useCallback(
     (event: MouseEvent<HTMLDivElement, MouseEvent>): void => {
@@ -89,18 +110,26 @@ const Sidebar: FC<SidebarProps> = ({
           <>
             <motion.div
               initial={{ width: 0, opacity: 0 }}
-              animate={{ width: '360px', opacity: 1 }}
+              animate={{ width: `${maxWidth}px`, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
               className='relative h-full z-[100]'
             >
               <div
-                className='w-full h-full p-5 border-2 border-[#666] rounded-tl-[32px] rounded-bl-[32px]
-                  bg-co-bg-1 flex flex-col'
+                className='w-full h-full p-5 border-2 border-[#666] rounded-[32px] bg-co-bg-1 flex flex-col'
                 ref={sidebarRef}
               >
                 <div className='flex flex-row items-center justify-between'>
-                  <div className='bg-gradient-text-1 clip-text text-[24px] font-bold'>
+                  <div className='bg-gradient-text-1 clip-text text-[24px] font-bold flex items-center gap-x-1'>
+                    <OriginButton
+                      isIconOnly
+                      size='sm'
+                      variant='light'
+                      radius='full'
+                      onPress={() => onSidebarChange(false)}
+                    >
+                      <ArrowLeftIcon className='w-4 h-4 text-co-text-1' />
+                    </OriginButton>
                     History
                   </div>
                   <Button
