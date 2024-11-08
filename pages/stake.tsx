@@ -204,7 +204,7 @@ const StakePage: NextPage = () => {
   }
 
   const handleStakeNFT = () => {
-    if (!tokenOwned.length) {
+    if (!tokenOwned?.length) {
       showModal(ModalType.BUY_NFT_MODAL)
       return
     }
@@ -384,7 +384,7 @@ const StakePage: NextPage = () => {
   ])
 
   useEffect(() => {
-    setStakeNFTCardVisible(!stakedTokens.length)
+    setStakeNFTCardVisible(!stakedTokens?.length)
   }, [stakedTokens])
 
   const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
@@ -934,12 +934,12 @@ const StakePage: NextPage = () => {
                       </Tooltip>
                     </span>
                     <div className='text-[24px] mt-3 font-bold md:hidden'>
-                      {phoneStaked.length}
+                      {phoneStaked?.length}
                     </div>
                   </div>
                 </div>
                 <div className='text-[48px] font-bold hidden md:block'>
-                  {phoneStaked.length}
+                  {phoneStaked?.length}
                 </div>
               </div>
               <div
@@ -950,7 +950,7 @@ const StakePage: NextPage = () => {
                   {t('ordinary')}
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {phoneBalance.length}
+                  {phoneBalance?.length}
                 </div>
               </div>
               <div
@@ -962,7 +962,7 @@ const StakePage: NextPage = () => {
                   <LockIcon />
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {phoneStaked.length}
+                  {phoneStaked?.length}
                 </div>
               </div>
             </div>
@@ -998,12 +998,12 @@ const StakePage: NextPage = () => {
                     </span>
 
                     <div className='text-[24px] mt-3 font-bold lg:hidden'>
-                      {matrixStaked.length}
+                      {matrixStaked?.length}
                     </div>
                   </div>
                 </div>
                 <div className='text-[48px] font-bold hidden lg:block'>
-                  {matrixStaked.length}
+                  {matrixStaked?.length}
                 </div>
               </div>
               <div
@@ -1014,7 +1014,7 @@ const StakePage: NextPage = () => {
                   {t('ordinary')}
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {matrixBalance.length}
+                  {matrixBalance?.length}
                 </div>
               </div>
               <div
@@ -1026,7 +1026,7 @@ const StakePage: NextPage = () => {
                   <LockIcon />
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {matrixStaked.length}
+                  {matrixStaked?.length}
                 </div>
               </div>
             </div>
@@ -1043,12 +1043,12 @@ const StakePage: NextPage = () => {
                       AI Agent One
                     </span>
                     <div className='text-[24px] font-bold lg:hidden'>
-                      {agentOneStaked.length}
+                      {agentOneStaked?.length}
                     </div>
                   </div>
                 </div>
                 <div className='text-[48px] font-bold hidden lg:block'>
-                  {agentOneStaked.length}
+                  {agentOneStaked?.length}
                 </div>
               </div>
               <div
@@ -1059,7 +1059,7 @@ const StakePage: NextPage = () => {
                   {t('ordinary')}
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {aiAgentOneBalance.length}
+                  {aiAgentOneBalance?.length}
                 </div>
               </div>
               <div
@@ -1071,7 +1071,7 @@ const StakePage: NextPage = () => {
                   <LockIcon />
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {agentOneStaked.length}
+                  {agentOneStaked?.length}
                 </div>
               </div>
             </div>
@@ -1088,12 +1088,12 @@ const StakePage: NextPage = () => {
                       AI Agent Pro
                     </span>
                     <div className='text-[24px] font-bold lg:hidden'>
-                      {agentProStaked.length}
+                      {agentProStaked?.length}
                     </div>
                   </div>
                 </div>
                 <div className='text-[48px] font-bold hidden lg:block'>
-                  {agentProStaked.length}
+                  {agentProStaked?.length}
                 </div>
               </div>
               <div
@@ -1104,7 +1104,7 @@ const StakePage: NextPage = () => {
                   {t('ordinary')}
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {aiAgentProBalance.length}
+                  {aiAgentProBalance?.length}
                 </div>
               </div>
               <div
@@ -1116,7 +1116,7 @@ const StakePage: NextPage = () => {
                   <LockIcon />
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {agentProStaked.length}
+                  {agentProStaked?.length}
                 </div>
               </div>
             </div>
@@ -1133,12 +1133,12 @@ const StakePage: NextPage = () => {
                       AI Agent Ultra
                     </span>
                     <div className='text-[24px] font-bold lg:hidden'>
-                      {agentUltraStaked.length}
+                      {agentUltraStaked?.length}
                     </div>
                   </div>
                 </div>
                 <div className='text-[48px] font-bold hidden lg:block'>
-                  {agentUltraStaked.length}
+                  {agentUltraStaked?.length}
                 </div>
               </div>
               <div
@@ -1149,7 +1149,7 @@ const StakePage: NextPage = () => {
                   {t('ordinary')}
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {aiAgentUltraBalance.length}
+                  {aiAgentUltraBalance?.length}
                 </div>
               </div>
               <div
@@ -1161,7 +1161,7 @@ const StakePage: NextPage = () => {
                   <LockIcon />
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {agentUltraStaked.length}
+                  {agentUltraStaked?.length}
                 </div>
               </div>
             </div>
@@ -1329,7 +1329,7 @@ const StakePage: NextPage = () => {
                 <div className='flex justify-between items-center'>
                   <span className='text-gray-a5'>{t('totalNFT')}</span>
                   <span className='text-[48px] font-bold'>
-                    {stakedTokens.length}
+                    {stakedTokens?.length}
                   </span>
                 </div>
                 <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-2'>
@@ -1338,35 +1338,35 @@ const StakePage: NextPage = () => {
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix Phone</div>
-                    <span>{phoneStaked.length}</span>
+                    <span>{phoneStaked?.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix NFT</div>
-                    <span>{matrixStaked.length}</span>
+                    <span>{matrixStaked?.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent One</div>
-                    <span>{agentOneStaked.length}</span>
+                    <span>{agentOneStaked?.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Pro</div>
-                    <span>{agentProStaked.length}</span>
+                    <span>{agentProStaked?.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Ultra</div>
-                    <span>{agentUltraStaked.length}</span>
+                    <span>{agentUltraStaked?.length}</span>
                   </div>
                 </div>
               </div>
@@ -1450,12 +1450,12 @@ const StakePage: NextPage = () => {
                 `md:border-1 md:mx-8 my-6 border-gray-500 rounded-xl border-opacity-50`
               )}
             >
-              {currentTab === 'stake' && !!tokenOwned.length && (
+              {currentTab === 'stake' && !!tokenOwned?.length && (
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
                       transparent-scrollbar`,
-                    !!tokenOwned.length && 'grid-cols-1 md:grid-cols-2'
+                    !!tokenOwned?.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
                   {tokenOwned.map((stake) => {
@@ -1497,7 +1497,7 @@ const StakePage: NextPage = () => {
                   })}
                 </div>
               )}
-              {currentTab === 'stake' && !tokenOwned.length && (
+              {currentTab === 'stake' && !tokenOwned?.length && (
                 <div
                   className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
                     mx-auto'
@@ -1513,12 +1513,12 @@ const StakePage: NextPage = () => {
                   })}
                 </div>
               )}
-              {currentTab === 'unstake' && !!stakedTokens.length && (
+              {currentTab === 'unstake' && !!stakedTokens?.length && (
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
                       transparent-scrollbar`,
-                    !!stakedTokens.length && 'grid-cols-1 md:grid-cols-2'
+                    !!stakedTokens?.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
                   {stakedTokens.map((stake) => {
@@ -1560,7 +1560,7 @@ const StakePage: NextPage = () => {
                   })}
                 </div>
               )}
-              {currentTab === 'unstake' && !stakedTokens.length && (
+              {currentTab === 'unstake' && !stakedTokens?.length && (
                 <div
                   className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
                     mx-auto'
