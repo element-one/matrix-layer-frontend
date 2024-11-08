@@ -67,11 +67,16 @@ export const ConversationList: FC<IConversations> = ({
 
   const filteredConversations = useMemo(() => {
     if (conversations) {
-      return conversations.filter((conversation) =>
-        generateTitleFromMessages(conversation.messages)
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase())
-      )
+      return conversations
+        .filter((conversation) =>
+          generateTitleFromMessages(conversation.messages)
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
     }
     return []
   }, [conversations, searchQuery])
@@ -94,12 +99,7 @@ export const ConversationList: FC<IConversations> = ({
   }, [filteredConversations])
 
   const handleSelect = (conversationId: string) => {
-    // if (notificationOpen) {
-    //   onToggleNotifications();
-    // }
-
     onSelect(conversationId)
-    // toggleDrawer()
   }
 
   return (
@@ -107,7 +107,7 @@ export const ConversationList: FC<IConversations> = ({
       {Object.keys(groupedConversations).map((group) => {
         return (
           <div key={group}>
-            <div className='text-sm font-semibold text-gray-a5 px-1 mb-1'>
+            <div className='text-sm font-semibold px-1 mb-1 bg-gradient-text-1 clip-text'>
               {t(`group.${group}` as any)}
             </div>
             <div className='flex flex-col gap-y-1'>
