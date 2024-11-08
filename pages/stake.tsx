@@ -328,7 +328,7 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
-    const phoneTokens = phoneStaked.map((id) => {
+    const phoneTokens = phoneStaked?.map((id) => {
       return {
         id,
         name: 'Matrix Phone',
@@ -336,7 +336,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const matrixTokens = matrixStaked.map((id) => {
+    const matrixTokens = matrixStaked?.map((id) => {
       return {
         id,
         name: 'Matrix',
@@ -344,7 +344,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const agentOneTokens = agentOneStaked.map((id) => {
+    const agentOneTokens = agentOneStaked?.map((id) => {
       return {
         id,
         name: 'AI Agent One',
@@ -352,7 +352,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const agentProTokens = agentProStaked.map((id) => {
+    const agentProTokens = agentProStaked?.map((id) => {
       return {
         id,
         name: 'AI Agent Pro',
@@ -360,7 +360,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const agentUltraTokens = agentUltraStaked.map((id) => {
+    const agentUltraTokens = agentUltraStaked?.map((id) => {
       return {
         id,
         name: 'AI Agent Ultra',
@@ -443,7 +443,7 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
-    const phoneTokens = phoneBalance.map((id) => {
+    const phoneTokens = phoneBalance?.map((id) => {
       return {
         id,
         name: 'Matrix Phone',
@@ -451,7 +451,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const matrixTokens = matrixBalance.map((id) => {
+    const matrixTokens = matrixBalance?.map((id) => {
       return {
         id,
         name: 'Matrix',
@@ -459,7 +459,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const aiAgentOneTokens = aiAgentOneBalance.map((id) => {
+    const aiAgentOneTokens = aiAgentOneBalance?.map((id) => {
       return {
         id,
         name: 'AI Agent One',
@@ -467,7 +467,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const aiAgentProTokens = aiAgentProBalance.map((id) => {
+    const aiAgentProTokens = aiAgentProBalance?.map((id) => {
       return {
         id,
         name: 'AI Agent Pro',
@@ -475,7 +475,7 @@ const StakePage: NextPage = () => {
       }
     })
 
-    const aiAgentUltraTokens = aiAgentUltraBalance.map((id) => {
+    const aiAgentUltraTokens = aiAgentUltraBalance?.map((id) => {
       return {
         id,
         name: 'AI Agent Ultra',
@@ -1458,7 +1458,7 @@ const StakePage: NextPage = () => {
                     !!tokenOwned?.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
-                  {tokenOwned.map((stake) => {
+                  {tokenOwned?.map((stake) => {
                     return (
                       <div
                         key={stake.name + stake.id}
