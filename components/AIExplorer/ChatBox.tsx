@@ -46,7 +46,7 @@ const ChatBox: FC<ChatBoxProps> = ({
           mainWrapper: 'border border-gray-666 rounded-[12px]',
           inputWrapper:
             'bg-black-15 group-data-[focus=true]:bg-black-15 data-[hover=true]:bg-black-15',
-          input: 'text-[14px] group-data-[has-value=true]:text-white'
+          input: 'text-[16px] group-data-[has-value=true]:text-white'
         }}
         value={message}
         onChange={handleChangeMessage}
