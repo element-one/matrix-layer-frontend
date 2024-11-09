@@ -22,7 +22,7 @@ export const useStore = create<StoreState>()(
       name: 'matrix-App',
       getStorage: () => localStorage,
       partialize: (state) => ({
-        conversations: state.conversations
+        allConversations: state.allConversations
       })
     }
   )

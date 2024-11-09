@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useAccount } from 'wagmi'
 
 import { ApolloProvider } from '@apollo/client'
 import ConversationComponent from '@components/AIExplorer/ConversationComponent'
@@ -11,15 +12,22 @@ import { Conversation } from '@type/internal/conversation'
 import { getRandomId } from '@utils/random'
 
 const AIExplorer = () => {
+  const { address, isConnected } = useAccount()
+
   const isInitialLoad = useRef(false)
   const [activeConversationId, setActiveConversationId] = useState<string>('')
   const [isSidebarOpen, onSidebarChange] = useState(false)
 
-  const { conversations, setConversations } = useStore(
-    ({ conversations, setConversations }) => ({
-      conversations,
+  const { allConversations, setConversations } = useStore(
+    ({ allConversations, setConversations }) => ({
+      allConversations,
       setConversations
     })
+  )
+
+  const conversations = useMemo(
+    () => allConversations[address as string] || [],
+    [allConversations, address]
   )
 
   const createNewConversation = useCallback(() => {
@@ -37,12 +45,20 @@ const AIExplorer = () => {
         createdAt: new Date()
       }
 
-      setConversations([...conversations, conversation])
+      setConversations(address as string, [...conversations, conversation])
       setActiveConversationId(conversation.id)
     }
-  }, [conversations, setConversations, setActiveConversationId])
+  }, [conversations, setConversations, setActiveConversationId, address])
 
   useEffect(() => {
+    if (!address) {
+      setActiveConversationId('')
+    }
+  }, [address])
+
+  useEffect(() => {
+    if (!address) return
+
     const noConversations = conversations.length === 0
 
     if (noConversations) {
@@ -60,10 +76,13 @@ const AIExplorer = () => {
     conversations,
     createNewConversation,
     setActiveConversationId,
-    activeConversationId
+    activeConversationId,
+    address
   ])
 
   const onDeleteConversation = (conversationId: string) => {
+    if (!isConnected) return
+
     if (conversationId === activeConversationId) {
       const remainingConversations = conversations.filter(
         (conv) => conv.id !== conversationId
@@ -91,10 +110,7 @@ const AIExplorer = () => {
             isSidebarOpen={isSidebarOpen}
             onSidebarChange={onSidebarChange}
           />
-          <ConversationComponent
-            userId={getRandomId()}
-            conversationId={activeConversationId}
-          />
+          <ConversationComponent conversationId={activeConversationId} />
         </div>
       </Container>
     </Layout>

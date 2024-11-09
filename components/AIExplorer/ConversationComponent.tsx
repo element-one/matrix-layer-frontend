@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { useAccount } from 'wagmi'
 
 import { chatSubscription } from '@graphql/client/resolvers/langchain'
 import { getCurrentPageContent, getCurrentUrl } from '@helpers/chrome'
@@ -34,18 +35,22 @@ import ChatBox from './ChatBox'
 
 interface ConversationComponentProps {
   conversationId: string
-  userId: string
 }
 
 const ConversationComponent: FC<ConversationComponentProps> = ({
-  conversationId,
-  userId
+  conversationId
 }) => {
-  const { conversations, setConversations } = useStore(
-    ({ conversations, setConversations }) => ({
-      conversations,
+  const { isConnected, address } = useAccount()
+
+  const { allConversations, setConversations } = useStore(
+    ({ allConversations, setConversations }) => ({
+      allConversations,
       setConversations
     })
+  )
+  const conversations = useMemo(
+    () => allConversations[address as string] || [],
+    [allConversations, address]
   )
 
   const [conversation, setConversation] = useState<Conversation | null>(null)
@@ -93,7 +98,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
 
     stopSubscription()
     // eslint-disable-next-line
-  }, [conversationId])
+  }, [conversationId, address])
 
   useEffect(() => {
     if (conversation) {
@@ -111,13 +116,18 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   }, [userIdle])
 
   useEffect(() => {
+    if (!address) {
+      setConversation(null)
+      return
+    }
+
     const conversation = conversations.find(
       (conversation) => conversation.id === conversationId
     )
     if (conversation) {
       setConversation({ ...conversation })
     }
-  }, [conversationId, conversations])
+  }, [conversationId, conversations, address])
 
   useEffect(() => {
     const scrollAreaElement = chatScrollRef.current
@@ -184,7 +194,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       finalUpdatedMessages
     )
 
-    setConversations(allMessages)
+    setConversations(address as string, allMessages)
 
     if (chatComplete) {
       setLastSystemMessageId('')
@@ -216,7 +226,11 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
     setFollowUpQuestions([])
     setFollowUpQuestionsIndex(-1)
 
-    const variables = messageToChatMessage(sendMessage, conversationId, userId)
+    const variables = messageToChatMessage(
+      sendMessage,
+      conversationId,
+      address as string
+    )
 
     await fetchChat({
       variables
@@ -261,7 +275,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       updatedMessages
     )
 
-    setConversations(newMessages)
+    setConversations(address as string, newMessages)
 
     messageProcess(sendMessageMerged)
   }
@@ -324,7 +338,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       </div>
       <ChatBox
         inputRef={chatBoxInputRef}
-        disabled={chatLoading}
+        disabled={chatLoading || !isConnected}
         message={message}
         onSend={handleSend}
         setMessage={setMessage}

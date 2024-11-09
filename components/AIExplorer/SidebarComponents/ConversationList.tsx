@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
+import { useAccount } from 'wagmi'
 
 import { getMessageText } from '@helpers/components/message'
 import { quotesAndAsterisksGlobal } from '@helpers/regExp'
@@ -62,8 +63,14 @@ export const ConversationList: FC<IConversations> = ({
   onDelete
 }) => {
   const t = useTranslations('Ai.sidebar')
+  const { address } = useAccount()
 
-  const conversations = useStore((store) => store.conversations)
+  const allConversations = useStore(({ allConversations }) => allConversations)
+
+  const conversations = useMemo(
+    () => allConversations[address as string] || [],
+    [allConversations, address]
+  )
 
   const filteredConversations = useMemo(() => {
     if (conversations) {

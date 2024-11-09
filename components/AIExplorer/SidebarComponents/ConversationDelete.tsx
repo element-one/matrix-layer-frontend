@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import {
@@ -12,6 +12,7 @@ import {
   ModalContent
 } from '@nextui-org/react'
 import clsx from 'clsx'
+import { useAccount } from 'wagmi'
 
 import { useStore } from '@store/store'
 
@@ -27,13 +28,29 @@ export default function ConversationDelete({
   iconClass = ''
 }: IConversationDelete) {
   const t = useTranslations('Ai.sidebar.delete')
+  const { address, isConnected } = useAccount()
 
-  const conversations = useStore((store) => store.conversations)
-  const setConversations = useStore((store) => store.setConversations)
+  const { allConversations, setConversations } = useStore(
+    ({ allConversations, setConversations }) => ({
+      allConversations,
+      setConversations
+    })
+  )
+
+  const conversations = useMemo(
+    () => allConversations[address as string] || [],
+    [allConversations, address]
+  )
+
   const [modalOpened, setModalOpened] = useState(false)
 
   const handleDeleteClick = () => {
-    setConversations(conversations.filter((conv) => conv.id !== conversationId))
+    if (!isConnected) return
+
+    setConversations(
+      address as string,
+      conversations.filter((conv) => conv.id !== conversationId)
+    )
     onDelete(conversationId)
     setModalOpened(false)
   }

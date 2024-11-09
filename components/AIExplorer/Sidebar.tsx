@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { Button as OriginButton, Divider, Input } from '@nextui-org/react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useAccount } from 'wagmi'
 
 import { Button } from '@components/Button'
 
@@ -30,6 +31,7 @@ const Sidebar: FC<SidebarProps> = ({
   onSidebarChange
 }) => {
   const t = useTranslations('Ai.sidebar')
+  const { isConnected } = useAccount()
 
   const sidebarRef = useRef<HTMLDivElement>(null)
 
@@ -56,16 +58,22 @@ const Sidebar: FC<SidebarProps> = ({
   }, [])
 
   const handleCreateNewConversation = () => {
+    if (!isConnected) return
+
     createNewConversation()
     onSidebarChange(false)
   }
 
   const handleSelect = (conversationId: string) => {
+    if (!isConnected) return
+
     setActiveConversationId(conversationId)
     onSidebarChange(false)
   }
 
   const handleDelete = (conversationId: string) => {
+    if (!isConnected) return
+
     onDeleteConversation(conversationId)
     onSidebarChange(false)
   }
@@ -117,6 +125,7 @@ const Sidebar: FC<SidebarProps> = ({
                       {t('history')}
                     </div>
                     <Button
+                      isDisabled={!isConnected}
                       color='primary'
                       className='text-lg font-semibold'
                       startContent={<PlusIcon className='w-4 h-4' />}
