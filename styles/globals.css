@@ -142,3 +142,8 @@ input {
 .markdown-body pre {
   background-color: #323232;
 }
+
+.text-break-word {
+  white-space: normal;
+  word-break: break-word;
+}
