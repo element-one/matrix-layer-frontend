@@ -1,6 +1,12 @@
 import { FC, HTMLAttributes } from 'react'
+import { useRouter } from 'next/router'
+import { Button } from '@nextui-org/react'
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useAccount } from 'wagmi'
+
+import { RobotIcon } from '@components/Icon/Robot'
+import { ModalType, useModal } from '@contexts/modal'
 
 import Footer from './Footer/Footer'
 import Header from './Header/Header'
@@ -10,6 +16,10 @@ interface LayoutProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Layout: FC<LayoutProps> = ({ children, className }) => {
+  const { asPath } = useRouter()
+
+  const isShowAi = !asPath.startsWith('/ai-explorer')
+
   return (
     <div className='w-full bg-co-bg-1 overflow-auto overflow-x-hidden'>
       <main className={twMerge(clsx('mx-auto w-screen'))}>
@@ -34,14 +44,38 @@ const Layout: FC<LayoutProps> = ({ children, className }) => {
           >
             {children}
           </div>
+          {isShowAi && <AiComponent />}
           <div
             className='absolute bottom-0 left-1/2 translate-x-[-50%] w-full px-2 md:px-10 z-50
               max-w-[1440px]'
           >
             <Footer />
+            AiComponent
           </div>
         </div>
       </main>
+    </div>
+  )
+}
+
+const AiComponent = () => {
+  const { isConnected, address } = useAccount()
+  const { showModal } = useModal()
+
+  const router = useRouter()
+
+  const handleLinkToAI = () => {
+    if (isConnected && address) {
+      router.push('/ai-explorer')
+    } else {
+      showModal(ModalType.CONNECT_WALLET_MODAL)
+    }
+  }
+  return (
+    <div className='fixed right-5 bottom-10 z-[100]'>
+      <Button isIconOnly onClick={handleLinkToAI}>
+        <RobotIcon />
+      </Button>
     </div>
   )
 }
