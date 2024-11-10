@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { chatSubscription } from '@graphql/client/resolvers/langchain'
@@ -42,15 +42,11 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
 }) => {
   const { isConnected, address } = useAccount()
 
-  const { allConversations, setConversations } = useStore(
-    ({ allConversations, setConversations }) => ({
-      allConversations,
+  const { conversations, setConversations } = useStore(
+    ({ conversations, setConversations }) => ({
+      conversations,
       setConversations
     })
-  )
-  const conversations = useMemo(
-    () => allConversations[address as string] || [],
-    [allConversations, address]
   )
 
   const [conversation, setConversation] = useState<Conversation | null>(null)
@@ -101,7 +97,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   }, [conversationId, address])
 
   useEffect(() => {
-    if (conversation) {
+    if (conversation?.messages) {
       setMessages(conversation.messages)
     }
   }, [conversation])
@@ -194,7 +190,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       finalUpdatedMessages
     )
 
-    setConversations(address as string, allMessages)
+    setConversations(allMessages)
 
     if (chatComplete) {
       setLastSystemMessageId('')
@@ -275,7 +271,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       updatedMessages
     )
 
-    setConversations(address as string, newMessages)
+    setConversations(newMessages)
 
     messageProcess(sendMessageMerged)
   }

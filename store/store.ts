@@ -19,11 +19,7 @@ export const useStore = create<StoreState>()(
       ...createAIExplorerSlice(...a)
     }),
     {
-      name: 'matrix-App',
-      getStorage: () => localStorage,
-      partialize: (state) => ({
-        allConversations: state.allConversations
-      })
+      name: 'matrix-App'
     }
   )
 )

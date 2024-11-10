@@ -56,6 +56,7 @@ export type InternalMetaData = {
 export type Message = {
   id: string
   role: Role
+  content?: string
   createdAt: Date
   interactions: MessageInteractions
   metaData?: MetaData
