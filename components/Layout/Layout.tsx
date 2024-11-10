@@ -72,8 +72,8 @@ const AiComponent = () => {
     }
   }
   return (
-    <div className='fixed right-5 bottom-10 z-[100]'>
-      <Button isIconOnly onClick={handleLinkToAI}>
+    <div className='fixed right-10 bottom-10 z-[100]'>
+      <Button size='lg' isIconOnly onClick={handleLinkToAI}>
         <RobotIcon />
       </Button>
     </div>
