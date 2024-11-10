@@ -269,7 +269,7 @@ const MyAccount = () => {
   const handleOpenShippingModal = (paymentId: string) => () => {
     showModal(ModalType.MANAGE_ADDRESS_MODAL, {
       type: 'shipping',
-      onConfirm: async (addressId) => {
+      onConfirm: async (addressId: any) => {
         try {
           await activeDelivery({ paymentId, addressId })
           await refetchOrders()

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, ReactNode } from 'react'
 import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent, ModalFooter } from '@nextui-org/react'
 
@@ -6,13 +6,19 @@ import { Button } from '@components/Button'
 import { ModalType, useModal } from '@contexts/modal'
 
 export interface WithdrawModalProps {
+  content?: ReactNode
+  onConfirm?: () => void
   onClose?: () => void
 }
 
-export const WithdrawModal: FC<WithdrawModalProps> = ({ onClose }) => {
+export const WithdrawModal: FC<WithdrawModalProps> = ({
+  content,
+  onClose,
+  onConfirm
+}) => {
   const t = useTranslations('WithdrawModal')
 
-  const { isModalShown, hideModal } = useModal()
+  const { isModalShown, hideModal, isConfirmLoading } = useModal()
 
   const handleClose = () => {
     onClose && onClose()
@@ -34,9 +40,12 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({ onClose }) => {
       <ModalContent className='border-accelerate-modal-gradient font-chakraPetch'>
         <ModalBody className='flex flex-col p-6 md:px-12 md:py-10 text-co-text-1 items-center'>
           <div className='text-center text-[24px]'>{t('withdraw')}</div>
-
-          <div className='w-full'>{t('desc', { amount: '123.84' })}</div>
-          <div className='w-full'>{t('total', { amount: '123.84' })}</div>
+          {content ?? (
+            <>
+              <div className='w-full'>{t('desc', { amount: '123.84' })}</div>
+              <div className='w-full'>{t('total', { amount: '123.84' })}</div>
+            </>
+          )}
         </ModalBody>
         <ModalFooter className='flex justify-center gap-6'>
           <Button
@@ -50,7 +59,8 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({ onClose }) => {
           <Button
             className='px-3 h-[40px] md:p-[10px] w-[120px] rounded-[32px] text-[12px] md:text-[16px]
               font-bold'
-            onClick={handleClose}
+            onClick={onConfirm}
+            isLoading={isConfirmLoading?.[ModalType.WITHDRAW_MODAL]}
           >
             {t('confirm')}
           </Button>

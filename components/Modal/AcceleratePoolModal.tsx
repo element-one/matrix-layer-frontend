@@ -33,7 +33,11 @@ const default_options = [
 
 export interface AcceleratePoolModalProps {
   onClose?: () => void
-  onConfirm?: () => void
+  onConfirm?: (options: {
+    amount: string
+    stakeDay: string
+    stakeType: boolean
+  }) => void
 }
 
 export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
@@ -42,11 +46,13 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
 }) => {
   const t = useTranslations('Stake')
 
-  const { isModalShown, hideModal } = useModal()
+  const { isModalShown, hideModal, isConfirmLoading } = useModal()
 
   const [amount, setAmount] = useState('')
 
   const [stakeDay, setStakeDay] = useState('30')
+
+  const [isChecked, setIsChecked] = useState(false)
 
   const handleClose = () => {
     onClose && onClose()
@@ -91,7 +97,14 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
           </div>
           <div className='flex justify-center items-center'>
             <label className='flex gap-x-[10px] items-center'>
-              <input type='checkbox' className='accelerate-checkbox' />
+              <input
+                checked={isChecked}
+                type='checkbox'
+                className='accelerate-checkbox'
+                onChange={() => {
+                  setIsChecked(!isChecked)
+                }}
+              />
               <Text className='text-[10px] md:text-[18px] font-semibold text-co-gray-7'>
                 {t('accelerateMLPBoostedPool.statement')}
               </Text>
@@ -155,7 +168,16 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
           <Button
             className='px-3 py-2 md:p-[10px] w-[130px] md:w-[320px] rounded-[32px] text-[12px]
               md:text-[16px] font-bold'
-            onClick={onConfirm}
+            onClick={() => {
+              if (amount === '') {
+                return
+              }
+              return (
+                onConfirm &&
+                onConfirm({ amount, stakeDay, stakeType: isChecked })
+              )
+            }}
+            isLoading={isConfirmLoading?.[ModalType.ACCELERATE_POOL_MODAL]}
           >
             {t('accelerateMLPBoostedPool.confirm')}
           </Button>

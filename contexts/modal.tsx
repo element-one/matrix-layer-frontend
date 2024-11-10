@@ -16,7 +16,10 @@ import {
   ShippingAddressModal,
   ShippingAddressModalProps
 } from '@components/Modal'
-import { AccelerateNFTPoolModal } from '@components/Modal/AccelerateNFTPoolModal'
+import {
+  AccelerateNFTPoolModal,
+  AccelerateNFTPoolModalProps
+} from '@components/Modal/AccelerateNFTPoolModal'
 import {
   AcceleratePoolModal,
   AcceleratePoolModalProps
@@ -66,6 +69,7 @@ type ModalProps =
   | ManageAddressModalProps
   | RewardsModalProps
   | AcceleratePoolModalProps
+  | AccelerateNFTPoolModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }
@@ -73,6 +77,8 @@ type ModalStore = { type: ModalType | null; props?: ModalProps }
 export interface ModalContextProps {
   store: ModalStore
   isModalShown: (modal: ModalType) => boolean
+  isConfirmLoading: Record<ModalType, boolean> | null
+  setIsConfirmLoading: (modal: ModalType, isLoading: boolean) => void
   showModal: <T extends ModalProps>(modal: ModalType, props?: T) => void
   hideModal: () => void
 }
@@ -80,6 +86,8 @@ export interface ModalContextProps {
 const defaultContext: ModalContextProps = {
   store: { type: null, props: undefined },
   isModalShown: () => false,
+  isConfirmLoading: null,
+  setIsConfirmLoading: () => null,
   showModal: () => null,
   hideModal: () => null
 }
@@ -119,6 +127,24 @@ export const ModalProvider: React.FC<{ children?: ReactNode }> = ({
     return <ModalComponent {...(store.props as any)} onClose={hideModal} /> // eslint-disable-line
   }
 
+  const [isConfirmLoading, setIsConfirmLoadingOriginal] = useState<Record<
+    ModalType,
+    boolean
+  > | null>(null)
+
+  const setIsConfirmLoading = useCallback(
+    (type: ModalType, loading: boolean) => {
+      if (isConfirmLoading?.[type] === loading) {
+        return
+      }
+      setIsConfirmLoadingOriginal((prev) => ({
+        ...((prev ?? {}) as Record<ModalType, boolean>),
+        [type]: loading
+      }))
+    },
+    [isConfirmLoading]
+  )
+
   return (
     <ModalContext.Provider
       value={{
@@ -126,7 +152,9 @@ export const ModalProvider: React.FC<{ children?: ReactNode }> = ({
         store,
         isModalShown,
         showModal,
-        hideModal
+        hideModal,
+        isConfirmLoading,
+        setIsConfirmLoading
       }}
     >
       {renderComponent()}
