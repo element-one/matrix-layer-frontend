@@ -294,6 +294,9 @@
     "TotalMLPRewards": "MLP 总奖励",
     "DailyRewardsHistory": "每日奖励历史",
     "basicPoolInfo": "您在基础池中的挖矿算力取决于您质押的 NFT 的数量和价值。",
+    "BalancePool": {
+      "title": "Pool Balance"
+    },
     "AccelerationPool": {
       "title": "加速池（PoS）",
       "info": "您在加速池中的挖矿算力取决于您质押的 $MLP 数量。"

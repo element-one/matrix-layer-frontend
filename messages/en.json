@@ -294,6 +294,9 @@
     "TotalMLPRewards": "Total MLP Rewards",
     "DailyRewardsHistory": "Daily rewards history",
     "basicPoolInfo": "Your mining power in the basic pool is determined by the number and value of the NFTs you have staked.",
+    "BalancePool": {
+      "title": "Pool Balance"
+    },
     "AccelerationPool": {
       "title": "Acceleration Pool (PoS)",
       "info": "Your mining power in the accelerated pool is determined by the amount of $MLP you have staked."
