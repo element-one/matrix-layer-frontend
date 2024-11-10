@@ -26,10 +26,6 @@ const nextConfig = {
           {
             source: '/api/:path*',
             destination: `${process.env.NEXT_PUBLIC_SERVER_URL}/:path*`
-          },
-          {
-            source: '/chatApi/:path*',
-            destination: `${process.env.NEXT_PUBLIC_CHAT_WEB_APP_URL}/:path*`
           }
         ]
       : []
