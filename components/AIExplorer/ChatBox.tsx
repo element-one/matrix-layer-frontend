@@ -2,7 +2,10 @@ import { ChangeEvent, FC, Ref } from 'react'
 import { useTranslations } from 'next-intl'
 import { Button, Input } from '@nextui-org/react'
 
-import { SendMessageIcon } from '@components/Icon/SendMessage'
+import {
+  ReSendMessageIcon,
+  SendMessageIcon
+} from '@components/Icon/SendMessage'
 
 interface ChatBoxProps {
   onSend: (content: string) => void
@@ -11,6 +14,9 @@ interface ChatBoxProps {
   disabled?: boolean
   onChange?: () => void
   inputRef: Ref<HTMLInputElement>
+  isError?: boolean
+  messageToResend?: string
+  showMessageSelections: boolean
 }
 
 const ChatBox: FC<ChatBoxProps> = ({
@@ -19,7 +25,9 @@ const ChatBox: FC<ChatBoxProps> = ({
   setMessage,
   disabled,
   onChange,
-  inputRef
+  inputRef,
+  isError,
+  messageToResend
 }) => {
   const t = useTranslations('Ai.conversation')
   const handleChangeMessage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,6 +56,7 @@ const ChatBox: FC<ChatBoxProps> = ({
             'bg-black-15 group-data-[focus=true]:bg-black-15 data-[hover=true]:bg-black-15',
           input: 'text-[16px] group-data-[has-value=true]:text-white'
         }}
+        isDisabled={disabled}
         value={message}
         onChange={handleChangeMessage}
         onKeyDown={(e) => {
@@ -63,7 +72,11 @@ const ChatBox: FC<ChatBoxProps> = ({
         variant='bordered'
         onClick={handleSend}
       >
-        <SendMessageIcon />
+        {isError && messageToResend === message ? (
+          <ReSendMessageIcon />
+        ) : (
+          <SendMessageIcon />
+        )}
       </Button>
     </div>
   )

@@ -1,7 +1,6 @@
 import { FC, useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
-import { useAccount } from 'wagmi'
 
 import { getMessageText } from '@helpers/components/message'
 import { quotesAndAsterisksGlobal } from '@helpers/regExp'
@@ -63,26 +62,21 @@ export const ConversationList: FC<IConversations> = ({
   onDelete
 }) => {
   const t = useTranslations('Ai.sidebar')
-  const { address } = useAccount()
 
-  const allConversations = useStore(({ allConversations }) => allConversations)
-
-  const conversations = useMemo(
-    () => allConversations[address as string] || [],
-    [allConversations, address]
-  )
+  const conversations = useStore(({ conversations }) => conversations)
 
   const filteredConversations = useMemo(() => {
     if (conversations) {
       return conversations
         .filter((conversation) =>
-          generateTitleFromMessages(conversation.messages)
+          generateTitleFromMessages(conversation.messages || [])
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
         )
         .sort(
           (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            new Date(b.createdAt || '').getTime() -
+            new Date(a.createdAt || '').getTime()
         )
     }
     return []
@@ -129,7 +123,9 @@ export const ConversationList: FC<IConversations> = ({
                   )}
                   onClick={() => handleSelect(conversation.id)}
                 >
-                  <div>{generateTitleFromMessages(conversation.messages)}</div>
+                  <div>
+                    {generateTitleFromMessages(conversation.messages || [])}
+                  </div>
                   <ConversationDelete
                     conversationId={conversation.id}
                     onDelete={onDelete}

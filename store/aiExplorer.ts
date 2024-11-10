@@ -1,33 +1,22 @@
-import cloneDeep from 'lodash/cloneDeep'
 import { StateCreator } from 'zustand'
 
 import { Conversation } from '@type/internal/conversation'
 
 type AIExplorerState = {
-  allConversations: {
-    [address: string]: Conversation[] | undefined
-  }
+  conversations: Conversation[]
 }
 
 type AIExplorerActions = {
-  setConversations: (userAddress: string, conversations: Conversation[]) => void
+  setConversations: (conversations: Conversation[]) => void
 }
 
 export type AIExplorerSlice = AIExplorerState & AIExplorerActions
 
 const initialState: AIExplorerState = {
-  allConversations: {}
+  conversations: []
 }
 
-export const createAIExplorerSlice: StateCreator<AIExplorerSlice> = (
-  set,
-  get
-) => ({
+export const createAIExplorerSlice: StateCreator<AIExplorerSlice> = (set) => ({
   ...initialState,
-  setConversations: (userAddress, conversations) => {
-    const allConversations = cloneDeep(get().allConversations)
-
-    allConversations[userAddress] = conversations
-    set({ allConversations })
-  }
+  setConversations: (conversations) => set({ conversations })
 })

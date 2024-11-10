@@ -200,6 +200,10 @@ export function createFollowUpInteraction(
 }
 
 export function getMessageText(message: Message) {
+  if (message.content) {
+    return message.content
+  }
+
   const promptInteraction = getPromptInteractionByUiCategory(message)
   const completionStreamInteraction =
     getCompletionStreamInteractionByUiCategory(message)
