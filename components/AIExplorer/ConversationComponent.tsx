@@ -1,28 +1,43 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useAccount } from 'wagmi'
 
+import { useQuery } from '@apollo/client'
+import { agentQuery } from '@graphql/client/resolvers/agent'
 import { chatSubscription } from '@graphql/client/resolvers/langchain'
 import { getCurrentPageContent, getCurrentUrl } from '@helpers/chrome'
 import {
   getLastAiMessage,
+  getLastUserMessageWithoutSystem,
   updateConversationMessages
 } from '@helpers/components/conversation'
-import { sendMessageToRemove } from '@helpers/components/messageSelection'
+import {
+  getFormattedQuotes,
+  sendMessageToRemove
+} from '@helpers/components/messageSelection'
 import { messageToChatMessage } from '@helpers/dto/conversation/chat/request'
 import { chatMessageToMessage } from '@helpers/dto/conversation/chat/response'
 import { useLazySubscription } from '@hooks/useLazySubscription'
 import { useStore } from '@store/store'
-import { ChatFollowUpOptionInput } from '@type/graphqlApiSchema'
+import {
+  AgentStatus,
+  ChatFollowUpOptionInput,
+  ChatSingleSelectionContentOptionInput
+} from '@type/graphqlApiSchema'
 import { Conversation } from '@type/internal/conversation'
-import { Message } from '@type/internal/message'
+import { Message, Role } from '@type/internal/message'
 import { MessageSelection } from '@type/internal/messageSelection'
 import {
   createActiveTabInteraction,
+  createCompletionStreamInteraction,
   createFollowUpInteraction,
   createMessage,
   createPromptInteraction,
+  createQuotesInteraction,
+  createSingleSelectionNewsTimeScope,
   getErrorInteractionByUiCategory,
   getFollowUpInteractionByUiCategory,
+  getPromptInteractionByUiCategory,
+  getSingleSelectionNewsTimeScope,
   mergeRequestMessages,
   mergeResponseMessages
 } from 'helpers/components/message'
@@ -30,6 +45,7 @@ import { useDebouncedCallback } from 'use-debounce'
 
 import ChatHistory from './ChatComponents/ChatHistory'
 import FollowUpQuestion from './ChatComponents/FollowUpQuestion'
+import Timescope from './ChatComponents/Interactions/Timescope'
 import TypingIndicator from './ChatComponents/TypingIndicator'
 import ChatBox from './ChatBox'
 
@@ -42,15 +58,11 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
 }) => {
   const { isConnected, address } = useAccount()
 
-  const { allConversations, setConversations } = useStore(
-    ({ allConversations, setConversations }) => ({
-      allConversations,
+  const { conversations, setConversations } = useStore(
+    ({ conversations, setConversations }) => ({
+      conversations,
       setConversations
     })
-  )
-  const conversations = useMemo(
-    () => allConversations[address as string] || [],
-    [allConversations, address]
   )
 
   const [conversation, setConversation] = useState<Conversation | null>(null)
@@ -72,9 +84,24 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
     MessageSelection[]
   >([])
 
+  const [newsTimescopes, setNewsTimescopes] = useState<
+    ChatSingleSelectionContentOptionInput[]
+  >([])
+  const [newsTimescopesIndex, setNewsTimescopesIndex] = useState(-1)
+
+  const [isError, setIsError] = useState(false)
+
+  const [messageToResend, setMessageToResend] = useState('')
+
+  const [showMessageSelections, setShowMessageSelections] = useState(true)
+
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const chatContentRef = useRef<HTMLDivElement>(null)
   const chatBoxInputRef = useRef<HTMLInputElement>(null)
+
+  const { data: agentData } = useQuery(agentQuery, {
+    variables: { id: '1' } //TODO:
+  })
 
   const [
     fetchChat,
@@ -83,25 +110,30 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       preLoading: chatPreLoading,
       loading: chatLoading,
       complete: chatComplete,
-      // error: chatError,
+      error: chatError,
       stopSubscription
     }
   ] = useLazySubscription(chatSubscription)
 
   useEffect(() => {
+    setNewsTimescopes([])
+    setNewsTimescopesIndex(-1)
+    setIsError(false)
+
     setShowFollowUpQuestions(false)
     setFollowUpQuestions([])
     setFollowUpQuestionsIndex(-1)
 
-    setStreamingMessage(undefined)
     setLastSystemMessageId('')
-
+    setStreamingMessage(undefined)
     stopSubscription()
+
+    handleRemoveAllSelections()
     // eslint-disable-next-line
   }, [conversationId, address])
 
   useEffect(() => {
-    if (conversation) {
+    if (conversation?.messages) {
       setMessages(conversation.messages)
     }
   }, [conversation])
@@ -114,6 +146,28 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
     }
     // eslint-disable-next-line
   }, [userIdle])
+
+  useEffect(() => {
+    if (isError) {
+      const lastUserMessageBeforeSystem = getLastUserMessageWithoutSystem(
+        conversations,
+        conversationId
+      )!
+      if (!lastUserMessageBeforeSystem) {
+        return
+      }
+
+      const promptInteraction = getPromptInteractionByUiCategory(
+        lastUserMessageBeforeSystem
+      )!
+
+      setMessage(promptInteraction.content.text)
+      setMessageToResend(promptInteraction.content.text)
+    } else {
+      setMessageToResend('')
+    }
+    // eslint-disable-next-line
+  }, [isError])
 
   useEffect(() => {
     if (!address) {
@@ -130,6 +184,12 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   }, [conversationId, conversations, address])
 
   useEffect(() => {
+    if (chatError) {
+      setShowMessageSelections(true)
+    }
+  }, [chatError])
+
+  useEffect(() => {
     const scrollAreaElement = chatScrollRef.current
     const scrollContentElement = chatContentRef.current
     if (scrollAreaElement && scrollContentElement) {
@@ -138,12 +198,14 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
         behavior: 'smooth'
       })
     }
-  }, [messages, showFollowUpQuestions])
+  }, [messages, showFollowUpQuestions, newsTimescopes])
 
   useEffect(() => {
     if (!chatData) {
       return
     }
+
+    setShowMessageSelections(false)
 
     const responseMessage = chatMessageToMessage(chatData.chat)
 
@@ -194,11 +256,23 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       finalUpdatedMessages
     )
 
-    setConversations(address as string, allMessages)
+    setConversations(allMessages)
 
     if (chatComplete) {
       setLastSystemMessageId('')
       setStreamingMessage(undefined)
+
+      setShowMessageSelections(true)
+
+      const interactionNewsTimescope = getSingleSelectionNewsTimeScope(
+        responseMessageMerged
+      )
+      if (interactionNewsTimescope) {
+        setNewsTimescopes(interactionNewsTimescope.content.options)
+        setNewsTimescopesIndex(
+          interactionNewsTimescope.content.selected_option_index
+        )
+      }
 
       const interactionFollowUpQuestions = getFollowUpInteractionByUiCategory(
         responseMessageMerged
@@ -211,7 +285,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       }
 
       if (getErrorInteractionByUiCategory(responseMessageMerged)) {
-        // setIsError(true)
+        setIsError(true)
       } else {
         handleRemoveAllSelections()
       }
@@ -220,9 +294,13 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       setUserIdle(false)
       debouncedUserIdle(true)
     }
+    // eslint-disable-next-line
   }, [streamingMessage, chatComplete])
 
   const messageProcess = async (sendMessage: Message) => {
+    setNewsTimescopes([])
+    setNewsTimescopesIndex(-1)
+    setIsError(false)
     setFollowUpQuestions([])
     setFollowUpQuestionsIndex(-1)
 
@@ -240,6 +318,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   const handleSend = async (text: string) => {
     const pageUrl = await getCurrentUrl()
     const pageContent = await getCurrentPageContent()
+    const quotes = getFormattedQuotes(messageSelections)
 
     const lastAiMessage = getLastAiMessage(conversations, conversationId)
     const followPreviousInteraction = lastAiMessage
@@ -251,6 +330,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       ...(pageUrl && pageContent
         ? [createActiveTabInteraction(pageContent, pageUrl)]
         : []),
+      ...(quotes.length ? [createQuotesInteraction(quotes)] : []),
       ...(followUpQuestionsIndex !== -1 && followPreviousInteraction
         ? [
             createFollowUpInteraction(
@@ -262,7 +342,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
         : [])
     ]
 
-    const sendMessage = createMessage(interactions)
+    const sendMessage = createMessage(interactions, { messageSelections })
 
     const sendMessageMerged = mergeRequestMessages(sendMessage, lastAiMessage)
 
@@ -275,9 +355,75 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       updatedMessages
     )
 
-    setConversations(address as string, newMessages)
+    setConversations(newMessages)
 
     messageProcess(sendMessageMerged)
+  }
+
+  const handleSendWithTimescope = async (index: number) => {
+    const timescopeText = `Timescope selected: ${newsTimescopes[index].display_value}`
+    const timeScopeInteraction = createSingleSelectionNewsTimeScope(
+      newsTimescopes,
+      index
+    )
+    // setNewsTimescopesIndex(index);
+    // const timeScopeInteraction = createSingleSelectionNewsTimeScope(
+    //   newsTimescopes,
+    //   newsTimescopesIndex,
+    // );
+    const messageForLocalHistory = createMessage([
+      createPromptInteraction(timescopeText),
+      timeScopeInteraction
+    ])
+
+    const lastAiMessage = getLastAiMessage(conversations, conversationId)
+    const messageForLocalHistoryMerged = mergeRequestMessages(
+      messageForLocalHistory,
+      lastAiMessage
+    )
+
+    const updatedMessages = [...messages, messageForLocalHistoryMerged]
+    setMessages(updatedMessages)
+
+    const newMessages = updateConversationMessages(
+      conversations,
+      conversationId,
+      updatedMessages
+    )
+
+    setConversations(newMessages)
+
+    const sendMessage: Message = {
+      ...messageForLocalHistoryMerged,
+      interactions: createMessage([timeScopeInteraction]).interactions
+    }
+
+    const sendMessageMerged = mergeRequestMessages(sendMessage, lastAiMessage)
+
+    messageProcess(sendMessageMerged)
+  }
+
+  const handleOnUpgradeRequired = () => {
+    const textToUpgrade =
+      'You need to stake xxx token in order to unlock this option'
+
+    const upgradeRequiredMessage: Message = {
+      ...createMessage([createCompletionStreamInteraction(textToUpgrade)], {
+        isFinishedMessage: true
+      }),
+      role: Role.AI
+    }
+
+    const updatedMessages = [...messages, upgradeRequiredMessage]
+    setMessages(updatedMessages)
+
+    const newMessages = updateConversationMessages(
+      conversations,
+      conversationId,
+      updatedMessages
+    )
+
+    setConversations(newMessages)
   }
 
   const handleFollowUpQuestionSelect = (index: number) => {
@@ -327,6 +473,15 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
             />
           )}
           {chatLoading && <TypingIndicator chatLoading={chatPreLoading} />}
+          {newsTimescopes.length > 0 && (
+            <Timescope
+              newsTimescopes={newsTimescopes}
+              newsTimescopesIndex={newsTimescopesIndex}
+              onTimescopeSelect={handleSendWithTimescope}
+              onUpgradeRequired={handleOnUpgradeRequired}
+              agentStatus={agentData?.status || AgentStatus.Platinum} // TODO:
+            />
+          )}
           {followUpQuestions.length > 0 && showFollowUpQuestions && (
             <FollowUpQuestion
               followUpQuestions={followUpQuestions}
@@ -343,6 +498,9 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
         onSend={handleSend}
         setMessage={setMessage}
         onChange={handleOnChatBoxChange}
+        isError={isError}
+        showMessageSelections={showMessageSelections}
+        messageToResend={messageToResend}
       ></ChatBox>
     </div>
   )

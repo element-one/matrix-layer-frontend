@@ -16,7 +16,7 @@ export default function ChatHistory({
   return (
     conversation && (
       <div className='flex flex-col gap-8'>
-        {conversation.messages.map((message, index) => (
+        {conversation?.messages?.map((message, index) => (
           <ChatMessage
             key={index}
             message={message}
