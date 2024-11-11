@@ -1268,16 +1268,16 @@ const StakePage: NextPage = () => {
                 )}
                 {!!userData?.referredByUserAddress && (
                   <>
-                    <div className='min-w-0 text-[18px] font-semibold truncate'>
-                      {userData?.referredByUserAddress ?? ''}
-                    </div>
+                    <Tooltip content={userData.referredByUserAddress}>
+                      <div className='min-w-0 text-[18px] font-semibold truncate'>
+                        {userData.referredByUserAddress}
+                      </div>
+                    </Tooltip>
                     <Button
                       className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
                         text-base font-semibold'
                       variant='bordered'
-                      onClick={handleCopy(
-                        userData?.referredByUserAddress ?? ''
-                      )}
+                      onClick={handleCopy(userData.referredByUserAddress)}
                     >
                       <span className='md:inline hidden'>
                         {t('copyAddress')}
