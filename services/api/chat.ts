@@ -22,16 +22,23 @@ export const getUserChatHistory = async (
     user_id: address
   })
 
-  const formatConversations = data?.conversations?.map((item) => ({
-    id: item.conversation_id,
-    messages: item.chat_history.map((message) => ({
-      id: getRandomId(),
-      role: message.role === 'human' ? 0 : 1,
-      content: message.content,
-      createdAt: dayjs.utc(message.timestamp).toDate(),
-      interactions: []
-    }))
-  }))
+  const formatConversations = data?.conversations
+    ?.map((item) => {
+      const firstMessage = item?.chat_history[0]
+
+      return {
+        id: item.conversation_id,
+        createdAt: dayjs.utc(firstMessage?.timestamp).toDate(),
+        messages: item.chat_history.map((message) => ({
+          id: getRandomId(),
+          role: message.role === 'human' ? 0 : 1,
+          content: message.content,
+          createdAt: dayjs.utc(message.timestamp).toDate(),
+          interactions: []
+        }))
+      }
+    })
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
 
   return formatConversations || []
 }
@@ -40,7 +47,8 @@ export const useGetUserChatHistory = (address: string) => {
   return useQuery({
     queryKey: ['getAll', 'chatHistory', address],
     queryFn: () => getUserChatHistory(address),
-    enabled: !!address
+    enabled: !!address,
+    initialData: []
   })
 }
 

@@ -4,7 +4,7 @@ export type Conversation = {
   id: string
   name?: string
   messages: Message[]
-  createdAt?: Date
+  createdAt: Date
 }
 
 export type HistoryConversation = {

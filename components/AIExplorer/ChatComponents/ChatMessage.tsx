@@ -137,9 +137,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     >
       {!isUserMessage && (
         <div className='max-w-[800px] w-[80%] flex flex-col'>
-          <div className='flex gap-x-5'>
+          <div className='flex gap-x-5 w-full'>
             <Avatar className='w-6 h-6 shrink-0' />
-            <div className='flex flex-col gap-y-1'>
+            <div className='flex flex-col gap-y-1 overflow-hidden'>
               <div className='whitespace-normal rounded-[24px] px-6 py-4 markdown-body'>
                 <Markdown
                   rehypePlugins={resolveRehypePlugins(message)}

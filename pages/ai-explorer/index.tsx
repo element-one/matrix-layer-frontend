@@ -35,7 +35,16 @@ const AIExplorer = () => {
   )
 
   useEffect(() => {
-    setConversations(history || [])
+    return () => {
+      setConversations([])
+      setActiveConversationId('')
+      refetch()
+    }
+    //eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    setConversations(history)
   }, [history, setConversations])
 
   const createNewConversation = useCallback(() => {
