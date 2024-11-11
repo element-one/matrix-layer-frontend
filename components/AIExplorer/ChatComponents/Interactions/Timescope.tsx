@@ -32,7 +32,7 @@ export default function Timescope({
   }
 
   return (
-    <div className='flex ml-12 mt-3 gap-x-6'>
+    <div className='flex ml-12 mt-3 gap-6 flex-wrap'>
       {newsTimescopes.map((newsTimescope, index) => (
         <Button
           className={clsx(
