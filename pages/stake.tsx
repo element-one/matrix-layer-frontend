@@ -1234,10 +1234,12 @@ const StakePage: NextPage = () => {
                 className='mb-0 md:mb-[11px] p-2 md:p-0 text-lg md:text-2xl font-semibold bg-clip-text
                   text-transparent bg-gradient-text-1 flex justify-between items-center'
               >
-                {t('inviteCode')}
+                {t('inviteSystem')}
 
-                <span className='text-white text-[16px]'>
-                  {userData?.referrerReferralCode ?? ''}
+                <span className='text-white text-[14px]'>
+                  {userData?.referrerReferralCode
+                    ? `${t('referrerInviteCode')}: ${userData?.referrerReferralCode}`
+                    : ''}
                 </span>
               </Text>
               <div
@@ -1262,17 +1264,20 @@ const StakePage: NextPage = () => {
                       disabled={!referralCode}
                       className='rounded-full text-[12px] min-w-[90px] md:text-[14px] h-[32px]'
                     >
-                      {t('verifyLink')}
+                      {t('verify')}
                     </Button>
                   </>
                 )}
                 {!!userData?.referredByUserAddress && (
                   <>
-                    <Tooltip content={userData.referredByUserAddress}>
-                      <div className='min-w-0 text-[18px] font-semibold truncate'>
-                        {userData.referredByUserAddress}
-                      </div>
-                    </Tooltip>
+                    <div className='w-fit'>
+                      <div>{t('referrerAddress')}</div>
+                      <Tooltip content={userData.referredByUserAddress}>
+                        <div className='min-w-0 text-[18px] max-w-[140px] font-semibold truncate'>
+                          {userData.referredByUserAddress}
+                        </div>
+                      </Tooltip>
+                    </div>
                     <Button
                       className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
                         text-base font-semibold'
