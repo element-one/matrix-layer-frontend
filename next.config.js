@@ -16,7 +16,6 @@ const nextConfig = {
 
     return config
   },
-  reactStrictMode: true,
   images: {
     domains: []
   },
