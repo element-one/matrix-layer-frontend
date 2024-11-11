@@ -295,7 +295,8 @@
     "DailyRewardsHistory": "Daily rewards history",
     "basicPoolInfo": "Your mining power in the basic pool is determined by the number and value of the NFTs you have staked.",
     "BalancePool": {
-      "title": "Pool Balance"
+      "title": "Pool Balance",
+      "DailyRewardHistory": "Daily Reward History"
     },
     "AccelerationPool": {
       "title": "Acceleration Pool (PoS)",
@@ -348,7 +349,10 @@
       "amount": "AMOUNT",
       "confirm": "CONFIRM",
       "bestRate": "Best Acceleration Rate"
-    }
+    },
+    "warnContent": "The staking period has not yet expired. If you withdraw, your earnings will be converted to",
+    "doYouContinue": "Do you choose to continue?",
+    "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",
@@ -367,8 +371,14 @@
     "withdraw": "Withdraw",
     "desc": "You are getting back staked 5000 $MLP along with the staking rewards {amount} $MLP.",
     "total": "{amount} &MLP in total, continue?",
-    "cancel": "Cancel",
-    "confirm": "Confirm"
+    "cancel": "CANCEL",
+    "confirm": "CONFIRM",
+    "withdrawDetails": "Withdraw Details",
+    "withdrawDate": "Withdraw date",
+    "stakedAmount": "Staked amount",
+    "rewards": "Rewards",
+    "viewTransaction": "View Transaction",
+    "close": "CLOSE"
   },
   "Modals": {
     "rewardModal": {

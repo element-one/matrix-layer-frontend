@@ -58,6 +58,7 @@ export interface UserStakingListItem {
   coefficientB: number
   isActive: boolean
   stakeId: number
+  rewardAmount: string
 }
 export interface ApiGetUserStakingListResponse {
   data: Array<UserStakingListItem>
@@ -90,6 +91,7 @@ export const useGetUserStakingList = (
   return useQuery<ApiGetUserStakingListResponse>({
     queryKey: ['get', 'user-staking-list', params],
     queryFn: () => getUserStakingList(params),
+    enabled: !!params.address,
     ...options
   })
 }
