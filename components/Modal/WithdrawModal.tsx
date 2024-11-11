@@ -29,7 +29,7 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
     <Modal
       isOpen={isModalShown(ModalType.WITHDRAW_MODAL)}
       onClose={handleClose}
-      size='md'
+      size='2xl'
       placement='center'
       hideCloseButton
       classNames={{

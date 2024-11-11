@@ -59,6 +59,7 @@ import {
 } from '@services/api/pool'
 import { formatCurrency, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
+import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
 import { serializeError } from 'eth-rpc-errors'
 
@@ -132,8 +133,39 @@ const StakePage: NextPage = () => {
     stakeType: StakeType
   } | null>(null)
 
-  const handleWithdrawNFTBoostedClick = (options: { stakeId: string }) => {
+  const handleWithdrawNFTBoostedClick = (options: {
+    stakeId: string
+    stakedTokenAmount: string
+    rewardAmount: string
+  }) => {
     showModal(ModalType.WITHDRAW_MODAL, {
+      content: (
+        <div className='text-[14px] md:text-[18px] text-gray-a5'>
+          <div className='mb-4'>
+            {t.rich('withdrawDesc', {
+              text1: (chunks) => <span className='text-white'>{chunks}</span>,
+              amount: formatCurrency(options.stakedTokenAmount)
+            })}
+          </div>
+          <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
+            <span className=''>
+              {formatCurrency(options.rewardAmount)} $MLP
+            </span>
+            <span className='text-2xl'>=</span>
+            <div>
+              {formatCurrency(
+                new BigNumber(options.stakedTokenAmount)
+                  .plus(options.rewardAmount)
+                  .toString()
+              )}{' '}
+              $MLP <span className='text-[18px]'>in total</span>
+            </div>
+          </div>
+          <div className='text-[14px] md:text-[18px] text-gray-150'>
+            {t('doYouContinue')}
+          </div>
+        </div>
+      ),
       onConfirm: () => {
         unstakeNFTBoosted(
           {
@@ -154,16 +186,14 @@ const StakePage: NextPage = () => {
   const handleWithdrawMLPBoostedClick = async (item: UserStakingListItem) => {
     if (!address) return
     const isExpired = dayjs(item.endStakingAt).isBefore(dayjs())
-    if (item.type === 0 && isExpired) {
+
+    if (item.type === 0 && !isExpired) {
       const res = await getUserWithdrawMlpToken(address, Number(item.stakeId))
       showModal(ModalType.WITHDRAW_MODAL, {
         content: (
           <div className='text-[14px] md:text-[18px] text-gray-a5'>
-            <div className='mb-4'>
-              The staking period has not yet expired. If you withdraw, your
-              earnings will be converted to
-            </div>
-            <div className='mb-4 text-[32px] font-semibold flex items-center gap-4'>
+            <div className='mb-4'>{t('warnContent')}</div>
+            <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4'>
               <span className='line-through'>
                 {formatCurrency(res.expectedRewardAmount)}
               </span>
@@ -171,7 +201,7 @@ const StakePage: NextPage = () => {
               <span>{formatCurrency(res.actualRewardAmount)}</span>
             </div>
             <div className='text-[14px] md:text-[18px] text-gray-150'>
-              Do you choose to continue?
+              {t('doYouContinue')}
             </div>
           </div>
         ),
@@ -179,13 +209,44 @@ const StakePage: NextPage = () => {
           unstakeMLPBoosted({
             address: STAKE_B_ADDRESS,
             abi: STAKE_B_ABI,
-            functionName: 'unstakeNFTBoosted',
+            functionName: 'unstakeMLPBoosted',
             args: [item.stakeId]
           })
         }
       })
     } else {
+      const options = {
+        stakedTokenAmount: item.stakedTokenAmount,
+        rewardAmount: item.estimatedRewardAmount
+      }
       showModal(ModalType.WITHDRAW_MODAL, {
+        content: (
+          <div className='text-[14px] md:text-[18px] text-gray-a5'>
+            <div className='mb-4'>
+              {t.rich('withdrawDesc', {
+                text1: (chunks) => <span className='text-white'>{chunks}</span>,
+                amount: formatCurrency(options.stakedTokenAmount)
+              })}
+            </div>
+            <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
+              <span className=''>
+                {formatCurrency(options.rewardAmount)} $MLP
+              </span>
+              <span className='text-2xl'>=</span>
+              <div>
+                {formatCurrency(
+                  new BigNumber(options.stakedTokenAmount)
+                    .plus(options.rewardAmount)
+                    .toString()
+                )}{' '}
+                $MLP <span className='text-[18px]'>in total</span>
+              </div>
+            </div>
+            <div className='text-[14px] md:text-[18px] text-gray-150'>
+              {t('doYouContinue')}
+            </div>
+          </div>
+        ),
         onConfirm: () => {
           unstakeMLPBoosted(
             {
@@ -203,6 +264,19 @@ const StakePage: NextPage = () => {
         }
       })
     }
+  }
+  const handleWithdrawDetailModal = (item: {
+    withdrawDate: string
+    stakedAmount: string
+    rewards: string
+    transactionHash: string
+  }) => {
+    showModal(ModalType.WITHDRAW_DETAIL_MODAL, {
+      withdrawDate: item.withdrawDate,
+      stakedAmount: item.stakedAmount,
+      rewards: item.rewards,
+      transactionHash: item.transactionHash
+    })
   }
 
   const handleHistoryModalClose = () => {
@@ -458,25 +532,17 @@ const StakePage: NextPage = () => {
   const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
     useGetUserRewardsSummary(address)
   const { data: poolB1StakingList, refetch: refetchPoolB1StakingList } =
-    useGetUserStakingList(
-      {
-        address: address as Address,
-        type: 'pool_b1'
-      },
-      {
-        enabled: !!address
-      }
-    )
+    useGetUserStakingList({
+      address: address as Address,
+      type: 'pool_b1'
+    })
   const { data: poolB2StakingList, refetch: refetchPoolB2StakingList } =
-    useGetUserStakingList(
-      {
-        address: address as Address,
-        type: 'pool_b2'
-      },
-      {
-        enabled: !!address
-      }
-    )
+    useGetUserStakingList({
+      address: address as Address,
+      type: 'pool_b2'
+    })
+
+  console.log('userRewardsSummary', userRewardsSummary)
 
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
@@ -776,7 +842,7 @@ const StakePage: NextPage = () => {
           args: [
             amount,
             stakingPoolBMLPAmountRef.current.stakeDay,
-            StakeType.FullLocked
+            stakingPoolBMLPAmountRef.current.stakeType
           ]
         },
         {
@@ -2059,10 +2125,13 @@ const StakePage: NextPage = () => {
               </Text>
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
-                  <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
-                    $2,345.89 USDT
+                  <span className='font-bold text-[16px] text-gray-a5 underline'>
+                    {t('BalancePool.DailyRewardHistory')}
                   </span>
-                  <div
+                  {/* <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
+                    $2,345.89 USDT
+                  </span> */}
+                  {/* <div
                     className={clsx(
                       'flex rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
                       GradientBorderClass
@@ -2070,7 +2139,7 @@ const StakePage: NextPage = () => {
                   >
                     <span className='text-gray-a5'>$MLP {t('amount')}</span>
                     <span>0.00</span>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>
@@ -2108,7 +2177,14 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
                     {t('yesterdayStakingRewards')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00 MLP</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.yesterdayPoolB1Rewards
+                      ? formatCurrency(
+                          userRewardsSummary?.yesterdayPoolB1Rewards
+                        )
+                      : '0.00'}{' '}
+                    MLP
+                  </div>
                 </div>
                 <div
                   className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -2117,7 +2193,11 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('acceleratedMLP')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.poolB1StakingAmount
+                      ? formatCurrency(userRewardsSummary?.poolB1StakingAmount)
+                      : '0.00'}
+                  </div>
                 </div>
                 <div
                   className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -2126,7 +2206,9 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('holdingNFT')}
                   </span>
-                  <div className='text-[18px] font-bold'>0</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.userHoldingCount}
+                  </div>
                 </div>
                 <div
                   className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -2135,7 +2217,11 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('totalMLPRewards')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.poolB1TotalRewards
+                      ? formatCurrency(userRewardsSummary?.poolB1TotalRewards)
+                      : '0.00'}
+                  </div>
                 </div>
               </div>
             )}
@@ -2163,9 +2249,6 @@ const StakePage: NextPage = () => {
                       {t('cumulativeIncome')}
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('unstakedDate')}
-                    </TableColumn>
-                    <TableColumn className='text-[14px] md:text-[16px]'>
                       {t('action')}
                     </TableColumn>
                   </TableHeader>
@@ -2177,33 +2260,58 @@ const StakePage: NextPage = () => {
                               {dayjs(item.createdAt).format('YYYY.M.D')}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {item.estimatedRewardAmount}
+                              {formatCurrency(item.stakedTokenAmount)}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {item.cancelStakingAt}
-                            </TableCell>
-                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {item.cancelStakingAt
-                                ? dayjs(item.cancelStakingAt).format('YYYY.M.D')
-                                : '-'}
+                              {formatCurrency(item.rewardAmount)}
                             </TableCell>
                             <TableCell className='text-gray-150'>
-                              <Button
-                                isDisabled={!item.isActive}
-                                className={twMerge(
-                                  clsx(
-                                    'rounded-full text-[12px] h-8 w-[152px] font-bold',
-                                    !item.isActive && 'bg-co-gray-7 text-white'
-                                  )
-                                )}
-                                onClick={() =>
-                                  handleWithdrawNFTBoostedClick({
-                                    stakeId: `${item.stakeId}`
-                                  })
-                                }
-                              >
-                                {t('withdraw')}
-                              </Button>
+                              {item.isActive ? (
+                                <Button
+                                  isDisabled={!item.isActive}
+                                  className={twMerge(
+                                    clsx(
+                                      'rounded-full text-[12px] h-8 w-[152px] font-bold',
+                                      !item.isActive &&
+                                        'bg-co-gray-7 text-white'
+                                    )
+                                  )}
+                                  onClick={() =>
+                                    handleWithdrawNFTBoostedClick({
+                                      stakeId: `${item.stakeId}`,
+                                      stakedTokenAmount: item.stakedTokenAmount,
+                                      rewardAmount: item.rewardAmount
+                                    })
+                                  }
+                                >
+                                  {t('withdraw')}
+                                </Button>
+                              ) : (
+                                <button
+                                  className={twMerge(
+                                    clsx(
+                                      'bg-transparent underline text-white font-bold'
+                                    )
+                                  )}
+                                  onClick={() =>
+                                    handleWithdrawDetailModal({
+                                      withdrawDate: dayjs(
+                                        item.cancelStakingAt
+                                      ).format('DD/MM/YYYY'),
+                                      stakedAmount: formatCurrency(
+                                        item.stakedTokenAmount
+                                      ),
+                                      rewards: formatCurrency(
+                                        item.rewardAmount
+                                      ),
+                                      transactionHash:
+                                        item.cancelStakingTransactionHash ?? ''
+                                    })
+                                  }
+                                >
+                                  {t('withdraw')}
+                                </button>
+                              )}
                             </TableCell>
                           </TableRow>
                         ))
@@ -2261,7 +2369,14 @@ const StakePage: NextPage = () => {
                     <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                       {t('yesterdayStakingRewards')}
                     </span>
-                    <div className='text-[18px] font-bold'>0.00 MLP</div>
+                    <div className='text-[18px] font-bold'>
+                      {userRewardsSummary?.yesterdayPoolB2Rewards
+                        ? formatCurrency(
+                            userRewardsSummary?.yesterdayPoolB2Rewards
+                          )
+                        : '0.00'}{' '}
+                      MLP
+                    </div>
                   </div>
                   <div
                     className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -2270,7 +2385,13 @@ const StakePage: NextPage = () => {
                     <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                       {t('acceleratedMLP')}
                     </span>
-                    <div className='text-[18px] font-bold'>0.00</div>
+                    <div className='text-[18px] font-bold'>
+                      {userRewardsSummary?.poolB2StakingAmount
+                        ? formatCurrency(
+                            userRewardsSummary?.poolB2StakingAmount
+                          )
+                        : '0.00'}
+                    </div>
                   </div>
                 </div>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8'>
@@ -2282,7 +2403,11 @@ const StakePage: NextPage = () => {
                     <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                       {t('TotalMLPRewards')}
                     </span>
-                    <div className='text-[18px] font-bold'>0.00</div>
+                    <div className='text-[18px] font-bold'>
+                      {userRewardsSummary?.poolB2TotalRewards
+                        ? formatCurrency(userRewardsSummary?.poolB2TotalRewards)
+                        : '0.00'}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2322,8 +2447,7 @@ const StakePage: NextPage = () => {
                   </TableHeader>
                   <TableBody>
                     {poolB2StakingList?.data.map((item) => {
-                      // TODO
-                      const isReinvestment = true
+                      const isReinvestment = item.type === 1
                       const isExpired = dayjs(item.endStakingAt).isBefore(
                         dayjs()
                       )
@@ -2338,10 +2462,10 @@ const StakePage: NextPage = () => {
                             {item.contractDays}
                           </TableCell>
                           <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                            {item.estimatedRewardAmount}
+                            {formatCurrency(item.stakedTokenAmount)}
                           </TableCell>
                           <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                            {item.actualRewardAmount}
+                            {formatCurrency(item.estimatedRewardAmount)}
                           </TableCell>
                           <TableCell>
                             <span
@@ -2355,20 +2479,47 @@ const StakePage: NextPage = () => {
                             </span>
                           </TableCell>
                           <TableCell className='text-gray-150'>
-                            <Button
-                              // isDisabled={!isCanWithdraw}
-                              className={twMerge(
-                                clsx(
-                                  'rounded-full text-[12px] h-8 w-[152px] font-bold',
-                                  !isCanWithdraw && 'bg-co-gray-7 text-white'
-                                )
-                              )}
-                              onClick={() =>
-                                handleWithdrawMLPBoostedClick(item)
-                              }
-                            >
-                              {t('withdraw')}
-                            </Button>
+                            {item.isActive ? (
+                              <Button
+                                isDisabled={!isCanWithdraw}
+                                className={twMerge(
+                                  clsx(
+                                    'rounded-full text-[12px] h-8 w-[152px] font-bold',
+                                    !isCanWithdraw && 'bg-co-gray-7 text-white'
+                                  )
+                                )}
+                                onClick={() =>
+                                  handleWithdrawMLPBoostedClick(item)
+                                }
+                              >
+                                {t('withdraw')}
+                              </Button>
+                            ) : (
+                              <button
+                                className={twMerge(
+                                  clsx(
+                                    'bg-transparent underline text-white font-bold'
+                                  )
+                                )}
+                                onClick={() =>
+                                  handleWithdrawDetailModal({
+                                    withdrawDate: dayjs(
+                                      item.cancelStakingAt
+                                    ).format('DD/MM/YYYY'),
+                                    stakedAmount: formatCurrency(
+                                      item.stakedTokenAmount
+                                    ),
+                                    rewards: formatCurrency(
+                                      item.actualRewardAmount
+                                    ),
+                                    transactionHash:
+                                      item.cancelStakingTransactionHash ?? ''
+                                  })
+                                }
+                              >
+                                {t('withdraw')}
+                              </button>
+                            )}
                           </TableCell>
                         </TableRow>
                       )
