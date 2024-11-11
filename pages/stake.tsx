@@ -1174,7 +1174,7 @@ const StakePage: NextPage = () => {
             {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8 px-2
+            className='grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8 px-2
               lg:p-0'
           >
             <div className={clsx(cardClsx, GradientBorderClass)}>
@@ -1229,35 +1229,65 @@ const StakePage: NextPage = () => {
                 </Button>
               </div>
             </div>
-          </div>
+            <div className={clsx(cardClsx, GradientBorderClass)}>
+              <Text
+                className='mb-0 md:mb-[11px] p-2 md:p-0 text-lg md:text-2xl font-semibold bg-clip-text
+                  text-transparent bg-gradient-text-1 flex justify-between items-center'
+              >
+                {t('inviteCode')}
 
-          <div className='flex items-center justify-end w-full md:mt-2'>
-            {!userData?.referredByUserAddress && (
-              <div className='w-full md:w-[50%] flex items-center justify-between pl-2 pr-2 md:pl-10 md:pr-4'>
-                <Input
-                  placeholder={t('enterInviteCode')}
-                  wrapperClassName='w-[80%] md:w-[70%]'
-                  inputClassName='border-[#282828] placeholder:text-[#666] !h-[32px] md:!h-[38px] !text-[14px] !outline-none !ring-0 bg-[#151515]'
-                  type='text'
-                  value={referralCode}
-                  onChange={(val) => setReferralCode(val)}
-                  id='inviteCode'
-                />
-                <Button
-                  onClick={handleVerify}
-                  isLoading={isPending}
-                  disabled={!referralCode}
-                  className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px] ml-10'
-                >
-                  {t('verifyLink')}
-                </Button>
+                <span className='text-white text-[16px]'>
+                  {userData?.referrerReferralCode ?? ''}
+                </span>
+              </Text>
+              <div
+                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
+                  justify-between md:gap-[62px]'
+              >
+                {!userData?.referredByUserAddress && (
+                  <>
+                    <Input
+                      placeholder={t('enterInviteCode')}
+                      wrapperClassName='w-[80%] -mt-2'
+                      inputClassName='border-[#282828] placeholder:text-[#666] !h-[32px] md:!h-[38px] !text-[16px] !outline-none !ring-0 bg-[#151515]'
+                      type='text'
+                      value={referralCode}
+                      onChange={(val) => setReferralCode(val)}
+                      id='inviteCode'
+                    />
+                    <Button
+                      size='sm'
+                      onClick={handleVerify}
+                      isLoading={isPending}
+                      disabled={!referralCode}
+                      className='rounded-full text-[12px] min-w-[90px] md:text-[14px] h-[32px]'
+                    >
+                      {t('verifyLink')}
+                    </Button>
+                  </>
+                )}
+                {!!userData?.referredByUserAddress && (
+                  <>
+                    <div className='min-w-0 text-[18px] font-semibold truncate'>
+                      {userData?.referredByUserAddress ?? ''}
+                    </div>
+                    <Button
+                      className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
+                        text-base font-semibold'
+                      variant='bordered'
+                      onClick={handleCopy(
+                        userData?.referredByUserAddress ?? ''
+                      )}
+                    >
+                      <span className='md:inline hidden'>
+                        {t('copyAddress')}
+                      </span>
+                      <CopyIcon />
+                    </Button>
+                  </>
+                )}
               </div>
-            )}
-            {!!userData?.referredByUserAddress && (
-              <span className='pr-4 opacity-60 text-[12px] md:text-[16px]'>
-                {userData.referredByUserAddress}
-              </span>
-            )}
+            </div>
           </div>
         </Content>
       </Container>
