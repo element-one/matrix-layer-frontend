@@ -29,8 +29,11 @@ export const RSIChart: React.FC<RSIChartProps> = ({
   const interval = metadata?.interval || 'days'
 
   return (
-    <div className='p-4 outline-none rounded-[24px] bg-[#323232] text-co-text-1 h-[300px]'>
-      <div className='w-full flex flex-col gap-y-4 h-full'>
+    <div
+      className='p-4 outline-none rounded-[24px] bg-[#323232] text-co-text-1 h-[300px]
+        overflow-x-scroll'
+    >
+      <div className='w-full flex flex-col gap-y-4 h-full min-w-[600px]'>
         <div className='flex flex-row items-center justify-between px-1 cursor-pointer rounded-md'>
           <Text className='text-lg font-semibold'>{title}</Text>
           <Text

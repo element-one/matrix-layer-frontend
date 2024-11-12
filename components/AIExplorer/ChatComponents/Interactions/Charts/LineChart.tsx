@@ -72,10 +72,10 @@ export const SimpleLineChart: React.FC<LineChartProps> = ({
   const suggestedInterval = Math.max(Math.floor(dataLength / 6), 1)
   return (
     <div
-      className='w-full overflow-hidden p-4 outline-none rounded-[24px] bg-[#323232]
-        text-co-text-1'
+      className='w-full overflow-hidden overflow-x-scroll p-4 outline-none rounded-[24px]
+        bg-[#323232] text-co-text-1'
     >
-      <div className='flex flex-col gap-y-4'>
+      <div className='flex flex-col gap-y-4 min-w-[600px]'>
         <div className='p-4'>
           <Text className='text-lg font-semibold'>{title}</Text>
         </div>
