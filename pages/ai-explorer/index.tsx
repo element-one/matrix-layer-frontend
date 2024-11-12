@@ -119,8 +119,8 @@ const AIExplorer = () => {
   return (
     <Layout className='flex justify-center'>
       <Container
-        className='w-[1440px] max-auto h-[100vh] px-2 md:px-10 py-[130px] sm:py-[160px]
-          overflow-hidden'
+        className='w-[1440px] max-auto h-[100vh] px-2 md:px-10 pt-[120px] pb-[140px] sm:pt-[160px]
+          sm:pb-[160px] overflow-hidden'
       >
         <div className='w-full h-full relative overflow-hidden rounded-[32px]'>
           <Sidebar
