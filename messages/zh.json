@@ -195,8 +195,7 @@
     "referrerAddress": "推荐人地址",
     "verify": "验证",
     "enterInviteCode": "输入推荐人邀请码",
-    "copyAddress": "复制地址",
-    "invitationSystem": "邀请系统"
+    "copyAddress": "复制地址"
   },
   "Checkout": {
     "checkout": "结算",
