@@ -1356,10 +1356,10 @@ const StakePage: NextPage = () => {
                 )}
                 {!!userData?.referredByUserAddress && (
                   <>
-                    <div className='w-fit'>
+                    <div className='w-fit max-w-[70%] 2xl:max-w-[36%]'>
                       <div>{t('referrerAddress')}</div>
                       <Tooltip content={userData.referredByUserAddress}>
-                        <div className='min-w-0 text-[18px] max-w-[140px] font-semibold truncate'>
+                        <div className='min-w-0 text-[18px] font-semibold truncate'>
                           {userData.referredByUserAddress}
                         </div>
                       </Tooltip>

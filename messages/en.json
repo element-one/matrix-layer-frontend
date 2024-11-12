@@ -188,7 +188,14 @@
     "item": "item",
     "rewardDetails": "REWARD DETAILS",
     "submitAddress": "Submit Address",
-    "confirmReceipt": "Confirm Receipt"
+    "confirmReceipt": "Confirm Receipt",
+    "inviteCode": "Invite Code",
+    "inviteSystem": "Invite System",
+    "referrerInviteCode": "Referrer Invite Code",
+    "referrerAddress": "Referrer Address",
+    "copyAddress": "Copy Address",
+    "enterInviteCode": "Enter invite code",
+    "verify": "Verify"
   },
   "Checkout": {
     "checkout": "Checkout",
