@@ -165,7 +165,8 @@ export interface ApiGetUserRewardsSummaryResponse {
   yesterdayPoolARewards: string
   yesterdayPoolB1Rewards: string
   yesterdayPoolB2Rewards: string
-  yesterdayPoolCPhoneRewards: string
+  yesterdayPoolCRewards: string
+  yesterdayPoolPhoneRewards: string
   userHoldingCount: number
 }
 
