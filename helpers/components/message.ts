@@ -1,4 +1,5 @@
 import type {
+  ChatFollowUpContent,
   ChatFollowUpOptionInput,
   ChatInteractionActiveTabInput,
   ChatInteractionChartInput,
@@ -440,4 +441,24 @@ export function getPriceLevelTableInteractions(
     UiCategory.Table,
     'price_levels'
   )
+}
+
+export function generateInteractionsInHistory(
+  interactions: MessageInteractions,
+  isHuman: boolean
+) {
+  const processedInteractions = interactions.flatMap((interaction) => {
+    if (interaction.handler_type === 'news_time_scope' && isHuman) {
+      const { options, selected_option_index } =
+        interaction.content as ChatFollowUpContent
+
+      const timescopeText = `Timescope selected: ${options[selected_option_index].display_value}`
+      const prompt = createPromptInteraction(timescopeText)
+
+      return [prompt, interaction]
+    }
+    return [interaction]
+  })
+
+  return processedInteractions || []
 }

@@ -247,6 +247,7 @@ export type ChatFollowUpContentInput = {
 export type ChatFollowUpOption = {
   __typename?: 'ChatFollowUpOption'
   displayed_value: Scalars['String']['output']
+  display_value?: Scalars['String']['output']
   value: Scalars['String']['output']
 }
 

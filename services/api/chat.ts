@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { generateInteractionsInHistory } from '@helpers/components/message'
 import { Conversation, HistoryConversation } from '@type/internal/conversation'
 import { getRandomId } from '@utils/random'
 import dayjs from 'dayjs'
@@ -32,7 +33,10 @@ export const getUserChatHistory = async (
         messages: item.chat_history.map((message) => ({
           id: getRandomId(),
           role: message.role === 'human' ? 0 : 1,
-          interactions: message.interactions,
+          interactions: generateInteractionsInHistory(
+            message.interactions,
+            message.role === 'human'
+          ),
           createdAt: dayjs.utc(message.timestamp).toDate()
         }))
       }

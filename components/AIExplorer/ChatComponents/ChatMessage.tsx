@@ -195,7 +195,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           </div>
         </div>
       )}
-      {isUserMessage && parsedContent && (
+      {isUserMessage && (
         <div className='max-w-[800px] w-[80%] flex flex-col items-end gap-y-1'>
           <Text className='w-fit text-[16px] text-break-word rounded-[24px] px-6 py-[10px] bg-gray-32'>
             {parsedContent}
