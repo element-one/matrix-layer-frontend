@@ -994,7 +994,9 @@ const StakePage: NextPage = () => {
     isUnstakingMLPBoosted,
     isWaitingUnstakeMLPBoosted,
     isConfirmLoading,
-    setIsConfirmLoading
+    setIsConfirmLoading,
+    isUnstakingNFTBoosted,
+    isWaitingUnstakeNFTBoosted
   ])
 
   const {
