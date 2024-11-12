@@ -1260,8 +1260,8 @@ const StakePage: NextPage = () => {
             {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8 px-2
-              lg:p-0'
+            className='grid grid-cols-1 2xl:grid-cols-3 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8
+              px-2 lg:p-0'
           >
             <div className={clsx(cardClsx, GradientBorderClass)}>
               <Text
