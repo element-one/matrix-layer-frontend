@@ -328,45 +328,55 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
-    const phoneTokens = phoneStaked?.map((id) => {
-      return {
-        id,
-        name: 'Matrix Phone',
-        img: '/images/stake/phone.png'
-      }
-    })
+    const phoneTokens = phoneStaked
+      ? phoneStaked?.map((id) => {
+          return {
+            id,
+            name: 'Matrix Phone',
+            img: '/images/stake/phone.png'
+          }
+        })
+      : []
 
-    const matrixTokens = matrixStaked?.map((id) => {
-      return {
-        id,
-        name: 'Matrix',
-        img: '/images/stake/matrix.png'
-      }
-    })
+    const matrixTokens = matrixStaked
+      ? matrixStaked?.map((id) => {
+          return {
+            id,
+            name: 'Matrix',
+            img: '/images/stake/matrix.png'
+          }
+        })
+      : []
 
-    const agentOneTokens = agentOneStaked?.map((id) => {
-      return {
-        id,
-        name: 'AI Agent One',
-        img: '/images/stake/ai-agent-pro-02.png'
-      }
-    })
+    const agentOneTokens = agentOneStaked
+      ? agentOneStaked?.map((id) => {
+          return {
+            id,
+            name: 'AI Agent One',
+            img: '/images/stake/ai-agent-pro-02.png'
+          }
+        })
+      : []
 
-    const agentProTokens = agentProStaked?.map((id) => {
-      return {
-        id,
-        name: 'AI Agent Pro',
-        img: '/images/stake/ai-agent-pro.png'
-      }
-    })
+    const agentProTokens = agentProStaked
+      ? agentProStaked?.map((id) => {
+          return {
+            id,
+            name: 'AI Agent Pro',
+            img: '/images/stake/ai-agent-pro.png'
+          }
+        })
+      : []
 
-    const agentUltraTokens = agentUltraStaked?.map((id) => {
-      return {
-        id,
-        name: 'AI Agent Ultra',
-        img: '/images/stake/ai-agent-pro-03.png'
-      }
-    })
+    const agentUltraTokens = agentUltraStaked
+      ? agentUltraStaked?.map((id) => {
+          return {
+            id,
+            name: 'AI Agent Ultra',
+            img: '/images/stake/ai-agent-pro-03.png'
+          }
+        })
+      : []
 
     setStakedTokens([
       ...phoneTokens,
@@ -443,45 +453,55 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
-    const phoneTokens = phoneBalance?.map((id) => {
-      return {
-        id,
-        name: 'Matrix Phone',
-        img: '/images/stake/phone.png'
-      }
-    })
+    const phoneTokens = phoneBalance
+      ? phoneBalance?.map((id) => {
+          return {
+            id,
+            name: 'Matrix Phone',
+            img: '/images/stake/phone.png'
+          }
+        })
+      : []
 
-    const matrixTokens = matrixBalance?.map((id) => {
-      return {
-        id,
-        name: 'Matrix',
-        img: '/images/stake/matrix.png'
-      }
-    })
+    const matrixTokens = matrixBalance
+      ? matrixBalance?.map((id) => {
+          return {
+            id,
+            name: 'Matrix',
+            img: '/images/stake/matrix.png'
+          }
+        })
+      : []
 
-    const aiAgentOneTokens = aiAgentOneBalance?.map((id) => {
-      return {
-        id,
-        name: 'AI Agent One',
-        img: '/images/stake/ai-agent-pro-02.png'
-      }
-    })
+    const aiAgentOneTokens = aiAgentOneBalance
+      ? aiAgentOneBalance?.map((id) => {
+          return {
+            id,
+            name: 'AI Agent One',
+            img: '/images/stake/ai-agent-pro-02.png'
+          }
+        })
+      : []
 
-    const aiAgentProTokens = aiAgentProBalance?.map((id) => {
-      return {
-        id,
-        name: 'AI Agent Pro',
-        img: '/images/stake/ai-agent-pro.png'
-      }
-    })
+    const aiAgentProTokens = aiAgentProBalance
+      ? aiAgentProBalance?.map((id) => {
+          return {
+            id,
+            name: 'AI Agent Pro',
+            img: '/images/stake/ai-agent-pro.png'
+          }
+        })
+      : []
 
-    const aiAgentUltraTokens = aiAgentUltraBalance?.map((id) => {
-      return {
-        id,
-        name: 'AI Agent Ultra',
-        img: '/images/stake/ai-agent-pro-03.png'
-      }
-    })
+    const aiAgentUltraTokens = aiAgentUltraBalance
+      ? aiAgentUltraBalance?.map((id) => {
+          return {
+            id,
+            name: 'AI Agent Ultra',
+            img: '/images/stake/ai-agent-pro-03.png'
+          }
+        })
+      : []
 
     setTokenOwned([
       ...phoneTokens,
