@@ -14,7 +14,7 @@ import {
 } from '@nextui-org/react'
 import clsx from 'clsx'
 import { Address } from 'viem'
-import { useAccount, useReadContracts } from 'wagmi'
+import { useAccount, useReadContracts, useSignMessage } from 'wagmi'
 
 import NFT_ABI from '@abis/NFT.json'
 import PAYMENT_ABI from '@abis/Payment.json'
@@ -22,6 +22,7 @@ import STAKE_ABI from '@abis/Stake.json'
 import { Button } from '@components/Button'
 import { Container, Content, ImagesField } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
+import { Input } from '@components/Input'
 import Layout from '@components/Layout/Layout'
 import HoldingItem from '@components/MyAccount/HoldingItem'
 import { Text } from '@components/Text'
@@ -32,7 +33,8 @@ import {
   useConfirmDelivery,
   useGetPayments,
   useGetUser,
-  useGetUserHolding
+  useGetUserHolding,
+  usePatchReferralCode
 } from '@services/api'
 import { useStore } from '@store/store'
 import { formatUSDT } from '@utils/currency'
@@ -64,6 +66,8 @@ const MyAccount = () => {
   const { isConnected, address } = useAccount()
   const router = useRouter()
   const [page, setPage] = useState(1)
+  const [referralCode, setReferralCode] = useState('')
+  const { signMessage } = useSignMessage()
 
   const setHoldings = useStore((state) => state.setHoldings)
 
@@ -110,7 +114,9 @@ const MyAccount = () => {
       enabled: !!address
     }
   })
-  const { data: userData } = useGetUser(address, { enabled: !!address })
+  const { data: userData, refetch: refetchUserData } = useGetUser(address, {
+    enabled: !!address
+  })
 
   const { data: totalNfts } = useReadContracts({
     contracts: [
@@ -235,6 +241,40 @@ const MyAccount = () => {
     }
   )
 
+  const { mutate: patchReferralCode, isPending } = usePatchReferralCode(
+    referralCode ?? '',
+    {
+      onSuccess() {
+        refetchUserData()
+      },
+      onError(err) {
+        console.log('patch referral code error:', err)
+        toast.error('Invalid referral code')
+      }
+    }
+  )
+
+  const handleVerify = async () => {
+    if (!referralCode) {
+      return
+    }
+
+    signMessage(
+      {
+        message: `Referral Code: ${referralCode}`
+      },
+      {
+        onSuccess(data) {
+          patchReferralCode({ signature: data })
+        },
+        onError(err) {
+          console.log('sign error: ', err)
+          toast.error('signature error:' + (err as Error).message)
+        }
+      }
+    )
+  }
+
   useEffect(() => {
     setHoldings(userHolding || {})
   }, [userHolding, setHoldings])
@@ -321,7 +361,7 @@ const MyAccount = () => {
             {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 lg:grid-cols-2 gap-11 border-2 md:border-none rounded-[20px]
+            className='grid grid-cols-1 2xl:grid-cols-3 gap-11 border-2 md:border-none rounded-[20px]
               p-8 md:p-0'
           >
             <div
@@ -380,6 +420,73 @@ const MyAccount = () => {
                   <span className='md:inline hidden'> {t('copyLink')}</span>
                   <CopyIcon />
                 </Button>
+              </div>
+            </div>
+            <div
+              className={tn(`md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
+                ${gradientBorderClass}`)}
+            >
+              <Text
+                className='mb-0 md:mb-[11px] p-2 md:p-0 text-lg md:text-2xl font-semibold bg-clip-text
+                  text-transparent bg-gradient-text-1 flex justify-between items-center'
+              >
+                {t('inviteSystem')}
+
+                <span className='text-white text-[14px]'>
+                  {userData?.referrerReferralCode
+                    ? `${t('referrerInviteCode')}: ${userData?.referrerReferralCode}`
+                    : ''}
+                </span>
+              </Text>
+              <div
+                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
+                  justify-between md:gap-[62px]'
+              >
+                {!userData?.referredByUserAddress && (
+                  <>
+                    <Input
+                      placeholder={t('enterInviteCode')}
+                      wrapperClassName='w-[80%] -mt-2'
+                      inputClassName='border-[#282828] placeholder:text-[#666] !h-[32px] md:!h-[38px] !text-[16px] !outline-none !ring-0 bg-[#151515]'
+                      type='text'
+                      value={referralCode}
+                      onChange={(val) => setReferralCode(val)}
+                      id='inviteCode'
+                    />
+                    <Button
+                      size='sm'
+                      onClick={handleVerify}
+                      isLoading={isPending}
+                      disabled={!referralCode}
+                      className='rounded-full text-[12px] min-w-[90px] md:text-[14px] h-[32px]'
+                    >
+                      {t('verify')}
+                    </Button>
+                  </>
+                )}
+                {!!userData?.referredByUserAddress && (
+                  <>
+                    <div className='w-fit max-w-[70%] 2xl:max-w-[36%]'>
+                      <div>{t('referrerAddress')}</div>
+                      <Tooltip content={userData.referredByUserAddress}>
+                        <div className='min-w-0 text-[18px] font-semibold truncate'>
+                          {userData.referredByUserAddress}
+                        </div>
+                      </Tooltip>
+                    </div>
+                    <Button
+                      className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
+                        text-base font-semibold'
+                      variant='bordered'
+                      onClick={handleCopy(userData.referredByUserAddress)}
+                    >
+                      <span className='md:inline hidden'>
+                        {t('copyAddress')}
+                      </span>
+                      <CopyIcon />
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

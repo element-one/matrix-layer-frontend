@@ -1260,8 +1260,8 @@ const StakePage: NextPage = () => {
             {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 xl:grid-cols-3 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8 px-2
-              lg:p-0'
+            className='grid grid-cols-1 2xl:grid-cols-3 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8
+              px-2 lg:p-0'
           >
             <div className={clsx(cardClsx, GradientBorderClass)}>
               <Text
@@ -1356,10 +1356,10 @@ const StakePage: NextPage = () => {
                 )}
                 {!!userData?.referredByUserAddress && (
                   <>
-                    <div className='w-fit'>
+                    <div className='w-fit max-w-[70%] 2xl:max-w-[36%]'>
                       <div>{t('referrerAddress')}</div>
                       <Tooltip content={userData.referredByUserAddress}>
-                        <div className='min-w-0 text-[18px] max-w-[140px] font-semibold truncate'>
+                        <div className='min-w-0 text-[18px] font-semibold truncate'>
                           {userData.referredByUserAddress}
                         </div>
                       </Tooltip>

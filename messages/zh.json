@@ -188,7 +188,14 @@
     "item": "产品",
     "rewardDetails": "奖励明细",
     "submitAddress": "提交地址",
-    "confirmReceipt": "确认收货"
+    "inviteCode": "邀请码",
+    "confirmReceipt": "确认收货",
+    "inviteSystem": "邀请系统",
+    "referrerInviteCode": "推荐人邀请码",
+    "referrerAddress": "推荐人地址",
+    "verify": "验证",
+    "enterInviteCode": "输入推荐人邀请码",
+    "copyAddress": "复制地址"
   },
   "Checkout": {
     "checkout": "结算",
