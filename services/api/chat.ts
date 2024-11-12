@@ -17,7 +17,7 @@ export interface ApiChatHistoryData {
 export const getUserChatHistory = async (
   address: string
 ): Promise<Conversation[]> => {
-  const url = `/get_conversations`
+  const url = `/get_conversations_interactions`
   const { data } = await axios.post<ApiChatHistoryData>(url, {
     user_id: address
   })
@@ -32,9 +32,8 @@ export const getUserChatHistory = async (
         messages: item.chat_history.map((message) => ({
           id: getRandomId(),
           role: message.role === 'human' ? 0 : 1,
-          content: message.content,
-          createdAt: dayjs.utc(message.timestamp).toDate(),
-          interactions: []
+          interactions: message.interactions,
+          createdAt: dayjs.utc(message.timestamp).toDate()
         }))
       }
     })
@@ -58,7 +57,7 @@ interface DeleteConversationParams {
 }
 
 export const deleteConversations = async (params: DeleteConversationParams) => {
-  return await axios.post('/remove_conversations', params)
+  return await axios.post('/remove_conversations_interactions', params)
 }
 
 export const useDeleteConversations = () => {
