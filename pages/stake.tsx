@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useTranslations } from 'next-intl'
+import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import {
   Table,
   TableBody,
@@ -14,7 +15,7 @@ import {
 } from '@nextui-org/react'
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { Address } from 'viem'
+import { Address, parseUnits } from 'viem'
 import {
   useAccount,
   useReadContract,
@@ -24,9 +25,11 @@ import {
   useWriteContract
 } from 'wagmi'
 
+import ERC20_ABI from '@abis/ERC20.json'
 import NFT_ABI from '@abis/NFT.json'
 import PAYMENT_ABI from '@abis/Payment.json'
 import STAKE_ABI from '@abis/Stake.json'
+import STAKE_B_ABI from '@abis/StakeB.json'
 import { Button } from '@components/Button'
 import { Container, Content } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
@@ -49,8 +52,15 @@ import {
   useGetUserRewardsSummary,
   usePatchReferralCode
 } from '@services/api'
+import {
+  getUserWithdrawMlpToken,
+  useGetUserStakingList,
+  UserStakingListItem
+} from '@services/api/pool'
 import { formatCurrency, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
+import BigNumber from 'bignumber.js'
+import dayjs from 'dayjs'
 import { serializeError } from 'eth-rpc-errors'
 
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
@@ -60,6 +70,7 @@ const GradientBorderClass =
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
+const STAKE_B_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B_ADDRESS as Address
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS as Address
 const MATRIX_ADDRESS = process.env.NEXT_PUBLIC_MATRIX_ADDRESS as Address
 const AI_AGENT_PRO_ADDRESS = process.env
@@ -72,89 +83,16 @@ const PHONE_ADDRESS = process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address
 const POOL_B_ENABLE = process.env.NEXT_PUBLIC_POOL_B_ENABLE === 'true'
 const POOL_C_ENABLE = process.env.NEXT_PUBLIC_POOL_C_ENABLE === 'true'
 
+enum StakeType {
+  FreeWithdraw = 0, // Unchecked
+  FullLocked = 1 // Checked
+}
+
 interface StakeToken {
   id: number
   name: string
   img: string
 }
-
-const mock_details = [
-  {
-    id: 0,
-    date: '9.12.2024',
-    period: '30',
-    tokens: 5000,
-    income: 123.85,
-    status: 1,
-    action: 'withdraw'
-  },
-  {
-    id: 0,
-    date: '9.12.2024',
-    period: '30',
-    tokens: 5000,
-    income: 123.85,
-    status: 0,
-    action: 'withdrawn'
-  },
-  {
-    id: 0,
-    date: '9.12.2024',
-    period: '30',
-    tokens: 5000,
-    income: 123.85,
-    status: 1,
-    action: 'withdraw'
-  },
-  {
-    id: 0,
-    date: '9.12.2024',
-    period: '30',
-    tokens: 5000,
-    income: 123.85,
-    status: 0,
-    action: 'withdrawn'
-  }
-]
-
-const NFT_POOL_MOCK_DETAILS = [
-  {
-    id: 0,
-    date: '11.05.24',
-    amount: 5000,
-    income: 123.85,
-    unstakeDate: '-',
-    action: 'withdraw',
-    status: 1
-  },
-  {
-    id: 1,
-    date: '9.12.2024',
-    amount: 5000,
-    income: 320.0,
-    unstakeDate: '-',
-    action: 'withdraw',
-    status: 1
-  },
-  {
-    id: 2,
-    date: '7.25.2024',
-    amount: 5000,
-    income: 999.22,
-    unstakeDate: '-',
-    action: 'withdraw',
-    status: 1
-  },
-  {
-    id: 3,
-    date: '7.20.2024',
-    amount: 5000,
-    income: '84.41',
-    unstakeDate: '8.21.2024',
-    action: 'withdrawn',
-    status: 0
-  }
-]
 
 const StakePage: NextPage = () => {
   const t = useTranslations('Stake')
@@ -165,6 +103,7 @@ const StakePage: NextPage = () => {
     onClose: onCloseChangeStakeConfirm
   } = useDisclosure()
 
+  const { isConfirmLoading, setIsConfirmLoading } = useModal()
   const [stakeType, setStakeType] = useState<StakeTypeEnum | null>(null)
 
   const [tokenOwned, setTokenOwned] = useState<StakeToken[]>([])
@@ -187,8 +126,157 @@ const StakePage: NextPage = () => {
   const [isShowDetails, setIsShowDetails] = useState(false)
   const [isShowNFTDetails, setIsShowNFTDetails] = useState(false)
 
-  const handleWithdrawClick = () => {
-    showModal(ModalType.WITHDRAW_MODAL)
+  const stakingAmountRef = useRef<string | null>(null)
+  const stakingPoolBMLPAmountRef = useRef<{
+    amount: string
+    stakeDay: string
+    stakeType: StakeType
+  } | null>(null)
+
+  const handleWithdrawNFTBoostedClick = (options: {
+    stakeId: string
+    stakedTokenAmount: string
+    rewardAmount: string
+  }) => {
+    showModal(ModalType.WITHDRAW_MODAL, {
+      content: (
+        <div className='text-[14px] md:text-[18px] text-gray-a5'>
+          <div className='mb-4'>
+            {t.rich('withdrawDesc', {
+              text1: (chunks) => <span className='text-white'>{chunks}</span>,
+              amount: formatCurrency(options.stakedTokenAmount)
+            })}
+          </div>
+          <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
+            <span className=''>
+              {formatCurrency(options.rewardAmount)} $MLP
+            </span>
+            <span className='text-2xl'>=</span>
+            <div>
+              {formatCurrency(
+                new BigNumber(options.stakedTokenAmount)
+                  .plus(options.rewardAmount)
+                  .toString()
+              )}{' '}
+              $MLP <span className='text-[18px]'>in total</span>
+            </div>
+          </div>
+          <div className='text-[14px] md:text-[18px] text-gray-150'>
+            {t('doYouContinue')}
+          </div>
+        </div>
+      ),
+      onConfirm: () => {
+        unstakeNFTBoosted(
+          {
+            address: STAKE_B_ADDRESS,
+            abi: STAKE_B_ABI,
+            functionName: 'unstakeNFTBoosted',
+            args: [options.stakeId]
+          },
+          {
+            onError(err) {
+              console.log('unstake nft boosted error: ', err)
+            }
+          }
+        )
+      }
+    })
+  }
+  const handleWithdrawMLPBoostedClick = async (item: UserStakingListItem) => {
+    if (!address) return
+    const isExpired = dayjs(item.endStakingAt).isBefore(dayjs())
+
+    if (item.type === 0 && !isExpired) {
+      const res = await getUserWithdrawMlpToken(address, Number(item.stakeId))
+      showModal(ModalType.WITHDRAW_MODAL, {
+        content: (
+          <div className='text-[14px] md:text-[18px] text-gray-a5'>
+            <div className='mb-4'>{t('warnContent')}</div>
+            <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4'>
+              <span className='line-through'>
+                {formatCurrency(res.expectedRewardAmount)}
+              </span>
+              <ArrowRightIcon className='size-6' />
+              <span>{formatCurrency(res.actualRewardAmount)}</span>
+            </div>
+            <div className='text-[14px] md:text-[18px] text-gray-150'>
+              {t('doYouContinue')}
+            </div>
+          </div>
+        ),
+        onConfirm: () => {
+          unstakeMLPBoosted({
+            address: STAKE_B_ADDRESS,
+            abi: STAKE_B_ABI,
+            functionName: 'unstakeMLPBoosted',
+            args: [item.stakeId]
+          })
+        }
+      })
+    } else {
+      const options = {
+        stakedTokenAmount: item.stakedTokenAmount,
+        rewardAmount: item.estimatedRewardAmount
+      }
+      showModal(ModalType.WITHDRAW_MODAL, {
+        content: (
+          <div className='text-[14px] md:text-[18px] text-gray-a5'>
+            <div className='mb-4'>
+              {t.rich('withdrawDesc', {
+                text1: (chunks) => <span className='text-white'>{chunks}</span>,
+                amount: formatCurrency(options.stakedTokenAmount)
+              })}
+            </div>
+            <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
+              <span className=''>
+                {formatCurrency(options.rewardAmount)} $MLP
+              </span>
+              <span className='text-2xl'>=</span>
+              <div>
+                {formatCurrency(
+                  new BigNumber(options.stakedTokenAmount)
+                    .plus(options.rewardAmount)
+                    .toString()
+                )}{' '}
+                $MLP <span className='text-[18px]'>in total</span>
+              </div>
+            </div>
+            <div className='text-[14px] md:text-[18px] text-gray-150'>
+              {t('doYouContinue')}
+            </div>
+          </div>
+        ),
+        onConfirm: () => {
+          unstakeMLPBoosted(
+            {
+              address: STAKE_B_ADDRESS,
+              abi: STAKE_B_ABI,
+              functionName: 'unstakeNFTBoosted',
+              args: [item.stakeId]
+            },
+            {
+              onError(err) {
+                console.log('unstake mlp boosted error: ', err)
+              }
+            }
+          )
+        }
+      })
+    }
+  }
+  const handleWithdrawDetailModal = (item: {
+    withdrawDate: string
+    stakedAmount: string
+    rewards: string
+    transactionHash: string
+  }) => {
+    showModal(ModalType.WITHDRAW_DETAIL_MODAL, {
+      withdrawDate: item.withdrawDate,
+      stakedAmount: item.stakedAmount,
+      rewards: item.rewards,
+      transactionHash: item.transactionHash
+    })
   }
 
   const handleHistoryModalClose = () => {
@@ -217,16 +305,70 @@ const StakePage: NextPage = () => {
 
   const handleOpenAccelerationPoolModal = () => {
     showModal(ModalType.ACCELERATE_POOL_MODAL, {
-      onConfirm: () => {
-        hideModal()
+      onConfirm: (options: {
+        amount: string
+        stakeDay: string
+        stakeType: boolean
+      }) => {
+        stakingPoolBMLPAmountRef.current = {
+          amount: options.amount,
+          stakeDay: String(Number(options.stakeDay) * 24 * 60 * 60),
+          stakeType: options.stakeType
+            ? StakeType.FullLocked
+            : StakeType.FreeWithdraw
+        }
+        const amount = parseUnits(options.amount, mlpTokenDecimals as number)
+
+        if (!minStakeBAmount || amount < (minStakeBAmount as bigint)) {
+          toast.error('Amount is less than minimum stake amount')
+          return
+        }
+
+        approvePoolBMLP({
+          address: mlpTokenAddress as Address,
+          abi: ERC20_ABI,
+          functionName: 'approve',
+          args: [STAKE_B_ADDRESS, amount]
+        })
       }
     })
   }
 
+  const { data: mlpTokenAddress } = useReadContract({
+    address: STAKE_B_ADDRESS,
+    abi: STAKE_B_ABI,
+    functionName: 'mlpToken',
+    args: []
+  })
+  const { data: mlpTokenDecimals } = useReadContract({
+    address: mlpTokenAddress as Address,
+    abi: ERC20_ABI,
+    functionName: 'decimals',
+    args: []
+  })
+  const { data: minStakeBAmount } = useReadContract({
+    address: STAKE_B_ADDRESS,
+    abi: STAKE_B_ABI,
+    functionName: 'minimumStakeAmount',
+    args: []
+  })
+
   const handleOpenAccelerationNFTPoolModal = () => {
     showModal(ModalType.ACCELERATE_NFT_POOL_MODAL, {
-      onConfirm: () => {
-        hideModal()
+      onConfirm: (options: { amount: string }) => {
+        stakingAmountRef.current = options.amount
+        const amount = parseUnits(options.amount, mlpTokenDecimals as number)
+        if (!minStakeBAmount || amount < (minStakeBAmount as bigint)) {
+          toast.error('Amount is less than minimum stake amount')
+          return
+        }
+
+        approvePoolBNFT({
+          address: mlpTokenAddress as Address,
+          abi: ERC20_ABI,
+          functionName: 'approve',
+          args: [STAKE_B_ADDRESS, amount]
+        })
       }
     })
   }
@@ -399,6 +541,18 @@ const StakePage: NextPage = () => {
 
   const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
     useGetUserRewardsSummary(address)
+  const { data: poolB1StakingList, refetch: refetchPoolB1StakingList } =
+    useGetUserStakingList({
+      address: address as Address,
+      type: 'pool_b1'
+    })
+  const { data: poolB2StakingList, refetch: refetchPoolB2StakingList } =
+    useGetUserStakingList({
+      address: address as Address,
+      type: 'pool_b2'
+    })
+
+  console.log('userRewardsSummary', userRewardsSummary)
 
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
@@ -555,6 +709,295 @@ const StakePage: NextPage = () => {
     writeContract: approveStake,
     isPending: isApprovingStake
   } = useWriteContract()
+
+  /** pool b nft */
+  const {
+    data: approvePoolBNFTData,
+    writeContract: approvePoolBNFT,
+    isPending: isApprovingPoolBNFT
+  } = useWriteContract()
+  useEffect(() => {
+    console.log('approvePoolBNFTData', approvePoolBNFTData, isApprovingPoolBNFT)
+  }, [approvePoolBNFTData, isApprovingPoolBNFT])
+
+  const { data: approvePoolBNFTReceipt, isLoading: isWaitingApprovePoolBNFT } =
+    useWaitForTransactionReceipt({
+      hash: approvePoolBNFTData
+    })
+  useEffect(() => {
+    console.log(
+      'approvePoolBNFTReceipt',
+      approvePoolBNFTReceipt,
+      isWaitingApprovePoolBNFT
+    )
+  }, [approvePoolBNFTReceipt, isWaitingApprovePoolBNFT])
+
+  const {
+    data: stakePoolBNFTData,
+    writeContract: stakePoolBNFT,
+    isPending: isStakingPoolBNFT
+  } = useWriteContract()
+  useEffect(() => {
+    console.log('stakePoolBNFTData', stakePoolBNFTData, isStakingPoolBNFT)
+  }, [stakePoolBNFTData, isStakingPoolBNFT])
+
+  useEffect(() => {
+    if (approvePoolBNFTReceipt && stakingAmountRef.current) {
+      const amount = parseUnits(
+        stakingAmountRef.current,
+        mlpTokenDecimals as number
+      )
+
+      stakePoolBNFT(
+        {
+          address: STAKE_B_ADDRESS,
+          abi: STAKE_B_ABI,
+          functionName: 'stakeNFTBoosted',
+          args: [amount]
+        },
+        {
+          onError: (error) => {
+            console.error('Error staking to Pool B:', error)
+          }
+        }
+      )
+    }
+  }, [approvePoolBNFTReceipt, mlpTokenDecimals, stakePoolBNFT])
+
+  const { data: stakePoolBNFTReceipt, isLoading: isWaitingStakePoolBNFT } =
+    useWaitForTransactionReceipt({
+      hash: stakePoolBNFTData
+    })
+  console.log(
+    'stakePoolBNFTReceipt',
+    stakePoolBNFTReceipt,
+    isWaitingStakePoolBNFT
+  )
+
+  useEffect(() => {
+    if (stakePoolBNFTReceipt) {
+      stakingAmountRef.current = null
+      refetchUserRewardsSummary()
+      refetchPoolB1StakingList()
+      hideModal()
+    }
+  }, [
+    stakePoolBNFTReceipt,
+    refetchUserRewardsSummary,
+    hideModal,
+    refetchPoolB1StakingList
+  ])
+
+  useEffect(() => {
+    const isStakePoolBNFTLoading =
+      isStakingPoolBNFT ||
+      isWaitingStakePoolBNFT ||
+      isApprovingPoolBNFT ||
+      isWaitingApprovePoolBNFT
+    if (
+      isStakePoolBNFTLoading !==
+      isConfirmLoading?.[ModalType.ACCELERATE_NFT_POOL_MODAL]
+    ) {
+      setIsConfirmLoading(
+        ModalType.ACCELERATE_NFT_POOL_MODAL,
+        isStakePoolBNFTLoading
+      )
+    }
+  }, [
+    isApprovingPoolBNFT,
+    isConfirmLoading,
+    isStakingPoolBNFT,
+    isWaitingApprovePoolBNFT,
+    isWaitingStakePoolBNFT,
+    setIsConfirmLoading
+  ])
+
+  /** pool a mlp */
+  const {
+    data: approvePoolBMLPData,
+    writeContract: approvePoolBMLP,
+    isPending: isApprovingPoolBMLP
+  } = useWriteContract()
+
+  useEffect(() => {
+    console.log('approvePoolBMLPData', approvePoolBMLPData, isApprovingPoolBMLP)
+  }, [approvePoolBMLPData, isApprovingPoolBMLP])
+
+  const { data: approvePoolBMLPReceipt, isLoading: isWaitingApprovePoolBMLP } =
+    useWaitForTransactionReceipt({
+      hash: approvePoolBMLPData
+    })
+
+  useEffect(() => {
+    console.log(
+      'approvePoolBMLPReceipt',
+      approvePoolBMLPReceipt,
+      isWaitingApprovePoolBMLP
+    )
+  }, [approvePoolBMLPReceipt, isWaitingApprovePoolBMLP])
+
+  const {
+    data: stakePoolBMLPData,
+    writeContract: stakePoolBMLP,
+    isPending: isStakingPoolBMLP
+  } = useWriteContract()
+
+  useEffect(() => {
+    console.log('stakePoolBMLPData', stakePoolBMLPData, isStakingPoolBMLP)
+  }, [stakePoolBMLPData, isStakingPoolBMLP])
+
+  // Add effect to handle Pool B MLP staking after approval
+  useEffect(() => {
+    if (approvePoolBMLPReceipt && stakingPoolBMLPAmountRef.current) {
+      const amount = parseUnits(
+        stakingPoolBMLPAmountRef.current.amount,
+        mlpTokenDecimals as number
+      )
+
+      stakePoolBMLP(
+        {
+          address: STAKE_B_ADDRESS,
+          abi: STAKE_B_ABI,
+          functionName: 'stakeMlpBoosted',
+          args: [
+            amount,
+            stakingPoolBMLPAmountRef.current.stakeDay,
+            stakingPoolBMLPAmountRef.current.stakeType
+          ]
+        },
+        {
+          onError: (error) => {
+            console.error('Error staking MLP to Pool B:', error)
+          }
+        }
+      )
+    }
+  }, [approvePoolBMLPReceipt, mlpTokenDecimals, stakePoolBMLP])
+
+  const { data: stakePoolBMLPReceipt, isLoading: isWaitingStakePoolBMLP } =
+    useWaitForTransactionReceipt({
+      hash: stakePoolBMLPData
+    })
+  useEffect(() => {
+    console.log(
+      'stakePoolBMLPReceipt',
+      stakePoolBMLPReceipt,
+      isWaitingStakePoolBMLP
+    )
+  }, [stakePoolBMLPReceipt, isWaitingStakePoolBMLP])
+
+  useEffect(() => {
+    if (stakePoolBMLPReceipt) {
+      stakingPoolBMLPAmountRef.current = null
+      refetchUserRewardsSummary()
+      refetchPoolB2StakingList()
+      hideModal()
+    }
+  }, [
+    stakePoolBMLPReceipt,
+    refetchUserRewardsSummary,
+    hideModal,
+    refetchPoolB2StakingList
+  ])
+
+  // Effect to update loading state for MLP Pool acceleration modal
+  useEffect(() => {
+    const isStakePoolBMLPLoading =
+      isStakingPoolBMLP ||
+      isWaitingStakePoolBMLP ||
+      isApprovingPoolBMLP ||
+      isWaitingApprovePoolBMLP
+    if (
+      isStakePoolBMLPLoading !==
+      isConfirmLoading?.[ModalType.ACCELERATE_POOL_MODAL]
+    ) {
+      setIsConfirmLoading(
+        ModalType.ACCELERATE_POOL_MODAL,
+        isStakePoolBMLPLoading
+      )
+    }
+  }, [
+    isApprovingPoolBMLP,
+    isConfirmLoading,
+    isStakingPoolBMLP,
+    isWaitingApprovePoolBMLP,
+    isWaitingStakePoolBMLP,
+    setIsConfirmLoading
+  ])
+
+  /** unstake nft boosted */
+  const {
+    data: unstakeNFTBoostedHash,
+    writeContract: unstakeNFTBoosted,
+    isPending: isUnstakingNFTBoosted
+  } = useWriteContract()
+  const {
+    data: unstakeNFTBoostedReceipt,
+    isLoading: isWaitingUnstakeNFTBoosted
+  } = useWaitForTransactionReceipt({
+    hash: unstakeNFTBoostedHash
+  })
+
+  useEffect(() => {
+    if (unstakeNFTBoostedReceipt && !isWaitingUnstakeNFTBoosted) {
+      refetchUserRewardsSummary()
+      refetchPoolB1StakingList()
+      hideModal()
+    }
+  }, [
+    unstakeNFTBoostedReceipt,
+    isWaitingUnstakeNFTBoosted,
+    refetchUserRewardsSummary,
+    hideModal,
+    refetchPoolB1StakingList
+  ])
+
+  /** unstake mlp boosted */
+  const {
+    data: unstakeMLPBoostedHash,
+    writeContract: unstakeMLPBoosted,
+    isPending: isUnstakingMLPBoosted
+  } = useWriteContract()
+  const {
+    data: unstakeMLPBoostedReceipt,
+    isLoading: isWaitingUnstakeMLPBoosted
+  } = useWaitForTransactionReceipt({
+    hash: unstakeMLPBoostedHash
+  })
+
+  useEffect(() => {
+    if (unstakeMLPBoostedReceipt && !isWaitingUnstakeMLPBoosted) {
+      refetchUserRewardsSummary()
+      refetchPoolB2StakingList()
+      hideModal()
+    }
+  }, [
+    unstakeMLPBoostedReceipt,
+    isWaitingUnstakeMLPBoosted,
+    refetchUserRewardsSummary,
+    hideModal,
+    refetchPoolB2StakingList
+  ])
+
+  useEffect(() => {
+    const isUnstakeBoostedLoading =
+      isUnstakingMLPBoosted ||
+      isWaitingUnstakeMLPBoosted ||
+      isUnstakingNFTBoosted ||
+      isWaitingUnstakeNFTBoosted
+    if (
+      isUnstakeBoostedLoading !== isConfirmLoading?.[ModalType.WITHDRAW_MODAL]
+    ) {
+      setIsConfirmLoading(ModalType.WITHDRAW_MODAL, isUnstakeBoostedLoading)
+    }
+  }, [
+    isUnstakingMLPBoosted,
+    isWaitingUnstakeMLPBoosted,
+    isConfirmLoading,
+    setIsConfirmLoading,
+    isUnstakingNFTBoosted,
+    isWaitingUnstakeNFTBoosted
+  ])
 
   const {
     data: rewardMLPHash,
@@ -819,8 +1262,8 @@ const StakePage: NextPage = () => {
             {t('myAccount')}
           </Text>
           <div
-            className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8 px-2
-              lg:p-0'
+            className='grid grid-cols-1 2xl:grid-cols-3 gap-4 md:gap-11 rounded-[20px] py-2 lg:py-8
+              px-2 lg:p-0'
           >
             <div className={clsx(cardClsx, GradientBorderClass)}>
               <Text
@@ -874,35 +1317,70 @@ const StakePage: NextPage = () => {
                 </Button>
               </div>
             </div>
-          </div>
+            <div className={clsx(cardClsx, GradientBorderClass)}>
+              <Text
+                className='mb-0 md:mb-[11px] p-2 md:p-0 text-lg md:text-2xl font-semibold bg-clip-text
+                  text-transparent bg-gradient-text-1 flex justify-between items-center'
+              >
+                {t('inviteSystem')}
 
-          <div className='flex items-center justify-end w-full md:mt-2'>
-            {!userData?.referredByUserAddress && (
-              <div className='w-full md:w-[50%] flex items-center justify-between pl-2 pr-2 md:pl-10 md:pr-4'>
-                <Input
-                  placeholder={t('enterInviteCode')}
-                  wrapperClassName='w-[80%] md:w-[70%]'
-                  inputClassName='border-[#282828] placeholder:text-[#666] !h-[32px] md:!h-[38px] !text-[14px] !outline-none !ring-0 bg-[#151515]'
-                  type='text'
-                  value={referralCode}
-                  onChange={(val) => setReferralCode(val)}
-                  id='inviteCode'
-                />
-                <Button
-                  onClick={handleVerify}
-                  isLoading={isPending}
-                  disabled={!referralCode}
-                  className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[40px] ml-10'
-                >
-                  {t('verifyLink')}
-                </Button>
+                <span className='text-white text-[14px]'>
+                  {userData?.referrerReferralCode
+                    ? `${t('referrerInviteCode')}: ${userData?.referrerReferralCode}`
+                    : ''}
+                </span>
+              </Text>
+              <div
+                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
+                  justify-between md:gap-[62px]'
+              >
+                {!userData?.referredByUserAddress && (
+                  <>
+                    <Input
+                      placeholder={t('enterInviteCode')}
+                      wrapperClassName='w-[80%] -mt-2'
+                      inputClassName='border-[#282828] placeholder:text-[#666] !h-[32px] md:!h-[38px] !text-[16px] !outline-none !ring-0 bg-[#151515]'
+                      type='text'
+                      value={referralCode}
+                      onChange={(val) => setReferralCode(val)}
+                      id='inviteCode'
+                    />
+                    <Button
+                      size='sm'
+                      onClick={handleVerify}
+                      isLoading={isPending}
+                      disabled={!referralCode}
+                      className='rounded-full text-[12px] min-w-[90px] md:text-[14px] h-[32px]'
+                    >
+                      {t('verify')}
+                    </Button>
+                  </>
+                )}
+                {!!userData?.referredByUserAddress && (
+                  <>
+                    <div className='w-fit max-w-[70%] 2xl:max-w-[36%]'>
+                      <div>{t('referrerAddress')}</div>
+                      <Tooltip content={userData.referredByUserAddress}>
+                        <div className='min-w-0 text-[18px] font-semibold truncate'>
+                          {userData.referredByUserAddress}
+                        </div>
+                      </Tooltip>
+                    </div>
+                    <Button
+                      className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
+                        text-base font-semibold'
+                      variant='bordered'
+                      onClick={handleCopy(userData.referredByUserAddress)}
+                    >
+                      <span className='md:inline hidden'>
+                        {t('copyAddress')}
+                      </span>
+                      <CopyIcon />
+                    </Button>
+                  </>
+                )}
               </div>
-            )}
-            {!!userData?.referredByUserAddress && (
-              <span className='pr-4 opacity-60 text-[12px] md:text-[16px]'>
-                {userData.referredByUserAddress}
-              </span>
-            )}
+            </div>
           </div>
         </Content>
       </Container>
@@ -1687,8 +2165,8 @@ const StakePage: NextPage = () => {
                   GradientTextClass
                 )}
               >
-                {t('AccelerationPool.title')}
-                <Tooltip
+                {t('BalancePool.title')}
+                {/* <Tooltip
                   placement='bottom'
                   className='bg-co-bg-black'
                   content={
@@ -1700,14 +2178,17 @@ const StakePage: NextPage = () => {
                   <span className='absolute right-0 md:relative'>
                     <InfoIcon />
                   </span>
-                </Tooltip>
+                </Tooltip> */}
               </Text>
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
-                  <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
-                    $2,345.89 USDT
+                  <span className='font-bold text-[16px] text-gray-a5 underline'>
+                    {t('BalancePool.DailyRewardHistory')}
                   </span>
-                  <div
+                  {/* <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
+                    $2,345.89 USDT
+                  </span> */}
+                  {/* <div
                     className={clsx(
                       'flex rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
                       GradientBorderClass
@@ -1715,7 +2196,7 @@ const StakePage: NextPage = () => {
                   >
                     <span className='text-gray-a5'>$MLP {t('amount')}</span>
                     <span>0.00</span>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>
@@ -1753,7 +2234,14 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
                     {t('yesterdayStakingRewards')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00 MLP</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.yesterdayPoolB1Rewards
+                      ? formatCurrency(
+                          userRewardsSummary?.yesterdayPoolB1Rewards
+                        )
+                      : '0.00'}{' '}
+                    MLP
+                  </div>
                 </div>
                 <div
                   className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1762,7 +2250,11 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('acceleratedMLP')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.poolB1StakingAmount
+                      ? formatCurrency(userRewardsSummary?.poolB1StakingAmount)
+                      : '0.00'}
+                  </div>
                 </div>
                 <div
                   className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1771,7 +2263,9 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('holdingNFT')}
                   </span>
-                  <div className='text-[18px] font-bold'>0</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.userHoldingCount}
+                  </div>
                 </div>
                 <div
                   className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1780,7 +2274,11 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('totalMLPRewards')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.poolB1TotalRewards
+                      ? formatCurrency(userRewardsSummary?.poolB1TotalRewards)
+                      : '0.00'}
+                  </div>
                 </div>
               </div>
             )}
@@ -1808,43 +2306,73 @@ const StakePage: NextPage = () => {
                       {t('cumulativeIncome')}
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('unstakedDate')}
-                    </TableColumn>
-                    <TableColumn className='text-[14px] md:text-[16px]'>
                       {t('action')}
                     </TableColumn>
                   </TableHeader>
                   <TableBody>
-                    {NFT_POOL_MOCK_DETAILS.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.date}
-                        </TableCell>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.amount}
-                        </TableCell>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.income}
-                        </TableCell>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.unstakeDate}
-                        </TableCell>
-                        <TableCell className='text-gray-150'>
-                          <Button
-                            isDisabled={!item.status}
-                            className={twMerge(
-                              clsx(
-                                'rounded-full text-[12px] h-8 w-[152px] font-bold',
-                                !item.status && 'bg-co-gray-7 text-white'
-                              )
-                            )}
-                            onClick={handleWithdrawClick}
-                          >
-                            {t(item.action as any)}
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {!!poolB1StakingList?.data?.length
+                      ? poolB1StakingList?.data?.map((item) => (
+                          <TableRow key={item.id}>
+                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                              {dayjs(item.createdAt).format('YYYY.M.D')}
+                            </TableCell>
+                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                              {formatCurrency(item.stakedTokenAmount)}
+                            </TableCell>
+                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                              {formatCurrency(item.rewardAmount)}
+                            </TableCell>
+                            <TableCell className='text-gray-150'>
+                              {item.isActive ? (
+                                <Button
+                                  isDisabled={!item.isActive}
+                                  className={twMerge(
+                                    clsx(
+                                      'rounded-full text-[12px] h-8 w-[152px] font-bold',
+                                      !item.isActive &&
+                                        'bg-co-gray-7 text-white'
+                                    )
+                                  )}
+                                  onClick={() =>
+                                    handleWithdrawNFTBoostedClick({
+                                      stakeId: `${item.stakeId}`,
+                                      stakedTokenAmount: item.stakedTokenAmount,
+                                      rewardAmount: item.rewardAmount
+                                    })
+                                  }
+                                >
+                                  {t('withdraw')}
+                                </Button>
+                              ) : (
+                                <button
+                                  className={twMerge(
+                                    clsx(
+                                      'bg-transparent underline text-white font-bold'
+                                    )
+                                  )}
+                                  onClick={() =>
+                                    handleWithdrawDetailModal({
+                                      withdrawDate: dayjs(
+                                        item.cancelStakingAt
+                                      ).format('DD/MM/YYYY'),
+                                      stakedAmount: formatCurrency(
+                                        item.stakedTokenAmount
+                                      ),
+                                      rewards: formatCurrency(
+                                        item.rewardAmount
+                                      ),
+                                      transactionHash:
+                                        item.cancelStakingTransactionHash ?? ''
+                                    })
+                                  }
+                                >
+                                  {t('withdraw')}
+                                </button>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      : []}
                   </TableBody>
                 </Table>
               )}
@@ -1898,7 +2426,14 @@ const StakePage: NextPage = () => {
                     <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                       {t('yesterdayStakingRewards')}
                     </span>
-                    <div className='text-[18px] font-bold'>0.00 MLP</div>
+                    <div className='text-[18px] font-bold'>
+                      {userRewardsSummary?.yesterdayPoolB2Rewards
+                        ? formatCurrency(
+                            userRewardsSummary?.yesterdayPoolB2Rewards
+                          )
+                        : '0.00'}{' '}
+                      MLP
+                    </div>
                   </div>
                   <div
                     className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
@@ -1907,7 +2442,13 @@ const StakePage: NextPage = () => {
                     <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                       {t('acceleratedMLP')}
                     </span>
-                    <div className='text-[18px] font-bold'>0.00</div>
+                    <div className='text-[18px] font-bold'>
+                      {userRewardsSummary?.poolB2StakingAmount
+                        ? formatCurrency(
+                            userRewardsSummary?.poolB2StakingAmount
+                          )
+                        : '0.00'}
+                    </div>
                   </div>
                 </div>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8'>
@@ -1919,7 +2460,11 @@ const StakePage: NextPage = () => {
                     <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                       {t('TotalMLPRewards')}
                     </span>
-                    <div className='text-[18px] font-bold'>0.00</div>
+                    <div className='text-[18px] font-bold'>
+                      {userRewardsSummary?.poolB2TotalRewards
+                        ? formatCurrency(userRewardsSummary?.poolB2TotalRewards)
+                        : '0.00'}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1958,47 +2503,84 @@ const StakePage: NextPage = () => {
                     </TableColumn>
                   </TableHeader>
                   <TableBody>
-                    {mock_details.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.date}
-                        </TableCell>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.period}
-                        </TableCell>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.tokens}
-                        </TableCell>
-                        <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                          {item.income}
-                        </TableCell>
-                        <TableCell>
-                          <span
-                            className={clsx(
-                              `w-[74px] h-[30px] rounded-[24px] flex items-center justify-center border
-                                font-bold text-[14px] md:text-[16px] mx-auto`,
-                              statusClass(item.status)
+                    {poolB2StakingList?.data.map((item) => {
+                      const isReinvestment = item.type === 1
+                      const isExpired = dayjs(item.endStakingAt).isBefore(
+                        dayjs()
+                      )
+                      const isCanWithdraw =
+                        item.type === 0 || (item.type === 1 && isExpired)
+                      return (
+                        <TableRow key={item.id}>
+                          <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                            {dayjs(item.startStakingAt).format('YYYY.M.D')}
+                          </TableCell>
+                          <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                            {item.contractDays}
+                          </TableCell>
+                          <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                            {formatCurrency(item.stakedTokenAmount)}
+                          </TableCell>
+                          <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                            {formatCurrency(item.estimatedRewardAmount)}
+                          </TableCell>
+                          <TableCell>
+                            <span
+                              className={clsx(
+                                `w-[74px] h-[30px] rounded-[24px] flex items-center justify-center border
+                                  font-bold text-[14px] md:text-[16px] mx-auto`,
+                                statusClass(isReinvestment ? 1 : 0)
+                              )}
+                            >
+                              {isReinvestment ? 'Yes' : 'No'}
+                            </span>
+                          </TableCell>
+                          <TableCell className='text-gray-150'>
+                            {item.isActive ? (
+                              <Button
+                                isDisabled={!isCanWithdraw}
+                                className={twMerge(
+                                  clsx(
+                                    'rounded-full text-[12px] h-8 w-[152px] font-bold',
+                                    !isCanWithdraw && 'bg-co-gray-7 text-white'
+                                  )
+                                )}
+                                onClick={() =>
+                                  handleWithdrawMLPBoostedClick(item)
+                                }
+                              >
+                                {t('withdraw')}
+                              </Button>
+                            ) : (
+                              <button
+                                className={twMerge(
+                                  clsx(
+                                    'bg-transparent underline text-white font-bold'
+                                  )
+                                )}
+                                onClick={() =>
+                                  handleWithdrawDetailModal({
+                                    withdrawDate: dayjs(
+                                      item.cancelStakingAt
+                                    ).format('DD/MM/YYYY'),
+                                    stakedAmount: formatCurrency(
+                                      item.stakedTokenAmount
+                                    ),
+                                    rewards: formatCurrency(
+                                      item.actualRewardAmount
+                                    ),
+                                    transactionHash:
+                                      item.cancelStakingTransactionHash ?? ''
+                                  })
+                                }
+                              >
+                                {t('withdraw')}
+                              </button>
                             )}
-                          >
-                            {item.status ? 'Yes' : 'No'}
-                          </span>
-                        </TableCell>
-                        <TableCell className='text-gray-150'>
-                          <Button
-                            isDisabled={!item.status}
-                            className={twMerge(
-                              clsx(
-                                'rounded-full text-[12px] h-8 w-[152px] font-bold',
-                                !item.status && 'bg-co-gray-7 text-white'
-                              )
-                            )}
-                            onClick={handleWithdrawClick}
-                          >
-                            {t(item.action as any)}
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    }) ?? []}
                   </TableBody>
                 </Table>
               )}

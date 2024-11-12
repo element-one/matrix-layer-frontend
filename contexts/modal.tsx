@@ -16,7 +16,10 @@ import {
   ShippingAddressModal,
   ShippingAddressModalProps
 } from '@components/Modal'
-import { AccelerateNFTPoolModal } from '@components/Modal/AccelerateNFTPoolModal'
+import {
+  AccelerateNFTPoolModal,
+  AccelerateNFTPoolModalProps
+} from '@components/Modal/AccelerateNFTPoolModal'
 import {
   AcceleratePoolModal,
   AcceleratePoolModalProps
@@ -28,6 +31,10 @@ import {
 } from '@components/Modal/ManageAddressModal'
 import { RewardsMLPHistoryModal } from '@components/Modal/RewardsMLPHistoryModal'
 import { RewardsModal, RewardsModalProps } from '@components/Modal/RewardsModal'
+import {
+  WithdrawDetailModal,
+  WithdrawDetailModalProps
+} from '@components/Modal/WithdrawDetailModal'
 import { WithdrawModal } from '@components/Modal/WithdrawModal'
 
 export enum ModalType {
@@ -41,7 +48,8 @@ export enum ModalType {
   REWARDS_MLP_HISTORY_MODAL = 'REWARDS_MLP_HISTORY_MODAL',
   BUY_NFT_MODAL = 'BUY_NFT_MODAL',
   ACCELERATE_NFT_POOL_MODAL = 'ACCELERATE_NFT_POOL_MODAL',
-  WITHDRAW_MODAL = 'WITHDRAW_MODAL'
+  WITHDRAW_MODAL = 'WITHDRAW_MODAL',
+  WITHDRAW_DETAIL_MODAL = 'WITHDRAW_DETAIL_MODAL'
 }
 
 const MODAL_COMPONENTS = {
@@ -55,7 +63,8 @@ const MODAL_COMPONENTS = {
   [ModalType.ACCELERATE_NFT_POOL_MODAL]: AccelerateNFTPoolModal,
   [ModalType.REWARDS_MLP_HISTORY_MODAL]: RewardsMLPHistoryModal,
   [ModalType.BUY_NFT_MODAL]: BuyNFTModal,
-  [ModalType.WITHDRAW_MODAL]: WithdrawModal
+  [ModalType.WITHDRAW_MODAL]: WithdrawModal,
+  [ModalType.WITHDRAW_DETAIL_MODAL]: WithdrawDetailModal
 }
 
 type ModalProps =
@@ -66,6 +75,8 @@ type ModalProps =
   | ManageAddressModalProps
   | RewardsModalProps
   | AcceleratePoolModalProps
+  | AccelerateNFTPoolModalProps
+  | WithdrawDetailModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }
@@ -73,6 +84,8 @@ type ModalStore = { type: ModalType | null; props?: ModalProps }
 export interface ModalContextProps {
   store: ModalStore
   isModalShown: (modal: ModalType) => boolean
+  isConfirmLoading: Record<ModalType, boolean> | null
+  setIsConfirmLoading: (modal: ModalType, isLoading: boolean) => void
   showModal: <T extends ModalProps>(modal: ModalType, props?: T) => void
   hideModal: () => void
 }
@@ -80,6 +93,8 @@ export interface ModalContextProps {
 const defaultContext: ModalContextProps = {
   store: { type: null, props: undefined },
   isModalShown: () => false,
+  isConfirmLoading: null,
+  setIsConfirmLoading: () => null,
   showModal: () => null,
   hideModal: () => null
 }
@@ -119,6 +134,24 @@ export const ModalProvider: React.FC<{ children?: ReactNode }> = ({
     return <ModalComponent {...(store.props as any)} onClose={hideModal} /> // eslint-disable-line
   }
 
+  const [isConfirmLoading, setIsConfirmLoadingOriginal] = useState<Record<
+    ModalType,
+    boolean
+  > | null>(null)
+
+  const setIsConfirmLoading = useCallback(
+    (type: ModalType, loading: boolean) => {
+      if (isConfirmLoading?.[type] === loading) {
+        return
+      }
+      setIsConfirmLoadingOriginal((prev) => ({
+        ...((prev ?? {}) as Record<ModalType, boolean>),
+        [type]: loading
+      }))
+    },
+    [isConfirmLoading]
+  )
+
   return (
     <ModalContext.Provider
       value={{
@@ -126,7 +159,9 @@ export const ModalProvider: React.FC<{ children?: ReactNode }> = ({
         store,
         isModalShown,
         showModal,
-        hideModal
+        hideModal,
+        isConfirmLoading,
+        setIsConfirmLoading
       }}
     >
       {renderComponent()}

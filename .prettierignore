@@ -3,7 +3,6 @@ node_modules
 .cache
 public
 next-env.d.ts
-next.config.js
 yarn.lock
 .gitignore
 lint-staged.config.js

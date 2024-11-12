@@ -15,7 +15,9 @@
       "@utils/*": ["./utils/*"],
       "@public/*": ["./public/*"],
       "@config/*": ["./config/*"],
-      "@abis/*": ["./abis/*"]
+      "@abis/*": ["./abis/*"],
+      "@graphql/*": ["./graphql/*"],
+      "@helpers/*": ["./helpers/*"]
     }
   }
 }

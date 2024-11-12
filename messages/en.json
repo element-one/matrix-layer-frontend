@@ -188,7 +188,14 @@
     "item": "item",
     "rewardDetails": "REWARD DETAILS",
     "submitAddress": "Submit Address",
-    "confirmReceipt": "Confirm Receipt"
+    "confirmReceipt": "Confirm Receipt",
+    "inviteCode": "Invite Code",
+    "inviteSystem": "Invite System",
+    "referrerInviteCode": "Referrer Invite Code",
+    "referrerAddress": "Referrer Address",
+    "copyAddress": "Copy Address",
+    "enterInviteCode": "Enter invite code",
+    "verify": "Verify"
   },
   "Checkout": {
     "checkout": "Checkout",
@@ -263,8 +270,13 @@
     "referralCode": "My referral code",
     "copyCode": "Copy code",
     "referralLink": "Referral Link",
+    "inviteCode": "Invite Code",
+    "inviteSystem": "Invite System",
+    "referrerInviteCode": "Referrer Invite Code",
+    "referrerAddress": "Referrer Address",
     "copyLink": "Copy Link",
-    "verifyLink": "Verify Link",
+    "copyAddress": "Copy Address",
+    "verify": "Verify",
     "invitationSystem": "Invitation System",
     "ReferralCodeUsed": "Referral Code used",
     "referralAddress": "Your Referrer’s Wallet Address",
@@ -294,6 +306,10 @@
     "TotalMLPRewards": "Total MLP Rewards",
     "DailyRewardsHistory": "Daily rewards history",
     "basicPoolInfo": "Your mining power in the basic pool is determined by the number and value of the NFTs you have staked.",
+    "BalancePool": {
+      "title": "Pool Balance",
+      "DailyRewardHistory": "Daily Reward History"
+    },
     "AccelerationPool": {
       "title": "Acceleration Pool (PoS)",
       "info": "Your mining power in the accelerated pool is determined by the amount of $MLP you have staked."
@@ -345,7 +361,10 @@
       "amount": "AMOUNT",
       "confirm": "CONFIRM",
       "bestRate": "Best Acceleration Rate"
-    }
+    },
+    "warnContent": "The staking period has not yet expired. If you withdraw, your earnings will be converted to",
+    "doYouContinue": "Do you choose to continue?",
+    "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",
@@ -364,8 +383,14 @@
     "withdraw": "Withdraw",
     "desc": "You are getting back staked 5000 $MLP along with the staking rewards {amount} $MLP.",
     "total": "{amount} &MLP in total, continue?",
-    "cancel": "Cancel",
-    "confirm": "Confirm"
+    "cancel": "CANCEL",
+    "confirm": "CONFIRM",
+    "withdrawDetails": "Withdraw Details",
+    "withdrawDate": "Withdraw date",
+    "stakedAmount": "Staked amount",
+    "rewards": "Rewards",
+    "viewTransaction": "View Transaction",
+    "close": "CLOSE"
   },
   "Modals": {
     "rewardModal": {
@@ -387,6 +412,35 @@
       "title": "Claim Reward",
       "success": "Success",
       "second": "S"
+    }
+  },
+  "Ai": {
+    "sidebar": {
+      "history": "History",
+      "new": "New",
+      "searchMessage": "Search Message",
+      "group": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "oneWeekAgo": "Previous 1 week",
+        "oneMonthAgo": "Previous 1 month",
+        "all": "All"
+      },
+      "delete": {
+        "delete": "Delete",
+        "title": "Confirm Delete",
+        "info": "Are you sure you want to delete this conversation?",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "conversation": {
+      "followUp": "You can continue asking the questions like...",
+      "timeSpan": {
+        "justNow": "Just Now",
+        "minuteAgo": "minutes ago"
+      },
+      "sentenceHere": "Your Sentence Here..."
     }
   }
 }

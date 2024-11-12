@@ -32,6 +32,7 @@ export type ApiUser = {
   totalCommission: string
   updatedAt: string
   referredByUserAddress?: string
+  referrerReferralCode?: string
   totalRewards: string
   availableRewards: string
   mlpTokenAmountPoolA: string

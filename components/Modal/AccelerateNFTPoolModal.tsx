@@ -9,7 +9,7 @@ import { ModalType, useModal } from '@contexts/modal'
 
 export interface AccelerateNFTPoolModalProps {
   onClose?: () => void
-  onConfirm?: () => void
+  onConfirm?: (options: { amount: string }) => void
 }
 
 export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
@@ -18,7 +18,7 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
 }) => {
   const t = useTranslations('Stake')
 
-  const { isModalShown, hideModal } = useModal()
+  const { isModalShown, hideModal, isConfirmLoading } = useModal()
 
   const [amount, setAmount] = useState('')
 
@@ -88,7 +88,13 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
           <Button
             className='px-3 py-2 md:p-[10px] w-[130px] md:w-[320px] rounded-[32px] text-[12px]
               md:text-[16px] font-bold'
-            onClick={onConfirm}
+            onClick={() => {
+              if (amount === '') {
+                return
+              }
+              return onConfirm && onConfirm({ amount })
+            }}
+            isLoading={isConfirmLoading?.[ModalType.ACCELERATE_NFT_POOL_MODAL]}
           >
             {t('AccelerateNFTBoostedPool.confirm')}
           </Button>
