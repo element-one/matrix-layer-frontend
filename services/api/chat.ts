@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { generateInteractionsInHistory } from '@helpers/components/message'
 import { Conversation, HistoryConversation } from '@type/internal/conversation'
 import { getRandomId } from '@utils/random'
 import dayjs from 'dayjs'
@@ -17,7 +18,7 @@ export interface ApiChatHistoryData {
 export const getUserChatHistory = async (
   address: string
 ): Promise<Conversation[]> => {
-  const url = `/get_conversations`
+  const url = `/get_conversations_interactions`
   const { data } = await axios.post<ApiChatHistoryData>(url, {
     user_id: address
   })
@@ -32,9 +33,11 @@ export const getUserChatHistory = async (
         messages: item.chat_history.map((message) => ({
           id: getRandomId(),
           role: message.role === 'human' ? 0 : 1,
-          content: message.content,
-          createdAt: dayjs.utc(message.timestamp).toDate(),
-          interactions: []
+          interactions: generateInteractionsInHistory(
+            message.interactions,
+            message.role === 'human'
+          ),
+          createdAt: dayjs.utc(message.timestamp).toDate()
         }))
       }
     })
@@ -58,7 +61,7 @@ interface DeleteConversationParams {
 }
 
 export const deleteConversations = async (params: DeleteConversationParams) => {
-  return await axios.post('/remove_conversations', params)
+  return await axios.post('/remove_conversations_interactions', params)
 }
 
 export const useDeleteConversations = () => {

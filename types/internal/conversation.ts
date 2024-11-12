@@ -1,4 +1,4 @@
-import { Message } from './message'
+import { Message, MessageInteractions } from './message'
 
 export type Conversation = {
   id: string
@@ -10,7 +10,7 @@ export type Conversation = {
 export type HistoryConversation = {
   conversation_id: string
   chat_history: {
-    content: string
+    interactions: MessageInteractions
     role: string
     timestamp: string
     timestamp_raw: number
