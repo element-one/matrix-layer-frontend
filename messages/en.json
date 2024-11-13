@@ -457,7 +457,13 @@
       "title": "Total Claimable $MLP:",
       "claimAll": "Claim All",
       "releaseHistory": "Release History",
-      "claimHistory": "Claim History"
+      "claimHistory": "Claim History",
+      "columns": {
+        "date": "Date",
+        "claimAmount": "Claim Amount",
+        "releaseAmount": "Release Amount",
+        "link": "link"
+      }
     }
   }
 }

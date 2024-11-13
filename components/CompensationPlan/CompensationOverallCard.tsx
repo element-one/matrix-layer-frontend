@@ -43,7 +43,7 @@ export const CompensationOverallCard: FC<CardProps> = ({
         )}
       </div>
       <Text className='font-semibold text-[24px] md:text-[40px]'>
-        {info ?? '- -'}
+        {info || '- -'}
       </Text>
     </div>
   )

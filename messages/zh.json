@@ -445,7 +445,7 @@
     }
   },
   "CompensationPlan": {
-    "title": "MLP补偿计划",
+    "title": "补偿计划",
     "summary": {
       "title": "MLP补偿计划适用于",
       "totalCompensate": "总补偿 $MLP 数量",
@@ -457,7 +457,13 @@
       "title": "总可领取 $MLP:",
       "claimAll": "全部领取",
       "releaseHistory": "释放历史",
-      "claimHistory": "领取历史"
+      "claimHistory": "领取历史",
+      "columns": {
+        "date": "日期",
+        "claimAmount": "领取金额",
+        "releaseAmount": "释放金额",
+        "link": "链接"
+      }
     }
   }
 }

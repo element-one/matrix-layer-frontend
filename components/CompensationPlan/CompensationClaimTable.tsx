@@ -1,4 +1,5 @@
-import { FC, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   Pagination,
   Table,
@@ -11,14 +12,13 @@ import {
 
 import { Text } from '@components/Text'
 
-interface TableProps {
-  title: string
-  data?: {
-    total: number
-    pageSize: number
-  }
+const data = {
+  total: 0,
+  pageSize: 6
 }
-export const CompensationTable: FC<TableProps> = ({ data, title }) => {
+
+export const CompensationClaimTable = () => {
+  const t = useTranslations('CompensationPlan.tables')
   const [page, setPage] = useState(1)
   const totalPage = useMemo(
     () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
@@ -28,14 +28,14 @@ export const CompensationTable: FC<TableProps> = ({ data, title }) => {
     <Table
       topContent={
         <Text className='text-[14px] md:text-[20px] mx-3 text-co-text-2 font-semibold whitespace-nowrap'>
-          {title}
+          {t('claimHistory')}
         </Text>
       }
-      aria-label={title}
+      aria-label='release history'
       classNames={{
         wrapper:
           'rounded-2xl border-2 border-[#666] bg-[#151515] backdrop-blur-[6px] p-6',
-        th: 'bg-transparent text-white text-[18px] font-semibold border-b border-[#666]',
+        th: 'bg-trans parent text-white text-[18px] font-semibold border-b border-[#666]',
         td: 'p-4 text-[18px] font-medium'
       }}
       bottomContent={
@@ -58,32 +58,21 @@ export const CompensationTable: FC<TableProps> = ({ data, title }) => {
       }
     >
       <TableHeader>
-        <TableColumn>Date</TableColumn>
-        <TableColumn>Released Amount</TableColumn>
+        <TableColumn>{t('columns.date')}</TableColumn>
+        <TableColumn>{t('columns.claimAmount')}</TableColumn>
+        <TableColumn>{t('columns.link')}</TableColumn>
       </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell className='whitespace-nowrap'>
-            {/* {dayjs(order.createdAt).format('YYYY-MM-DD HH:mm:ss')} */}
-            date
-          </TableCell>
-          <TableCell className='whitespace-nowrap'>
-            {/* {formatUSDT(Number(order.price) * order.quantity)}
-    &nbsp;USDT */}
-            amount
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className='whitespace-nowrap'>
-            {/* {dayjs(order.createdAt).format('YYYY-MM-DD HH:mm:ss')} */}
-            date
-          </TableCell>
-          <TableCell className='whitespace-nowrap'>
-            {/* {formatUSDT(Number(order.price) * order.quantity)}
-    &nbsp;USDT */}
-            amount
-          </TableCell>
-        </TableRow>
+
+      <TableBody emptyContent={'- -'}>
+        {[].map((_, index) => (
+          <TableRow key={index}>
+            <TableCell className='whitespace-nowrap'>
+              {/* {dayjs(order.createdAt).format('YYYY-MM-DD HH:mm:ss')} */}
+              123
+            </TableCell>
+            <TableCell>123</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   )
