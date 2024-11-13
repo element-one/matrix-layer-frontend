@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FC, useState } from 'react'
+import React, { FC, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
@@ -19,6 +19,7 @@ import {
   MultiLanguageMobile,
   MultiLanguagePC
 } from '@components/MultiLanguage/MultiLanguage'
+import compensation_list from '@constants/compensation_list.json'
 import { ModalType, useModal } from '@contexts/modal'
 
 import { MenuList } from './ProfileMenu'
@@ -30,6 +31,8 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = ({ className }) => {
   const t = useTranslations('Navigation')
 
+  const { address } = useAccount()
+
   const { asPath } = useRouter()
   const { isConnected } = useAccount()
   const { disconnect } = useDisconnect()
@@ -37,6 +40,13 @@ const Header: FC<HeaderProps> = ({ className }) => {
   const { showModal } = useModal()
 
   const [menuVisible, setMenuVisible] = useState(false)
+
+  const isAuthorized = useMemo(() => {
+    if (address) {
+      return compensation_list.whitelist.indexOf(address) > -1
+    }
+    return false
+  }, [address])
 
   const hideMenu = () => {
     setMenuVisible(false)
@@ -150,14 +160,15 @@ const Header: FC<HeaderProps> = ({ className }) => {
                   >
                     {t('myAccount')}
                   </Button>
-                  {/* TODO when to show */}
-                  <Button
-                    onClick={handleCompensationButtonClick}
-                    color='primary'
-                    className='w-full h-[50px] !rounded-full text-[20px]'
-                  >
-                    {t('compensationPlan')}
-                  </Button>
+                  {isAuthorized && (
+                    <Button
+                      onClick={handleCompensationButtonClick}
+                      color='primary'
+                      className='w-full h-[50px] !rounded-full text-[20px]'
+                    >
+                      {t('compensationPlan')}
+                    </Button>
+                  )}
                   <div className='w-full'>
                     <Divider className='bg-co-bg-3' />
                     <div

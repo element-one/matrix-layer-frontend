@@ -23,7 +23,7 @@ export const CompensationOverallCard: FC<CardProps> = ({
         ${gradientBorderClass}`}
     >
       <div className='flex flex-row items-center gap-x-1'>
-        <Text className='text-[14px] md:text-[20px] text-gray-a5 font-semibold whitespace-nowrap'>
+        <Text className='text-[16px] md:text-[20px] text-gray-a5 font-semibold whitespace-nowrap'>
           {title}
         </Text>
         {tipInfo && (

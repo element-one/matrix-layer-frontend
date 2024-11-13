@@ -445,6 +445,7 @@
     }
   },
   "CompensationPlan": {
+    "notEligible": "您不具备此计划的资格",
     "title": "补偿计划",
     "summary": {
       "title": "MLP补偿计划适用于",

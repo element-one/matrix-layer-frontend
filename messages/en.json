@@ -445,6 +445,7 @@
     }
   },
   "CompensationPlan": {
+    "notEligible": "You're not eligible for this plan",
     "title": "MLP Compensation Plan",
     "summary": {
       "title": "MLP compensation Plan for:",
