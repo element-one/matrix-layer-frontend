@@ -412,6 +412,13 @@
       "title": "Claim Reward",
       "success": "Success",
       "second": "S"
+    },
+    "rewardsMLPHistoryModal": {
+      "title": "MLP Claimable History",
+      "time": "Time",
+      "address": "Address",
+      "reward": "Reward",
+      "status": "Status"
     }
   },
   "Ai": {

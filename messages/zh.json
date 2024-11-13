@@ -412,6 +412,13 @@
       "title": "领取奖励",
       "success": "成功",
       "second": "秒"
+    },
+    "rewardsMLPHistoryModal": {
+      "title": "MLP 可领取历史",
+      "time": "时间",
+      "address": "地址",
+      "reward": "奖励",
+      "status": "状态"
     }
   },
   "Ai": {
