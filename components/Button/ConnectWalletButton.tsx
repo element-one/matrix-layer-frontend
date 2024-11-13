@@ -45,6 +45,9 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
       case 'stake':
         router.push('stake')
         break
+      case 'compensationPlan':
+        router.push('compensation-plan')
+        break
       default:
         break
     }
@@ -80,6 +83,10 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
           >
             <DropdownItem key='myAccount' className='h-10'>
               {t('myAccount')}
+            </DropdownItem>
+            {/* TODO when to show */}
+            <DropdownItem key='compensationPlan' className='h-10'>
+              {t('compensationPlan')}
             </DropdownItem>
             <DropdownItem key='logout' className='h-10'>
               {t('logout')}

@@ -5,7 +5,8 @@
     "myAccount": "我的账户",
     "stake": "质押",
     "logout": "登出",
-    "connectWallet": "连接钱包"
+    "connectWallet": "连接钱包",
+    "compensationPlan": "补偿计划"
   },
   "Footer": {
     "copyright": "版权归 © Matrix Layer Protocol 2024 所有– 将保留所有权利"
@@ -441,6 +442,22 @@
         "minuteAgo": "分钟前"
       },
       "sentenceHere": "请输入您的对话内容..."
+    }
+  },
+  "CompensationPlan": {
+    "title": "MLP补偿计划",
+    "summary": {
+      "title": "MLP补偿计划适用于",
+      "totalCompensate": "总补偿 $MLP 数量",
+      "unlock": "解锁开始于",
+      "unlockTip": "您的MLP补偿计划代币将锁住90天，代币解锁后，将会在90天线性释放完毕。",
+      "totalClaimed": "总领取数量"
+    },
+    "tables": {
+      "title": "总可领取 $MLP:",
+      "claimAll": "全部领取",
+      "releaseHistory": "释放历史",
+      "claimHistory": "领取历史"
     }
   }
 }

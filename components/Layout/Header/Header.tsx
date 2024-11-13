@@ -47,6 +47,11 @@ const Header: FC<HeaderProps> = ({ className }) => {
     hideMenu()
   }
 
+  const handleCompensationButtonClick = () => {
+    router.push('/compensation-plan')
+    hideMenu()
+  }
+
   const handleConnectWalletButtonClick = () => {
     hideMenu()
     showModal(ModalType.CONNECT_WALLET_MODAL)
@@ -144,6 +149,14 @@ const Header: FC<HeaderProps> = ({ className }) => {
                     className='w-full h-[50px] !rounded-full text-[20px]'
                   >
                     {t('myAccount')}
+                  </Button>
+                  {/* TODO when to show */}
+                  <Button
+                    onClick={handleCompensationButtonClick}
+                    color='primary'
+                    className='w-full h-[50px] !rounded-full text-[20px]'
+                  >
+                    {t('compensationPlan')}
                   </Button>
                   <div className='w-full'>
                     <Divider className='bg-co-bg-3' />
