@@ -5,7 +5,8 @@
     "myAccount": "My Account",
     "stake": "STAKE",
     "logout": "Log out",
-    "connectWallet": "Connect Wallet"
+    "connectWallet": "Connect Wallet",
+    "compensationPlan": "Compensation Plan"
   },
   "Footer": {
     "copyright": "Copyright © Matrix Layer Protocol 2024 – All rights reserved."
@@ -441,6 +442,29 @@
         "minuteAgo": "minutes ago"
       },
       "sentenceHere": "Your Sentence Here..."
+    }
+  },
+  "CompensationPlan": {
+    "notEligible": "You're not eligible for this plan",
+    "title": "MLP Compensation Plan",
+    "summary": {
+      "title": "MLP compensation Plan for:",
+      "totalCompensate": "Total Compensate $MLP Amount",
+      "unlock": "Unlock Starts at",
+      "unlockTip": "Your MLP compensation plan tokens will be locked for 90 days. After the tokens are unlocked, they will be released linearly over the next 90 days.",
+      "totalClaimed": "Total Claimed Amount"
+    },
+    "tables": {
+      "title": "Total Claimable $MLP:",
+      "claimAll": "Claim All",
+      "releaseHistory": "Release History",
+      "claimHistory": "Claim History",
+      "columns": {
+        "date": "Date",
+        "claimAmount": "Claim Amount",
+        "releaseAmount": "Release Amount",
+        "link": "link"
+      }
     }
   }
 }
