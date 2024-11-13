@@ -53,8 +53,6 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
     return items
   }, [address])
 
-  console.log(DropdownItems)
-
   const handleClick = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
