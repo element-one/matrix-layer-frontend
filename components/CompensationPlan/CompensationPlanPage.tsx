@@ -4,12 +4,13 @@ import { useTranslations } from 'next-intl'
 import { Address } from 'viem'
 import {
   useAccount,
-  useReadContract,
+  useReadContracts,
   useWaitForTransactionReceipt,
   useWriteContract
 } from 'wagmi'
 
 import COMPENSATION_ABI from '@abis/Compensate.json'
+import COMPENSATION_CLAIMED_ABI from '@abis/CompensateClaimed.json'
 import { Button } from '@components/Button'
 import { CompensationClaimTable } from '@components/CompensationPlan/CompensationClaimTable'
 import { CompensationOverallCard } from '@components/CompensationPlan/CompensationOverallCard'
@@ -23,6 +24,9 @@ import dayjs from 'dayjs'
 
 const COMPENSATION_ADDRESS = process.env
   .NEXT_PUBLIC_COMPENSATION_ADDRESS as Address
+const COMPENSATION_CLAIMED_ADDRESS = process.env
+  .NEXT_PUBLIC_COMPENSATION_TOTAL_CLAIMED_ADDRESS as Address
+
 const sectionContainerClass =
   'flex flex-col gap-y-3 border-b border-co-gray-1 py-16'
 const sectionTitle = 'font-semibold text-co-gray-7 text-[24px]'
@@ -32,14 +36,44 @@ export const CompensationPlanPage = () => {
 
   const { address } = useAccount()
 
-  // read summary data from contract
-  const { data: bigIntSummaryData, refetch: refetchSummaryData } =
-    useReadContract({
-      abi: COMPENSATION_ABI,
-      address: COMPENSATION_ADDRESS,
-      functionName: 'userInfo',
-      args: [address]
-    })
+  const { data: bigIntData, refetch } = useReadContracts({
+    contracts: [
+      {
+        abi: COMPENSATION_ABI,
+        address: COMPENSATION_ADDRESS,
+        functionName: 'userInfo',
+        args: [address]
+      },
+      {
+        abi: COMPENSATION_CLAIMED_ABI,
+        address: COMPENSATION_CLAIMED_ADDRESS,
+        functionName: 'totalClaimedByUser',
+        args: [address]
+      },
+      {
+        abi: COMPENSATION_ABI,
+        address: COMPENSATION_ADDRESS,
+        functionName: 'releasedHistory',
+        args: [address]
+      },
+      {
+        abi: COMPENSATION_ABI,
+        address: COMPENSATION_ADDRESS,
+        functionName: 'claimedHistory',
+        args: [address]
+      }
+    ]
+  })
+
+  const [
+    bigIntSummaryData,
+    bigIntTotalClaimed,
+    bigIntReleasedHistory,
+    bigIntClaimedHistory
+  ] =
+    bigIntData?.map((result) => {
+      return result.result ?? undefined
+    }) ?? [] // default to undefined
 
   const {
     data: claimHash,
@@ -47,15 +81,13 @@ export const CompensationPlanPage = () => {
     isPending: isClamingAll
   } = useWriteContract()
 
-  const { data: txData, isLoading: isWaitingClaimReceipt } =
-    useWaitForTransactionReceipt({
-      hash: claimHash,
-      query: {
-        enabled: claimHash !== undefined,
-        initialData: undefined
-      }
-    })
-  console.log('todo test', txData)
+  const { isLoading: isWaitingClaimReceipt } = useWaitForTransactionReceipt({
+    hash: claimHash,
+    query: {
+      enabled: claimHash !== undefined,
+      initialData: undefined
+    }
+  })
 
   const isLoading = useMemo(
     () => isWaitingClaimReceipt || isClamingAll,
@@ -67,11 +99,10 @@ export const CompensationPlanPage = () => {
       const bigIntData = bigIntSummaryData as {
         totalAmount?: bigint
         startTime: bigint
-        releasedAmount: bigint
       }
       const totalAmount = Number(bigIntData.totalAmount?.toString() ?? 0)
       const startTime = Number(bigIntData.startTime ?? 0)
-      const claimedAmount = Number(bigIntData.releasedAmount?.toString() ?? 0)
+      const claimedAmount = Number(bigIntTotalClaimed?.toString() ?? 0)
       const claimableAmount = totalAmount - claimedAmount
 
       let unlockDate = ''
@@ -94,7 +125,7 @@ export const CompensationPlanPage = () => {
       unlockDate: '',
       claimableAmount: 0
     }
-  }, [bigIntSummaryData])
+  }, [bigIntSummaryData, bigIntTotalClaimed])
 
   const handleClaimAll = () => {
     claimAll(
@@ -105,8 +136,7 @@ export const CompensationPlanPage = () => {
       },
       {
         onSuccess() {
-          // refetch Summary Data
-          refetchSummaryData()
+          refetch()
         },
         onError(err) {
           console.log(err.message)
@@ -201,8 +231,8 @@ export const CompensationPlanPage = () => {
               </Button>
             </div>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
-              <CompensationReleaseTable />
-              <CompensationClaimTable />
+              <CompensationReleaseTable contractData={bigIntReleasedHistory} />
+              <CompensationClaimTable contractData={bigIntClaimedHistory} />
             </div>
           </div>
         </Content>
