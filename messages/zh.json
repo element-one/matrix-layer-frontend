@@ -1,4 +1,8 @@
 {
+  "Lang": {
+    "en": "英文",
+    "zh": "简体中文"
+  },
   "Navigation": {
     "home": "主页",
     "presale": "购买",
