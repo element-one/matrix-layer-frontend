@@ -7,6 +7,7 @@ import { Button } from '@components/Button'
 import { QuestionColorIcon } from '@components/Icon/QuestionColorIcon'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
+import { useGetStakingApySummary } from '@services/api/staking'
 
 const default_options = [
   {
@@ -53,6 +54,8 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
   const [stakeDay, setStakeDay] = useState('30')
 
   const [isChecked, setIsChecked] = useState(false)
+
+  const { data: stakingApySummary } = useGetStakingApySummary()
 
   const handleClose = () => {
     onClose && onClose()
@@ -115,7 +118,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
               <div
                 key={item.day}
                 className={clsx(
-                  `flex flex-col h-[120px] md:h-[252px] px-6 py-4 justify-center items-center gap-3
+                  `flex flex-col h-[120px] md:h-[252px] px-6 py-4 md:pt-12 pt-6 items-center gap-3
                     bg-black rounded-[16px] border cursor-pointer`,
                   item.day === stakeDay
                     ? 'border-skate-day-item-active-gradient'
@@ -129,7 +132,8 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
                   {item.title}
                 </Text>
                 <Text className='text-[12px] md:text-[24px] font-bold text-co-green-2 text-center'>
-                  {item.content}
+                  {stakingApySummary?.[item.day as '30' | '60' | '90' | '180']}%
+                  APY
                 </Text>
               </div>
             ))}
