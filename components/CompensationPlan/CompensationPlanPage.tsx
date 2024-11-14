@@ -10,7 +10,6 @@ import {
 } from 'wagmi'
 
 import COMPENSATION_ABI from '@abis/Compensate.json'
-import COMPENSATION_CLAIMED_ABI from '@abis/CompensateClaimed.json'
 import { Button } from '@components/Button'
 import { CompensationClaimTable } from '@components/CompensationPlan/CompensationClaimTable'
 import { CompensationOverallCard } from '@components/CompensationPlan/CompensationOverallCard'
@@ -24,8 +23,6 @@ import dayjs from 'dayjs'
 
 const COMPENSATION_ADDRESS = process.env
   .NEXT_PUBLIC_COMPENSATION_ADDRESS as Address
-const COMPENSATION_CLAIMED_ADDRESS = process.env
-  .NEXT_PUBLIC_COMPENSATION_TOTAL_CLAIMED_ADDRESS as Address
 
 const sectionContainerClass =
   'flex flex-col gap-y-3 border-b border-co-gray-1 py-16'
@@ -45,8 +42,8 @@ export const CompensationPlanPage = () => {
         args: [address]
       },
       {
-        abi: COMPENSATION_CLAIMED_ABI,
-        address: COMPENSATION_CLAIMED_ADDRESS,
+        abi: COMPENSATION_ABI,
+        address: COMPENSATION_ADDRESS,
         functionName: 'totalClaimedByUser',
         args: [address]
       },
