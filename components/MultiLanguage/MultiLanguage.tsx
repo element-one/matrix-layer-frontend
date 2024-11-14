@@ -1,6 +1,7 @@
 import { Key, useState } from 'react'
 import { useMount } from 'react-use'
 import { useRouter } from 'next/router'
+import { useTranslations } from 'next-intl'
 import { ArrowLeftIcon, GlobeAltIcon } from '@heroicons/react/24/outline'
 import {
   Button,
@@ -11,6 +12,8 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import clsx from 'clsx'
+
+import { Text } from '@components/Text'
 
 const LANGS = [
   {
@@ -72,6 +75,7 @@ export const MultiLanguageMobile = () => {
   const router = useRouter()
   const locale = router.locale ?? 'en'
   const [isChoosing, setIsChoosing] = useState(true)
+  const t = useTranslations('Lang')
 
   useMount(() => {
     setIsChoosing(false)
@@ -89,8 +93,12 @@ export const MultiLanguageMobile = () => {
 
   return (
     <div className='items-center lg:hidden text-co-text-1 text-xl pb-1 pt-1'>
-      <div onClick={() => setIsChoosing(true)}>
-        {locale === 'en' ? 'LANGUAGE' : '语言'}
+      <div
+        onClick={() => setIsChoosing(true)}
+        className='flex items-center gap-x-3'
+      >
+        <GlobeAltIcon className='w-7 h-7 text-co-text-1' />
+        <Text className='text-xl'>{t(locale as any)}</Text>
       </div>
       {isChoosing && (
         <div className='absolute top-0 left-0 right-0 bottom-0 z-[1000] bg-black'>
@@ -107,7 +115,7 @@ export const MultiLanguageMobile = () => {
                 onClick={() => handleDropdownAction(item.key)}
                 key={item.key}
               >
-                {item.label}
+                {t(item.key as any)}
               </div>
             ))}
           </div>

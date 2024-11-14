@@ -1,4 +1,8 @@
 {
+  "Lang": {
+    "en": "English",
+    "zh": "Chinese"
+  },
   "Navigation": {
     "home": "HOME",
     "presale": "PRESALE",
