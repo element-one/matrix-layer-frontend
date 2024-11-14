@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { useAccount } from 'wagmi'
 
-import { RobotIcon } from '@components/Icon/Robot'
+import { RobotGradientIcon, RobotGrayIcon } from '@components/Icon/Robot'
 import { ModalType, useModal } from '@contexts/modal'
 
 import Footer from './Footer/Footer'
@@ -73,8 +73,14 @@ const AiComponent = () => {
   }
   return (
     <div className='fixed right-10 bottom-10 z-[100]'>
-      <Button size='lg' isIconOnly onClick={handleLinkToAI}>
-        <RobotIcon />
+      <Button
+        className='data-[hover=true]:bg-transparent'
+        size='lg'
+        isIconOnly
+        onClick={handleLinkToAI}
+        variant='light'
+      >
+        {isConnected ? <RobotGradientIcon /> : <RobotGrayIcon />}
       </Button>
     </div>
   )
