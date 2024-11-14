@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import {
+  getKeyValue,
   Pagination,
   Table,
   TableBody,
@@ -11,19 +12,53 @@ import {
 } from '@nextui-org/react'
 
 import { Text } from '@components/Text'
+import { formatCurrency } from '@utils/currency'
+import dayjs from 'dayjs'
 
-const data = {
-  total: 0,
-  pageSize: 6
+const RowsPerPage = 6
+
+type ReleasedHistoryData = {
+  amount: bigint
+  timestamp: bigint
 }
 
-export const CompensationReleaseTable = () => {
+export const CompensationReleaseTable: FC<{
+  contractData?: any
+}> = ({ contractData = [] }) => {
   const t = useTranslations('CompensationPlan.tables')
+
   const [page, setPage] = useState(1)
-  const totalPage = useMemo(
-    () => Math.ceil((data?.total || 1) / (data?.pageSize || 1)),
-    [data]
-  )
+
+  useEffect(() => {
+    setPage(1)
+  }, [contractData])
+
+  const data = useMemo(() => {
+    if (contractData) {
+      return (contractData as ReleasedHistoryData[]).map((item, index) => {
+        const dateNum = Number(item.timestamp ?? 0)
+        return {
+          id: index,
+          releaseAmount: formatCurrency(Number(item.amount?.toString() ?? 0)),
+          date:
+            dateNum > 0
+              ? dayjs(dateNum * 1000).format('MMM D, YYYY HH:mm:ss')
+              : '- -'
+        }
+      })
+    }
+    return []
+  }, [contractData])
+
+  const pages = Math.ceil(data.length / RowsPerPage)
+
+  const currentItems = useMemo(() => {
+    const start = (page - 1) * RowsPerPage
+    const end = start + RowsPerPage
+
+    return data.slice(start, end)
+  }, [page, data])
+
   return (
     <Table
       topContent={
@@ -35,16 +70,14 @@ export const CompensationReleaseTable = () => {
       classNames={{
         wrapper:
           'rounded-2xl border-2 border-[#666] bg-[#151515] backdrop-blur-[6px] p-6',
-        th: 'bg-trans parent text-white text-[18px] font-semibold border-b border-[#666]',
-        td: 'p-4 text-[18px] font-medium'
+        th: 'bg-trans parent text-white text-[14px] md:text-[18px] font-semibold border-b border-[#666]',
+        td: 'p-2 md:p-4 text-[14px] md:text-[18px] font-medium whitespace-nowrap text-center md:text-left'
       }}
       bottomContent={
         <div className='flex w-full justify-center'>
           <Pagination
             variant='light'
             showControls
-            page={page}
-            total={totalPage}
             disableAnimation
             classNames={{
               cursor: 'bg-transparent',
@@ -52,26 +85,35 @@ export const CompensationReleaseTable = () => {
               next: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
               prev: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
             }}
-            onChange={setPage}
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
           />
         </div>
       }
     >
       <TableHeader>
-        <TableColumn>{t('columns.date')}</TableColumn>
-        <TableColumn>{t('columns.releaseAmount')}</TableColumn>
+        <TableColumn key='date'>{t('columns.date')}</TableColumn>
+        <TableColumn key='releaseAmount'>
+          {t('columns.releaseAmount')}
+        </TableColumn>
       </TableHeader>
 
-      <TableBody emptyContent={'- -'}>
-        {[].map((_, index) => (
-          <TableRow key={index}>
-            <TableCell className='whitespace-nowrap'>
-              {/* {dayjs(order.createdAt).format('YYYY-MM-DD HH:mm:ss')} */}
-              123
-            </TableCell>
-            <TableCell>123</TableCell>
+      <TableBody
+        items={currentItems}
+        emptyContent={
+          <div className='h-40 md:h-[350px] flex items-center justify-center'>
+            - -
+          </div>
+        }
+      >
+        {(item) => (
+          <TableRow key={item.id}>
+            {(columnKey) => (
+              <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+            )}
           </TableRow>
-        ))}
+        )}
       </TableBody>
     </Table>
   )
