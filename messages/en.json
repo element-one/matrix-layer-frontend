@@ -371,7 +371,11 @@
     "doYouContinue": "Do you choose to continue?",
     "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards",
     "totalPerformanceUSD": "Total Performance USD",
-    "dailyAverageUSD": "Daily average (30D) USD"
+    "dailyAverageUSD": "Daily average (30D) USD",
+    "rewardDetail": "Reward detail",
+    "createTime": "Create time",
+    "tokenAmount": "Token amount",
+    "status": "Status"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",

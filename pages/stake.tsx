@@ -48,7 +48,9 @@ import { TopSectionBackground } from '@components/TopSectionBackground/TopSectio
 import { ModalType, useModal } from '@contexts/modal'
 import {
   getStakingSignature,
+  MiningType,
   useGetUser,
+  useGetUserRewardsMlpToken,
   useGetUserRewardsSummary,
   usePatchReferralCode
 } from '@services/api'
@@ -127,6 +129,7 @@ const StakePage: NextPage = () => {
   const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
   const [isShowNFTDetails, setIsShowNFTDetails] = useState(false)
+  const [isShowPromotionDetails, setIsShowPromotionDetails] = useState(false)
 
   const stakingAmountRef = useRef<string | null>(null)
   const stakingPoolBMLPAmountRef = useRef<{
@@ -553,6 +556,20 @@ const StakePage: NextPage = () => {
       address: address as Address,
       type: 'pool_b2'
     })
+
+  const {
+    data: userRewardsMlpTokenPoolC,
+    refetch: refetchUserRewardsMlpTokenPoolC
+  } = useGetUserRewardsMlpToken({
+    address: address as Address,
+    type: MiningType.Promotional
+  })
+
+  console.log(
+    userRewardsMlpTokenPoolC,
+    'refetchUserRewardsMlpToken',
+    refetchUserRewardsMlpTokenPoolC
+  )
 
   console.log('userRewardsSummary', userRewardsSummary)
 
@@ -2712,7 +2729,7 @@ const StakePage: NextPage = () => {
             )}
 
             <div className='flex flex-col gap-y-8 mt-8 items-center h-fit transition-height'>
-              {/* {isShowNFTDetails && (
+              {isShowPromotionDetails && (
                 <Table
                   aria-label='Details'
                   classNames={{
@@ -2725,94 +2742,49 @@ const StakePage: NextPage = () => {
                 >
                   <TableHeader>
                     <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('stakedDate')}
+                      {t('createTime')}
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('stakedAmount')}
+                      {t('tokenAmount')}
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('cumulativeIncome')}
+                      {t('status')}
                     </TableColumn>
                     <TableColumn className='text-[14px] md:text-[16px]'>
                       {t('action')}
                     </TableColumn>
                   </TableHeader>
                   <TableBody>
-                    {!!poolB1StakingList?.data?.length
-                      ? poolB1StakingList?.data?.map((item) => (
+                    {!!userRewardsMlpTokenPoolC?.data?.length
+                      ? userRewardsMlpTokenPoolC?.data?.map((item) => (
                           <TableRow key={item.id}>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                               {dayjs(item.createdAt).format('YYYY.M.D')}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {formatCurrency(item.stakedTokenAmount)}
+                              {formatCurrency(item.tokenAmount)}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {formatCurrency(item.rewardAmount)}
+                              {item.status}
                             </TableCell>
                             <TableCell className='text-gray-150'>
-                              {item.isActive ? (
-                                <Button
-                                  isDisabled={!item.isActive}
-                                  className={twMerge(
-                                    clsx(
-                                      'rounded-full text-[12px] h-8 w-[152px] font-bold',
-                                      !item.isActive &&
-                                        'bg-co-gray-7 text-white'
-                                    )
-                                  )}
-                                  onClick={() =>
-                                    handleWithdrawNFTBoostedClick({
-                                      stakeId: `${item.stakeId}`,
-                                      stakedTokenAmount: item.stakedTokenAmount,
-                                      rewardAmount: item.rewardAmount
-                                    })
-                                  }
-                                >
-                                  {t('withdraw')}
-                                </Button>
-                              ) : (
-                                <button
-                                  className={twMerge(
-                                    clsx(
-                                      'bg-transparent underline text-white font-bold'
-                                    )
-                                  )}
-                                  onClick={() =>
-                                    handleWithdrawDetailModal({
-                                      withdrawDate: dayjs(
-                                        item.cancelStakingAt
-                                      ).format('DD/MM/YYYY'),
-                                      stakedAmount: formatCurrency(
-                                        item.stakedTokenAmount
-                                      ),
-                                      rewards: formatCurrency(
-                                        item.rewardAmount
-                                      ),
-                                      transactionHash:
-                                        item.cancelStakingTransactionHash ?? ''
-                                    })
-                                  }
-                                >
-                                  {t('withdraw')}
-                                </button>
-                              )}
+                              <div></div>
                             </TableCell>
                           </TableRow>
                         ))
                       : []}
                   </TableBody>
                 </Table>
-              )} */}
+              )}
               <Button
-                disabled={!POOL_B_ENABLE}
+                disabled={!POOL_C_ENABLE}
                 onClick={() => {
-                  setIsShowNFTDetails(!isShowNFTDetails)
+                  setIsShowPromotionDetails(!isShowPromotionDetails)
                 }}
                 className='rounded-[35px] text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-full
-                  md:w-[480px] font-bold'
+                  md:w-[480px] font-bold uppercase'
               >
-                {isShowNFTDetails ? t('hideDetails') : t('stakingDetails')}
+                {isShowPromotionDetails ? t('hideDetails') : t('rewardDetail')}
               </Button>
             </div>
           </div>

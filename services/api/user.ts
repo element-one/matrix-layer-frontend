@@ -193,3 +193,75 @@ export const useGetUserRewardsSummary = (
     ...options
   })
 }
+
+export interface ApiGetUserRewardsMlpTokenResponse {
+  data: {
+    id: string
+    createdAt: string
+    updatedAt: string
+    deletedAt: string | null
+    tokenAmount: string
+    status: string
+    type: number
+    transactionHash: string
+    merchantReferralLevel: string | null
+    merchantAddress: string | null
+    blockDate: string | null
+    address: string
+  }[]
+  total: number
+  page: number
+  pageSize: number
+}
+export enum MiningType {
+  Phone = 0,
+  POW = 1,
+  NFTBoosted = 2,
+  MLPBoosted = 3,
+  Promotional = 4
+}
+
+interface GetUserRewardsMlpTokenParams {
+  address?: Address
+  page?: number
+  pageSize?: number
+  startDate?: string
+  endDate?: string
+  order?: string
+  type?: MiningType
+}
+
+export const getUserRewardsMlpToken = async (
+  params: GetUserRewardsMlpTokenParams
+): Promise<ApiGetUserRewardsMlpTokenResponse> => {
+  try {
+    const { data } = await axios.get<ApiGetUserRewardsMlpTokenResponse>(
+      `/users/rewards/mlp-token/${params.address}`,
+      {
+        params: {
+          page: params.page,
+          pageSize: params.pageSize,
+          startDate: params.startDate,
+          endDate: params.endDate,
+          order: params.order,
+          type: params.type
+        }
+      }
+    )
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const useGetUserRewardsMlpToken = (
+  params: GetUserRewardsMlpTokenParams,
+  options?: Partial<UseQueryOptions<ApiGetUserRewardsMlpTokenResponse, Error>>
+) => {
+  return useQuery<ApiGetUserRewardsMlpTokenResponse, Error>({
+    queryKey: ['user', 'rewards-mlp-token', params],
+    queryFn: () => getUserRewardsMlpToken(params),
+    enabled: !!params.address,
+    ...options
+  })
+}
