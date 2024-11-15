@@ -369,7 +369,9 @@
     },
     "warnContent": "The staking period has not yet expired. If you withdraw, your earnings will be converted to",
     "doYouContinue": "Do you choose to continue?",
-    "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards"
+    "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards",
+    "totalPerformanceUSD": "Total Performance USD",
+    "dailyAverageUSD": "Daily average (30D) USD"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",

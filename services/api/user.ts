@@ -168,6 +168,8 @@ export interface ApiGetUserRewardsSummaryResponse {
   yesterdayPoolCRewards: string
   yesterdayPoolPhoneRewards: string
   userHoldingCount: number
+  teamUserHoldingSales: string
+  teamDailyUserHoldingSales: string
 }
 
 export const getUserRewardsSummary = async (address?: string) => {
