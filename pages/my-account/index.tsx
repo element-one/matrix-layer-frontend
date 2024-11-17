@@ -197,17 +197,17 @@ const MyAccount = () => {
 
   const holdings = useMemo(() => {
     return {
-      phone: Number(phoneBalance?.toString() ?? 0) + phoneStaked.length,
+      phone: Number(phoneBalance?.toString() ?? 0) + phoneStaked?.length,
       mlpTokenAmount: userData?.mlpTokenAmountPoolA,
       totalRewards: referralRewards?.toString(),
-      matrix: Number(matrixBalance?.toString() ?? 0) + matrixStaked.length,
+      matrix: Number(matrixBalance?.toString() ?? 0) + matrixStaked?.length,
       availableRewards: referralRewards?.toString(),
       agent_one:
-        Number(aiAgentOneBalance?.toString() ?? 0) + agentOneStaked.length,
+        Number(aiAgentOneBalance?.toString() ?? 0) + agentOneStaked?.length,
       agent_pro:
-        Number(aiAgentProBalance?.toString() ?? 0) + agentProStaked.length,
+        Number(aiAgentProBalance?.toString() ?? 0) + agentProStaked?.length,
       agent_ultra:
-        Number(aiAgentUltraBalance?.toString() ?? 0) + agentUltraStaked.length
+        Number(aiAgentUltraBalance?.toString() ?? 0) + agentUltraStaked?.length
     }
   }, [
     phoneBalance,
@@ -217,11 +217,11 @@ const MyAccount = () => {
     aiAgentUltraBalance,
     matrixBalance,
     userData?.mlpTokenAmountPoolA,
-    phoneStaked.length,
-    matrixStaked.length,
-    agentOneStaked.length,
-    agentProStaked.length,
-    agentUltraStaked.length
+    phoneStaked?.length,
+    matrixStaked?.length,
+    agentOneStaked?.length,
+    agentProStaked?.length,
+    agentUltraStaked?.length
   ])
 
   const [selectedOrderId, setSelectedOrderId] = useState('')
