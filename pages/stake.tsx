@@ -470,6 +470,7 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
+    if (!address) return
     const phoneTokens = phoneStaked
       ? phoneStaked?.map((id) => {
           return {
@@ -528,6 +529,7 @@ const StakePage: NextPage = () => {
       ...agentUltraTokens
     ])
   }, [
+    address,
     phoneStaked,
     matrixStaked,
     agentOneStaked,
@@ -607,6 +609,7 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
+    if (!address) return
     const phoneTokens = phoneBalance
       ? phoneBalance?.map((id) => {
           return {
