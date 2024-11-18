@@ -2687,7 +2687,11 @@ const StakePage: NextPage = () => {
                     {t('dailyAverageUSD')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.teamDailyUserHoldingSales ?? '0'}
+                    {userRewardsSummary?.teamDailyUserHoldingSales
+                      ? parseFloat(
+                          userRewardsSummary?.teamDailyUserHoldingSales
+                        ).toFixed(2)
+                      : '0'}
                   </div>
                 </div>
                 <div
