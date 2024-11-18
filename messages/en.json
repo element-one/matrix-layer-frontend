@@ -167,6 +167,7 @@
     }
   },
   "MyAccount": {
+    "copied": "Copied",
     "myAccount": "My Account",
     "referralCode": "Referral Code",
     "copyCode": "Copy Code",
@@ -269,6 +270,7 @@
     }
   },
   "Stake": {
+    "copied": "Copied",
     "skateTitle": "Stake",
     "myAccount": "My Account",
     "enterInviteCode": "Enter invite code",
