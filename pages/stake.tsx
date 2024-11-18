@@ -382,6 +382,7 @@ const StakePage: NextPage = () => {
     if (navigator.clipboard) {
       try {
         await navigator.clipboard.writeText(text)
+        toast.success(t('copied'))
       } catch (e) {
         console.log(e)
       }

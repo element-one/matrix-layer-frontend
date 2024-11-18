@@ -167,6 +167,7 @@
     }
   },
   "MyAccount": {
+    "copied": "已复制",
     "myAccount": "我的账户",
     "referralCode": "邀请码",
     "copyCode": "复制邀请码",
@@ -269,6 +270,7 @@
     }
   },
   "Stake": {
+    "copied": "已复制",
     "skateTitle": "质押",
     "myAccount": "我的账户",
     "enterInviteCode": "输入推荐人邀请码",
