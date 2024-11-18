@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { formatUnits } from 'ethers'
 
 export const formatCurrency = (
-  amount: string | number,
+  amount: string | number = 0,
   decimals: number = 18
 ) => {
   try {

@@ -2258,11 +2258,7 @@ const StakePage: NextPage = () => {
                     {t('yesterdayStakingRewards')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.yesterdayPoolB1Rewards
-                      ? formatCurrency(
-                          userRewardsSummary?.yesterdayPoolB1Rewards
-                        )
-                      : '0.00'}{' '}
+                    {formatCurrency(userRewardsSummary?.yesterdayPoolB1Rewards)}{' '}
                     MLP
                   </div>
                 </div>
@@ -2274,9 +2270,7 @@ const StakePage: NextPage = () => {
                     {t('acceleratedMLP')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.poolB1StakingAmount
-                      ? formatCurrency(userRewardsSummary?.poolB1StakingAmount)
-                      : '0.00'}
+                    {formatCurrency(userRewardsSummary?.poolB1StakingAmount)}
                   </div>
                 </div>
                 <div
@@ -2298,9 +2292,7 @@ const StakePage: NextPage = () => {
                     {t('totalMLPRewards')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.poolB1TotalRewards
-                      ? formatCurrency(userRewardsSummary?.poolB1TotalRewards)
-                      : '0.00'}
+                    {formatCurrency(userRewardsSummary?.poolB1TotalRewards)}
                   </div>
                 </div>
               </div>
@@ -2450,11 +2442,9 @@ const StakePage: NextPage = () => {
                       {t('yesterdayStakingRewards')}
                     </span>
                     <div className='text-[18px] font-bold'>
-                      {userRewardsSummary?.yesterdayPoolB2Rewards
-                        ? formatCurrency(
-                            userRewardsSummary?.yesterdayPoolB2Rewards
-                          )
-                        : '0.00'}{' '}
+                      {formatCurrency(
+                        userRewardsSummary?.yesterdayPoolB2Rewards
+                      )}{' '}
                       MLP
                     </div>
                   </div>
@@ -2466,11 +2456,7 @@ const StakePage: NextPage = () => {
                       {t('acceleratedMLP')}
                     </span>
                     <div className='text-[18px] font-bold'>
-                      {userRewardsSummary?.poolB2StakingAmount
-                        ? formatCurrency(
-                            userRewardsSummary?.poolB2StakingAmount
-                          )
-                        : '0.00'}
+                      {formatCurrency(userRewardsSummary?.poolB2StakingAmount)}
                     </div>
                   </div>
                 </div>
@@ -2484,9 +2470,7 @@ const StakePage: NextPage = () => {
                       {t('TotalMLPRewards')}
                     </span>
                     <div className='text-[18px] font-bold'>
-                      {userRewardsSummary?.poolB2TotalRewards
-                        ? formatCurrency(userRewardsSummary?.poolB2TotalRewards)
-                        : '0.00'}
+                      {formatCurrency(userRewardsSummary?.poolB2TotalRewards)}
                     </div>
                   </div>
                 </div>
@@ -2658,11 +2642,7 @@ const StakePage: NextPage = () => {
                   )}
                 >
                   <span className='text-gray-a5'>$MLP {t('amount')}</span>
-                  <span>
-                    {userData?.mlpTokenAmountPoolC
-                      ? formatCurrency(userData?.mlpTokenAmountPoolC)
-                      : '0.00'}
-                  </span>
+                  <span>{formatCurrency(userData?.mlpTokenAmountPoolC)}</span>
                 </div>
               )}
             </div>
@@ -2681,14 +2661,10 @@ const StakePage: NextPage = () => {
                     md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('yesterdayStakingRewards')}
+                    {t('yesterdayRewards')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.yesterdayPoolCRewards
-                      ? formatCurrency(
-                          userRewardsSummary?.yesterdayPoolCRewards
-                        )
-                      : '0.00'}{' '}
+                    {formatCurrency(userRewardsSummary?.yesterdayPoolCRewards)}{' '}
                     MLP
                   </div>
                 </div>
@@ -2700,9 +2676,7 @@ const StakePage: NextPage = () => {
                     {t('totalPerformanceUSD')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.poolCTotalRewards
-                      ? formatCurrency(userRewardsSummary?.poolCTotalRewards)
-                      : '0.00'}
+                    {formatCurrency(userRewardsSummary?.poolCTotalRewards)}
                   </div>
                 </div>
                 <div
@@ -2713,7 +2687,11 @@ const StakePage: NextPage = () => {
                     {t('dailyAverageUSD')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.teamDailyUserHoldingSales ?? '0'}
+                    {userRewardsSummary?.teamDailyUserHoldingSales
+                      ? parseFloat(
+                          userRewardsSummary?.teamDailyUserHoldingSales
+                        ).toFixed(2)
+                      : '0'}
                   </div>
                 </div>
                 <div
@@ -2724,9 +2702,7 @@ const StakePage: NextPage = () => {
                     {t('totalMLPRewards')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.teamUserHoldingSales
-                      ? formatCurrency(userRewardsSummary?.teamUserHoldingSales)
-                      : '0.00'}
+                    {formatCurrency(userRewardsSummary?.teamUserHoldingSales)}
                   </div>
                 </div>
               </div>
