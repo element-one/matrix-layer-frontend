@@ -1,4 +1,15 @@
 {
+  "StakeConfirmModal": {
+    "cancel": "CANCEL",
+    "stake": "STAKE",
+    "unstake": "UNSTAKE",
+    "stakeNft": "STAKE NFT",
+    "unstakeNft": "UNSTAKE NFT",
+    "info": "After stake the NFT you will be able to obtain the reward MLP Token.",
+    "unstakeInfo": "After unstak the NFT you will no longer be able to obtain reward MLP Token",
+    "areYouSureYouWantToStake": "Are you sure you want to stake?",
+    "areYouSureYouWantToUnStake": "Are you sure you want to unstake?"
+  },
   "Lang": {
     "en": "English",
     "zh": "Chinese"

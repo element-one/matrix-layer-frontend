@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent, ModalProps } from '@nextui-org/react'
 
 import { Button } from '@components/Button'
@@ -23,6 +24,8 @@ export const StakeConfirmModal: FC<StakeConfirmModalProps> = ({
   onConfirm,
   loading
 }) => {
+  const t = useTranslations('StakeConfirmModal')
+
   return (
     <Modal
       isOpen={isOpen}
@@ -41,7 +44,7 @@ export const StakeConfirmModal: FC<StakeConfirmModalProps> = ({
         <ModalBody className='flex flex-col gap-y-[15px] md:gap-y-[37px] p-6 md:p-10 items-center'>
           <div className='w-full flex justify-between items-center'>
             <Text className='text-[24px] font-bold text-co-gray-6'>
-              {type === 'stake' ? 'STAKE NFT' : 'UNSTAKE NFT'}
+              {type === 'stake' ? t('stakeNft') : t('unstakeNft')}
             </Text>
             <ModalCloseIcon className='cursor-pointer' onClick={onClose} />
           </div>
@@ -53,14 +56,15 @@ export const StakeConfirmModal: FC<StakeConfirmModalProps> = ({
             />
             <div className='flex flex-col gap-y-3'>
               <Text className='text-[18px] font-bold text-co-gray-6 text-center md:text-left'>
-                After stake the NFT you will be able to obtain the reward MLP
-                Token.
+                {type === 'stake' ? t('info') : t('unstakeInfo')}
               </Text>
               <Text
                 className='text-[18px] font-bold bg-clip-text text-transparent bg-gradient-text-1
                   text-center md:text-left'
               >
-                Are you sure you want to stake?
+                {type === 'stake'
+                  ? t('areYouSureYouWantToStake')
+                  : t('areYouSureYouWantToUnStake')}
               </Text>
             </div>
           </div>
@@ -69,14 +73,14 @@ export const StakeConfirmModal: FC<StakeConfirmModalProps> = ({
               className='grow p-[10px] text-[16px] font-bold rounded-[35px] bg-white'
               onClick={onClose}
             >
-              CANCEL
+              {t('cancel')}
             </Button>
             <Button
               className='grow p-[10px] text-[16px] font-bold rounded-[35px]'
               isLoading={loading}
               onClick={onConfirm}
             >
-              {type === 'stake' ? 'STAKE' : 'UNSTAKE'}
+              {type === 'stake' ? t('stake') : t('unstake')}
             </Button>
           </div>
         </ModalBody>
