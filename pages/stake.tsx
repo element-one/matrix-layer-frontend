@@ -2673,7 +2673,7 @@ const StakePage: NextPage = () => {
                     md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('totalPerformanceUSD')}
+                    {t('totalPerformance')}
                   </span>
                   <div className='text-[18px] font-bold'>
                     {formatCurrency(userRewardsSummary?.poolCTotalRewards)}
@@ -2684,7 +2684,7 @@ const StakePage: NextPage = () => {
                     md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('dailyAverageUSD')}
+                    {t('dailyAverage')}
                   </span>
                   <div className='text-[18px] font-bold'>
                     {userRewardsSummary?.teamDailyUserHoldingSales
