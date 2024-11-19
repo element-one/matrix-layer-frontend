@@ -305,7 +305,7 @@
     "matrixInfo": "Matrix NFTs come with 7 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
     "usdt": "USDT",
     "nodeRewards": "Node Rewards",
-    "history": "History",
+    "claimHistory": "Claim History",
     "claim": "CLAIM",
     "mlp": "MLP",
     "claimable": "CLAIMABLE",
@@ -422,11 +422,11 @@
       "info": "Collect your rewards for sharing Matrix Layer Protocol with your frens & fam.",
       "totalReward": "TOTAL REWARD",
       "claimableReward": "CLAIMABLE REWARD",
-      "history": "HISTORY",
+      "claimHistory": "CLAIM HISTORY",
       "claim": "CLAIM"
     },
     "rewardHistoryModal": {
-      "title": "History",
+      "title": "Claim History",
       "time": "Time",
       "address": "Address",
       "reward": "Reward",

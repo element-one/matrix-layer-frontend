@@ -181,7 +181,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                   variant='bordered'
                   onClick={handleShowHistoryModal}
                 >
-                  {t('history')}
+                  {t('claimHistory')}
                 </Button>
               </div>
             </div>

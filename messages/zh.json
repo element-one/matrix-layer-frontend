@@ -305,7 +305,7 @@
     "matrixInfo": "Matrix NFT 在基础池中享有 7 天的挖矿权。质押一旦开始，就不能提前结束；提前取消质押将导致 NFT 无效。",
     "usdt": "USDT",
     "nodeRewards": "节点收益",
-    "history": "历史记录",
+    "claimHistory": "领取历史记录",
     "claim": "领取",
     "mlp": "MLP",
     "claimable": "可领取",
@@ -422,11 +422,11 @@
       "info": "分享 Matrix Layer 协议给你的朋友和家人，收获奖励。",
       "totalReward": "总奖励",
       "claimableReward": "可领取奖励",
-      "history": "历史记录",
+      "claimHistory": "领取历史记录",
       "claim": "领取"
     },
     "rewardHistoryModal": {
-      "title": "历史记录",
+      "title": "领取历史记录",
       "time": "时间",
       "address": "地址",
       "reward": "奖励",
