@@ -1,4 +1,15 @@
 {
+  "StakeConfirmModal": {
+    "cancel": "取消",
+    "stake": "质押",
+    "unstake": "取消质押",
+    "stakeNft": "质押 NFT",
+    "unstakeNft": "取消质押 NFT",
+    "info": "质押 NFT 后，您将能够获得奖励 MLP 代币。",
+    "unstakeInfo": "取消质押 NFT 后，您将不能再获得奖励 MLP 代币。",
+    "areYouSureYouWantToStake": "您确定要质押吗？",
+    "areYouSureYouWantToUnStake": "您确定要取消质押吗？"
+  },
   "Lang": {
     "en": "英文",
     "zh": "简体中文"
