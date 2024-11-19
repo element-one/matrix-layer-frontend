@@ -426,7 +426,7 @@
       "claim": "CLAIM"
     },
     "rewardHistoryModal": {
-      "title": "History",
+      "title": "Claim History",
       "time": "Time",
       "address": "Address",
       "reward": "Reward",
