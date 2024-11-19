@@ -1,11 +1,27 @@
 {
+  "StakeConfirmModal": {
+    "cancel": "取消",
+    "stake": "质押",
+    "unstake": "取消质押",
+    "stakeNft": "质押 NFT",
+    "unstakeNft": "取消质押 NFT",
+    "info": "质押 NFT 后，您将能够获得奖励 MLP 代币。",
+    "unstakeInfo": "取消质押 NFT 后，您将不能再获得奖励 MLP 代币。",
+    "areYouSureYouWantToStake": "您确定要质押吗？",
+    "areYouSureYouWantToUnStake": "您确定要取消质押吗？"
+  },
+  "Lang": {
+    "en": "英文",
+    "zh": "简体中文"
+  },
   "Navigation": {
     "home": "主页",
     "presale": "购买",
     "myAccount": "我的账户",
     "stake": "质押",
     "logout": "登出",
-    "connectWallet": "连接钱包"
+    "connectWallet": "连接钱包",
+    "compensationPlan": "补偿计划"
   },
   "Footer": {
     "copyright": "版权归 © Matrix Layer Protocol 2024 所有– 将保留所有权利"
@@ -162,6 +178,7 @@
     }
   },
   "MyAccount": {
+    "copied": "已复制",
     "myAccount": "我的账户",
     "referralCode": "邀请码",
     "copyCode": "复制邀请码",
@@ -264,6 +281,7 @@
     }
   },
   "Stake": {
+    "copied": "已复制",
     "skateTitle": "质押",
     "myAccount": "我的账户",
     "enterInviteCode": "输入推荐人邀请码",
@@ -287,7 +305,7 @@
     "matrixInfo": "Matrix NFT 在基础池中享有 7 天的挖矿权。质押一旦开始，就不能提前结束；提前取消质押将导致 NFT 无效。",
     "usdt": "USDT",
     "nodeRewards": "节点收益",
-    "history": "历史记录",
+    "claimHistory": "领取历史记录",
     "claim": "领取",
     "mlp": "MLP",
     "claimable": "可领取",
@@ -307,7 +325,7 @@
     "DailyRewardsHistory": "每日奖励历史",
     "basicPoolInfo": "您在基础池中的挖矿算力取决于您质押的 NFT 的数量和价值。",
     "BalancePool": {
-      "title": "余额池",
+      "title": "加速池",
       "DailyRewardHistory": "每日奖励历史"
     },
     "AccelerationPool": {
@@ -364,7 +382,13 @@
     },
     "warnContent": "质押期限尚未到期。如果您现在提取，您的收益将转换为",
     "doYouContinue": "您确定要继续吗？",
-    "withdrawDesc": "您将收回质押的 <text1>{amount} $MLP</text1> 以及质押奖励"
+    "withdrawDesc": "您将收回质押的 <text1>{amount} $MLP</text1> 以及质押奖励",
+    "totalPerformance": "算力值",
+    "dailyAverage": "日均（30天）",
+    "rewardDetail": "奖励详情",
+    "createTime": "创建时间",
+    "tokenAmount": "代币数量",
+    "status": "状态"
   },
   "ReferralCodeModal": {
     "referralCode": "邀请码",
@@ -398,11 +422,11 @@
       "info": "分享 Matrix Layer 协议给你的朋友和家人，收获奖励。",
       "totalReward": "总奖励",
       "claimableReward": "可领取奖励",
-      "history": "历史记录",
+      "claimHistory": "领取历史记录",
       "claim": "领取"
     },
     "rewardHistoryModal": {
-      "title": "历史记录",
+      "title": "领取历史记录",
       "time": "时间",
       "address": "地址",
       "reward": "奖励",
@@ -448,6 +472,29 @@
         "minuteAgo": "分钟前"
       },
       "sentenceHere": "请输入您的对话内容..."
+    }
+  },
+  "CompensationPlan": {
+    "notEligible": "您不具备此计划的资格",
+    "title": "补偿计划",
+    "summary": {
+      "title": "MLP补偿计划适用于",
+      "totalCompensate": "总补偿 $MLP 数量",
+      "unlock": "解锁开始于",
+      "unlockTip": "您的MLP补偿计划代币将锁住90天，代币解锁后，将会在90天线性释放完毕。",
+      "totalClaimed": "总领取数量"
+    },
+    "tables": {
+      "title": "总可领取 $MLP:",
+      "claimAll": "全部领取",
+      "releaseHistory": "释放历史",
+      "claimHistory": "领取历史",
+      "columns": {
+        "date": "日期",
+        "claimAmount": "领取金额",
+        "releaseAmount": "释放金额",
+        "link": "链接"
+      }
     }
   }
 }

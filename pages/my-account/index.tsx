@@ -300,6 +300,7 @@ const MyAccount = () => {
     if (navigator.clipboard) {
       try {
         await navigator.clipboard.writeText(text)
+        toast.success(t('copied'))
       } catch (e) {
         console.log(e)
       }
@@ -360,12 +361,9 @@ const MyAccount = () => {
           >
             {t('myAccount')}
           </Text>
-          <div
-            className='grid grid-cols-1 2xl:grid-cols-3 gap-11 border-2 md:border-none rounded-[20px]
-              p-8 md:p-0'
-          >
+          <div className='grid grid-cols-1 2xl:grid-cols-3 gap-6 md:gap-11 border-none rounded-[20px] p-0'>
             <div
-              className={tn(`md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
+              className={tn(`p-4 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
                 ${gradientBorderClass}`)}
             >
               <Text
@@ -393,7 +391,7 @@ const MyAccount = () => {
               </div>
             </div>
             <div
-              className={tn(`md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
+              className={tn(`p-4 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
                 ${gradientBorderClass}`)}
             >
               <Text
@@ -423,7 +421,7 @@ const MyAccount = () => {
               </div>
             </div>
             <div
-              className={tn(`md:p-8 md:border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
+              className={tn(`p-4 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
                 ${gradientBorderClass}`)}
             >
               <Text

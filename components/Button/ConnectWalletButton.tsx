@@ -1,4 +1,4 @@
-import { FC, Key } from 'react'
+import { FC, Key, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 import {
@@ -11,6 +11,7 @@ import {
 import clsx from 'clsx'
 import { useAccount, useDisconnect } from 'wagmi'
 
+import compensation_list from '@constants/compensation_list.json'
 import { ModalType, useModal } from '@contexts/modal'
 import { formatWalletAddress } from '@utils/formatWalletAddress'
 
@@ -30,6 +31,28 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
 
   const t = useTranslations('Navigation')
 
+  const DropdownItems = useMemo(() => {
+    const isInCompensationList =
+      address && compensation_list.whitelist.indexOf(address) > -1
+    const items = [
+      {
+        key: 'myAccount',
+        tKey: 'myAccount'
+      },
+      {
+        key: 'logout',
+        tKey: 'logout'
+      }
+    ]
+    if (isInCompensationList) {
+      items.splice(1, 0, {
+        key: 'compensationPlan',
+        tKey: 'compensationPlan'
+      })
+    }
+    return items
+  }, [address])
+
   const handleClick = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
   }
@@ -44,6 +67,9 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
         break
       case 'stake':
         router.push('stake')
+        break
+      case 'compensationPlan':
+        router.push('compensation-plan')
         break
       default:
         break
@@ -78,12 +104,11 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
             onAction={handleDropdownAction}
             className='bg-co-bg-1 text-co-text-1 py-2 border rounded-2xl border-co-border-gray'
           >
-            <DropdownItem key='myAccount' className='h-10'>
-              {t('myAccount')}
-            </DropdownItem>
-            <DropdownItem key='logout' className='h-10'>
-              {t('logout')}
-            </DropdownItem>
+            {DropdownItems.map((item) => (
+              <DropdownItem key={item.key} className='h-10'>
+                {t(item.tKey as any)}
+              </DropdownItem>
+            ))}
           </DropdownMenu>
         </Dropdown>
         <div

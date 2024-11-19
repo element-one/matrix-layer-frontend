@@ -48,7 +48,9 @@ import { TopSectionBackground } from '@components/TopSectionBackground/TopSectio
 import { ModalType, useModal } from '@contexts/modal'
 import {
   getStakingSignature,
+  MiningType,
   useGetUser,
+  useGetUserRewardsMlpToken,
   useGetUserRewardsSummary,
   usePatchReferralCode
 } from '@services/api'
@@ -115,6 +117,8 @@ const StakePage: NextPage = () => {
   const { data: userData, refetch: refetchUserData } = useGetUser(address, {
     enabled: !!address
   })
+  console.log('userData', userData)
+
   const [referralCode, setReferralCode] = useState('')
   const { signMessage } = useSignMessage()
   const [usdtHistoryModalVisible, setUsdtHistoryModalVisible] = useState(false)
@@ -125,6 +129,7 @@ const StakePage: NextPage = () => {
   const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
   const [isShowNFTDetails, setIsShowNFTDetails] = useState(false)
+  const [isShowPromotionDetails, setIsShowPromotionDetails] = useState(false)
 
   const stakingAmountRef = useRef<string | null>(null)
   const stakingPoolBMLPAmountRef = useRef<{
@@ -377,6 +382,7 @@ const StakePage: NextPage = () => {
     if (navigator.clipboard) {
       try {
         await navigator.clipboard.writeText(text)
+        toast.success(t('copied'))
       } catch (e) {
         console.log(e)
       }
@@ -470,6 +476,7 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
+    if (!address) return
     const phoneTokens = phoneStaked
       ? phoneStaked?.map((id) => {
           return {
@@ -528,6 +535,7 @@ const StakePage: NextPage = () => {
       ...agentUltraTokens
     ])
   }, [
+    address,
     phoneStaked,
     matrixStaked,
     agentOneStaked,
@@ -561,6 +569,20 @@ const StakePage: NextPage = () => {
         enabled: !!address && POOL_B_ENABLE
       }
     )
+
+  const {
+    data: userRewardsMlpTokenPoolC,
+    refetch: refetchUserRewardsMlpTokenPoolC
+  } = useGetUserRewardsMlpToken({
+    address: address as Address,
+    type: MiningType.Promotional
+  })
+
+  console.log(
+    userRewardsMlpTokenPoolC,
+    'refetchUserRewardsMlpToken',
+    refetchUserRewardsMlpTokenPoolC
+  )
 
   console.log('userRewardsSummary', userRewardsSummary)
 
@@ -617,6 +639,7 @@ const StakePage: NextPage = () => {
   ]
 
   useEffect(() => {
+    if (!address) return
     const phoneTokens = phoneBalance
       ? phoneBalance?.map((id) => {
           return {
@@ -1716,7 +1739,7 @@ const StakePage: NextPage = () => {
                   onClick={handleUsdtHistoryClick}
                   className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
                 >
-                  {t('history')}
+                  {t('claimHistory')}
                 </div>
                 <Button
                   onClick={handleClaimReward}
@@ -1770,7 +1793,7 @@ const StakePage: NextPage = () => {
                   onClick={handleMLPHistoryClick}
                   className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
                 >
-                  {t('history')}
+                  {t('claimHistory')}
                 </div>
                 <Button
                   onClick={handleClaimMLP}
@@ -2245,11 +2268,7 @@ const StakePage: NextPage = () => {
                     {t('yesterdayStakingRewards')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.yesterdayPoolB1Rewards
-                      ? formatCurrency(
-                          userRewardsSummary?.yesterdayPoolB1Rewards
-                        )
-                      : '0.00'}{' '}
+                    {formatCurrency(userRewardsSummary?.yesterdayPoolB1Rewards)}{' '}
                     MLP
                   </div>
                 </div>
@@ -2261,9 +2280,7 @@ const StakePage: NextPage = () => {
                     {t('acceleratedMLP')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.poolB1StakingAmount
-                      ? formatCurrency(userRewardsSummary?.poolB1StakingAmount)
-                      : '0.00'}
+                    {formatCurrency(userRewardsSummary?.poolB1StakingAmount)}
                   </div>
                 </div>
                 <div
@@ -2285,9 +2302,7 @@ const StakePage: NextPage = () => {
                     {t('totalMLPRewards')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.poolB1TotalRewards
-                      ? formatCurrency(userRewardsSummary?.poolB1TotalRewards)
-                      : '0.00'}
+                    {formatCurrency(userRewardsSummary?.poolB1TotalRewards)}
                   </div>
                 </div>
               </div>
@@ -2437,11 +2452,9 @@ const StakePage: NextPage = () => {
                       {t('yesterdayStakingRewards')}
                     </span>
                     <div className='text-[18px] font-bold'>
-                      {userRewardsSummary?.yesterdayPoolB2Rewards
-                        ? formatCurrency(
-                            userRewardsSummary?.yesterdayPoolB2Rewards
-                          )
-                        : '0.00'}{' '}
+                      {formatCurrency(
+                        userRewardsSummary?.yesterdayPoolB2Rewards
+                      )}{' '}
                       MLP
                     </div>
                   </div>
@@ -2453,11 +2466,7 @@ const StakePage: NextPage = () => {
                       {t('acceleratedMLP')}
                     </span>
                     <div className='text-[18px] font-bold'>
-                      {userRewardsSummary?.poolB2StakingAmount
-                        ? formatCurrency(
-                            userRewardsSummary?.poolB2StakingAmount
-                          )
-                        : '0.00'}
+                      {formatCurrency(userRewardsSummary?.poolB2StakingAmount)}
                     </div>
                   </div>
                 </div>
@@ -2471,9 +2480,7 @@ const StakePage: NextPage = () => {
                       {t('TotalMLPRewards')}
                     </span>
                     <div className='text-[18px] font-bold'>
-                      {userRewardsSummary?.poolB2TotalRewards
-                        ? formatCurrency(userRewardsSummary?.poolB2TotalRewards)
-                        : '0.00'}
+                      {formatCurrency(userRewardsSummary?.poolB2TotalRewards)}
                     </div>
                   </div>
                 </div>
@@ -2645,7 +2652,7 @@ const StakePage: NextPage = () => {
                   )}
                 >
                   <span className='text-gray-a5'>$MLP {t('amount')}</span>
-                  <span>0.00</span>
+                  <span>{formatCurrency(userData?.mlpTokenAmountPoolC)}</span>
                 </div>
               )}
             </div>
@@ -2664,27 +2671,38 @@ const StakePage: NextPage = () => {
                     md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('yesterdayStakingRewards')}
+                    {t('yesterdayRewards')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00 MLP</div>
+                  <div className='text-[18px] font-bold'>
+                    {formatCurrency(userRewardsSummary?.yesterdayPoolCRewards)}{' '}
+                    MLP
+                  </div>
                 </div>
                 <div
                   className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
                     md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('acceleratedMLP')}
+                    {t('totalPerformance')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
+                  <div className='text-[18px] font-bold'>
+                    {formatCurrency(userRewardsSummary?.poolCTotalRewards)}
+                  </div>
                 </div>
                 <div
                   className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
                     md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
-                    {t('holdingNFT')}
+                    {t('dailyAverage')}
                   </span>
-                  <div className='text-[18px] font-bold'>0</div>
+                  <div className='text-[18px] font-bold'>
+                    {userRewardsSummary?.teamDailyUserHoldingSales
+                      ? parseFloat(
+                          userRewardsSummary?.teamDailyUserHoldingSales
+                        ).toFixed(2)
+                      : '0'}
+                  </div>
                 </div>
                 <div
                   className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
@@ -2693,10 +2711,72 @@ const StakePage: NextPage = () => {
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                     {t('totalMLPRewards')}
                   </span>
-                  <div className='text-[18px] font-bold'>0.00</div>
+                  <div className='text-[18px] font-bold'>
+                    {formatCurrency(userRewardsSummary?.teamUserHoldingSales)}
+                  </div>
                 </div>
               </div>
             )}
+
+            <div className='flex flex-col gap-y-8 mt-8 items-center h-fit transition-height'>
+              {isShowPromotionDetails && (
+                <Table
+                  aria-label='Details'
+                  classNames={{
+                    wrapper:
+                      'rounded-[12px] border border-purple-500 bg-black-15 backdrop-blur-[6px] p-0 w-full',
+                    th: 'bg-black text-white text-[18px] font-bold text-white text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
+                    td: ' py-5 px-3 text-[14px] font-medium text-center',
+                    tr: 'odd:bg-black-15 even:bg-black-19 hover:bg-black-15 font-chakraPetch'
+                  }}
+                >
+                  <TableHeader>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      {t('createTime')}
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      {t('tokenAmount')}
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      {t('status')}
+                    </TableColumn>
+                    <TableColumn className='text-[14px] md:text-[16px]'>
+                      {t('action')}
+                    </TableColumn>
+                  </TableHeader>
+                  <TableBody>
+                    {!!userRewardsMlpTokenPoolC?.data?.length
+                      ? userRewardsMlpTokenPoolC?.data?.map((item) => (
+                          <TableRow key={item.id}>
+                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                              {dayjs(item.createdAt).format('YYYY.M.D')}
+                            </TableCell>
+                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                              {formatCurrency(item.tokenAmount)}
+                            </TableCell>
+                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                              {item.status}
+                            </TableCell>
+                            <TableCell className='text-gray-150'>
+                              <div></div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      : []}
+                  </TableBody>
+                </Table>
+              )}
+              <Button
+                disabled={!POOL_C_ENABLE}
+                onClick={() => {
+                  setIsShowPromotionDetails(!isShowPromotionDetails)
+                }}
+                className='rounded-[35px] text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-full
+                  md:w-[480px] font-bold uppercase'
+              >
+                {isShowPromotionDetails ? t('hideDetails') : t('rewardDetail')}
+              </Button>
+            </div>
           </div>
         </Content>
       </Container>

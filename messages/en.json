@@ -1,11 +1,27 @@
 {
+  "StakeConfirmModal": {
+    "cancel": "CANCEL",
+    "stake": "STAKE",
+    "unstake": "UNSTAKE",
+    "stakeNft": "STAKE NFT",
+    "unstakeNft": "UNSTAKE NFT",
+    "info": "After stake the NFT you will be able to obtain the reward MLP Token.",
+    "unstakeInfo": "After unstak the NFT you will no longer be able to obtain reward MLP Token",
+    "areYouSureYouWantToStake": "Are you sure you want to stake?",
+    "areYouSureYouWantToUnStake": "Are you sure you want to unstake?"
+  },
+  "Lang": {
+    "en": "English",
+    "zh": "Chinese"
+  },
   "Navigation": {
     "home": "HOME",
     "presale": "PRESALE",
     "myAccount": "My Account",
     "stake": "STAKE",
     "logout": "Log out",
-    "connectWallet": "Connect Wallet"
+    "connectWallet": "Connect Wallet",
+    "compensationPlan": "Compensation Plan"
   },
   "Footer": {
     "copyright": "Copyright © Matrix Layer Protocol 2024 – All rights reserved."
@@ -162,6 +178,7 @@
     }
   },
   "MyAccount": {
+    "copied": "Copied",
     "myAccount": "My Account",
     "referralCode": "Referral Code",
     "copyCode": "Copy Code",
@@ -264,6 +281,7 @@
     }
   },
   "Stake": {
+    "copied": "Copied",
     "skateTitle": "Stake",
     "myAccount": "My Account",
     "enterInviteCode": "Enter invite code",
@@ -287,7 +305,7 @@
     "matrixInfo": "Matrix NFTs come with 7 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
     "usdt": "USDT",
     "nodeRewards": "Node Rewards",
-    "history": "History",
+    "claimHistory": "Claim History",
     "claim": "CLAIM",
     "mlp": "MLP",
     "claimable": "CLAIMABLE",
@@ -364,7 +382,13 @@
     },
     "warnContent": "The staking period has not yet expired. If you withdraw, your earnings will be converted to",
     "doYouContinue": "Do you choose to continue?",
-    "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards"
+    "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards",
+    "totalPerformance": "Computing Power",
+    "dailyAverage": "Daily average (30D)",
+    "rewardDetail": "Reward detail",
+    "createTime": "Create time",
+    "tokenAmount": "Token amount",
+    "status": "Status"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",
@@ -398,11 +422,11 @@
       "info": "Collect your rewards for sharing Matrix Layer Protocol with your frens & fam.",
       "totalReward": "TOTAL REWARD",
       "claimableReward": "CLAIMABLE REWARD",
-      "history": "HISTORY",
+      "claimHistory": "CLAIM HISTORY",
       "claim": "CLAIM"
     },
     "rewardHistoryModal": {
-      "title": "History",
+      "title": "Claim History",
       "time": "Time",
       "address": "Address",
       "reward": "Reward",
@@ -448,6 +472,29 @@
         "minuteAgo": "minutes ago"
       },
       "sentenceHere": "Your Sentence Here..."
+    }
+  },
+  "CompensationPlan": {
+    "notEligible": "You're not eligible for this plan",
+    "title": "MLP Compensation Plan",
+    "summary": {
+      "title": "MLP compensation Plan for:",
+      "totalCompensate": "Total Compensate $MLP Amount",
+      "unlock": "Unlock Starts at",
+      "unlockTip": "Your MLP compensation plan tokens will be locked for 90 days. After the tokens are unlocked, they will be released linearly over the next 90 days.",
+      "totalClaimed": "Total Claimed Amount"
+    },
+    "tables": {
+      "title": "Total Claimable $MLP:",
+      "claimAll": "Claim All",
+      "releaseHistory": "Release History",
+      "claimHistory": "Claim History",
+      "columns": {
+        "date": "Date",
+        "claimAmount": "Claim Amount",
+        "releaseAmount": "Release Amount",
+        "link": "link"
+      }
     }
   }
 }
