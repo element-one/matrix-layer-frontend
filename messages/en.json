@@ -422,7 +422,7 @@
       "info": "Collect your rewards for sharing Matrix Layer Protocol with your frens & fam.",
       "totalReward": "TOTAL REWARD",
       "claimableReward": "CLAIMABLE REWARD",
-      "history": "HISTORY",
+      "claimHistory": "CLAIM HISTORY",
       "claim": "CLAIM"
     },
     "rewardHistoryModal": {
