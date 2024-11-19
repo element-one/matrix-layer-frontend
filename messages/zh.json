@@ -314,7 +314,7 @@
     "DailyRewardsHistory": "每日奖励历史",
     "basicPoolInfo": "您在基础池中的挖矿算力取决于您质押的 NFT 的数量和价值。",
     "BalancePool": {
-      "title": "余额池",
+      "title": "加速池",
       "DailyRewardHistory": "每日奖励历史"
     },
     "AccelerationPool": {
@@ -372,8 +372,8 @@
     "warnContent": "质押期限尚未到期。如果您现在提取，您的收益将转换为",
     "doYouContinue": "您确定要继续吗？",
     "withdrawDesc": "您将收回质押的 <text1>{amount} $MLP</text1> 以及质押奖励",
-    "totalPerformanceUSD": "总业绩（美元）",
-    "dailyAverageUSD": "日均（30天）（美元）",
+    "totalPerformance": "算力值",
+    "dailyAverage": "日均（30天）",
     "rewardDetail": "奖励详情",
     "createTime": "创建时间",
     "tokenAmount": "代币数量",
