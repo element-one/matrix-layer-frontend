@@ -305,7 +305,7 @@
     "matrixInfo": "Matrix NFTs come with 7 days of mining rights in the basic pool. Once staking begins, it cannot be ended prematurely; canceling the stake early will render the NFT invalid.",
     "usdt": "USDT",
     "nodeRewards": "Node Rewards",
-    "history": "History",
+    "claimHistory": "Claim History",
     "claim": "CLAIM",
     "mlp": "MLP",
     "claimable": "CLAIMABLE",

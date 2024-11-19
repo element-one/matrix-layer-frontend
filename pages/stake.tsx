@@ -1729,7 +1729,7 @@ const StakePage: NextPage = () => {
                   onClick={handleUsdtHistoryClick}
                   className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
                 >
-                  {t('history')}
+                  {t('claimHistory')}
                 </div>
                 <Button
                   onClick={handleClaimReward}
@@ -1783,7 +1783,7 @@ const StakePage: NextPage = () => {
                   onClick={handleMLPHistoryClick}
                   className='cursor-pointer text-[12px] underline text-gray-500 uppercase font-bold'
                 >
-                  {t('history')}
+                  {t('claimHistory')}
                 </div>
                 <Button
                   onClick={handleClaimMLP}
