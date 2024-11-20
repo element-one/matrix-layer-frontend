@@ -550,28 +550,37 @@ const StakePage: NextPage = () => {
   const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
     useGetUserRewardsSummary(address)
   const { data: poolB1StakingList, refetch: refetchPoolB1StakingList } =
-    useGetUserStakingList({
-      address: address as Address,
-      type: 'pool_b1'
-    })
+    useGetUserStakingList(
+      {
+        address: address as Address,
+        type: 'pool_b1'
+      },
+      {
+        enabled: !!address && POOL_B_ENABLE
+      }
+    )
   const { data: poolB2StakingList, refetch: refetchPoolB2StakingList } =
-    useGetUserStakingList({
-      address: address as Address,
-      type: 'pool_b2'
-    })
+    useGetUserStakingList(
+      {
+        address: address as Address,
+        type: 'pool_b2'
+      },
+      {
+        enabled: !!address && POOL_B_ENABLE
+      }
+    )
 
   const {
-    data: userRewardsMlpTokenPoolC,
-    refetch: refetchUserRewardsMlpTokenPoolC
-  } = useGetUserRewardsMlpToken({
-    address: address as Address,
-    type: MiningType.Promotional
-  })
-
-  console.log(
-    userRewardsMlpTokenPoolC,
-    'refetchUserRewardsMlpToken',
-    refetchUserRewardsMlpTokenPoolC
+    data: userRewardsMlpTokenPoolC
+    // refetch: refetchUserRewardsMlpTokenPoolC
+  } = useGetUserRewardsMlpToken(
+    {
+      address: address as Address,
+      type: MiningType.Promotional
+    },
+    {
+      enabled: !!address && POOL_C_ENABLE
+    }
   )
 
   console.log('userRewardsSummary', userRewardsSummary)
