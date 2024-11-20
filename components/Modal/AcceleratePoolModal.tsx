@@ -9,29 +9,6 @@ import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 import { useGetStakingApySummary } from '@services/api/staking'
 
-const default_options = [
-  {
-    day: '30',
-    title: 'Stake for 30 Days',
-    content: '37% APY'
-  },
-  {
-    day: '60',
-    title: 'Stake for 60 Days',
-    content: '121% APY'
-  },
-  {
-    day: '90',
-    title: 'Stake for 90 Days',
-    content: '577% APY'
-  },
-  {
-    day: '180',
-    title: 'Stake for 180 Days',
-    content: '1988% APY'
-  }
-]
-
 export interface AcceleratePoolModalProps {
   onClose?: () => void
   onConfirm?: (options: {
@@ -46,6 +23,29 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
   onConfirm
 }) => {
   const t = useTranslations('Stake')
+
+  const default_options = [
+    {
+      day: '30',
+      title: t('stakeDays.30'),
+      content: '37% APY'
+    },
+    {
+      day: '60',
+      title: t('stakeDays.60'),
+      content: '121% APY'
+    },
+    {
+      day: '90',
+      title: t('stakeDays.90'),
+      content: '577% APY'
+    },
+    {
+      day: '180',
+      title: t('stakeDays.180'),
+      content: '1988% APY'
+    }
+  ]
 
   const { isModalShown, hideModal, isConfirmLoading } = useModal()
 

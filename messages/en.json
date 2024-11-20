@@ -388,7 +388,13 @@
     "rewardDetail": "Reward detail",
     "createTime": "Create time",
     "tokenAmount": "Token amount",
-    "status": "Status"
+    "status": "Status",
+    "stakeDays": {
+      "30": "Stake for 30 Days",
+      "60": "Stake for 60 Days",
+      "90": "Stake for 90 Days",
+      "180": "Stake for 180 Days"
+    }
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",
