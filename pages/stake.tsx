@@ -571,17 +571,16 @@ const StakePage: NextPage = () => {
     )
 
   const {
-    data: userRewardsMlpTokenPoolC,
-    refetch: refetchUserRewardsMlpTokenPoolC
-  } = useGetUserRewardsMlpToken({
-    address: address as Address,
-    type: MiningType.Promotional
-  })
-
-  console.log(
-    userRewardsMlpTokenPoolC,
-    'refetchUserRewardsMlpToken',
-    refetchUserRewardsMlpTokenPoolC
+    data: userRewardsMlpTokenPoolC
+    // refetch: refetchUserRewardsMlpTokenPoolC
+  } = useGetUserRewardsMlpToken(
+    {
+      address: address as Address,
+      type: MiningType.Promotional
+    },
+    {
+      enabled: !!address && POOL_C_ENABLE
+    }
   )
 
   console.log('userRewardsSummary', userRewardsSummary)
@@ -2697,11 +2696,9 @@ const StakePage: NextPage = () => {
                     {t('dailyAverage')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {userRewardsSummary?.teamDailyUserHoldingSales
-                      ? parseFloat(
-                          userRewardsSummary?.teamDailyUserHoldingSales
-                        ).toFixed(2)
-                      : '0'}
+                    {formatCurrency(
+                      userRewardsSummary?.teamDailyUserHoldingSales
+                    )}
                   </div>
                 </div>
                 <div

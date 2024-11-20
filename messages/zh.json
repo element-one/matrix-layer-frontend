@@ -388,7 +388,13 @@
     "rewardDetail": "奖励详情",
     "createTime": "创建时间",
     "tokenAmount": "代币数量",
-    "status": "状态"
+    "status": "状态",
+    "stakeDays": {
+      "30": "质押30天",
+      "60": "质押60天",
+      "90": "质押90天",
+      "180": "质押180天"
+    }
   },
   "ReferralCodeModal": {
     "referralCode": "邀请码",
