@@ -84,26 +84,32 @@ export const useGetRewardsHistory = (
   })
 }
 
-export const getMLPRewardsHistory = async (
-  address: Address,
+interface GetMLPRewardsHistoryParams {
+  address: Address
+  page?: number
+  pageSize?: number
+  type?: MiningType
+}
+
+export const getMLPRewardsHistory = async ({
+  address,
   page = 1,
-  pageSize = 20
-) => {
+  pageSize = 20,
+  type
+}: GetMLPRewardsHistoryParams) => {
   const url = `/users/rewards/mlp-token/${address}`
-  const { data } = await axios.get(url, { params: { page, pageSize } })
+  const { data } = await axios.get(url, { params: { page, pageSize, type } })
 
   return data
 }
 
 export const useGetMLPRewardsHistory = (
-  address: Address,
-  page: number,
-  pageSize = 6,
+  params: GetMLPRewardsHistoryParams,
   options?: Partial<UseQueryOptions<ApiRewardHistoryResponse, Error>>
 ) => {
   return useQuery<ApiRewardHistoryResponse, Error>({
-    queryKey: ['history', 'rewards', 'mlp-token', address, page, pageSize],
-    queryFn: () => getMLPRewardsHistory(address, page, pageSize),
+    queryKey: ['history', 'rewards', 'mlp-token', params],
+    queryFn: () => getMLPRewardsHistory(params),
     ...options
   })
 }
@@ -261,6 +267,80 @@ export const useGetUserRewardsMlpToken = (
   return useQuery<ApiGetUserRewardsMlpTokenResponse, Error>({
     queryKey: ['user', 'rewards-mlp-token', params],
     queryFn: () => getUserRewardsMlpToken(params),
+    enabled: !!params.address,
+    ...options
+  })
+}
+
+interface GetUserRewardDetailsParams {
+  address?: Address
+  page?: number
+  pageSize?: number
+  startDate?: string
+  endDate?: string
+  order?: string
+  poolType?: 'pool_phone' | 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c'
+}
+
+export interface ApiGetUserRewardDetailsResponse {
+  data: {
+    id: string
+    createdAt: string
+    updatedAt: string
+    deletedAt: string | null
+    date: string
+    poolType: string
+    type: string
+    rate: string
+    amount: string
+    stakingAmount: string
+    daySequence: number
+    transactionHash: string | null
+    stakingStartDate: string | null
+    mlpTokenPrice: string
+    totalContracts: number
+    eligibleContracts: number
+    blockTimestamp: string | null
+    poolCParams: string | null
+    userStakingIds: string[]
+    totalHoldings: number
+    holdingsByType: Record<string, unknown>
+  }[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+export const getUserRewardDetails = async (
+  params: GetUserRewardDetailsParams
+): Promise<ApiGetUserRewardDetailsResponse> => {
+  try {
+    const { data } = await axios.get<ApiGetUserRewardDetailsResponse>(
+      `/users/reward-details/${params.address}`,
+      {
+        params: {
+          page: params.page,
+          pageSize: params.pageSize,
+          startDate: params.startDate,
+          endDate: params.endDate,
+          order: params.order,
+          poolType: params.poolType
+        }
+      }
+    )
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const useGetUserRewardDetails = (
+  params: GetUserRewardDetailsParams,
+  options?: Partial<UseQueryOptions<ApiGetUserRewardDetailsResponse, Error>>
+) => {
+  return useQuery<ApiGetUserRewardDetailsResponse, Error>({
+    queryKey: ['user', 'reward-details', params],
+    queryFn: () => getUserRewardDetails(params),
     enabled: !!params.address,
     ...options
   })

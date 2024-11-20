@@ -442,6 +442,12 @@
       "title": "领取奖励",
       "success": "成功",
       "second": "秒"
+    },
+    "rewardsPoolBHistoryModal": {
+      "title": "领取奖励历史",
+      "date": "日期",
+      "acceleratedMLP": "加速MLP",
+      "rewards": "奖励"
     }
   },
   "Ai": {

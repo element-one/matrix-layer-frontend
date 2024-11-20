@@ -211,12 +211,19 @@ const StakePage: NextPage = () => {
           </div>
         ),
         onConfirm: () => {
-          unstakeMLPBoosted({
-            address: STAKE_B_ADDRESS,
-            abi: STAKE_B_ABI,
-            functionName: 'unstakeMLPBoosted',
-            args: [item.stakeId]
-          })
+          unstakeMLPBoosted(
+            {
+              address: STAKE_B_ADDRESS,
+              abi: STAKE_B_ABI,
+              functionName: 'unstakeMLPBoosted',
+              args: [item.stakeId]
+            },
+            {
+              onError(err) {
+                console.log('unstake mlp boosted error: ', err)
+              }
+            }
+          )
         }
       })
     } else {
@@ -263,6 +270,11 @@ const StakePage: NextPage = () => {
             {
               onError(err) {
                 console.log('unstake mlp boosted error: ', err)
+                const serializedError = serializeError(err)
+                console.log({ serializedError })
+                toast.error(
+                  (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
+                )
               }
             }
           )
@@ -294,6 +306,10 @@ const StakePage: NextPage = () => {
 
   const handleMLPHistoryClick = () => {
     showModal(ModalType.REWARDS_MLP_HISTORY_MODAL)
+  }
+
+  const handlePoolBHistoryClick = () => {
+    showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL)
   }
 
   const handleStakeNFT = () => {
@@ -329,12 +345,24 @@ const StakePage: NextPage = () => {
           return
         }
 
-        approvePoolBMLP({
-          address: mlpTokenAddress as Address,
-          abi: ERC20_ABI,
-          functionName: 'approve',
-          args: [STAKE_B_ADDRESS, amount]
-        })
+        approvePoolBMLP(
+          {
+            address: mlpTokenAddress as Address,
+            abi: ERC20_ABI,
+            functionName: 'approve',
+            args: [STAKE_B_ADDRESS, amount]
+          },
+          {
+            onError(err) {
+              console.log('approve pool b mlp error: ', err)
+              const serializedError = serializeError(err)
+              console.log({ serializedError })
+              toast.error(
+                (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
+              )
+            }
+          }
+        )
       }
     })
   }
@@ -345,6 +373,8 @@ const StakePage: NextPage = () => {
     functionName: 'mlpToken',
     args: []
   })
+  console.log('mlpTokenAddress', mlpTokenAddress)
+
   const { data: mlpTokenDecimals } = useReadContract({
     address: mlpTokenAddress as Address,
     abi: ERC20_ABI,
@@ -368,12 +398,24 @@ const StakePage: NextPage = () => {
           return
         }
 
-        approvePoolBNFT({
-          address: mlpTokenAddress as Address,
-          abi: ERC20_ABI,
-          functionName: 'approve',
-          args: [STAKE_B_ADDRESS, amount]
-        })
+        approvePoolBNFT(
+          {
+            address: mlpTokenAddress as Address,
+            abi: ERC20_ABI,
+            functionName: 'approve',
+            args: [STAKE_B_ADDRESS, amount]
+          },
+          {
+            onError(err) {
+              console.log('approve pool b nft error: ', err)
+              const serializedError = serializeError(err)
+              console.log({ serializedError })
+              toast.error(
+                (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
+              )
+            }
+          }
+        )
       }
     })
   }
@@ -2214,7 +2256,10 @@ const StakePage: NextPage = () => {
               </Text>
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
-                  <span className='font-bold text-[16px] text-gray-a5 underline'>
+                  <span
+                    onClick={handlePoolBHistoryClick}
+                    className='font-bold cursor-pointer text-[16px] text-gray-a5 underline'
+                  >
                     {t('BalancePool.DailyRewardHistory')}
                   </span>
                   {/* <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
