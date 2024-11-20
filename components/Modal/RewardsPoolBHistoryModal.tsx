@@ -1,5 +1,6 @@
 import { FC, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
+import { useTranslations } from 'next-intl'
 import {
   Modal,
   ModalBody,
@@ -18,43 +19,30 @@ import { useAccount } from 'wagmi'
 
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
-import { useGetMLPRewardsHistory } from '@services/api'
-import { formatUSDT } from '@utils/currency'
-import { formatClaimWalletAddress } from '@utils/formatWalletAddress'
+import { useGetUserRewardDetails } from '@services/api'
+import { formatCurrency } from '@utils/currency'
 import dayjs from 'dayjs'
 
-export interface RewardsMLPHistoryModalProps {
+export interface RewardsPoolBHistoryModalProps {
   onClose?: () => void
 }
 
-const statusClass = (status: string) => {
-  switch (status) {
-    case 'claimed':
-      return 'border-[#34D399] bg-[rgba(4,120,87,0.20)]'
-    case 'onprogress':
-      return 'border-[#FACC15] bg-[rgba(161,98,7,0.20)]'
-    default:
-      return ''
-  }
-}
-
-const statusCommonClass =
-  'w-[103px] h-[34px] rounded-[24px] flex items-center justify-center font-semibold capitalize text-sm border'
-
 const PAGE_SIZE = 6
 
-export const RewardsMLPHistoryModal: FC<RewardsMLPHistoryModalProps> = ({
+export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
   onClose
 }) => {
   const { address } = useAccount()
   const [page, setPage] = useState(1)
   const { hideModal, isModalShown } = useModal()
+  const t = useTranslations('Modals.rewardsPoolBHistoryModal')
 
-  const { data, isLoading, isRefetching } = useGetMLPRewardsHistory(
+  const { data, isLoading, isRefetching } = useGetUserRewardDetails(
     {
       address: address as Address,
       page,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
+      poolType: 'pool_b1'
     },
     {
       enabled: !!address
@@ -74,7 +62,7 @@ export const RewardsMLPHistoryModal: FC<RewardsMLPHistoryModalProps> = ({
 
   return (
     <Modal
-      isOpen={isModalShown(ModalType.REWARDS_MLP_HISTORY_MODAL)}
+      isOpen={isModalShown(ModalType.REWARDS_POOL_B_HISTORY_MODAL)}
       onClose={handleClose}
       isDismissable={false}
       size={isMobile ? 'full' : 'xl'}
@@ -88,7 +76,7 @@ export const RewardsMLPHistoryModal: FC<RewardsMLPHistoryModalProps> = ({
       <ModalContent className='bg-black-15 md:border md:border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
           <Text className='text-white text-[24px] md:text-[32px] font-bold'>
-            MLP Claimable History
+            {t('title')}
           </Text>
           <Table
             aria-label='Reward History'
@@ -101,10 +89,9 @@ export const RewardsMLPHistoryModal: FC<RewardsMLPHistoryModalProps> = ({
             }}
           >
             <TableHeader>
-              <TableColumn>Time</TableColumn>
-              <TableColumn>Address</TableColumn>
-              <TableColumn>Reward</TableColumn>
-              <TableColumn>Status</TableColumn>
+              <TableColumn>{t('date')}</TableColumn>
+              <TableColumn>{t('acceleratedMLP')}</TableColumn>
+              <TableColumn>{t('rewards')}</TableColumn>
             </TableHeader>
             <TableBody
               isLoading={isLoading || isRefetching}
@@ -119,18 +106,11 @@ export const RewardsMLPHistoryModal: FC<RewardsMLPHistoryModalProps> = ({
                   <TableCell className='text-gray-150'>
                     {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm:ss')}
                   </TableCell>
-                  <TableCell>
-                    {formatClaimWalletAddress(item.address)}
-                  </TableCell>
                   <TableCell className='font-bold'>
-                    {formatUSDT(item.tokenAmount)}
+                    {formatCurrency(item.stakingAmount)}
                   </TableCell>
                   <TableCell className='flex flex-row justify-center'>
-                    <span
-                      className={`${statusCommonClass} ${statusClass(item.status)}`}
-                    >
-                      {item.status}
-                    </span>
+                    {formatCurrency(item.amount)}
                   </TableCell>
                 </TableRow>
               ))}

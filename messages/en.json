@@ -442,6 +442,12 @@
       "title": "Claim Reward",
       "success": "Success",
       "second": "S"
+    },
+    "rewardsPoolBHistoryModal": {
+      "title": "MLP Claimable History",
+      "date": "Date",
+      "acceleratedMLP": "Accelerated MLP",
+      "rewards": "Rewards"
     }
   },
   "Ai": {
