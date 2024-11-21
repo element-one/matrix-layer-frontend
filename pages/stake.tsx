@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useTranslations } from 'next-intl'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import {
+  Spinner,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +16,7 @@ import {
 } from '@nextui-org/react'
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useQueryClient } from '@tanstack/react-query'
 import { Address, parseUnits } from 'viem'
 import {
   useAccount,
@@ -585,28 +587,62 @@ const StakePage: NextPage = () => {
     setStakeNFTCardVisible(!stakedTokens?.length)
   }, [stakedTokens])
 
+  const queryClient = useQueryClient()
   const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
     useGetUserRewardsSummary(address)
-  const { data: poolB1StakingList, refetch: refetchPoolB1StakingList } =
-    useGetUserStakingList(
+  const {
+    data: poolB1StakingList,
+    refetch: refetchPoolB1StakingListApi,
+    isPending: isFetchPoolB1StakingListPending
+  } = useGetUserStakingList(
+    {
+      address: address as Address,
+      type: 'pool_b1'
+    },
+    {
+      enabled: !!address && POOL_B_ENABLE
+    }
+  )
+
+  const refetchPoolB1StakingList = useCallback(() => {
+    refetchPoolB1StakingListApi()
+    queryClient.setQueryData(
+      [
+        'get',
+        'user-staking-list',
+        { address: address as Address, type: 'pool_b1' }
+      ],
       {
-        address: address as Address,
-        type: 'pool_b1'
-      },
-      {
-        enabled: !!address && POOL_B_ENABLE
+        data: []
       }
     )
-  const { data: poolB2StakingList, refetch: refetchPoolB2StakingList } =
-    useGetUserStakingList(
+  }, [address, queryClient, refetchPoolB1StakingListApi])
+  const {
+    data: poolB2StakingList,
+    refetch: refetchPoolB2StakingListApi,
+    isPending: isFetchPoolB2StakingListPending
+  } = useGetUserStakingList(
+    {
+      address: address as Address,
+      type: 'pool_b2'
+    },
+    {
+      enabled: !!address && POOL_B_ENABLE
+    }
+  )
+  const refetchPoolB2StakingList = useCallback(() => {
+    refetchPoolB2StakingListApi()
+    queryClient.setQueryData(
+      [
+        'get',
+        'user-staking-list',
+        { address: address as Address, type: 'pool_b2' }
+      ],
       {
-        address: address as Address,
-        type: 'pool_b2'
-      },
-      {
-        enabled: !!address && POOL_B_ENABLE
+        data: []
       }
     )
+  }, [address, queryClient, refetchPoolB2StakingListApi])
 
   const {
     data: userRewardsMlpTokenPoolC
@@ -739,7 +775,8 @@ const StakePage: NextPage = () => {
     matrixBalance,
     aiAgentOneBalance,
     aiAgentProBalance,
-    aiAgentUltraBalance
+    aiAgentUltraBalance,
+    address
   ])
 
   const { data: referralRewards, refetch: refetchReferralWard } =
@@ -855,7 +892,9 @@ const StakePage: NextPage = () => {
     stakePoolBNFTReceipt,
     refetchUserRewardsSummary,
     hideModal,
-    refetchPoolB1StakingList
+    refetchPoolB1StakingList,
+    queryClient,
+    address
   ])
 
   useEffect(() => {
@@ -2388,11 +2427,38 @@ const StakePage: NextPage = () => {
                       {t('action')}
                     </TableColumn>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody
+                    isLoading={isFetchPoolB1StakingListPending}
+                    loadingContent={
+                      <div className='w-full flex items-center justify-center'>
+                        <Spinner color='secondary' />
+                      </div>
+                    }
+                  >
                     {!!poolB1StakingList?.data?.length
                       ? poolB1StakingList?.data?.map((item) => (
                           <TableRow key={item.id}>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
+                              <span
+                                onClick={() => {
+                                  refetchPoolB1StakingList()
+                                  queryClient.setQueryData(
+                                    [
+                                      'get',
+                                      'user-staking-list',
+                                      {
+                                        address: address as Address,
+                                        type: 'pool_b1'
+                                      }
+                                    ],
+                                    {
+                                      data: []
+                                    }
+                                  )
+                                }}
+                              >
+                                ss
+                              </span>
                               {dayjs(item.createdAt).format('YYYY.M.D')}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
@@ -2587,7 +2653,14 @@ const StakePage: NextPage = () => {
                       {t('action')}
                     </TableColumn>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody
+                    isLoading={isFetchPoolB2StakingListPending}
+                    loadingContent={
+                      <div className='w-full flex items-center justify-center'>
+                        <Spinner color='secondary' />
+                      </div>
+                    }
+                  >
                     {poolB2StakingList?.data.map((item) => {
                       const isReinvestment = item.type === 1
                       const isExpired = dayjs(item.endStakingAt).isBefore(
