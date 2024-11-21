@@ -162,8 +162,10 @@ export interface ApiGetUserRewardsSummaryResponse {
   poolAStakingAmount: string
   poolATotalRewards: string
   poolB1StakingTokenAmount: string
+  poolB1MedianStakingTokenAmount: string
   poolB1TotalRewards: string
   poolB2StakingTokenAmount: string
+  poolB2MedianStakingTokenAmount: string
   poolB2TotalRewards: string
   poolCStakingAmount: string
   poolCTotalRewards: string
