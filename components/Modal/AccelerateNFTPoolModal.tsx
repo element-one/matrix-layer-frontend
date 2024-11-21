@@ -65,8 +65,11 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
               </span>
             </Tooltip>
           </div>
-          <div className='w-full'>
-            <div className='p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between gap-x-10'>
+          <div className='flex flex-col w-full'>
+            <div
+              className='w-full p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between
+                gap-x-10'
+            >
               <Text className='text-[13px] md:text-[24px] text-co-gray-7 font-bold'>
                 <span className='hidden md:inline-block'>
                   {t('AccelerateNFTBoostedPool.input')}{' '}
@@ -74,8 +77,8 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
                 {t('AccelerateNFTBoostedPool.amount')} :
               </Text>
               <input
-                className='grow bg-transparent text-right text-[15px] md:text-[24px] text-white font-bold
-                  placeholder:text-co-gray-8'
+                className='flex grow bg-transparent text-right text-[15px] md:text-[24px] text-white
+                  font-bold placeholder:text-co-gray-8'
                 placeholder={`$MLP ${t('AccelerateNFTBoostedPool.amount')}`}
                 value={amount}
                 onChange={(e) => {

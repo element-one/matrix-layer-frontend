@@ -149,8 +149,11 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
               )
             })}
           </div>
-          <div className='w-full'>
-            <div className='p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between gap-x-10'>
+          <div className='flex flex-col w-full'>
+            <div
+              className='w-full p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between
+                gap-x-10'
+            >
               <Text className='text-[10px] md:text-[24px] text-co-gray-7 font-bold'>
                 <span className='hidden md:inline-block'>
                   {t('AccelerateNFTBoostedPool.input')}{' '}
