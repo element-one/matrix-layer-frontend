@@ -349,7 +349,7 @@
     "unstakedDate": "取消质押日期",
     "action": "操作",
     "NumberOfStakedTokens": "质押代币数量",
-    "withdraw": "提现",
+    "withdraw": "取出本金",
     "withdrawn": "已提现",
     "stakingDetails": "质押详情",
     "hideDetails": "隐藏详情",
@@ -382,7 +382,8 @@
     },
     "warnContent": "质押期限尚未到期。如果您现在提取，您的收益将转换为",
     "doYouContinue": "您确定要继续吗？",
-    "withdrawDesc": "您将收回质押的 <text1>{amount} $MLP</text1> 以及质押奖励",
+    "withdrawDesc": "您将收回质押的 <text1>{amount} $MLP</text1>. 您的奖励 <text1> {rewardAmount} $MLP</text1> 将会被释放并且稍后可在奖励提领处提取，你您定要继续吗",
+    "inTotal": "总计",
     "totalPerformance": "算力值",
     "dailyAverage": "日均（30天）",
     "rewardDetail": "奖励详情",
@@ -394,7 +395,9 @@
       "60": "质押60天",
       "90": "质押90天",
       "180": "质押180天"
-    }
+    },
+    "minimumStakingPeriodNotReached": "质押时间未到不能取消质押",
+    "claimReward": "领取奖励"
   },
   "ReferralCodeModal": {
     "referralCode": "邀请码",

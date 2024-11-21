@@ -219,3 +219,8 @@ export type ApiRewardHistoryResponse = {
 export type ApiInWhitelistResponse = {
   isWhitelisted: boolean
 }
+
+export type ApiGetAllClaimSignatureResponse = {
+  amounts: string[]
+  signatures: string[]
+}
