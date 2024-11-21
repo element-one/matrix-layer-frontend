@@ -308,10 +308,6 @@ const StakePage: NextPage = () => {
     showModal(ModalType.REWARDS_MLP_HISTORY_MODAL)
   }
 
-  const handlePoolBHistoryClick = () => {
-    showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL)
-  }
-
   const handleStakeNFT = () => {
     if (!tokenOwned?.length) {
       showModal(ModalType.BUY_NFT_MODAL)
@@ -2256,12 +2252,12 @@ const StakePage: NextPage = () => {
               </Text>
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
-                  <span
+                  {/* <span
                     onClick={handlePoolBHistoryClick}
                     className='font-bold cursor-pointer text-[16px] text-gray-a5 underline'
                   >
                     {t('BalancePool.DailyRewardHistory')}
-                  </span>
+                  </span> */}
                   {/* <span className='text-[24px] md:text-[28px] my-3 md:my-0 font-bold'>
                     $2,345.89 USDT
                   </span> */}
@@ -2277,7 +2273,7 @@ const StakePage: NextPage = () => {
                 </div>
               )}
             </div>
-            <div className='w-full mt-5 md:mt-20 flex items-center justify-between'>
+            <div className='w-full mt-5 md:mt-20 flex md:items-center justify-between'>
               <Text
                 className={clsx(
                   'text-[16px] md:text-[28px] text-center font-bold',
@@ -2286,13 +2282,25 @@ const StakePage: NextPage = () => {
               >
                 {t('NFTBoostedPool')}
               </Text>
-              <Button
-                disabled={!POOL_B_ENABLE}
-                className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
-                onClick={handleOpenAccelerationNFTPoolModal}
-              >
-                {t('accelerate')}
-              </Button>
+              <div className='flex md:flex-row flex-col items-center gap-2 md:gap-4'>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
+                      poolType: 'pool_b1'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('BalancePool.DailyRewardHistory')}
+                </span>
+                <Button
+                  disabled={!POOL_B_ENABLE}
+                  className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
+                  onClick={handleOpenAccelerationNFTPoolModal}
+                >
+                  {t('accelerate')}
+                </Button>
+              </div>
             </div>
             {!POOL_B_ENABLE && (
               <div
@@ -2324,7 +2332,9 @@ const StakePage: NextPage = () => {
                     {t('acceleratedMLP')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {formatCurrency(userRewardsSummary?.poolB1StakingAmount)}
+                    {formatCurrency(
+                      userRewardsSummary?.poolB1StakingTokenAmount
+                    )}
                   </div>
                 </div>
                 <div
@@ -2459,7 +2469,7 @@ const StakePage: NextPage = () => {
 
             <div className='h-[1px] bg-gray-500 w-full mt-7'></div>
 
-            <div className='w-full mt-7 flex items-center justify-between'>
+            <div className='w-full mt-7 flex md:items-center justify-between'>
               <Text
                 className={clsx(
                   'text-[16px] md:text-[28px] text-center font-bold',
@@ -2468,13 +2478,25 @@ const StakePage: NextPage = () => {
               >
                 {t('MLPBoostedPool')}
               </Text>
-              <Button
-                disabled={!POOL_B_ENABLE}
-                className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
-                onClick={handleOpenAccelerationPoolModal}
-              >
-                {t('accelerate')}
-              </Button>
+              <div className='flex md:flex-row flex-col items-center gap-2 md:gap-4'>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
+                      poolType: 'pool_b2'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('BalancePool.DailyRewardHistory')}
+                </span>
+                <Button
+                  disabled={!POOL_B_ENABLE}
+                  className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
+                  onClick={handleOpenAccelerationPoolModal}
+                >
+                  {t('accelerate')}
+                </Button>
+              </div>
             </div>
 
             {!POOL_B_ENABLE && (
@@ -2510,7 +2532,9 @@ const StakePage: NextPage = () => {
                       {t('acceleratedMLP')}
                     </span>
                     <div className='text-[18px] font-bold'>
-                      {formatCurrency(userRewardsSummary?.poolB2StakingAmount)}
+                      {formatCurrency(
+                        userRewardsSummary?.poolB2StakingTokenAmount
+                      )}
                     </div>
                   </div>
                 </div>

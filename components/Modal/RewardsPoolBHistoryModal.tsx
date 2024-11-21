@@ -25,12 +25,14 @@ import dayjs from 'dayjs'
 
 export interface RewardsPoolBHistoryModalProps {
   onClose?: () => void
+  poolType: 'pool_b1' | 'pool_b2'
 }
 
 const PAGE_SIZE = 6
 
 export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
-  onClose
+  onClose,
+  poolType
 }) => {
   const { address } = useAccount()
   const [page, setPage] = useState(1)
@@ -42,7 +44,7 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
       address: address as Address,
       page,
       pageSize: PAGE_SIZE,
-      poolType: 'pool_b1'
+      poolType
     },
     {
       enabled: !!address
@@ -76,7 +78,7 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
       <ModalContent className='bg-black-15 md:border md:border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
           <Text className='text-white text-[24px] md:text-[32px] font-bold'>
-            {t('title')}
+            {poolType === 'pool_b1' ? 'NFT' : 'MLP'} {t('title')}
           </Text>
           <Table
             aria-label='Reward History'

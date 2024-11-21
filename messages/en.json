@@ -444,7 +444,7 @@
       "second": "S"
     },
     "rewardsPoolBHistoryModal": {
-      "title": "MLP Claimable History",
+      "title": "Daily Reward History",
       "date": "Date",
       "acceleratedMLP": "Accelerated MLP",
       "rewards": "Rewards"
