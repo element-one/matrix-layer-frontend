@@ -35,7 +35,6 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
       onClose={handleClose}
       size='xl'
       placement='center'
-      hideCloseButton
       classNames={{
         base: 'w-[1080px] !max-w-[95vw]',
         closeButton:

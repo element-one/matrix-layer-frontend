@@ -70,7 +70,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
       onClose={handleClose}
       size='xl'
       placement='center'
-      hideCloseButton
+      scrollBehavior='inside'
       classNames={{
         base: 'w-[1080px] !max-w-[95vw]',
         closeButton:
