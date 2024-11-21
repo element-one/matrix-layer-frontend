@@ -161,9 +161,9 @@ export interface ApiGetUserRewardsSummaryResponse {
   currentDayAllPoolTotalStakingAmount: string
   poolAStakingAmount: string
   poolATotalRewards: string
-  poolB1StakingAmount: string
+  poolB1StakingTokenAmount: string
   poolB1TotalRewards: string
-  poolB2StakingAmount: string
+  poolB2StakingTokenAmount: string
   poolB2TotalRewards: string
   poolCStakingAmount: string
   poolCTotalRewards: string

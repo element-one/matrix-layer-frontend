@@ -31,7 +31,10 @@ import {
 } from '@components/Modal/ManageAddressModal'
 import { RewardsMLPHistoryModal } from '@components/Modal/RewardsMLPHistoryModal'
 import { RewardsModal, RewardsModalProps } from '@components/Modal/RewardsModal'
-import { RewardsPoolBHistoryModal } from '@components/Modal/RewardsPoolBHistoryModal'
+import {
+  RewardsPoolBHistoryModal,
+  RewardsPoolBHistoryModalProps
+} from '@components/Modal/RewardsPoolBHistoryModal'
 import {
   WithdrawDetailModal,
   WithdrawDetailModalProps
@@ -80,6 +83,7 @@ type ModalProps =
   | AcceleratePoolModalProps
   | AccelerateNFTPoolModalProps
   | WithdrawDetailModalProps
+  | RewardsPoolBHistoryModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }
