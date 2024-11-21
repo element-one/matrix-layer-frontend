@@ -443,6 +443,13 @@
       "success": "成功",
       "second": "秒"
     },
+    "rewardsMLPHistoryModal": {
+      "title": "MLP 可领取历史",
+      "time": "时间",
+      "address": "地址",
+      "reward": "奖励",
+      "status": "状态"
+    },
     "rewardsPoolBHistoryModal": {
       "title": "每日奖励历史",
       "date": "日期",
