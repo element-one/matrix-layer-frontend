@@ -449,6 +449,12 @@
       "address": "地址",
       "reward": "奖励",
       "status": "状态"
+    },
+    "rewardsPoolBHistoryModal": {
+      "title": "每日奖励历史",
+      "date": "日期",
+      "acceleratedMLP": "加速MLP",
+      "rewards": "奖励"
     }
   },
   "Ai": {

@@ -449,6 +449,12 @@
       "address": "Address",
       "reward": "Reward",
       "status": "Status"
+    },
+    "rewardsPoolBHistoryModal": {
+      "title": "Daily Reward History",
+      "date": "Date",
+      "acceleratedMLP": "Accelerated MLP",
+      "rewards": "Rewards"
     }
   },
   "Ai": {

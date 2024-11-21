@@ -32,6 +32,10 @@ import {
 import { RewardsMLPHistoryModal } from '@components/Modal/RewardsMLPHistoryModal'
 import { RewardsModal, RewardsModalProps } from '@components/Modal/RewardsModal'
 import {
+  RewardsPoolBHistoryModal,
+  RewardsPoolBHistoryModalProps
+} from '@components/Modal/RewardsPoolBHistoryModal'
+import {
   WithdrawDetailModal,
   WithdrawDetailModalProps
 } from '@components/Modal/WithdrawDetailModal'
@@ -46,6 +50,7 @@ export enum ModalType {
   REWARDS_MODAL = 'REWARDS_MODAL',
   ACCELERATE_POOL_MODAL = 'ACCELERATE_POOL_MODAL',
   REWARDS_MLP_HISTORY_MODAL = 'REWARDS_MLP_HISTORY_MODAL',
+  REWARDS_POOL_B_HISTORY_MODAL = 'REWARDS_POOL_B_HISTORY_MODAL',
   BUY_NFT_MODAL = 'BUY_NFT_MODAL',
   ACCELERATE_NFT_POOL_MODAL = 'ACCELERATE_NFT_POOL_MODAL',
   WITHDRAW_MODAL = 'WITHDRAW_MODAL',
@@ -62,6 +67,7 @@ const MODAL_COMPONENTS = {
   [ModalType.ACCELERATE_POOL_MODAL]: AcceleratePoolModal,
   [ModalType.ACCELERATE_NFT_POOL_MODAL]: AccelerateNFTPoolModal,
   [ModalType.REWARDS_MLP_HISTORY_MODAL]: RewardsMLPHistoryModal,
+  [ModalType.REWARDS_POOL_B_HISTORY_MODAL]: RewardsPoolBHistoryModal,
   [ModalType.BUY_NFT_MODAL]: BuyNFTModal,
   [ModalType.WITHDRAW_MODAL]: WithdrawModal,
   [ModalType.WITHDRAW_DETAIL_MODAL]: WithdrawDetailModal
@@ -77,6 +83,7 @@ type ModalProps =
   | AcceleratePoolModalProps
   | AccelerateNFTPoolModalProps
   | WithdrawDetailModalProps
+  | RewardsPoolBHistoryModalProps
   | undefined
 
 type ModalStore = { type: ModalType | null; props?: ModalProps }
