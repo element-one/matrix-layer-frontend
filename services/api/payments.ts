@@ -1,7 +1,11 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import { Address } from 'viem'
 
-import { ApiGetSignatureResponse, ApiPaymentResponse } from '@type/api'
+import {
+  ApiGetAllClaimSignatureResponse,
+  ApiGetSignatureResponse,
+  ApiPaymentResponse
+} from '@type/api'
 
 import axios from '../axios/client'
 
@@ -67,6 +71,23 @@ export const useGetStakingSignature = (
   return useQuery<ApiGetSignatureResponse, Error>({
     queryKey: ['all', 'pow-staking-signature', address],
     queryFn: () => getStakingSignature(address),
+    ...options
+  })
+}
+
+export const getAllClaimSignature = async (address: Address) => {
+  const url = `/contracts/all-claim-signature/${address}`
+  const { data } = await axios.get<ApiGetAllClaimSignatureResponse>(url)
+  return data
+}
+
+export const useGetAllClaimSignature = (
+  address: Address,
+  options?: Partial<UseQueryOptions<ApiGetAllClaimSignatureResponse, Error>>
+) => {
+  return useQuery<ApiGetAllClaimSignatureResponse, Error>({
+    queryKey: ['all', 'all-claim-signature', address],
+    queryFn: () => getAllClaimSignature(address),
     ...options
   })
 }

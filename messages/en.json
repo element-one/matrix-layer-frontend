@@ -382,7 +382,8 @@
     },
     "warnContent": "The staking period has not yet expired. If you withdraw, your earnings will be converted to",
     "doYouContinue": "Do you choose to continue?",
-    "withdrawDesc": "You are getting back staked <text1>{amount} $MLP</text1> along with the staking rewards",
+    "withdrawDesc": "You will get back your staked <text1>{amount} $MLP</text1>. Your rewards <text1>{rewardAmount} $MLP</text1> will be released and can be claimed later in the rewards section, do you want to continue?",
+    "inTotal": "in total",
     "totalPerformance": "Computing Power",
     "dailyAverage": "Daily average (30D)",
     "rewardDetail": "Reward detail",
@@ -394,7 +395,9 @@
       "60": "Stake for 60 Days",
       "90": "Stake for 90 Days",
       "180": "Stake for 180 Days"
-    }
+    },
+    "minimumStakingPeriodNotReached": "Cannot unstake before minimum staking period is reached",
+    "claimReward": "Claim Reward"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",
