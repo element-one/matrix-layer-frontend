@@ -11,6 +11,7 @@ import { useGetStakingApySummary } from '@services/api/staking'
 
 export interface AcceleratePoolModalProps {
   onClose?: () => void
+  bestRate?: string
   onConfirm?: (options: {
     amount: string
     stakeDay: string
@@ -20,6 +21,7 @@ export interface AcceleratePoolModalProps {
 
 export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
   onClose,
+  bestRate,
   onConfirm
 }) => {
   const t = useTranslations('Stake')
@@ -166,7 +168,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
               />
             </div>
             <Text className='mt-[10px] text-right text-[10px] md:text-[18px] text-co-gray-7 font-bold'>
-              {t('AccelerateNFTBoostedPool.bestRate')} : 998 MLP
+              {t('AccelerateNFTBoostedPool.bestRate')} : {bestRate ?? '--'} MLP
             </Text>
           </div>
           <Button

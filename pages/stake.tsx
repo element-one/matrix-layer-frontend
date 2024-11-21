@@ -322,6 +322,9 @@ const StakePage: NextPage = () => {
 
   const handleOpenAccelerationPoolModal = () => {
     showModal(ModalType.ACCELERATE_POOL_MODAL, {
+      bestRate:
+        userRewardsSummary?.poolB2MedianStakingTokenAmount &&
+        formatUSDT(userRewardsSummary?.poolB2MedianStakingTokenAmount),
       onConfirm: (options: {
         amount: string
         stakeDay: string
@@ -386,6 +389,9 @@ const StakePage: NextPage = () => {
 
   const handleOpenAccelerationNFTPoolModal = () => {
     showModal(ModalType.ACCELERATE_NFT_POOL_MODAL, {
+      bestRate:
+        userRewardsSummary?.poolB1MedianStakingTokenAmount &&
+        formatUSDT(userRewardsSummary?.poolB1MedianStakingTokenAmount),
       onConfirm: (options: { amount: string }) => {
         stakingAmountRef.current = options.amount
         const amount = parseUnits(options.amount, mlpTokenDecimals as number)

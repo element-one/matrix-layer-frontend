@@ -9,11 +9,13 @@ import { ModalType, useModal } from '@contexts/modal'
 
 export interface AccelerateNFTPoolModalProps {
   onClose?: () => void
+  bestRate?: string
   onConfirm?: (options: { amount: string }) => void
 }
 
 export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
   onClose,
+  bestRate,
   onConfirm
 }) => {
   const t = useTranslations('Stake')
@@ -82,7 +84,7 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
               />
             </div>
             <Text className='mt-[10px] text-right text-[10px] md:text-[18px] text-co-gray-7 font-bold'>
-              {t('AccelerateNFTBoostedPool.bestRate')} : 998 MLP
+              {t('AccelerateNFTBoostedPool.bestRate')} : {bestRate ?? '--'} MLP
             </Text>
           </div>
           <Button
