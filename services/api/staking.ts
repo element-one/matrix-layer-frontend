@@ -24,3 +24,30 @@ export const useGetStakingApySummary = (
     ...options
   })
 }
+
+export interface ApiGetClaimSignatureResponse {
+  signature: string
+  amount: string
+}
+
+interface GetClaimSignatureParams {
+  type: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c'
+  address: string
+}
+
+export const getClaimSignature = async (params: GetClaimSignatureParams) => {
+  const url = `/contracts/claim-signature/${params.type}/${params.address}`
+  const { data } = await axios.get<ApiGetClaimSignatureResponse>(url)
+  return data
+}
+
+export const useGetClaimSignature = (
+  params: GetClaimSignatureParams,
+  options?: Partial<UseQueryOptions<ApiGetClaimSignatureResponse, any, any>>
+) => {
+  return useQuery<ApiGetClaimSignatureResponse>({
+    queryKey: ['get', 'claim-signature', params.type, params.address],
+    queryFn: () => getClaimSignature(params),
+    ...options
+  })
+}

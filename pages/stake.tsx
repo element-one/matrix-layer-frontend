@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useTranslations } from 'next-intl'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import {
+  Spinner,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +16,7 @@ import {
 } from '@nextui-org/react'
 import clsx from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { useQueryClient } from '@tanstack/react-query'
 import { Address, parseUnits } from 'viem'
 import {
   useAccount,
@@ -43,6 +45,7 @@ import {
   StakeConfirmModal,
   StakeTypeEnum
 } from '@components/Modal/StakeConfirmModal'
+import { ClaimButton } from '@components/Staking/ClaimButton'
 import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { ModalType, useModal } from '@contexts/modal'
@@ -149,7 +152,8 @@ const StakePage: NextPage = () => {
           <div className='mb-4'>
             {t.rich('withdrawDesc', {
               text1: (chunks) => <span className='text-white'>{chunks}</span>,
-              amount: formatCurrency(options.stakedTokenAmount)
+              amount: formatCurrency(options.stakedTokenAmount),
+              rewardAmount: formatCurrency(options.rewardAmount)
             })}
           </div>
           <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
@@ -163,7 +167,7 @@ const StakePage: NextPage = () => {
                   .plus(options.rewardAmount)
                   .toString()
               )}{' '}
-              $MLP <span className='text-[18px]'>in total</span>
+              $MLP <span className='text-[18px]'>{t('inTotal')}</span>
             </div>
           </div>
           <div className='text-[14px] md:text-[18px] text-gray-150'>
@@ -182,6 +186,15 @@ const StakePage: NextPage = () => {
           {
             onError(err) {
               console.log('unstake nft boosted error: ', err)
+              const serializedError = serializeError(err)
+              console.log({ serializedError })
+              const errMessage: string = (serializedError?.data as any)
+                ?.originalError?.shortMessage // eslint-disable-line
+              if (errMessage?.includes('Minimum staking period not reached')) {
+                toast.error(t('minimumStakingPeriodNotReached'))
+              } else {
+                toast.error(errMessage)
+              }
             }
           }
         )
@@ -221,6 +234,17 @@ const StakePage: NextPage = () => {
             {
               onError(err) {
                 console.log('unstake mlp boosted error: ', err)
+                const serializedError = serializeError(err)
+                console.log({ serializedError })
+                const errMessage: string = (serializedError?.data as any)
+                  ?.originalError?.shortMessage // eslint-disable-line
+                if (
+                  errMessage?.includes('Minimum staking period not reached')
+                ) {
+                  toast.error(t('minimumStakingPeriodNotReached'))
+                } else {
+                  toast.error(errMessage)
+                }
               }
             }
           )
@@ -511,13 +535,17 @@ const StakePage: NextPage = () => {
     agentOneStaked,
     agentProStaked,
     agentUltraStaked
-  ] = totalNfts?.map((result) => result.result as number[]) ?? [
-    [],
-    [],
-    [],
-    [],
-    []
-  ]
+  ] = useMemo(() => {
+    return (
+      totalNfts?.map((result) => result.result as number[]) ?? [
+        [],
+        [],
+        [],
+        [],
+        []
+      ]
+    )
+  }, [totalNfts])
 
   useEffect(() => {
     if (!address) return
@@ -591,28 +619,62 @@ const StakePage: NextPage = () => {
     setStakeNFTCardVisible(!stakedTokens?.length)
   }, [stakedTokens])
 
+  const queryClient = useQueryClient()
   const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
     useGetUserRewardsSummary(address)
-  const { data: poolB1StakingList, refetch: refetchPoolB1StakingList } =
-    useGetUserStakingList(
+  const {
+    data: poolB1StakingList,
+    refetch: refetchPoolB1StakingListApi,
+    isPending: isFetchPoolB1StakingListPending
+  } = useGetUserStakingList(
+    {
+      address: address as Address,
+      type: 'pool_b1'
+    },
+    {
+      enabled: !!address && POOL_B_ENABLE
+    }
+  )
+
+  const refetchPoolB1StakingList = useCallback(() => {
+    refetchPoolB1StakingListApi()
+    queryClient.setQueryData(
+      [
+        'get',
+        'user-staking-list',
+        { address: address as Address, type: 'pool_b1' }
+      ],
       {
-        address: address as Address,
-        type: 'pool_b1'
-      },
-      {
-        enabled: !!address && POOL_B_ENABLE
+        data: []
       }
     )
-  const { data: poolB2StakingList, refetch: refetchPoolB2StakingList } =
-    useGetUserStakingList(
+  }, [address, queryClient, refetchPoolB1StakingListApi])
+  const {
+    data: poolB2StakingList,
+    refetch: refetchPoolB2StakingListApi,
+    isPending: isFetchPoolB2StakingListPending
+  } = useGetUserStakingList(
+    {
+      address: address as Address,
+      type: 'pool_b2'
+    },
+    {
+      enabled: !!address && POOL_B_ENABLE
+    }
+  )
+  const refetchPoolB2StakingList = useCallback(() => {
+    refetchPoolB2StakingListApi()
+    queryClient.setQueryData(
+      [
+        'get',
+        'user-staking-list',
+        { address: address as Address, type: 'pool_b2' }
+      ],
       {
-        address: address as Address,
-        type: 'pool_b2'
-      },
-      {
-        enabled: !!address && POOL_B_ENABLE
+        data: []
       }
     )
+  }, [address, queryClient, refetchPoolB2StakingListApi])
 
   const {
     data: userRewardsMlpTokenPoolC
@@ -673,13 +735,17 @@ const StakePage: NextPage = () => {
     aiAgentOneBalance,
     aiAgentProBalance,
     aiAgentUltraBalance
-  ] = nftBalances?.map((result) => result.result as number[]) ?? [
-    [],
-    [],
-    [],
-    [],
-    []
-  ]
+  ] = useMemo(
+    () =>
+      nftBalances?.map((result) => result.result as number[]) ?? [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+    [nftBalances]
+  )
 
   useEffect(() => {
     if (!address) return
@@ -741,6 +807,7 @@ const StakePage: NextPage = () => {
       ...aiAgentUltraTokens
     ])
   }, [
+    address,
     phoneBalance,
     matrixBalance,
     aiAgentOneBalance,
@@ -861,7 +928,9 @@ const StakePage: NextPage = () => {
     stakePoolBNFTReceipt,
     refetchUserRewardsSummary,
     hideModal,
-    refetchPoolB1StakingList
+    refetchPoolB1StakingList,
+    queryClient,
+    address
   ])
 
   useEffect(() => {
@@ -1017,6 +1086,7 @@ const StakePage: NextPage = () => {
   useEffect(() => {
     if (unstakeNFTBoostedReceipt && !isWaitingUnstakeNFTBoosted) {
       refetchUserRewardsSummary()
+      refetchUserData()
       refetchPoolB1StakingList()
       hideModal()
     }
@@ -1025,7 +1095,8 @@ const StakePage: NextPage = () => {
     isWaitingUnstakeNFTBoosted,
     refetchUserRewardsSummary,
     hideModal,
-    refetchPoolB1StakingList
+    refetchPoolB1StakingList,
+    refetchUserData
   ])
 
   /** unstake mlp boosted */
@@ -1045,6 +1116,7 @@ const StakePage: NextPage = () => {
     if (unstakeMLPBoostedReceipt && !isWaitingUnstakeMLPBoosted) {
       refetchUserRewardsSummary()
       refetchPoolB2StakingList()
+      refetchUserData()
       hideModal()
     }
   }, [
@@ -1052,7 +1124,8 @@ const StakePage: NextPage = () => {
     isWaitingUnstakeMLPBoosted,
     refetchUserRewardsSummary,
     hideModal,
-    refetchPoolB2StakingList
+    refetchPoolB2StakingList,
+    refetchUserData
   ])
 
   useEffect(() => {
@@ -2160,28 +2233,38 @@ const StakePage: NextPage = () => {
               GradientBorderClass
             )}
           >
-            <div className='flex w-full relative flex-row items-center gap-2 justify-center md:justify-start'>
-              <Text
-                className={clsx(
-                  'text-[24px] md:text-[28px] text-center font-bold flex items-center gap-2',
-                  GradientTextClass
-                )}
-              >
-                {t('basicPool')}
-                <Tooltip
-                  placement='bottom'
-                  className='bg-co-bg-black'
-                  content={
-                    <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                      {t('basicPoolInfo')}
-                    </span>
-                  }
+            <div
+              className='flex w-full relative md:flex-row flex-col items-center gap-2 justify-center
+                md:justify-start'
+            >
+              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+                <Text
+                  className={clsx(
+                    'text-[24px] md:text-[28px] text-center font-bold flex items-center gap-2',
+                    GradientTextClass
+                  )}
                 >
-                  <span className='absolute right-0 md:relative'>
-                    <InfoIcon />
-                  </span>
-                </Tooltip>
-              </Text>
+                  {t('basicPool')}
+                  <Tooltip
+                    placement='bottom'
+                    className='bg-co-bg-black'
+                    content={
+                      <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                        {t('basicPoolInfo')}
+                      </span>
+                    }
+                  >
+                    <span className='absolute right-0 md:relative'>
+                      <InfoIcon />
+                    </span>
+                  </Tooltip>
+                </Text>
+              </div>
+              <ClaimButton
+                type='pool_a'
+                amount={userData?.mlpTokenAmountPoolA}
+                refetchUserData={refetchUserData}
+              />
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 items-center justify-around gap-2 md:gap-8 mt-4'>
               <div className='grid grid-cols-2 gap-2'>
@@ -2229,8 +2312,11 @@ const StakePage: NextPage = () => {
           <div
             className={clsx(
               `p-5 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
-                md:backdrop-blur-[10px]`,
-              GradientBorderClass
+                md:backdrop-blur-[10px] relative`,
+              GradientBorderClass,
+              {
+                'bg-gray-700 opacity-40 pointer-events-none': !POOL_B_ENABLE
+              }
             )}
           >
             <div className='flex flex-col w-full md:flex-row items-center justify-between'>
@@ -2256,6 +2342,7 @@ const StakePage: NextPage = () => {
                   </span>
                 </Tooltip> */}
               </Text>
+
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
                   {/* <span
@@ -2280,14 +2367,22 @@ const StakePage: NextPage = () => {
               )}
             </div>
             <div className='w-full mt-5 md:mt-20 flex md:items-center justify-between'>
-              <Text
-                className={clsx(
-                  'text-[16px] md:text-[28px] text-center font-bold',
-                  GradientTextClass
-                )}
-              >
-                {t('NFTBoostedPool')}
-              </Text>
+              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+                <Text
+                  className={clsx(
+                    'text-[16px] md:text-[28px] text-center font-bold',
+                    GradientTextClass
+                  )}
+                >
+                  {t('NFTBoostedPool')}
+                </Text>
+                <ClaimButton
+                  type='pool_b1'
+                  amount={userData?.mlpTokenAmountPoolB1}
+                  refetchUserData={refetchUserData}
+                />
+              </div>
+
               <div className='flex md:flex-row flex-col items-center gap-2 md:gap-4'>
                 <span
                   onClick={() => {
@@ -2394,7 +2489,14 @@ const StakePage: NextPage = () => {
                       {t('action')}
                     </TableColumn>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody
+                    isLoading={isFetchPoolB1StakingListPending}
+                    loadingContent={
+                      <div className='w-full flex items-center justify-center'>
+                        <Spinner color='secondary' />
+                      </div>
+                    }
+                  >
                     {!!poolB1StakingList?.data?.length
                       ? poolB1StakingList?.data?.map((item) => (
                           <TableRow key={item.id}>
@@ -2476,14 +2578,22 @@ const StakePage: NextPage = () => {
             <div className='h-[1px] bg-gray-500 w-full mt-7'></div>
 
             <div className='w-full mt-7 flex md:items-center justify-between'>
-              <Text
-                className={clsx(
-                  'text-[16px] md:text-[28px] text-center font-bold',
-                  GradientTextClass
-                )}
-              >
-                {t('MLPBoostedPool')}
-              </Text>
+              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+                <Text
+                  className={clsx(
+                    'text-[16px] md:text-[28px] text-center font-bold',
+                    GradientTextClass
+                  )}
+                >
+                  {t('MLPBoostedPool')}
+                </Text>
+                <ClaimButton
+                  type='pool_b2'
+                  amount={userData?.mlpTokenAmountPoolB2}
+                  refetchUserData={refetchUserData}
+                />
+              </div>
+
               <div className='flex md:flex-row flex-col items-center gap-2 md:gap-4'>
                 <span
                   onClick={() => {
@@ -2593,7 +2703,14 @@ const StakePage: NextPage = () => {
                       {t('action')}
                     </TableColumn>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody
+                    isLoading={isFetchPoolB2StakingListPending}
+                    loadingContent={
+                      <div className='w-full flex items-center justify-center'>
+                        <Spinner color='secondary' />
+                      </div>
+                    }
+                  >
                     {poolB2StakingList?.data.map((item) => {
                       const isReinvestment = item.type === 1
                       const isExpired = dayjs(item.endStakingAt).isBefore(
@@ -2696,28 +2813,35 @@ const StakePage: NextPage = () => {
             )}
           >
             <div className='flex flex-col md:flex-row items-center justify-between'>
-              <Text
-                className={clsx(
-                  `text-[16px] md:text-[28px] flex gap-2 items-center w-full md:w-fit
-                    justify-center relative text-center font-bold`,
-                  GradientTextClass
-                )}
-              >
-                {t('promotionPool')}
-                <Tooltip
-                  placement='bottom'
-                  className='bg-co-bg-black'
-                  content={
-                    <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                      {t('promotionPoolInfo')}
-                    </span>
-                  }
+              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+                <Text
+                  className={clsx(
+                    `text-[16px] md:text-[28px] flex gap-2 items-center w-full md:w-fit
+                      justify-center relative text-center font-bold`,
+                    GradientTextClass
+                  )}
                 >
-                  <span className='absolute right-0 md:relative'>
-                    <InfoIcon />
-                  </span>
-                </Tooltip>
-              </Text>
+                  {t('promotionPool')}
+                  <Tooltip
+                    placement='bottom'
+                    className='bg-co-bg-black'
+                    content={
+                      <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                        {t('promotionPoolInfo')}
+                      </span>
+                    }
+                  >
+                    <span className='absolute right-0 md:relative'>
+                      <InfoIcon />
+                    </span>
+                  </Tooltip>
+                </Text>
+                <ClaimButton
+                  type='pool_c'
+                  amount={userData?.mlpTokenAmountPoolC}
+                  refetchUserData={refetchUserData}
+                />
+              </div>
               {POOL_C_ENABLE && (
                 <div
                   className={clsx(
@@ -2812,9 +2936,6 @@ const StakePage: NextPage = () => {
                     <TableColumn className='text-[14px] md:text-[16px]'>
                       {t('status')}
                     </TableColumn>
-                    <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('action')}
-                    </TableColumn>
                   </TableHeader>
                   <TableBody>
                     {!!userRewardsMlpTokenPoolC?.data?.length
@@ -2828,9 +2949,6 @@ const StakePage: NextPage = () => {
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                               {item.status}
-                            </TableCell>
-                            <TableCell className='text-gray-150'>
-                              <div></div>
                             </TableCell>
                           </TableRow>
                         ))

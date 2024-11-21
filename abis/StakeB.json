@@ -339,6 +339,18 @@
         "internalType": "uint256",
         "name": "timestamp",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "stakeId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum MiningType",
+        "name": "miningType",
+        "type": "uint8"
       }
     ],
     "name": "TokenUnstaked",
@@ -456,6 +468,19 @@
   },
   {
     "inputs": [],
+    "name": "YEAR_COUNT",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "YEAR_DURATION",
     "outputs": [
       {
@@ -491,6 +516,11 @@
         "internalType": "bytes",
         "name": "signature",
         "type": "bytes"
+      },
+      {
+        "internalType": "enum MiningType",
+        "name": "miningType",
+        "type": "uint8"
       }
     ],
     "name": "claimReward",
