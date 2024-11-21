@@ -72,7 +72,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
       placement='center'
       hideCloseButton
       classNames={{
-        base: 'w-[1080px] !max-w-[80vw]',
+        base: 'w-[1080px] !max-w-[95vw]',
         closeButton:
           'top-4 right-4 md:right-8 md:top-8 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
@@ -158,7 +158,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
                 {t('AccelerateNFTBoostedPool.amount')} :
               </Text>
               <input
-                className='grow bg-transparent text-right text-[10px] md:text-[24px] text-white font-bold
+                className='grow bg-transparent text-right text-[15px] md:text-[24px] text-white font-bold
                   placeholder:text-co-gray-8'
                 placeholder={`$MLP ${t('AccelerateNFTBoostedPool.amount')}`}
                 value={amount}
