@@ -2366,11 +2366,11 @@ const StakePage: NextPage = () => {
                 </div>
               )}
             </div>
-            <div className='w-full mt-5 md:mt-20 flex md:items-center justify-between'>
-              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+            <div className='w-full mt-5 md:mt-20 flex flex-col md:flex-row md:items-center justify-between'>
+              <div className='flex flex-col md:flex-row items-center md:items-start gap-3 mb-4 md:mb-0'>
                 <Text
                   className={clsx(
-                    'text-[16px] md:text-[28px] text-center font-bold',
+                    'text-[16px] w-[150px] md:w-full md:text-[28px] text-center font-bold',
                     GradientTextClass
                   )}
                 >
@@ -2577,11 +2577,11 @@ const StakePage: NextPage = () => {
 
             <div className='h-[1px] bg-gray-500 w-full mt-7'></div>
 
-            <div className='w-full mt-7 flex md:items-center justify-between'>
-              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+            <div className='w-full mt-5 md:mt-20 flex flex-col md:flex-row md:items-center justify-between'>
+              <div className='flex flex-col md:flex-row items-center md:items-start gap-3 mb-4 md:mb-0'>
                 <Text
                   className={clsx(
-                    'text-[16px] md:text-[28px] text-center font-bold',
+                    'text-[16px] w-[150px] md:w-full md:text-[28px] text-center font-bold',
                     GradientTextClass
                   )}
                 >
