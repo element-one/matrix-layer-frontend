@@ -11,8 +11,8 @@ import {
 import clsx from 'clsx'
 import { useAccount, useDisconnect } from 'wagmi'
 
-import compensation_list from '@constants/compensation_list.json'
 import { ModalType, useModal } from '@contexts/modal'
+import { useGetCompensateList } from '@services/api'
 import { formatWalletAddress } from '@utils/formatWalletAddress'
 
 import Button from './Button'
@@ -31,9 +31,13 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
 
   const t = useTranslations('Navigation')
 
+  const { data } = useGetCompensateList({
+    enabled: isConnected
+  })
+
   const DropdownItems = useMemo(() => {
     const isInCompensationList =
-      address && compensation_list.whitelist.indexOf(address) > -1
+      address && (data?.list ?? []).indexOf(address) > -1
     const items = [
       {
         key: 'myAccount',
@@ -51,7 +55,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
       })
     }
     return items
-  }, [address])
+  }, [address, data?.list])
 
   const handleClick = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)

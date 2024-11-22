@@ -19,8 +19,8 @@ import {
   MultiLanguageMobile,
   MultiLanguagePC
 } from '@components/MultiLanguage/MultiLanguage'
-import compensation_list from '@constants/compensation_list.json'
 import { ModalType, useModal } from '@contexts/modal'
+import { useGetCompensateList } from '@services/api'
 
 import { MenuList } from './ProfileMenu'
 
@@ -39,14 +39,18 @@ const Header: FC<HeaderProps> = ({ className }) => {
   const router = useRouter()
   const { showModal } = useModal()
 
+  const { data } = useGetCompensateList({
+    enabled: !!address
+  })
+
   const [menuVisible, setMenuVisible] = useState(false)
 
   const isAuthorized = useMemo(() => {
     if (address) {
-      return compensation_list.whitelist.indexOf(address) > -1
+      return (data?.list ?? []).indexOf(address) > -1
     }
     return false
-  }, [address])
+  }, [address, data?.list])
 
   const hideMenu = () => {
     setMenuVisible(false)
