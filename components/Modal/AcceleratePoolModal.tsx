@@ -158,7 +158,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
                 {t('AccelerateNFTBoostedPool.amount')} :
               </Text>
               <input
-                className='flex-1 bg-transparent text-right text-[15px] md:text-[24px] text-white font-bold
+                className='flex-1 bg-transparent text-right text-[16px] md:text-[24px] text-white font-bold
                   placeholder:text-co-gray-8'
                 placeholder={`$MLP ${t('AccelerateNFTBoostedPool.amount')}`}
                 value={amount}
