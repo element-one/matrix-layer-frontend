@@ -50,7 +50,6 @@ import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { ModalType, useModal } from '@contexts/modal'
 import {
-  getStakingSignature,
   MiningType,
   useGetUser,
   useGetUserRewardsMlpToken,
@@ -1149,21 +1148,6 @@ const StakePage: NextPage = () => {
   ])
 
   const {
-    data: rewardMLPHash,
-    writeContract: claimRewardMLP,
-    isPending: isClaimingMLP
-  } = useWriteContract()
-
-  const { data: txRewardMLP, isLoading: isWaitingClaimMLPReceipt } =
-    useWaitForTransactionReceipt({
-      hash: rewardMLPHash,
-      query: {
-        enabled: rewardMLPHash !== undefined,
-        initialData: undefined
-      }
-    })
-
-  const {
     data: claimHash,
     writeContract: claimContract,
     isPending: isClaimingContract
@@ -1209,48 +1193,6 @@ const StakePage: NextPage = () => {
       }
     )
   }
-
-  const handleClaimMLP = async () => {
-    if (
-      !userData?.mlpTokenAmountPoolA ||
-      !Number(userData?.mlpTokenAmountPoolA) ||
-      !address
-    ) {
-      return
-    }
-
-    const signatureData = await getStakingSignature(address)
-
-    claimRewardMLP(
-      {
-        abi: STAKE_ABI,
-        address: STAKE_A_ADDRESS,
-        functionName: 'claimReward',
-        args: [userData.mlpTokenAmountPoolA, signatureData.signature]
-      },
-      {
-        onError(err: Error) {
-          const serializedError = serializeError(err)
-          console.log({ serializedError })
-          toast.error(
-            (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
-          )
-        },
-        onSuccess() {
-          toast.success('Claim success')
-        }
-      }
-    )
-  }
-
-  useEffect(() => {
-    if (txRewardMLP && !isWaitingClaimMLPReceipt) {
-      setTimeout(() => {
-        refetchUserData()
-      }, 2 * 1000)
-      refetchUserData()
-    }
-  }, [txRewardMLP, isWaitingClaimMLPReceipt, refetchUserData])
 
   const { data: approveReceipt, isLoading: isWaitingApprovingStake } =
     useWaitForTransactionReceipt({
@@ -1911,13 +1853,13 @@ const StakePage: NextPage = () => {
                 >
                   {t('claimHistory')}
                 </div>
-                <Button
+                {/* <Button
                   onClick={handleClaimMLP}
                   isLoading={isClaimingMLP}
                   className='rounded-full h-8 w-fit md:w-[152px] text-base font-semibold z-10'
                 >
                   {t('claim')}
-                </Button>
+                </Button> */}
               </div>
             </div>
           </div>
@@ -2234,13 +2176,13 @@ const StakePage: NextPage = () => {
             )}
           >
             <div
-              className='flex w-full relative md:flex-row flex-col items-center gap-2 justify-center
-                md:justify-start'
+              className='flex w-full relative md:flex-row flex-col items-center gap-2 md:gap-6
+                justify-center md:justify-start'
             >
               <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
                 <Text
                   className={clsx(
-                    'text-[24px] md:text-[28px] text-center font-bold flex items-center gap-2',
+                    'text-[24px] md:text-[28px] text-center font-bold flex items-center',
                     GradientTextClass
                   )}
                 >
@@ -2367,7 +2309,7 @@ const StakePage: NextPage = () => {
               )}
             </div>
             <div className='w-full mt-5 md:mt-20 flex flex-col md:flex-row md:items-center justify-between'>
-              <div className='flex flex-col md:flex-row items-center md:items-start gap-3 mb-4 md:mb-0'>
+              <div className='flex flex-col md:flex-row items-center gap-3 mb-4 md:mb-0'>
                 <Text
                   className={clsx(
                     'text-[16px] w-[150px] md:w-full md:text-[28px] text-center font-bold',
@@ -2383,7 +2325,10 @@ const StakePage: NextPage = () => {
                 />
               </div>
 
-              <div className='flex md:flex-row flex-col items-center gap-2 md:gap-4'>
+              <div
+                className='flex md:flex-row flex-col justify-between md:justify-stretch items-center gap-2
+                  md:gap-4'
+              >
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2594,7 +2539,10 @@ const StakePage: NextPage = () => {
                 />
               </div>
 
-              <div className='flex md:flex-row flex-col items-center gap-2 md:gap-4'>
+              <div
+                className='flex md:flex-row flex-col justify-between md:justify-stretch items-center gap-2
+                  md:gap-4'
+              >
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2812,8 +2760,11 @@ const StakePage: NextPage = () => {
               GradientBorderClass
             )}
           >
-            <div className='flex flex-col md:flex-row items-center justify-between'>
-              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+            <div className='w-full flex flex-col md:flex-row items-center'>
+              <div
+                className='w-full flex flex-col md:flex-row items-center justify-center md:justify-stretch
+                  gap-6'
+              >
                 <Text
                   className={clsx(
                     `text-[16px] md:text-[28px] flex gap-2 items-center w-full md:w-fit
@@ -2845,7 +2796,8 @@ const StakePage: NextPage = () => {
               {POOL_C_ENABLE && (
                 <div
                   className={clsx(
-                    'flex items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8 text-[18px]',
+                    `flex shrink-0 items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8
+                      text-[18px]`,
                     GradientBorderClass
                   )}
                 >
