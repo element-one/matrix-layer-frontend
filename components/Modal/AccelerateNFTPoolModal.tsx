@@ -35,9 +35,8 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
       onClose={handleClose}
       size='xl'
       placement='center'
-      hideCloseButton
       classNames={{
-        base: 'w-[1080px] !max-w-[80vw]',
+        base: 'w-[1080px] !max-w-[95vw]',
         closeButton:
           'top-4 right-4 md:right-8 md:top-8 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
@@ -65,16 +64,16 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
               </span>
             </Tooltip>
           </div>
-          <div className='w-full'>
-            <div className='p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between gap-x-10'>
-              <Text className='text-[10px] md:text-[24px] text-co-gray-7 font-bold'>
+          <div className='flex flex-col w-full'>
+            <div className='w-full p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between'>
+              <Text className='text-[13px] md:text-[24px] text-co-gray-7 font-bold w-[100px] md:w-auto'>
                 <span className='hidden md:inline-block'>
                   {t('AccelerateNFTBoostedPool.input')}{' '}
                 </span>
                 {t('AccelerateNFTBoostedPool.amount')} :
               </Text>
               <input
-                className='grow bg-transparent text-right text-[10px] md:text-[24px] text-white font-bold
+                className='flex-1 bg-transparent text-right text-[16px] md:text-[24px] text-white font-bold
                   placeholder:text-co-gray-8'
                 placeholder={`$MLP ${t('AccelerateNFTBoostedPool.amount')}`}
                 value={amount}

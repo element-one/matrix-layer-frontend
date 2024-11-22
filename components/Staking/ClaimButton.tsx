@@ -105,8 +105,10 @@ export const ClaimButton = (props: ClaimButtonProps) => {
   }
 
   return (
-    <div className='flex items-center p-1 border rounded-full'>
-      <div className='px-4'>{formatCurrency(props.amount)} MLP</div>
+    <div className='shrink-0 flex items-center p-1 border rounded-full'>
+      <div className='px-4 text-[12px] md:text-[24px]'>
+        {formatCurrency(props.amount)} MLP
+      </div>
       <Button
         onClick={handleClick}
         isLoading={isClaimingMLP || loading}
