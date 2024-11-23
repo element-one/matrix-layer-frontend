@@ -61,6 +61,7 @@ import {
   useGetUserStakingList,
   UserStakingListItem
 } from '@services/api/pool'
+import { getStakeB1Signature } from '@services/api/staking'
 import { formatCurrency, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
 import BigNumber from 'bignumber.js'
@@ -884,27 +885,29 @@ const StakePage: NextPage = () => {
   }, [stakePoolBNFTData, isStakingPoolBNFT])
 
   useEffect(() => {
-    if (approvePoolBNFTReceipt && stakingAmountRef.current) {
+    if (address && approvePoolBNFTReceipt && stakingAmountRef.current) {
       const amount = parseUnits(
         stakingAmountRef.current,
         mlpTokenDecimals as number
       )
 
-      stakePoolBNFT(
-        {
-          address: STAKE_B_ADDRESS,
-          abi: STAKE_B_ABI,
-          functionName: 'stakeNFTBoosted',
-          args: [amount]
-        },
-        {
-          onError: (error) => {
-            console.error('Error staking to Pool B:', error)
+      getStakeB1Signature(address).then((res) => {
+        stakePoolBNFT(
+          {
+            address: STAKE_B_ADDRESS,
+            abi: STAKE_B_ABI,
+            functionName: 'stakeNFTBoosted',
+            args: [amount, true, res.signature]
+          },
+          {
+            onError: (error) => {
+              console.error('Error staking to Pool B:', error)
+            }
           }
-        }
-      )
+        )
+      })
     }
-  }, [approvePoolBNFTReceipt, mlpTokenDecimals, stakePoolBNFT])
+  }, [address, approvePoolBNFTReceipt, mlpTokenDecimals, stakePoolBNFT])
 
   const { data: stakePoolBNFTReceipt, isLoading: isWaitingStakePoolBNFT } =
     useWaitForTransactionReceipt({

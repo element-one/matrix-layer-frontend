@@ -1,4 +1,5 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { Address } from 'viem'
 
 import axios from '../axios/client'
 
@@ -48,6 +49,27 @@ export const useGetClaimSignature = (
   return useQuery<ApiGetClaimSignatureResponse>({
     queryKey: ['get', 'claim-signature', params.type, params.address],
     queryFn: () => getClaimSignature(params),
+    ...options
+  })
+}
+export interface ApiGetStakeB1SignatureResponse {
+  signature: string
+}
+
+export const getStakeB1Signature = async (address: Address) => {
+  const url = `/contracts/stake-b1-signature/${address}`
+  const { data } = await axios.get<ApiGetStakeB1SignatureResponse>(url)
+  return data
+}
+
+export const useGetStakeB1Signature = (
+  address: Address,
+  options?: Partial<UseQueryOptions<ApiGetStakeB1SignatureResponse, any, any>>
+) => {
+  return useQuery<ApiGetStakeB1SignatureResponse>({
+    queryKey: ['get', 'stake-b1-signature', address],
+    queryFn: () => getStakeB1Signature(address),
+    enabled: !!address,
     ...options
   })
 }
