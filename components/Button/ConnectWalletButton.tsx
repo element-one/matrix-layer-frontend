@@ -37,7 +37,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
 
   const DropdownItems = useMemo(() => {
     const isInCompensationList =
-      address && (data?.list ?? []).indexOf(address) > -1
+      address && (data ?? []).findIndex((item) => item.user === address) > -1
     const items = [
       {
         key: 'myAccount',
@@ -55,7 +55,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
       })
     }
     return items
-  }, [address, data?.list])
+  }, [address, data])
 
   const handleClick = () => {
     showModal(ModalType.CONNECT_WALLET_MODAL)
