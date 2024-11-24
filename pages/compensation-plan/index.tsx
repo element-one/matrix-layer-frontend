@@ -1,19 +1,33 @@
 import { useMemo } from 'react'
+import { Spinner } from '@nextui-org/react'
 import { useAccount } from 'wagmi'
 
 import { CompensationGuidePage } from '@components/CompensationPlan/CompensationGuidePage'
 import { CompensationPlanPage } from '@components/CompensationPlan/CompensationPlanPage'
-import compensation_list from '@constants/compensation_list.json'
+import Layout from '@components/Layout/Layout'
+import { useGetCompensateList } from '@services/api'
 
 const CompensationPlan = () => {
   const { address } = useAccount()
+  const { data, isLoading } = useGetCompensateList()
 
   const isAuthorized = useMemo(() => {
     if (address) {
-      return compensation_list.whitelist.indexOf(address) > -1
+      return (data ?? []).findIndex((item) => item.user === address) > -1
     }
     return false
-  }, [address])
+  }, [address, data])
+
+  if (isLoading) {
+    return (
+      <Layout
+        className='overflow-y-hidden relative bg-black max-w-screen h-screen flex flex-col gap-4
+          items-center justify-center'
+      >
+        <Spinner color='white' />
+      </Layout>
+    )
+  }
 
   if (!isAuthorized) {
     return <CompensationGuidePage />

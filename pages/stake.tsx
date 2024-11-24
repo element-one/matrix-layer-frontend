@@ -31,7 +31,8 @@ import ERC20_ABI from '@abis/ERC20.json'
 import NFT_ABI from '@abis/NFT.json'
 import PAYMENT_ABI from '@abis/Payment.json'
 import STAKE_ABI from '@abis/Stake.json'
-import STAKE_B_ABI from '@abis/StakeB.json'
+import STAKE_B1_ABI from '@abis/StakeB1.json'
+import STAKE_B2_ABI from '@abis/StakeB2.json'
 import { Button } from '@components/Button'
 import { Container, Content } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
@@ -61,6 +62,7 @@ import {
   useGetUserStakingList,
   UserStakingListItem
 } from '@services/api/pool'
+import { getStakeB1Signature } from '@services/api/staking'
 import { formatCurrency, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
 import BigNumber from 'bignumber.js'
@@ -74,7 +76,8 @@ const GradientBorderClass =
 
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
-const STAKE_B_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B_ADDRESS as Address
+const STAKE_B1_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B1_ADDRESS as Address
+const STAKE_B2_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B2_ADDRESS as Address
 const PAYMENT_ADDRESS = process.env.NEXT_PUBLIC_PAYMENT_ADDRESS as Address
 const MATRIX_ADDRESS = process.env.NEXT_PUBLIC_MATRIX_ADDRESS as Address
 const AI_AGENT_PRO_ADDRESS = process.env
@@ -177,8 +180,8 @@ const StakePage: NextPage = () => {
       onConfirm: () => {
         unstakeNFTBoosted(
           {
-            address: STAKE_B_ADDRESS,
-            abi: STAKE_B_ABI,
+            address: STAKE_B1_ADDRESS,
+            abi: STAKE_B1_ABI,
             functionName: 'unstakeNFTBoosted',
             args: [options.stakeId]
           },
@@ -225,8 +228,8 @@ const StakePage: NextPage = () => {
         onConfirm: () => {
           unstakeMLPBoosted(
             {
-              address: STAKE_B_ADDRESS,
-              abi: STAKE_B_ABI,
+              address: STAKE_B2_ADDRESS,
+              abi: STAKE_B2_ABI,
               functionName: 'unstakeMLPBoosted',
               args: [item.stakeId]
             },
@@ -285,8 +288,8 @@ const StakePage: NextPage = () => {
         onConfirm: () => {
           unstakeMLPBoosted(
             {
-              address: STAKE_B_ADDRESS,
-              abi: STAKE_B_ABI,
+              address: STAKE_B2_ADDRESS,
+              abi: STAKE_B2_ABI,
               functionName: 'unstakeNFTBoosted',
               args: [item.stakeId]
             },
@@ -372,7 +375,7 @@ const StakePage: NextPage = () => {
             address: mlpTokenAddress as Address,
             abi: ERC20_ABI,
             functionName: 'approve',
-            args: [STAKE_B_ADDRESS, amount]
+            args: [STAKE_B2_ADDRESS, amount]
           },
           {
             onError(err) {
@@ -390,8 +393,8 @@ const StakePage: NextPage = () => {
   }
 
   const { data: mlpTokenAddress } = useReadContract({
-    address: STAKE_B_ADDRESS,
-    abi: STAKE_B_ABI,
+    address: STAKE_B1_ADDRESS,
+    abi: STAKE_B1_ABI,
     functionName: 'mlpToken',
     args: []
   })
@@ -404,8 +407,8 @@ const StakePage: NextPage = () => {
     args: []
   })
   const { data: minStakeBAmount } = useReadContract({
-    address: STAKE_B_ADDRESS,
-    abi: STAKE_B_ABI,
+    address: STAKE_B1_ADDRESS,
+    abi: STAKE_B1_ABI,
     functionName: 'minimumStakeAmount',
     args: []
   })
@@ -428,7 +431,7 @@ const StakePage: NextPage = () => {
             address: mlpTokenAddress as Address,
             abi: ERC20_ABI,
             functionName: 'approve',
-            args: [STAKE_B_ADDRESS, amount]
+            args: [STAKE_B1_ADDRESS, amount]
           },
           {
             onError(err) {
@@ -884,27 +887,29 @@ const StakePage: NextPage = () => {
   }, [stakePoolBNFTData, isStakingPoolBNFT])
 
   useEffect(() => {
-    if (approvePoolBNFTReceipt && stakingAmountRef.current) {
+    if (address && approvePoolBNFTReceipt && stakingAmountRef.current) {
       const amount = parseUnits(
         stakingAmountRef.current,
         mlpTokenDecimals as number
       )
 
-      stakePoolBNFT(
-        {
-          address: STAKE_B_ADDRESS,
-          abi: STAKE_B_ABI,
-          functionName: 'stakeNFTBoosted',
-          args: [amount]
-        },
-        {
-          onError: (error) => {
-            console.error('Error staking to Pool B:', error)
+      getStakeB1Signature(address).then((res) => {
+        stakePoolBNFT(
+          {
+            address: STAKE_B1_ADDRESS,
+            abi: STAKE_B1_ABI,
+            functionName: 'stakeNFTBoosted',
+            args: [amount, true, res.signature]
+          },
+          {
+            onError: (error) => {
+              console.error('Error staking to Pool B:', error)
+            }
           }
-        }
-      )
+        )
+      })
     }
-  }, [approvePoolBNFTReceipt, mlpTokenDecimals, stakePoolBNFT])
+  }, [address, approvePoolBNFTReceipt, mlpTokenDecimals, stakePoolBNFT])
 
   const { data: stakePoolBNFTReceipt, isLoading: isWaitingStakePoolBNFT } =
     useWaitForTransactionReceipt({
@@ -1000,8 +1005,8 @@ const StakePage: NextPage = () => {
 
       stakePoolBMLP(
         {
-          address: STAKE_B_ADDRESS,
-          abi: STAKE_B_ABI,
+          address: STAKE_B2_ADDRESS,
+          abi: STAKE_B2_ABI,
           functionName: 'stakeMlpBoosted',
           args: [
             amount,

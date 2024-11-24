@@ -9,7 +9,8 @@ import {
 } from 'wagmi'
 
 import STAKE_A_ADDRESS_ABI from '@abis/Stake.json'
-import STAKE_B_ADDRESS_ABI from '@abis/StakeB.json'
+import STAKE_B1_ADDRESS_ABI from '@abis/StakeB1.json'
+import STAKE_B2_ADDRESS_ABI from '@abis/StakeB2.json'
 import STAKE_C_ADDRESS_ABI from '@abis/StakeC.json'
 import { Button } from '@components/Button'
 import { MiningType } from '@services/api'
@@ -18,7 +19,8 @@ import { formatCurrency } from '@utils/currency'
 import { serializeError } from 'eth-rpc-errors'
 
 const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
-const STAKE_B_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B_ADDRESS as Address
+const STAKE_B1_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B1_ADDRESS as Address
+const STAKE_B2_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B2_ADDRESS as Address
 const STAKE_C_ADDRESS = process.env.NEXT_PUBLIC_STAKE_C_ADDRESS as Address
 
 interface ClaimButtonProps {
@@ -26,6 +28,31 @@ interface ClaimButtonProps {
   type: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c'
   amount?: string
   refetchUserData: () => void
+}
+
+const poolConfig: Record<
+  ClaimButtonProps['type'],
+  {
+    address: Address
+    abi: any
+  }
+> = {
+  pool_a: {
+    address: STAKE_A_ADDRESS,
+    abi: STAKE_A_ADDRESS_ABI
+  },
+  pool_b1: {
+    address: STAKE_B1_ADDRESS,
+    abi: STAKE_B1_ADDRESS_ABI
+  },
+  pool_b2: {
+    address: STAKE_B2_ADDRESS,
+    abi: STAKE_B2_ADDRESS_ABI
+  },
+  pool_c: {
+    address: STAKE_C_ADDRESS,
+    abi: STAKE_C_ADDRESS_ABI
+  }
 }
 
 export const ClaimButton = (props: ClaimButtonProps) => {
@@ -66,18 +93,8 @@ export const ClaimButton = (props: ClaimButtonProps) => {
     console.log(claimSignature)
 
     const params = {
-      abi:
-        props.type === 'pool_c'
-          ? STAKE_C_ADDRESS_ABI
-          : props.type === 'pool_a'
-            ? STAKE_A_ADDRESS_ABI
-            : STAKE_B_ADDRESS_ABI,
-      address:
-        props.type === 'pool_c'
-          ? STAKE_C_ADDRESS
-          : props.type === 'pool_a'
-            ? STAKE_A_ADDRESS
-            : STAKE_B_ADDRESS,
+      abi: poolConfig[props.type].abi,
+      address: poolConfig[props.type].address,
       functionName: 'claimReward',
       args: [
         claimSignature.amount,
