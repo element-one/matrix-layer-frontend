@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import axios from 'axios'
 
 const client = axios.create({
@@ -10,5 +11,28 @@ const client = axios.create({
       : process.env.NEXT_PUBLIC_SERVER_URL,
   withCredentials: true
 })
+
+client.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      console.error(
+        'Response error:',
+        error.response.status,
+        error.response.data
+      )
+      toast.error(
+        error.response.data.message ||
+          'An error occurred, please try again later'
+      )
+    } else if (error.request) {
+      console.error('Request error:', error.request)
+    } else {
+      console.error('Error:', error.message)
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 export default client
