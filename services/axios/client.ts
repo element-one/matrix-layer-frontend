@@ -12,6 +12,11 @@ const client = axios.create({
   withCredentials: true
 })
 
+// Add throttling constants and variables
+const ERROR_THROTTLE_TIME = 5000 // 5 seconds
+let lastErrorMessage: string | null = null
+let lastErrorTime: number = 0
+
 client.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -21,10 +26,22 @@ client.interceptors.response.use(
         error.response.status,
         error.response.data
       )
-      toast.error(
+
+      // Extract error message and implement throttling logic
+      const errorMessage =
         error.response.data.message ||
-          'An error occurred, please try again later'
-      )
+        'An error occurred, please try again later'
+      const currentTime = Date.now()
+
+      // Only show toast if it's a different message or enough time has passed
+      if (
+        errorMessage !== lastErrorMessage ||
+        currentTime - lastErrorTime > ERROR_THROTTLE_TIME
+      ) {
+        toast.error(errorMessage)
+        lastErrorMessage = errorMessage
+        lastErrorTime = currentTime
+      }
     } else if (error.request) {
       console.error('Request error:', error.request)
     } else {
