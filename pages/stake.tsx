@@ -2182,36 +2182,50 @@ const StakePage: NextPage = () => {
           >
             <div
               className='flex w-full relative md:flex-row flex-col items-center gap-2 md:gap-6
-                justify-center md:justify-start'
+                justify-center md:justify-between'
             >
-              <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
-                <Text
-                  className={clsx(
-                    'text-[24px] md:text-[28px] text-center font-bold flex items-center',
-                    GradientTextClass
-                  )}
-                >
-                  {t('basicPool')}
-                  <Tooltip
-                    placement='bottom'
-                    className='bg-co-bg-black'
-                    content={
-                      <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                        {t('basicPoolInfo')}
-                      </span>
-                    }
+              <div className='flex flex-col md:flex-row items-center gap-3 justify-between md:justify-start'>
+                <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+                  <Text
+                    className={clsx(
+                      'text-[24px] md:text-[28px] text-center font-bold flex items-center',
+                      GradientTextClass
+                    )}
                   >
-                    <span className='absolute right-0 md:relative'>
-                      <InfoIcon />
-                    </span>
-                  </Tooltip>
-                </Text>
+                    {t('basicPool')}
+                    <Tooltip
+                      placement='bottom'
+                      className='bg-co-bg-black'
+                      content={
+                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                          {t('basicPoolInfo')}
+                        </span>
+                      }
+                    >
+                      <span className='absolute right-0 md:relative'>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  </Text>
+                </div>
+                <ClaimButton
+                  type='pool_a'
+                  amount={userData?.mlpTokenAmountPoolA}
+                  refetchUserData={refetchUserData}
+                />
               </div>
-              <ClaimButton
-                type='pool_a'
-                amount={userData?.mlpTokenAmountPoolA}
-                refetchUserData={refetchUserData}
-              />
+              <div>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
+                      poolType: 'pool_a'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('BalancePool.DailyRewardHistory')}
+                </span>
+              </div>
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 items-center justify-around gap-2 md:gap-8 mt-4'>
               <div className='grid grid-cols-2 gap-2'>
