@@ -2842,7 +2842,7 @@ const StakePage: NextPage = () => {
                     {t('totalPerformance')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {formatCurrency(userRewardsSummary?.poolCTotalRewards)}
+                    {formatCurrency(userRewardsSummary?.poolCStakingAmount)}
                   </div>
                 </div>
                 <div
