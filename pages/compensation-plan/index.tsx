@@ -13,7 +13,11 @@ const CompensationPlan = () => {
 
   const isAuthorized = useMemo(() => {
     if (address) {
-      return (data ?? []).findIndex((item) => item.user === address) > -1
+      return (
+        (data ?? []).findIndex(
+          (item) => item.user.toLowerCase() === address.toLowerCase()
+        ) > -1
+      )
     }
     return false
   }, [address, data])

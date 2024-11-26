@@ -24,6 +24,7 @@ const STAKE_B2_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B2_ADDRESS as Address
 const STAKE_C_ADDRESS = process.env.NEXT_PUBLIC_STAKE_C_ADDRESS as Address
 
 interface ClaimButtonProps {
+  isDisabled?: boolean
   type: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c'
   amount?: string
   refetchUserData: () => void
@@ -70,7 +71,7 @@ export const ClaimButton = (props: ClaimButtonProps) => {
         initialData: undefined
       }
     })
-  const { refetchUserData } = props
+  const { isDisabled, refetchUserData } = props
   useEffect(() => {
     if (txRewardMLP && !isWaitingClaimMLPReceipt) {
       setTimeout(() => {
@@ -129,6 +130,7 @@ export const ClaimButton = (props: ClaimButtonProps) => {
       <Button
         onClick={handleClick}
         isLoading={isClaimingMLP || loading}
+        disabled={isDisabled}
         className='rounded-full text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-fit md:w-[152px]'
       >
         {t('claimReward')}

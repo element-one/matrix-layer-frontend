@@ -37,7 +37,10 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
 
   const DropdownItems = useMemo(() => {
     const isInCompensationList =
-      address && (data ?? []).findIndex((item) => item.user === address) > -1
+      address &&
+      (data ?? []).findIndex(
+        (item) => item.user.toLowerCase() === address.toLowerCase()
+      ) > -1
     const items = [
       {
         key: 'myAccount',
