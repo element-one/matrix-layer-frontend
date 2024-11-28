@@ -63,7 +63,7 @@ import {
   UserStakingListItem
 } from '@services/api/pool'
 import { getStakeB1Signature } from '@services/api/staking'
-import { formatCurrency, formatUSDT } from '@utils/currency'
+import { formatCurrency, formatForMatrix, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
 import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
@@ -2249,7 +2249,9 @@ const StakePage: NextPage = () => {
                     {t('NFTComputingPower')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {formatUSDT(userRewardsSummary?.poolAStakingAmount ?? 0)}
+                    {formatForMatrix(
+                      userRewardsSummary?.poolAStakingAmount ?? 0
+                    )}
                   </div>
                 </div>
               </div>
