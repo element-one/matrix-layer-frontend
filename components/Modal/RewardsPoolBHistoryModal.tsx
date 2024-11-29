@@ -20,7 +20,7 @@ import { useAccount } from 'wagmi'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 import { useGetUserRewardDetails } from '@services/api'
-import { formatCurrency } from '@utils/currency'
+import { formatCurrency, formatForMatrix } from '@utils/currency'
 import dayjs from 'dayjs'
 
 export interface RewardsPoolBHistoryModalProps {
@@ -115,7 +115,9 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
                     {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm:ss')}
                   </TableCell>
                   <TableCell className='font-bold'>
-                    {formatCurrency(item.stakingAmount)}
+                    {poolType === 'pool_a'
+                      ? formatForMatrix(item.stakingAmount)
+                      : formatCurrency(item.stakingAmount)}
                   </TableCell>
                   <TableCell className='flex flex-row justify-center'>
                     {formatCurrency(item.amount)}
