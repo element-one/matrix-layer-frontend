@@ -2476,7 +2476,7 @@ const StakePage: NextPage = () => {
                               {formatCurrency(item.stakedTokenAmount)}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {formatCurrency(item.rewardAmount)}
+                              {formatCurrency(item.accumulatedRewardAmount)}
                             </TableCell>
                             <TableCell className='text-gray-150'>
                               {item.isActive ? (
@@ -2516,7 +2516,7 @@ const StakePage: NextPage = () => {
                                         item.stakedTokenAmount
                                       ),
                                       rewards: formatCurrency(
-                                        item.rewardAmount
+                                        item.accumulatedRewardAmount
                                       ),
                                       transactionHash:
                                         item.cancelStakingTransactionHash ?? ''
