@@ -51,6 +51,7 @@ export interface UserStakingListItem {
   cancelStakingTransactionHash: string | null
   estimatedRewardAmount: string
   actualRewardAmount: string
+  accumulatedRewardAmount: string
   rewardDiscount: string
   stakedTokenAmount: string
   contractDays: number
