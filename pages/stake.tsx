@@ -146,7 +146,7 @@ const StakePage: NextPage = () => {
   const handleWithdrawNFTBoostedClick = (options: {
     stakeId: string
     stakedTokenAmount: string
-    rewardAmount: string
+    accumulatedRewardAmount: string
   }) => {
     showModal(ModalType.WITHDRAW_MODAL, {
       content: (
@@ -155,18 +155,20 @@ const StakePage: NextPage = () => {
             {t.rich('withdrawDesc', {
               text1: (chunks) => <span className='text-white'>{chunks}</span>,
               amount: formatCurrency(options.stakedTokenAmount),
-              rewardAmount: formatCurrency(options.rewardAmount)
+              accumulatedRewardAmount: formatCurrency(
+                options.accumulatedRewardAmount
+              )
             })}
           </div>
           <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
             <span className=''>
-              {formatCurrency(options.rewardAmount)} $MLP
+              {formatCurrency(options.accumulatedRewardAmount)} $MLP
             </span>
             <span className='text-2xl'>=</span>
             <div>
               {formatCurrency(
                 new BigNumber(options.stakedTokenAmount)
-                  .plus(options.rewardAmount)
+                  .plus(options.accumulatedRewardAmount)
                   .toString()
               )}{' '}
               $MLP <span className='text-[18px]'>{t('inTotal')}</span>
@@ -2474,7 +2476,7 @@ const StakePage: NextPage = () => {
                               {formatCurrency(item.stakedTokenAmount)}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {formatCurrency(item.rewardAmount)}
+                              {formatCurrency(item.accumulatedRewardAmount)}
                             </TableCell>
                             <TableCell className='text-gray-150'>
                               {item.isActive ? (
@@ -2491,7 +2493,8 @@ const StakePage: NextPage = () => {
                                     handleWithdrawNFTBoostedClick({
                                       stakeId: `${item.stakeId}`,
                                       stakedTokenAmount: item.stakedTokenAmount,
-                                      rewardAmount: item.rewardAmount
+                                      accumulatedRewardAmount:
+                                        item.accumulatedRewardAmount
                                     })
                                   }
                                 >
@@ -2513,7 +2516,7 @@ const StakePage: NextPage = () => {
                                         item.stakedTokenAmount
                                       ),
                                       rewards: formatCurrency(
-                                        item.rewardAmount
+                                        item.accumulatedRewardAmount
                                       ),
                                       transactionHash:
                                         item.cancelStakingTransactionHash ?? ''
