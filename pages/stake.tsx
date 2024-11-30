@@ -2342,7 +2342,6 @@ const StakePage: NextPage = () => {
                   {t('NFTBoostedPool')}
                 </Text>
                 <ClaimButton
-                  isDisabled={true}
                   type='pool_b1'
                   amount={userData?.mlpTokenAmountPoolB1}
                   refetchUserData={refetchUserData}
