@@ -549,14 +549,14 @@
         "type": "uint256"
       },
       {
-        "internalType": "address[5]",
+        "internalType": "address[]",
         "name": "levelReferrals",
-        "type": "address[5]"
+        "type": "address[]"
       },
       {
-        "internalType": "uint256[5]",
+        "internalType": "uint256[]",
         "name": "levelPercentages",
-        "type": "uint256[5]"
+        "type": "uint256[]"
       },
       {
         "internalType": "bool",
@@ -609,14 +609,14 @@
         "type": "uint256"
       },
       {
-        "internalType": "address[5]",
+        "internalType": "address[]",
         "name": "levelReferrals",
-        "type": "address[5]"
+        "type": "address[]"
       },
       {
-        "internalType": "uint256[5]",
+        "internalType": "uint256[]",
         "name": "levelPercentages",
-        "type": "uint256[5]"
+        "type": "uint256[]"
       },
       {
         "internalType": "bool",
