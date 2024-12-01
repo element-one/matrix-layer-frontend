@@ -1782,11 +1782,9 @@ const StakePage: NextPage = () => {
                 </div>
                 <div className='flex items-center gap-1 md:hidden w-full justify-between'>
                   <span className='text-[20px] font-bold'>
-                    {userData?.merchantAddress
-                      ? 0
-                      : referralRewards
-                        ? formatCurrency(referralRewards as number)
-                        : '--'}
+                    {referralRewards
+                      ? formatCurrency(referralRewards as number)
+                      : '--'}
                   </span>
                   <span className='text-[20px] text-gray-a5'>USDT</span>
                 </div>
@@ -1795,11 +1793,9 @@ const StakePage: NextPage = () => {
             <div className='flex flex-col items-center md:items-end w-full'>
               <div className='items-center gap-1 hidden md:flex'>
                 <span className='text-[48px] font-bold'>
-                  {userData?.merchantAddress
-                    ? 0
-                    : referralRewards
-                      ? formatCurrency(referralRewards as number)
-                      : '--'}
+                  {referralRewards
+                    ? formatCurrency(referralRewards as number)
+                    : '--'}
                 </span>
                 <span className='text-[20px] text-gray-a5'>USDT</span>
               </div>
@@ -1810,15 +1806,13 @@ const StakePage: NextPage = () => {
                 >
                   {t('claimHistory')}
                 </div>
-                {userData?.merchantAddress ? null : (
-                  <Button
-                    onClick={handleClaimReward}
-                    className='rounded-full h-8 w-fit md:w-[152px] text-base font-semibold z-10'
-                    isLoading={isClaimingContract}
-                  >
-                    {t('claim')}
-                  </Button>
-                )}
+                <Button
+                  onClick={handleClaimReward}
+                  className='rounded-full h-8 w-fit md:w-[152px] text-base font-semibold z-10'
+                  isLoading={isClaimingContract}
+                >
+                  {t('claim')}
+                </Button>
               </div>
             </div>
           </div>
