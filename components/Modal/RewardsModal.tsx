@@ -1,22 +1,39 @@
 import { FC, useEffect, useMemo, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { toast } from 'react-toastify'
 import { useTranslations } from 'next-intl'
 import {
+  Divider,
   Modal,
   ModalBody,
   ModalContent,
+  Pagination,
+  Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
   useDisclosure
 } from '@nextui-org/react'
 import clsx from 'clsx'
 import { Address } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  useAccount,
+  useWaitForTransactionReceipt,
+  useWriteContract
+} from 'wagmi'
 
 import PAYMENT_ABI from '@abis/Payment.json'
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
+import { useGetUserReferralRewards } from '@services/api'
 import { useStore } from '@store/store'
 import { formatUSDT } from '@utils/currency'
+import { formatClaimWalletAddress } from '@utils/formatWalletAddress'
+import dayjs from 'dayjs'
 
 import { RewardsClaimSuccessModal } from './RewardsClaimSuccessModal'
 import { RewardsHistoryModal } from './RewardsHistoryModal'
@@ -123,20 +140,30 @@ export const RewardsModal: FC<RewardsModalProps> = ({
     )
   }
 
+  // table hooks
+  const PAGE_SIZE = 6
+  const { address } = useAccount()
+  const [page, setPage] = useState(1)
   const handleCloseSuccessModal = async () => {
     await onClaimSuccess()
     onClaimClose()
   }
+
+  const { data, isPending: getHistoryPending } = useGetUserReferralRewards({
+    address: address as Address,
+    page,
+    pageSize: PAGE_SIZE
+  })
 
   return (
     <Modal
       isOpen={isModalShown(ModalType.REWARDS_MODAL)}
       onClose={handleClose}
       isDismissable={false}
-      size='xl'
+      size={isMobile ? 'full' : 'xl'}
       placement='center'
       classNames={{
-        base: 'w-[1200px] !max-w-[80vw]',
+        base: 'w-[1000px] max-w-[100vw] md:!max-w-[80vw]',
         closeButton:
           'top-4 right-4 md:right-8 md:top-8 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
       }}
@@ -209,6 +236,68 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                   {t('claim')}
                 </Button>
               </div>
+            </div>
+          </div>
+          <Divider className='bg-gray-a5/20 mt-8 mb-4' />
+          <div className='flex flex-col gap-y-8 h-fit transition-height'>
+            <Text className='text-white text-[16px] md:text-[24px] font-bold'>
+              {t('invitationRewardsHistory')}
+            </Text>
+            <Table
+              aria-label='Reward History'
+              classNames={{
+                wrapper:
+                  'rounded-[12px] border-2 border-[#666] bg-black-15 backdrop-blur-[6px] p-0',
+                th: 'bg-black text-white text-[20px] font-bold text-white text-center py-3 !rounded-none font-chakraPetch',
+                td: 'p-4 text-[18px] font-medium text-center whitespace-nowrap',
+                tr: 'odd:bg-black-20 even:bg-black-15 hover:bg-black-15 font-chakraPetch'
+              }}
+            >
+              <TableHeader>
+                <TableColumn>{t('address')}</TableColumn>
+                <TableColumn>{t('txID')}</TableColumn>
+                <TableColumn>{t('commissionAmount')}</TableColumn>
+                <TableColumn>{t('createdAt')}</TableColumn>
+              </TableHeader>
+              <TableBody
+                isLoading={getHistoryPending}
+                loadingContent={
+                  <div className='w-full flex items-center justify-center'>
+                    <Spinner color='secondary' />
+                  </div>
+                }
+              >
+                {(data?.data ?? []).map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      {formatClaimWalletAddress(item.address)}
+                    </TableCell>
+                    <TableCell>{formatClaimWalletAddress(item.txid)}</TableCell>
+                    <TableCell className='font-bold'>
+                      {formatUSDT(item.rewardAmount)}
+                    </TableCell>
+                    <TableCell className='text-gray-150'>
+                      {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm:ss')}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className='flex w-full justify-center'>
+              <Pagination
+                variant='light'
+                showControls
+                page={page}
+                total={data?.total ?? 0}
+                disableAnimation
+                classNames={{
+                  cursor: 'bg-transparent',
+                  item: 'text-base text-white !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
+                  next: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
+                  prev: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
+                }}
+                onChange={setPage}
+              />
             </div>
           </div>
         </ModalBody>

@@ -347,3 +347,55 @@ export const useGetUserRewardDetails = (
     ...options
   })
 }
+
+export interface GetUserReferralRewardsParams {
+  address?: Address
+  page?: number
+  pageSize?: number
+  startDate?: string
+  endDate?: string
+  order?: 'ASC' | 'DESC'
+}
+
+export interface ApiGetUserReferralRewardsResponse {
+  data: {
+    id: string
+    createdAt: string
+    updatedAt: string
+    rewardAmount: string
+    blockTimestamp: number
+    txid: string
+    address: string
+  }[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+export const getUserReferralRewards = async (
+  params: GetUserReferralRewardsParams
+): Promise<ApiGetUserReferralRewardsResponse> => {
+  try {
+    const { data } = await axios.get<ApiGetUserReferralRewardsResponse>(
+      `/users/referral-rewards`,
+      {
+        params
+      }
+    )
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const useGetUserReferralRewards = (
+  params: GetUserReferralRewardsParams,
+  options?: Partial<UseQueryOptions<ApiGetUserReferralRewardsResponse, Error>>
+) => {
+  return useQuery<ApiGetUserReferralRewardsResponse, Error>({
+    queryKey: ['user', 'referral-rewards', params],
+    queryFn: () => getUserReferralRewards(params),
+    enabled: !!params.address,
+    ...options
+  })
+}
