@@ -432,7 +432,12 @@
       "totalReward": "TOTAL REWARD",
       "claimableReward": "CLAIMABLE REWARD",
       "claimHistory": "CLAIM HISTORY",
-      "claim": "CLAIM"
+      "claim": "CLAIM",
+      "invitationRewardsHistory": "Invitation Rewards History",
+      "address": "Address",
+      "txID": "TxID",
+      "commissionAmount": "Commission Amount",
+      "createdAt": "Created At"
     },
     "rewardHistoryModal": {
       "title": "Claim History",
