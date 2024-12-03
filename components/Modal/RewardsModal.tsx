@@ -154,6 +154,10 @@ export const RewardsModal: FC<RewardsModalProps> = ({
     page,
     pageSize: PAGE_SIZE
   })
+  const totalPage = useMemo(
+    () => Math.ceil((data?.total || 1) / (data?.pageSize || PAGE_SIZE)),
+    [data]
+  )
 
   return (
     <Modal
@@ -288,7 +292,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                 variant='light'
                 showControls
                 page={page}
-                total={data?.total ?? 0}
+                total={totalPage}
                 disableAnimation
                 classNames={{
                   cursor: 'bg-transparent',
