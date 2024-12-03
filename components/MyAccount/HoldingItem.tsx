@@ -55,7 +55,7 @@ const HoldingItem: FC<HoldingItemProps> = ({ item, group, OnClickItem }) => {
                 : 'text-[24px] md:text-[48px]'
             )}
           >
-            {item.count}
+            {item.key === 'agent_pro' ? '0' : item.count}
           </Text>
           {item.key === 'availableRewards' && (
             <Button
