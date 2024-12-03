@@ -117,12 +117,19 @@ const StakePage: NextPage = () => {
   const [stakedTokens, setStakedTokens] = useState<StakeToken[]>([])
   const [selectedToken, setSelectedToken] = useState<StakeToken | null>(null)
 
+  const filteredStakedTokens = useMemo(() => {
+    return stakedTokens.filter((token) => token.name !== 'AI Agent Pro', [])
+  }, [stakedTokens])
+
+  const filteredTokenOwned = useMemo(() => {
+    return tokenOwned.filter((token) => token.name !== 'AI Agent Pro')
+  }, [tokenOwned])
+
   const [currentTab, setCurrentTab] = useState<'stake' | 'unstake'>('stake')
   const { address } = useAccount()
   const { data: userData, refetch: refetchUserData } = useGetUser(address, {
     enabled: !!address
   })
-  console.log('userData', userData)
 
   const [referralCode, setReferralCode] = useState('')
   const { signMessage } = useSignMessage()
@@ -337,7 +344,7 @@ const StakePage: NextPage = () => {
   }
 
   const handleStakeNFT = () => {
-    if (!tokenOwned?.length) {
+    if (!filteredStakedTokens?.length) {
       showModal(ModalType.BUY_NFT_MODAL)
       return
     }
@@ -400,7 +407,6 @@ const StakePage: NextPage = () => {
     functionName: 'mlpToken',
     args: []
   })
-  console.log('mlpTokenAddress', mlpTokenAddress)
 
   const { data: mlpTokenDecimals } = useReadContract({
     address: mlpTokenAddress as Address,
@@ -620,8 +626,8 @@ const StakePage: NextPage = () => {
   ])
 
   useEffect(() => {
-    setStakeNFTCardVisible(!stakedTokens?.length)
-  }, [stakedTokens])
+    setStakeNFTCardVisible(!filteredStakedTokens?.length)
+  }, [filteredStakedTokens])
 
   const queryClient = useQueryClient()
   const { data: userRewardsSummary, refetch: refetchUserRewardsSummary } =
@@ -692,8 +698,6 @@ const StakePage: NextPage = () => {
       enabled: !!address && POOL_C_ENABLE
     }
   )
-
-  console.log('userRewardsSummary', userRewardsSummary)
 
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
@@ -1684,12 +1688,12 @@ const StakePage: NextPage = () => {
                       AI Agent Pro
                     </span>
                     <div className='text-[24px] font-bold lg:hidden'>
-                      {agentProStaked?.length}
+                      {/* {agentProStaked?.length} */}0
                     </div>
                   </div>
                 </div>
                 <div className='text-[48px] font-bold hidden lg:block'>
-                  {agentProStaked?.length}
+                  {/* {agentProStaked?.length} */}0
                 </div>
               </div>
               <div
@@ -1700,7 +1704,7 @@ const StakePage: NextPage = () => {
                   {t('ordinary')}
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {aiAgentProBalance?.length}
+                  {/* {aiAgentProBalance?.length} */}0
                 </div>
               </div>
               <div
@@ -1712,7 +1716,7 @@ const StakePage: NextPage = () => {
                   <LockIcon />
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {agentProStaked?.length}
+                  {/* {agentProStaked?.length} */}0
                 </div>
               </div>
             </div>
@@ -1925,7 +1929,7 @@ const StakePage: NextPage = () => {
                 <div className='flex justify-between items-center'>
                   <span className='text-gray-a5'>{t('totalNFT')}</span>
                   <span className='text-[48px] font-bold'>
-                    {stakedTokens?.length}
+                    {filteredStakedTokens?.length}
                   </span>
                 </div>
                 <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-2'>
@@ -1955,7 +1959,8 @@ const StakePage: NextPage = () => {
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Pro</div>
-                    <span>{agentProStaked?.length}</span>
+                    {/* <span>{agentProStaked?.length}</span> */}
+                    <span>{0}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
@@ -2046,15 +2051,15 @@ const StakePage: NextPage = () => {
                 `md:border-1 md:mx-8 my-6 border-gray-500 rounded-xl border-opacity-50`
               )}
             >
-              {currentTab === 'stake' && !!tokenOwned?.length && (
+              {currentTab === 'stake' && !!filteredTokenOwned?.length && (
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
                       transparent-scrollbar`,
-                    !!tokenOwned?.length && 'grid-cols-1 md:grid-cols-2'
+                    !!filteredTokenOwned?.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
-                  {tokenOwned?.map((stake) => {
+                  {filteredTokenOwned?.map((stake) => {
                     return (
                       <div
                         key={stake.name + stake.id}
@@ -2093,7 +2098,7 @@ const StakePage: NextPage = () => {
                   })}
                 </div>
               )}
-              {currentTab === 'stake' && !tokenOwned?.length && (
+              {currentTab === 'stake' && !filteredTokenOwned?.length && (
                 <div
                   className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
                     mx-auto'
@@ -2109,15 +2114,16 @@ const StakePage: NextPage = () => {
                   })}
                 </div>
               )}
-              {currentTab === 'unstake' && !!stakedTokens?.length && (
+              {currentTab === 'unstake' && !!filteredStakedTokens?.length && (
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
                       transparent-scrollbar`,
-                    !!stakedTokens?.length && 'grid-cols-1 md:grid-cols-2'
+                    !!filteredStakedTokens?.length &&
+                      'grid-cols-1 md:grid-cols-2'
                   )}
                 >
-                  {stakedTokens?.map((stake) => {
+                  {filteredStakedTokens?.map((stake) => {
                     return (
                       <div
                         key={stake.name + stake.id}
@@ -2156,7 +2162,7 @@ const StakePage: NextPage = () => {
                   })}
                 </div>
               )}
-              {currentTab === 'unstake' && !stakedTokens?.length && (
+              {currentTab === 'unstake' && !filteredStakedTokens?.length && (
                 <div
                   className='font-bold p-2 md:p-8 text-[16px] md:text-[32px] text-center w-full md:w-[50%]
                     mx-auto'
