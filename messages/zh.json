@@ -432,7 +432,12 @@
       "totalReward": "总奖励",
       "claimableReward": "可领取奖励",
       "claimHistory": "领取历史记录",
-      "claim": "领取"
+      "claim": "领取",
+      "invitationRewardsHistory": "邀请奖励历史",
+      "address": "地址",
+      "txID": "交易ID",
+      "commissionAmount": "佣金金额",
+      "createdAt": "创建时间"
     },
     "rewardHistoryModal": {
       "title": "领取历史记录",

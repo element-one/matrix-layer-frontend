@@ -65,8 +65,34 @@ const config = getDefaultConfig({
   ],
   chains:
     process.env.NEXT_PUBLIC_APP_ENV === 'dev'
-      ? [bscTestnet, mainnet]
-      : [bsc, mainnet],
+      ? [
+          {
+            ...bscTestnet,
+            rpcUrls: {
+              ...bscTestnet.rpcUrls,
+              default: {
+                http: [
+                  'https://bnb-testnet.g.alchemy.com/v2/Ma5rrjk6TXAPjDK1pJ6C4nHQm1hVZXh2'
+                ]
+              }
+            }
+          },
+          mainnet
+        ]
+      : [
+          {
+            ...bsc,
+            rpcUrls: {
+              ...bsc.rpcUrls,
+              default: {
+                http: [
+                  'https://bnb-mainnet.g.alchemy.com/v2/Ma5rrjk6TXAPjDK1pJ6C4nHQm1hVZXh2'
+                ]
+              }
+            }
+          },
+          mainnet
+        ],
   ssr: true
 })
 
