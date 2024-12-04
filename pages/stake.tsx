@@ -118,11 +118,17 @@ const StakePage: NextPage = () => {
   const [selectedToken, setSelectedToken] = useState<StakeToken | null>(null)
 
   const filteredStakedTokens = useMemo(() => {
-    return stakedTokens.filter((token) => token.name !== 'AI Agent Pro', [])
+    return stakedTokens.filter(
+      (token) =>
+        token.name !== 'AI Agent Pro' && !(token.id >= 3534 && token.id <= 3547)
+    )
   }, [stakedTokens])
 
   const filteredTokenOwned = useMemo(() => {
-    return tokenOwned.filter((token) => token.name !== 'AI Agent Pro')
+    return tokenOwned.filter(
+      (token) =>
+        token.name !== 'AI Agent Pro' && !(token.id >= 3534 && token.id <= 3547)
+    )
   }, [tokenOwned])
 
   const [currentTab, setCurrentTab] = useState<'stake' | 'unstake'>('stake')
@@ -1688,12 +1694,12 @@ const StakePage: NextPage = () => {
                       AI Agent Pro
                     </span>
                     <div className='text-[24px] font-bold lg:hidden'>
-                      {/* {agentProStaked?.length} */}0
+                      {agentProStaked?.length}
                     </div>
                   </div>
                 </div>
                 <div className='text-[48px] font-bold hidden lg:block'>
-                  {/* {agentProStaked?.length} */}0
+                  {agentProStaked?.length}
                 </div>
               </div>
               <div
@@ -1716,7 +1722,7 @@ const StakePage: NextPage = () => {
                   <LockIcon />
                 </div>
                 <div className='text-[18px] font-bold'>
-                  {/* {agentProStaked?.length} */}0
+                  {agentProStaked?.length}
                 </div>
               </div>
             </div>
@@ -1959,8 +1965,7 @@ const StakePage: NextPage = () => {
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Pro</div>
-                    {/* <span>{agentProStaked?.length}</span> */}
-                    <span>{0}</span>
+                    <span>{agentProStaked?.length}</span>
                   </div>
                   <div
                     className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
