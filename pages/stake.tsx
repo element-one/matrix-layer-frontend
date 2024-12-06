@@ -120,19 +120,28 @@ const StakePage: NextPage = () => {
   const filteredStakedTokens = useMemo(() => {
     return stakedTokens.filter(
       (token) =>
-        token.name !== 'AI Agent Pro' && !(token.id >= 3534 && token.id <= 3547)
+        !(
+          token.name === 'AI Agent Pro' &&
+          Number(token.id) >= 3534 &&
+          Number(token.id) <= 3547
+        )
     )
   }, [stakedTokens])
 
   const filteredTokenOwned = useMemo(() => {
     return tokenOwned.filter(
       (token) =>
-        token.name !== 'AI Agent Pro' && !(token.id >= 3534 && token.id <= 3547)
+        !(
+          token.name === 'AI Agent Pro' &&
+          Number(token.id) >= 3534 &&
+          Number(token.id) <= 3547
+        )
     )
   }, [tokenOwned])
 
   const [currentTab, setCurrentTab] = useState<'stake' | 'unstake'>('stake')
   const { address } = useAccount()
+
   const { data: userData, refetch: refetchUserData } = useGetUser(address, {
     enabled: !!address
   })
