@@ -12,6 +12,7 @@ import STAKE_A_ADDRESS_ABI from '@abis/Stake.json'
 import STAKE_B1_ADDRESS_ABI from '@abis/StakeB1.json'
 import STAKE_B2_ADDRESS_ABI from '@abis/StakeB2.json'
 import STAKE_C_ADDRESS_ABI from '@abis/StakeC.json'
+import STAKE_PHONE_ADDRESS_ABI from '@abis/StakePhone.json'
 import { Button } from '@components/Button'
 import { MiningType } from '@services/api'
 import { getClaimSignature } from '@services/api/staking'
@@ -22,10 +23,12 @@ const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
 const STAKE_B1_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B1_ADDRESS as Address
 const STAKE_B2_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B2_ADDRESS as Address
 const STAKE_C_ADDRESS = process.env.NEXT_PUBLIC_STAKE_C_ADDRESS as Address
+const STAKE_PHONE_ADDRESS = process.env
+  .NEXT_PUBLIC_MATRIX_STAKE_PHONE_ADDRESS as Address
 
 interface ClaimButtonProps {
   isDisabled?: boolean
-  type: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c'
+  type: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c' | 'pool_phone'
   amount?: string
   refetchUserData: () => void
 }
@@ -52,6 +55,10 @@ const poolConfig: Record<
   pool_c: {
     address: STAKE_C_ADDRESS,
     abi: STAKE_C_ADDRESS_ABI
+  },
+  pool_phone: {
+    address: STAKE_PHONE_ADDRESS,
+    abi: STAKE_PHONE_ADDRESS_ABI
   }
 }
 
@@ -106,7 +113,6 @@ export const ClaimButton = (props: ClaimButtonProps) => {
             : [])
       ]
     }
-    console.log(params)
 
     claimReward(params, {
       onError(err: Error) {

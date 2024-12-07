@@ -2214,6 +2214,104 @@ const StakePage: NextPage = () => {
                       GradientTextClass
                     )}
                   >
+                    {t('MLPhoneRewardsPool')}
+                    <Tooltip
+                      placement='bottom'
+                      className='bg-co-bg-black'
+                      content={
+                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                          {t('basicPoolInfo')}
+                        </span>
+                      }
+                    >
+                      <span className='absolute right-0 md:relative'>
+                        <InfoIcon />
+                      </span>
+                    </Tooltip>
+                  </Text>
+                </div>
+                <ClaimButton
+                  type='pool_phone'
+                  amount={userData?.mlpTokenAmountPoolPhone}
+                  refetchUserData={refetchUserData}
+                />
+              </div>
+              <div>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
+                      poolType: 'pool_phone'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('BalancePool.DailyRewardHistory')}
+                </span>
+              </div>
+            </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 items-center justify-around gap-2 md:gap-8 mt-4'>
+              <div className='grid grid-cols-2 gap-2'>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                    py-4'
+                >
+                  <span className='text-[14px] text-center text-gray-a5 font-bold'>
+                    {t('holdingMLPhoneNFT')}
+                  </span>
+                  <div className='text-[18px] font-bold'>
+                    {phoneStaked?.length ?? 0}{' '}
+                  </div>
+                </div>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
+                    md:px-8 py-4'
+                >
+                  <span className='text-[14px] text-center text-gray-a5 font-bold'>
+                    {t('dailyMLPRewards')}
+                  </span>
+                  <div className='text-[18px] font-bold'>
+                    {formatForMatrix(
+                      userRewardsSummary?.yesterdayPoolPhoneRewards ?? 0
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+                <div className='flex-1 hidden md:block'></div>
+                <div
+                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
+                    py-4'
+                >
+                  <span className='text-[14px] text-gray-a5 font-bold'>
+                    {t('TotalMLPRewards')}
+                  </span>
+                  <div className='text-[18px] font-bold'>
+                    {formatUSDT(userRewardsSummary?.poolPhoneTotalRewards ?? 0)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={clsx(
+              `p-5 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
+                md:backdrop-blur-[10px]`,
+              GradientBorderClass
+            )}
+          >
+            <div
+              className='flex w-full relative md:flex-row flex-col items-center gap-2 md:gap-6
+                justify-center md:justify-between'
+            >
+              <div className='flex flex-col md:flex-row items-center gap-3 justify-between md:justify-start'>
+                <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+                  <Text
+                    className={clsx(
+                      'text-[24px] md:text-[28px] text-center font-bold flex items-center',
+                      GradientTextClass
+                    )}
+                  >
                     {t('basicPool')}
                     <Tooltip
                       placement='bottom'

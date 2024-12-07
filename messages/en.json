@@ -320,10 +320,14 @@
     "stakeBtn": "STAKE",
     "unstakeBtn": "UNSTAKE",
     "basicPool": "Basic Pool (PoW)",
+    "MLPhoneRewardsPool": "MLPhone Rewards Pool",
+    "holdingMLPhoneNFT": "Holding MLPhone NFT",
+    "dailyMLPRewards": "Daily MLP Rewards",
+    "phonePoolInfo": "Your mining power in the phone pool is determined by the number and value of the NFTs you have staked.",
     "NFTComputingPower": "NFT Computing Power",
     "TotalMLPRewards": "Total MLP Rewards",
     "DailyRewardsHistory": "Daily rewards history",
-    "basicPoolInfo": "Your mining power in the basic pool is determined by the number and value of the NFTs you have staked.",
+    "basicPoolInfo": "Your mining power in the basic pool is determined by the number of the Matrix Phone you have staked.",
     "BalancePool": {
       "title": "Pool Balance",
       "DailyRewardHistory": "Daily Reward History"
