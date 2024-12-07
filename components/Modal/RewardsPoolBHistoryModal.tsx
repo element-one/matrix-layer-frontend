@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react'
+import clsx from 'clsx'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
@@ -25,7 +26,7 @@ import dayjs from 'dayjs'
 
 export interface RewardsPoolBHistoryModalProps {
   onClose?: () => void
-  poolType: 'pool_a' | 'pool_b1' | 'pool_b2'
+  poolType: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_phone'
 }
 
 const PAGE_SIZE = 6
@@ -54,7 +55,8 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
   const title = {
     pool_a: 'Basic Pool',
     pool_b1: 'NFT',
-    pool_b2: 'MLP'
+    pool_b2: 'MLP',
+    pool_phone: 'MLPhone'
   }
 
   const history = useMemo(() => data?.data || [], [data])
@@ -98,7 +100,11 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
           >
             <TableHeader>
               <TableColumn>{t('date')}</TableColumn>
-              <TableColumn>{t('acceleratedMLP')}</TableColumn>
+              <TableColumn
+                className={poolType === 'pool_phone' ? 'hidden' : ''}
+              >
+                {t('acceleratedMLP')}
+              </TableColumn>
               <TableColumn>{t('rewards')}</TableColumn>
             </TableHeader>
             <TableBody
@@ -114,7 +120,12 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
                   <TableCell className='text-gray-150'>
                     {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm:ss')}
                   </TableCell>
-                  <TableCell className='font-bold'>
+                  <TableCell
+                    className={clsx(
+                      'font-bold',
+                      poolType === 'pool_phone' && 'hidden'
+                    )}
+                  >
                     {poolType === 'pool_a'
                       ? formatForMatrix(item.stakingAmount)
                       : formatCurrency(item.stakingAmount)}
