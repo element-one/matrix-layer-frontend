@@ -2220,7 +2220,7 @@ const StakePage: NextPage = () => {
                       className='bg-co-bg-black'
                       content={
                         <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
-                          {t('basicPoolInfo')}
+                          {t('phonePoolInfo')}
                         </span>
                       }
                     >
