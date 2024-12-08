@@ -2259,7 +2259,7 @@ const StakePage: NextPage = () => {
                     {t('holdingMLPhoneNFT')}
                   </span>
                   <div className='text-[18px] font-bold'>
-                    {phoneStaked?.length ?? 0}{' '}
+                    {userRewardsSummary?.validPhoneCount ?? 0}{' '}
                   </div>
                 </div>
                 <div
