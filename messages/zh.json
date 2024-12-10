@@ -401,7 +401,8 @@
       "180": "质押180天"
     },
     "minimumStakingPeriodNotReached": "质押时间未到不能取消质押",
-    "claimReward": "领取奖励"
+    "claimReward": "领取奖励",
+    "balance": "加速"
   },
   "ReferralCodeModal": {
     "referralCode": "邀请码",
