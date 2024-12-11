@@ -2237,7 +2237,17 @@ const StakePage: NextPage = () => {
                   refetchUserData={refetchUserData}
                 />
               </div>
-              <div>
+              <div className='flex gap-1 md:gap-3 flex-col md:flex-row items-center justify-center'>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_phone'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2335,7 +2345,17 @@ const StakePage: NextPage = () => {
                   refetchUserData={refetchUserData}
                 />
               </div>
-              <div>
+              <div className='flex gap-1 md:gap-3 flex-col md:flex-row items-center justify-center'>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_a'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2471,6 +2491,16 @@ const StakePage: NextPage = () => {
                 className='flex md:flex-row flex-col justify-between md:justify-stretch items-center gap-2
                   md:gap-4'
               >
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_b1'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2688,6 +2718,16 @@ const StakePage: NextPage = () => {
               >
                 <span
                   onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_b2'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
+                <span
+                  onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
                       poolType: 'pool_b2'
                     })
@@ -2903,11 +2943,8 @@ const StakePage: NextPage = () => {
               GradientBorderClass
             )}
           >
-            <div className='w-full flex flex-col md:flex-row items-center'>
-              <div
-                className='w-full flex flex-col md:flex-row items-center justify-center md:justify-stretch
-                  gap-6'
-              >
+            <div className='w-full flex gap-3 flex-col md:flex-row items-center justify-between'>
+              <div className='flex flex-col md:flex-row items-center justify-center md:justify-stretch gap-6'>
                 <Text
                   className={clsx(
                     `text-[16px] md:text-[28px] flex gap-2 items-center w-full md:w-fit
@@ -2937,15 +2974,38 @@ const StakePage: NextPage = () => {
                 />
               </div>
               {POOL_C_ENABLE && (
-                <div
-                  className={clsx(
-                    `flex shrink-0 items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8
-                      text-[18px]`,
-                    GradientBorderClass
-                  )}
-                >
-                  <span className='text-gray-a5'>$MLP {t('amount')}</span>
-                  <span>{formatCurrency(userData?.mlpTokenAmountPoolC)}</span>
+                <div className='flex items-center justify-end gap-2 w-fit md:flex-row flex-col'>
+                  <span
+                    onClick={() => {
+                      showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                        poolType: 'pool_c'
+                      })
+                    }}
+                    className='md:font-bold cursor-pointer md:mr-1 md:text-[16px] text-[14px] text-gray-a5
+                      underline'
+                  >
+                    {t('claimHistory')}
+                  </span>
+                  <span
+                    onClick={() => {
+                      showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
+                        poolType: 'pool_c'
+                      })
+                    }}
+                    className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                  >
+                    {t('BalancePool.DailyRewardHistory')}
+                  </span>
+                  <div
+                    className={clsx(
+                      `flex shrink-0 items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8
+                        text-[18px]`,
+                      GradientBorderClass
+                    )}
+                  >
+                    <span className='text-gray-a5'>$MLP {t('amount')}</span>
+                    <span>{formatCurrency(userData?.mlpTokenAmountPoolC)}</span>
+                  </div>
                 </div>
               )}
             </div>
