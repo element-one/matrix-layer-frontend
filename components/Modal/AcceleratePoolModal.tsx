@@ -64,7 +64,7 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
 
   const [stakeDay, setStakeDay] = useState('30')
 
-  const [isChecked, setIsChecked] = useState(false)
+  const [isChecked, setIsChecked] = useState(true)
 
   const { data: stakingApySummary } = useGetStakingApySummary()
 

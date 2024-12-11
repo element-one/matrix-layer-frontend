@@ -1883,6 +1883,76 @@ const StakePage: NextPage = () => {
               </div>
             </div>
           </div>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div
+              className={clsx(
+                `p-5 md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                  justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px]`,
+                GradientBorderClass
+              )}
+            >
+              <div className='flex items-center w-full gap-4 md:gap-10'>
+                <img
+                  src='/images/stake/usdt.png'
+                  alt='usdt'
+                  className='w-[70px] md:w-[112px]'
+                />
+                <div className='flex-1'>
+                  <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
+                    <span>USDT {t('balance')}</span>
+                  </div>
+                  <div className='flex items-center gap-1 md:hidden w-full justify-between'>
+                    <span className='text-[20px] font-bold'>
+                      {'0' ? formatCurrency(0) : '--'}
+                    </span>
+                    <span className='text-[20px] text-gray-a5'>USDT</span>
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-col items-center md:items-end w-full'>
+                <div className='items-center gap-1 hidden md:flex'>
+                  <span className='text-[48px] font-bold'>
+                    {'' ? formatCurrency(0) : '--'}
+                  </span>
+                  <span className='text-[20px] text-gray-a5'>USDT</span>
+                </div>
+              </div>
+            </div>
+            <div
+              className={clsx(
+                `p-5 md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                  justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px]`,
+                GradientBorderClass
+              )}
+            >
+              <div className='flex w-full items-center gap-4 md:gap-10'>
+                <img
+                  src='/images/stake/mlp.png'
+                  alt='mlp'
+                  className='w-[70px] md:w-[112px]'
+                />
+                <div className='flex-1'>
+                  <div className='flex gap-x-1 md:flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
+                    <span>MLP {t('balance')}</span>
+                  </div>
+                  <div className='flex w-full justify-between items-center gap-1 md:hidden'>
+                    <span className='text-[20px] font-bold'>
+                      {'' ? formatCurrency(0) : '--'}
+                    </span>
+                    <span className='text-[20px] text-gray-a5'>$MLP</span>
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-col items-end w-full'>
+                <div className='items-center gap-1 hidden md:flex'>
+                  <span className='text-[48px] font-bold'>
+                    {'' ? formatCurrency(0) : '--'}
+                  </span>
+                  <span className='text-[20px] text-gray-a5'>$MLP</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </Content>
       </Container>
 
@@ -2443,6 +2513,8 @@ const StakePage: NextPage = () => {
 
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
+                  <span>MLP {t('balance')}</span>
+                  <span>0.00</span>
                   {/* <span
                     onClick={handlePoolBHistoryClick}
                     className='font-bold cursor-pointer text-[16px] text-gray-a5 underline'
