@@ -14,38 +14,45 @@ import {
   TableHeader,
   TableRow
 } from '@nextui-org/react'
-import clsx from 'clsx'
 import { Address } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
-import { useGetUserRewardDetails } from '@services/api'
-import { formatCurrency, formatForMatrix } from '@utils/currency'
+import { useGetUserRewardsMlpToken } from '@services/api'
+import { formatCurrency } from '@utils/currency'
 import dayjs from 'dayjs'
 
-export interface RewardsPoolBHistoryModalProps {
+export interface RewardsClaimHistoryModalProps {
   onClose?: () => void
   poolType: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_phone' | 'pool_c'
 }
 
+const MiningTypeMap = {
+  pool_a: 1,
+  pool_b1: 2,
+  pool_b2: 3,
+  pool_c: 4,
+  pool_phone: 0
+}
+
 const PAGE_SIZE = 6
 
-export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
+export const RewardsClaimHistoryModal: FC<RewardsClaimHistoryModalProps> = ({
   onClose,
   poolType
 }) => {
   const { address } = useAccount()
   const [page, setPage] = useState(1)
   const { hideModal, isModalShown } = useModal()
-  const t = useTranslations('Modals.rewardsPoolBHistoryModal')
+  const t = useTranslations('Modals.rewardsClaimHistoryModal')
 
-  const { data, isLoading, isRefetching } = useGetUserRewardDetails(
+  const { data, isLoading, isRefetching } = useGetUserRewardsMlpToken(
     {
       address: address as Address,
       page,
       pageSize: PAGE_SIZE,
-      poolType
+      type: MiningTypeMap[poolType]
     },
     {
       enabled: !!address
@@ -73,7 +80,7 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
 
   return (
     <Modal
-      isOpen={isModalShown(ModalType.REWARDS_POOL_B_HISTORY_MODAL)}
+      isOpen={isModalShown(ModalType.REWARDS_CLAIM_HISTORY_MODAL)}
       onClose={handleClose}
       isDismissable={false}
       size={isMobile ? 'full' : 'xl'}
@@ -101,11 +108,6 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
           >
             <TableHeader>
               <TableColumn>{t('date')}</TableColumn>
-              <TableColumn
-                className={poolType === 'pool_phone' ? 'hidden' : ''}
-              >
-                {t('acceleratedMLP')}
-              </TableColumn>
               <TableColumn>{t('rewards')}</TableColumn>
             </TableHeader>
             <TableBody
@@ -121,18 +123,8 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
                   <TableCell className='text-gray-150'>
                     {dayjs(item.createdAt).format('YYYY-MM-DD hh:mm:ss')}
                   </TableCell>
-                  <TableCell
-                    className={clsx(
-                      'font-bold',
-                      poolType === 'pool_phone' && 'hidden'
-                    )}
-                  >
-                    {poolType === 'pool_a'
-                      ? formatForMatrix(item.stakingAmount)
-                      : formatCurrency(item.stakingAmount)}
-                  </TableCell>
                   <TableCell className='flex flex-row justify-center'>
-                    {formatCurrency(item.amount)}
+                    {formatCurrency(item.tokenAmount)}
                   </TableCell>
                 </TableRow>
               ))}
