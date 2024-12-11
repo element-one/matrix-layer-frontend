@@ -1,17 +1,21 @@
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent, Tooltip } from '@nextui-org/react'
 import clsx from 'clsx'
+import { Address } from 'viem'
+import { useAccount, useBalance } from 'wagmi'
 
 import { Button } from '@components/Button'
 import { QuestionColorIcon } from '@components/Icon/QuestionColorIcon'
 import { Text } from '@components/Text'
 import { ModalType, useModal } from '@contexts/modal'
 import { useGetStakingApySummary } from '@services/api/staking'
+import { formatCurrency } from '@utils/currency'
+
+const MLP_TOKEN_ADDRESS = process.env.NEXT_PUBLIC_MLP_TOKEN_ADDRESS as Address
 
 export interface AcceleratePoolModalProps {
   onClose?: () => void
-  bestRate?: string
   onConfirm?: (options: {
     amount: string
     stakeDay: string
@@ -21,9 +25,14 @@ export interface AcceleratePoolModalProps {
 
 export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
   onClose,
-  bestRate,
   onConfirm
 }) => {
+  const { address } = useAccount()
+  const { data: balanceData } = useBalance({
+    address,
+    token: MLP_TOKEN_ADDRESS
+  })
+
   const t = useTranslations('Stake')
 
   const default_options = [
@@ -63,6 +72,17 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
     onClose && onClose()
     hideModal()
   }
+
+  const formattedBalance = useMemo(() => {
+    if (!balanceData) {
+      return '--'
+    }
+
+    return formatCurrency(
+      balanceData?.value.toString() ?? 0,
+      balanceData?.decimals
+    )
+  }, [balanceData])
 
   return (
     <Modal
@@ -167,9 +187,19 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
                 }}
               />
             </div>
-            <Text className='mt-[10px] text-right text-[10px] md:text-[18px] text-co-gray-7 font-bold'>
-              {t('AccelerateNFTBoostedPool.bestRate')} : {bestRate ?? '--'} MLP
-            </Text>
+            <div className='flex items-center justify-end mt-[10px] gap-2'>
+              <Text className='text-right text-[10px] md:text-[18px] text-co-gray-7 font-bold'>
+                {t('accountBalance')} : {formattedBalance} MLP
+              </Text>
+              <Button
+                size='sm'
+                className='p-1 rounded-[32px] text-[12px] md:text-[14px] font-bold'
+                disabled={!balanceData?.value}
+                onClick={() => setAmount(formattedBalance)}
+              >
+                {t('max')}
+              </Button>
+            </div>
           </div>
           <Button
             className='px-3 py-2 md:p-[10px] w-[130px] md:w-[320px] rounded-[32px] text-[12px]

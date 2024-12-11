@@ -281,6 +281,8 @@
     }
   },
   "Stake": {
+    "accountBalance": "Account Balance",
+    "max": "Max",
     "copied": "Copied",
     "skateTitle": "Stake",
     "myAccount": "My Account",
