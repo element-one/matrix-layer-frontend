@@ -2195,7 +2195,7 @@ const StakePage: NextPage = () => {
             </div>
           </div>
 
-          <div
+          {/* <div
             className={clsx(
               `p-5 md:p-8 border-2 mt-8 rounded-[20px] md:backdrop-filter
                 md:backdrop-blur-[10px]`,
@@ -2291,7 +2291,7 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div
             className={clsx(
