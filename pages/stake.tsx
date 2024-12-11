@@ -2231,6 +2231,7 @@ const StakePage: NextPage = () => {
                   </Text>
                 </div>
                 <ClaimButton
+                  isDisabled={true}
                   type='pool_phone'
                   amount={userData?.mlpTokenAmountPoolPhone}
                   refetchUserData={refetchUserData}
