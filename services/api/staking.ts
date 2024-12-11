@@ -32,7 +32,7 @@ export interface ApiGetClaimSignatureResponse {
 }
 
 interface GetClaimSignatureParams {
-  type: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c'
+  type: 'pool_a' | 'pool_b1' | 'pool_b2' | 'pool_c' | 'pool_phone'
   address: string
 }
 
