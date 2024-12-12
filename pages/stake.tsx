@@ -89,6 +89,8 @@ const AI_AGENT_ULTRA_ADDRESS = process.env
 const PHONE_ADDRESS = process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address
 const POOL_B_ENABLE = process.env.NEXT_PUBLIC_POOL_B_ENABLE === 'true'
 const POOL_C_ENABLE = process.env.NEXT_PUBLIC_POOL_C_ENABLE === 'true'
+const PHONE_CLAIM_DISABLED =
+  process.env.NEXT_PUBLIC_PHONE_CLAIM_DISABLED === 'true'
 
 enum StakeType {
   FreeWithdraw = 0, // Unchecked
@@ -2295,7 +2297,7 @@ const StakePage: NextPage = () => {
                   </Text>
                 </div>
                 <ClaimButton
-                  isDisabled={true}
+                  isDisabled={PHONE_CLAIM_DISABLED}
                   type='pool_phone'
                   amount={userData?.mlpTokenAmountPoolPhone}
                   refetchUserData={refetchUserData}
