@@ -89,6 +89,8 @@ const AI_AGENT_ULTRA_ADDRESS = process.env
 const PHONE_ADDRESS = process.env.NEXT_PUBLIC_PHONE_ADDRESS as Address
 const POOL_B_ENABLE = process.env.NEXT_PUBLIC_POOL_B_ENABLE === 'true'
 const POOL_C_ENABLE = process.env.NEXT_PUBLIC_POOL_C_ENABLE === 'true'
+const PHONE_CLAIM_DISABLED =
+  process.env.NEXT_PUBLIC_PHONE_CLAIM_DISABLED === 'true'
 
 enum StakeType {
   FreeWithdraw = 0, // Unchecked
@@ -372,9 +374,6 @@ const StakePage: NextPage = () => {
 
   const handleOpenAccelerationPoolModal = () => {
     showModal(ModalType.ACCELERATE_POOL_MODAL, {
-      bestRate:
-        userRewardsSummary?.poolB2MedianStakingTokenAmount &&
-        formatUSDT(userRewardsSummary.poolB2MedianStakingTokenAmount),
       onConfirm: (options: {
         amount: string
         stakeDay: string
@@ -438,9 +437,6 @@ const StakePage: NextPage = () => {
 
   const handleOpenAccelerationNFTPoolModal = () => {
     showModal(ModalType.ACCELERATE_NFT_POOL_MODAL, {
-      bestRate:
-        userRewardsSummary?.poolB1MedianStakingTokenAmount &&
-        formatUSDT(userRewardsSummary.poolB1MedianStakingTokenAmount),
       onConfirm: (options: { amount: string }) => {
         stakingAmountRef.current = options.amount
         const amount = parseUnits(options.amount, mlpTokenDecimals as number)
@@ -1889,6 +1885,76 @@ const StakePage: NextPage = () => {
               </div>
             </div>
           </div>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div
+              className={clsx(
+                `p-5 md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                  justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px]`,
+                GradientBorderClass
+              )}
+            >
+              <div className='flex items-center w-full gap-4 md:gap-10'>
+                <img
+                  src='/images/stake/usdt.png'
+                  alt='usdt'
+                  className='w-[70px] md:w-[112px]'
+                />
+                <div className='flex-1'>
+                  <div className='flex flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
+                    <span>USDT {t('balance')}</span>
+                  </div>
+                  <div className='flex items-center gap-1 md:hidden w-full justify-between'>
+                    <span className='text-[20px] font-bold'>
+                      {'0' ? formatCurrency(0) : '--'}
+                    </span>
+                    <span className='text-[20px] text-gray-a5'>USDT</span>
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-col items-center md:items-end w-full'>
+                <div className='items-center gap-1 hidden md:flex'>
+                  <span className='text-[48px] font-bold'>
+                    {'' ? formatCurrency(0) : '--'}
+                  </span>
+                  <span className='text-[20px] text-gray-a5'>USDT</span>
+                </div>
+              </div>
+            </div>
+            <div
+              className={clsx(
+                `p-5 md:p-8 border-2 mt-8 rounded-[20px] flex-col md:flex-row items-center flex
+                  justify-between gap-4 md:backdrop-filter md:backdrop-blur-[10px]`,
+                GradientBorderClass
+              )}
+            >
+              <div className='flex w-full items-center gap-4 md:gap-10'>
+                <img
+                  src='/images/stake/mlp.png'
+                  alt='mlp'
+                  className='w-[70px] md:w-[112px]'
+                />
+                <div className='flex-1'>
+                  <div className='flex gap-x-1 md:flex-col text-gray-a5 text-[14px] md:text-[20px] uppercase'>
+                    <span>MLP {t('balance')}</span>
+                  </div>
+                  <div className='flex w-full justify-between items-center gap-1 md:hidden'>
+                    <span className='text-[20px] font-bold'>
+                      {'' ? formatCurrency(0) : '--'}
+                    </span>
+                    <span className='text-[20px] text-gray-a5'>$MLP</span>
+                  </div>
+                </div>
+              </div>
+              <div className='flex flex-col items-end w-full'>
+                <div className='items-center gap-1 hidden md:flex'>
+                  <span className='text-[48px] font-bold'>
+                    {'' ? formatCurrency(0) : '--'}
+                  </span>
+                  <span className='text-[20px] text-gray-a5'>$MLP</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </Content>
       </Container>
 
@@ -2231,13 +2297,23 @@ const StakePage: NextPage = () => {
                   </Text>
                 </div>
                 <ClaimButton
-                  isDisabled={true}
+                  isDisabled={PHONE_CLAIM_DISABLED}
                   type='pool_phone'
                   amount={userData?.mlpTokenAmountPoolPhone}
                   refetchUserData={refetchUserData}
                 />
               </div>
-              <div>
+              <div className='flex gap-1 md:gap-3 flex-col md:flex-row items-center justify-center'>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_phone'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2335,7 +2411,17 @@ const StakePage: NextPage = () => {
                   refetchUserData={refetchUserData}
                 />
               </div>
-              <div>
+              <div className='flex gap-1 md:gap-3 flex-col md:flex-row items-center justify-center'>
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_a'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2429,6 +2515,8 @@ const StakePage: NextPage = () => {
 
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
+                  <span>MLP {t('balance')}</span>
+                  <span>0.00</span>
                   {/* <span
                     onClick={handlePoolBHistoryClick}
                     className='font-bold cursor-pointer text-[16px] text-gray-a5 underline'
@@ -2471,6 +2559,16 @@ const StakePage: NextPage = () => {
                 className='flex md:flex-row flex-col justify-between md:justify-stretch items-center gap-2
                   md:gap-4'
               >
+                <span
+                  onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_b1'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
                 <span
                   onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
@@ -2688,6 +2786,16 @@ const StakePage: NextPage = () => {
               >
                 <span
                   onClick={() => {
+                    showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                      poolType: 'pool_b2'
+                    })
+                  }}
+                  className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                >
+                  {t('claimHistory')}
+                </span>
+                <span
+                  onClick={() => {
                     showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
                       poolType: 'pool_b2'
                     })
@@ -2903,11 +3011,8 @@ const StakePage: NextPage = () => {
               GradientBorderClass
             )}
           >
-            <div className='w-full flex flex-col md:flex-row items-center'>
-              <div
-                className='w-full flex flex-col md:flex-row items-center justify-center md:justify-stretch
-                  gap-6'
-              >
+            <div className='w-full flex gap-3 flex-col md:flex-row items-center justify-between'>
+              <div className='flex flex-col md:flex-row items-center justify-center md:justify-stretch gap-6'>
                 <Text
                   className={clsx(
                     `text-[16px] md:text-[28px] flex gap-2 items-center w-full md:w-fit
@@ -2937,15 +3042,38 @@ const StakePage: NextPage = () => {
                 />
               </div>
               {POOL_C_ENABLE && (
-                <div
-                  className={clsx(
-                    `flex shrink-0 items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8
-                      text-[18px]`,
-                    GradientBorderClass
-                  )}
-                >
-                  <span className='text-gray-a5'>$MLP {t('amount')}</span>
-                  <span>{formatCurrency(userData?.mlpTokenAmountPoolC)}</span>
+                <div className='flex items-center justify-end gap-2 w-fit md:flex-row flex-col'>
+                  <span
+                    onClick={() => {
+                      showModal(ModalType.REWARDS_CLAIM_HISTORY_MODAL, {
+                        poolType: 'pool_c'
+                      })
+                    }}
+                    className='md:font-bold cursor-pointer md:mr-1 md:text-[16px] text-[14px] text-gray-a5
+                      underline'
+                  >
+                    {t('claimHistory')}
+                  </span>
+                  <span
+                    onClick={() => {
+                      showModal(ModalType.REWARDS_POOL_B_HISTORY_MODAL, {
+                        poolType: 'pool_c'
+                      })
+                    }}
+                    className='md:font-bold cursor-pointer md:text-[16px] text-[14px] text-gray-a5 underline'
+                  >
+                    {t('BalancePool.DailyRewardHistory')}
+                  </span>
+                  <div
+                    className={clsx(
+                      `flex shrink-0 items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8
+                        text-[18px]`,
+                      GradientBorderClass
+                    )}
+                  >
+                    <span className='text-gray-a5'>$MLP {t('amount')}</span>
+                    <span>{formatCurrency(userData?.mlpTokenAmountPoolC)}</span>
+                  </div>
                 </div>
               )}
             </div>

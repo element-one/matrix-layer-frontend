@@ -281,6 +281,8 @@
     }
   },
   "Stake": {
+    "accountBalance": "Account Balance",
+    "max": "Max",
     "copied": "Copied",
     "skateTitle": "Stake",
     "myAccount": "My Account",
@@ -401,7 +403,8 @@
       "180": "Stake for 180 Days"
     },
     "minimumStakingPeriodNotReached": "Cannot unstake before minimum staking period is reached",
-    "claimReward": "Claim Reward"
+    "claimReward": "Claim Reward",
+    "balance": "Balance"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",
@@ -466,6 +469,11 @@
       "title": "Daily Reward History",
       "date": "Date",
       "acceleratedMLP": "Accelerated MLP",
+      "rewards": "Rewards"
+    },
+    "rewardsClaimHistoryModal": {
+      "title": "Claim History",
+      "date": "Date",
       "rewards": "Rewards"
     }
   },

@@ -281,6 +281,8 @@
     }
   },
   "Stake": {
+    "accountBalance": "账户余额",
+    "max": "最大值",
     "copied": "已复制",
     "skateTitle": "质押",
     "myAccount": "我的账户",
@@ -401,7 +403,8 @@
       "180": "质押180天"
     },
     "minimumStakingPeriodNotReached": "质押时间未到不能取消质押",
-    "claimReward": "领取奖励"
+    "claimReward": "领取奖励",
+    "balance": "加速"
   },
   "ReferralCodeModal": {
     "referralCode": "邀请码",
@@ -466,6 +469,11 @@
       "title": "每日奖励历史",
       "date": "日期",
       "acceleratedMLP": "加速MLP",
+      "rewards": "奖励"
+    },
+    "rewardsClaimHistoryModal": {
+      "title": "领取历史记录",
+      "date": "日期",
       "rewards": "奖励"
     }
   },

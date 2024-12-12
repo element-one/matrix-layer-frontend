@@ -5,13 +5,18 @@ const MATRIX_AMOUNT = process.env.NEXT_PUBLIC_MATRIX_AMOUNT ?? '100*1e18'
 
 export const formatCurrency = (
   amount: string | number = 0,
-  decimals: number = 18
+  decimals: number = 18,
+  roundDown?: boolean
 ) => {
   try {
     const formattedAmount = formatUnits(
       new BigNumber(amount).toFixed(0),
       decimals
     )
+
+    if (roundDown) {
+      return Math.floor(Number(formattedAmount)).toString()
+    }
     return parseFloat(formattedAmount).toFixed(2)
   } catch (error) {
     console.log('format USDT error: ', error)
