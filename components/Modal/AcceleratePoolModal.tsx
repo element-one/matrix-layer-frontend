@@ -80,7 +80,8 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
 
     return formatCurrency(
       balanceData?.value.toString() ?? 0,
-      balanceData?.decimals
+      balanceData?.decimals,
+      true
     )
   }, [balanceData])
 

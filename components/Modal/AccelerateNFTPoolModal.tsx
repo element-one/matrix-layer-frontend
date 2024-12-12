@@ -44,7 +44,8 @@ export const AccelerateNFTPoolModal: FC<AccelerateNFTPoolModalProps> = ({
 
     return formatCurrency(
       balanceData?.value.toString() ?? 0,
-      balanceData?.decimals
+      balanceData?.decimals,
+      true
     )
   }, [balanceData])
 
