@@ -33,6 +33,7 @@ import PAYMENT_ABI from '@abis/Payment.json'
 import STAKE_ABI from '@abis/Stake.json'
 import STAKE_B1_ABI from '@abis/StakeB1.json'
 import STAKE_B2_ABI from '@abis/StakeB2.json'
+import USDT_ABI from '@abis/USDT.json'
 import { Button } from '@components/Button'
 import { Container, Content } from '@components/Home/Container'
 import { CopyIcon } from '@components/Icon/CopyIcon'
@@ -51,9 +52,7 @@ import { Text } from '@components/Text'
 import { TopSectionBackground } from '@components/TopSectionBackground/TopSectionBackground'
 import { ModalType, useModal } from '@contexts/modal'
 import {
-  MiningType,
   useGetUser,
-  useGetUserRewardsMlpToken,
   useGetUserRewardsSummary,
   usePatchReferralCode
 } from '@services/api'
@@ -74,6 +73,7 @@ const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 const GradientBorderClass =
   'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
 
+const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
 const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
 const STAKE_B1_ADDRESS = process.env.NEXT_PUBLIC_STAKE_B1_ADDRESS as Address
@@ -158,7 +158,6 @@ const StakePage: NextPage = () => {
   const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
   const [isShowNFTDetails, setIsShowNFTDetails] = useState(false)
-  const [isShowPromotionDetails, setIsShowPromotionDetails] = useState(false)
 
   const stakingAmountRef = useRef<string | null>(null)
   const stakingPoolBMLPAmountRef = useRef<{
@@ -435,6 +434,32 @@ const StakePage: NextPage = () => {
     args: []
   })
 
+  const { data: accountBalance, refetch: refetchAccount } = useReadContract({
+    abi: USDT_ABI,
+    address: USDT_ADDRESS as Address,
+    functionName: 'balanceOf',
+    args: [address]
+  })
+
+  const { data: mlpBalance, refetch: refetchMlpBalance } = useReadContract({
+    abi: ERC20_ABI,
+    address: mlpTokenAddress as Address,
+    functionName: 'balanceOf',
+    args: [address]
+  })
+
+  console.log('mlpTokenAddress', mlpTokenAddress)
+  console.log('mlpBalance', mlpBalance, refetchMlpBalance)
+
+  const refetchUserAndMlpBalance = useCallback(() => {
+    refetchUserData()
+    refetchMlpBalance()
+  }, [refetchUserData, refetchMlpBalance])
+
+  useEffect(() => {
+    console.log('accountBalance', { accountBalance }, refetchAccount)
+  }, [accountBalance, address, refetchAccount])
+
   const handleOpenAccelerationNFTPoolModal = () => {
     showModal(ModalType.ACCELERATE_NFT_POOL_MODAL, {
       onConfirm: (options: { amount: string }) => {
@@ -696,19 +721,6 @@ const StakePage: NextPage = () => {
       }
     )
   }, [address, queryClient, refetchPoolB2StakingListApi])
-
-  const {
-    data: userRewardsMlpTokenPoolC
-    // refetch: refetchUserRewardsMlpTokenPoolC
-  } = useGetUserRewardsMlpToken(
-    {
-      address: address as Address,
-      type: MiningType.Promotional
-    },
-    {
-      enabled: !!address && POOL_C_ENABLE
-    }
-  )
 
   const { data: nftBalances, refetch: refetchNftBalances } = useReadContracts({
     contracts: [
@@ -1187,8 +1199,9 @@ const StakePage: NextPage = () => {
   useEffect(() => {
     if (txData && !isWaitingClaimReceipt) {
       refetchReferralWard()
+      refetchAccount()
     }
-  }, [txData, refetchReferralWard, isWaitingClaimReceipt])
+  }, [txData, refetchReferralWard, isWaitingClaimReceipt, refetchAccount])
 
   const handleClaimReward = async () => {
     if (!referralRewards || !address) {
@@ -1905,7 +1918,9 @@ const StakePage: NextPage = () => {
                   </div>
                   <div className='flex items-center gap-1 md:hidden w-full justify-between'>
                     <span className='text-[20px] font-bold'>
-                      {'0' ? formatCurrency(0) : '--'}
+                      {accountBalance
+                        ? formatCurrency(accountBalance as string)
+                        : '--'}
                     </span>
                     <span className='text-[20px] text-gray-a5'>USDT</span>
                   </div>
@@ -1914,7 +1929,9 @@ const StakePage: NextPage = () => {
               <div className='flex flex-col items-center md:items-end w-full'>
                 <div className='items-center gap-1 hidden md:flex'>
                   <span className='text-[48px] font-bold'>
-                    {'' ? formatCurrency(0) : '--'}
+                    {accountBalance
+                      ? formatCurrency(accountBalance as string)
+                      : '--'}
                   </span>
                   <span className='text-[20px] text-gray-a5'>USDT</span>
                 </div>
@@ -1939,7 +1956,7 @@ const StakePage: NextPage = () => {
                   </div>
                   <div className='flex w-full justify-between items-center gap-1 md:hidden'>
                     <span className='text-[20px] font-bold'>
-                      {'' ? formatCurrency(0) : '--'}
+                      {mlpBalance ? formatCurrency(mlpBalance as string) : '--'}
                     </span>
                     <span className='text-[20px] text-gray-a5'>$MLP</span>
                   </div>
@@ -1948,7 +1965,7 @@ const StakePage: NextPage = () => {
               <div className='flex flex-col items-end w-full'>
                 <div className='items-center gap-1 hidden md:flex'>
                   <span className='text-[48px] font-bold'>
-                    {'' ? formatCurrency(0) : '--'}
+                    {mlpBalance ? formatCurrency(mlpBalance as string) : '--'}
                   </span>
                   <span className='text-[20px] text-gray-a5'>$MLP</span>
                 </div>
@@ -2300,7 +2317,7 @@ const StakePage: NextPage = () => {
                   isDisabled={PHONE_CLAIM_DISABLED}
                   type='pool_phone'
                   amount={userData?.mlpTokenAmountPoolPhone}
-                  refetchUserData={refetchUserData}
+                  refetchUserData={refetchUserAndMlpBalance}
                 />
               </div>
               <div className='flex gap-1 md:gap-3 flex-col md:flex-row items-center justify-center'>
@@ -2408,7 +2425,7 @@ const StakePage: NextPage = () => {
                 <ClaimButton
                   type='pool_a'
                   amount={userData?.mlpTokenAmountPoolA}
-                  refetchUserData={refetchUserData}
+                  refetchUserData={refetchUserAndMlpBalance}
                 />
               </div>
               <div className='flex gap-1 md:gap-3 flex-col md:flex-row items-center justify-center'>
@@ -2516,7 +2533,9 @@ const StakePage: NextPage = () => {
               {POOL_B_ENABLE && (
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
                   <span>MLP {t('balance')}</span>
-                  <span>0.00</span>
+                  <span>
+                    {mlpBalance ? formatCurrency(mlpBalance as string) : '--'}
+                  </span>
                   {/* <span
                     onClick={handlePoolBHistoryClick}
                     className='font-bold cursor-pointer text-[16px] text-gray-a5 underline'
@@ -2551,7 +2570,7 @@ const StakePage: NextPage = () => {
                 <ClaimButton
                   type='pool_b1'
                   amount={userData?.mlpTokenAmountPoolB1}
-                  refetchUserData={refetchUserData}
+                  refetchUserData={refetchUserAndMlpBalance}
                 />
               </div>
 
@@ -2776,7 +2795,7 @@ const StakePage: NextPage = () => {
                 <ClaimButton
                   type='pool_b2'
                   amount={userData?.mlpTokenAmountPoolB2}
-                  refetchUserData={refetchUserData}
+                  refetchUserData={refetchUserAndMlpBalance}
                 />
               </div>
 
@@ -3038,7 +3057,7 @@ const StakePage: NextPage = () => {
                 <ClaimButton
                   type='pool_c'
                   amount={userData?.mlpTokenAmountPoolC}
-                  refetchUserData={refetchUserData}
+                  refetchUserData={refetchUserAndMlpBalance}
                 />
               </div>
               {POOL_C_ENABLE && (
@@ -3064,16 +3083,6 @@ const StakePage: NextPage = () => {
                   >
                     {t('BalancePool.DailyRewardHistory')}
                   </span>
-                  <div
-                    className={clsx(
-                      `flex shrink-0 items-center mt-3 md:mt-0 rounded-full border-1 px-4 py-1 gap-8
-                        text-[18px]`,
-                      GradientBorderClass
-                    )}
-                  >
-                    <span className='text-gray-a5'>$MLP {t('amount')}</span>
-                    <span>{formatCurrency(userData?.mlpTokenAmountPoolC)}</span>
-                  </div>
                 </div>
               )}
             </div>
@@ -3136,60 +3145,6 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
             )}
-
-            <div className='flex flex-col gap-y-8 mt-8 items-center h-fit transition-height'>
-              {isShowPromotionDetails && (
-                <Table
-                  aria-label='Details'
-                  classNames={{
-                    wrapper:
-                      'rounded-[12px] border border-purple-500 bg-black-15 backdrop-blur-[6px] p-0 w-full',
-                    th: 'bg-black text-white text-[18px] font-bold text-white text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
-                    td: ' py-5 px-3 text-[14px] font-medium text-center',
-                    tr: 'odd:bg-black-15 even:bg-black-19 hover:bg-black-15 font-chakraPetch'
-                  }}
-                >
-                  <TableHeader>
-                    <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('createTime')}
-                    </TableColumn>
-                    <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('tokenAmount')}
-                    </TableColumn>
-                    <TableColumn className='text-[14px] md:text-[16px]'>
-                      {t('status')}
-                    </TableColumn>
-                  </TableHeader>
-                  <TableBody>
-                    {!!userRewardsMlpTokenPoolC?.data?.length
-                      ? userRewardsMlpTokenPoolC?.data?.map((item) => (
-                          <TableRow key={item.id}>
-                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {dayjs(item.createdAt).format('YYYY.M.D')}
-                            </TableCell>
-                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {formatCurrency(item.tokenAmount)}
-                            </TableCell>
-                            <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {item.status}
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      : []}
-                  </TableBody>
-                </Table>
-              )}
-              <Button
-                disabled={!POOL_C_ENABLE}
-                onClick={() => {
-                  setIsShowPromotionDetails(!isShowPromotionDetails)
-                }}
-                className='rounded-[35px] text-[12px] md:text-[16px] h-[32px] md:h-[48px] w-full
-                  md:w-[480px] font-bold uppercase'
-              >
-                {isShowPromotionDetails ? t('hideDetails') : t('rewardDetail')}
-              </Button>
-            </div>
           </div>
         </Content>
       </Container>
