@@ -84,7 +84,9 @@ export const ClaimButton = (props: ClaimButtonProps) => {
       setTimeout(() => {
         refetchUserData()
       }, 2 * 1000)
-      refetchUserData()
+      setTimeout(() => {
+        refetchUserData()
+      }, 4 * 1000)
     }
   }, [txRewardMLP, isWaitingClaimMLPReceipt, refetchUserData])
   const [loading, setLoading] = useState(false)
