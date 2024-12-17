@@ -2286,11 +2286,11 @@ const StakePage: NextPage = () => {
             )}
           >
             <div
-              className='flex w-full relative md:flex-row flex-col items-center gap-2 md:gap-6
-                justify-center md:justify-between'
+              className='flex w-full relative lg:flex-row flex-col items-center gap-2 md:gap-6
+                justify-center lg:justify-between'
             >
-              <div className='flex flex-col md:flex-row items-center gap-3 justify-between md:justify-start'>
-                <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+              <div className='flex flex-col lg:flex-row items-center gap-3 justify-between lg:justify-start'>
+                <div className='flex lg:items-center flex-col lg:flex-row items-start gap-3'>
                   <Text
                     className={clsx(
                       'text-[24px] md:text-[28px] text-center font-bold flex items-center',
@@ -2395,11 +2395,11 @@ const StakePage: NextPage = () => {
             )}
           >
             <div
-              className='flex w-full relative md:flex-row flex-col items-center gap-2 md:gap-6
-                justify-center md:justify-between'
+              className='flex w-full relative lg:flex-row flex-col items-center gap-2 lg:gap-6
+                justify-center lg:justify-between'
             >
-              <div className='flex flex-col md:flex-row items-center gap-3 justify-between md:justify-start'>
-                <div className='flex md:items-center flex-col md:flex-row items-start gap-3'>
+              <div className='flex flex-col lg:flex-row items-center gap-3 justify-between lg:justify-start'>
+                <div className='flex lg:items-center flex-col lg:flex-row items-start gap-3'>
                   <Text
                     className={clsx(
                       'text-[24px] md:text-[28px] text-center font-bold flex items-center',
@@ -2506,7 +2506,7 @@ const StakePage: NextPage = () => {
               }
             )}
           >
-            <div className='flex flex-col w-full md:flex-row items-center justify-between'>
+            <div className='flex flex-col w-full lg:flex-row items-center justify-between'>
               <Text
                 className={clsx(
                   `text-[16px] md:text-[28px] w-full md:w-fit flex justify-center relative gap-2
@@ -2557,8 +2557,8 @@ const StakePage: NextPage = () => {
                 </div>
               )}
             </div>
-            <div className='w-full mt-5 md:mt-20 flex flex-col md:flex-row md:items-center justify-between'>
-              <div className='flex flex-col md:flex-row items-center gap-3 mb-4 md:mb-0'>
+            <div className='w-full mt-5 lg:mt-20 flex flex-col lg:flex-row lg:items-center justify-between'>
+              <div className='flex flex-col lg:flex-row items-center gap-3 mb-4 lg:mb-0'>
                 <Text
                   className={clsx(
                     'text-[16px] w-[150px] md:w-full md:text-[28px] text-center font-bold',
@@ -2575,8 +2575,8 @@ const StakePage: NextPage = () => {
               </div>
 
               <div
-                className='flex md:flex-row flex-col justify-between md:justify-stretch items-center gap-2
-                  md:gap-4'
+                className='flex md:flex-row flex-col justify-between md:justify-center items-center gap-2
+                  md:gap-4 lg:justify-end'
               >
                 <span
                   onClick={() => {
@@ -2782,8 +2782,8 @@ const StakePage: NextPage = () => {
 
             <div className='h-[1px] bg-gray-500 w-full mt-7'></div>
 
-            <div className='w-full mt-5 md:mt-20 flex flex-col md:flex-row md:items-center justify-between'>
-              <div className='flex flex-col md:flex-row items-center md:items-start gap-3 mb-4 md:mb-0'>
+            <div className='w-full mt-5 lg:mt-20 flex flex-col lg:flex-row lg:items-center justify-between'>
+              <div className='flex flex-col lg:flex-row items-center lg:items-start gap-3 mb-4 lg:mb-0'>
                 <Text
                   className={clsx(
                     'text-[16px] w-[150px] md:w-full md:text-[28px] text-center font-bold',
@@ -2800,8 +2800,8 @@ const StakePage: NextPage = () => {
               </div>
 
               <div
-                className='flex md:flex-row flex-col justify-between md:justify-stretch items-center gap-2
-                  md:gap-4'
+                className='flex md:flex-row flex-col justify-between md:justify-center items-center gap-2
+                  md:gap-4 lg:justify-stretch'
               >
                 <span
                   onClick={() => {
@@ -3030,8 +3030,8 @@ const StakePage: NextPage = () => {
               GradientBorderClass
             )}
           >
-            <div className='w-full flex gap-3 flex-col md:flex-row items-center justify-between'>
-              <div className='flex flex-col md:flex-row items-center justify-center md:justify-stretch gap-6'>
+            <div className='w-full flex gap-3 flex-col lg:flex-row items-center justify-between'>
+              <div className='flex flex-col lg:flex-row items-center justify-center lg:justify-stretch gap-6'>
                 <Text
                   className={clsx(
                     `text-[16px] md:text-[28px] flex gap-2 items-center w-full md:w-fit
