@@ -2557,7 +2557,10 @@ const StakePage: NextPage = () => {
                 </div>
               )}
             </div>
-            <div className='w-full mt-5 lg:mt-20 flex flex-col lg:flex-row lg:items-center justify-between'>
+            <div
+              className='w-full mt-5 lg:gap-4 lg:mt-20 flex flex-col lg:flex-row lg:items-center
+                justify-between'
+            >
               <div className='flex flex-col lg:flex-row items-center gap-3 mb-4 lg:mb-0'>
                 <Text
                   className={clsx(
@@ -2782,7 +2785,10 @@ const StakePage: NextPage = () => {
 
             <div className='h-[1px] bg-gray-500 w-full mt-7'></div>
 
-            <div className='w-full mt-5 lg:mt-20 flex flex-col lg:flex-row lg:items-center justify-between'>
+            <div
+              className='w-full mt-5 lg:gap-4 lg:mt-20 flex flex-col lg:flex-row lg:items-center
+                justify-between'
+            >
               <div className='flex flex-col lg:flex-row items-center lg:items-start gap-3 mb-4 lg:mb-0'>
                 <Text
                   className={clsx(
