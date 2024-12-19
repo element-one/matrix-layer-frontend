@@ -112,7 +112,8 @@ const StakePage: NextPage = () => {
     onClose: onCloseChangeStakeConfirm
   } = useDisclosure()
 
-  const { isConfirmLoading, setIsConfirmLoading } = useModal()
+  const [isStakeConfirmLoading, setIsStakeConfirmLoading] = useState(false)
+  const { setIsConfirmLoading } = useModal()
   const [stakeType, setStakeType] = useState<StakeTypeEnum | null>(null)
 
   const [tokenOwned, setTokenOwned] = useState<StakeToken[]>([])
@@ -203,6 +204,7 @@ const StakePage: NextPage = () => {
         </div>
       ),
       onConfirm: () => {
+        setIsConfirmLoading(ModalType.WITHDRAW_MODAL, true)
         unstakeNFTBoosted(
           {
             address: STAKE_B1_ADDRESS,
@@ -222,6 +224,7 @@ const StakePage: NextPage = () => {
               } else {
                 toast.error(errMessage)
               }
+              setIsConfirmLoading(ModalType.WITHDRAW_MODAL, false)
             }
           }
         )
@@ -251,6 +254,7 @@ const StakePage: NextPage = () => {
           </div>
         ),
         onConfirm: () => {
+          setIsConfirmLoading(ModalType.WITHDRAW_MODAL, true)
           unstakeMLPBoosted(
             {
               address: STAKE_B2_ADDRESS,
@@ -272,6 +276,7 @@ const StakePage: NextPage = () => {
                 } else {
                   toast.error(errMessage)
                 }
+                setIsConfirmLoading(ModalType.WITHDRAW_MODAL, false)
               }
             }
           )
@@ -311,6 +316,7 @@ const StakePage: NextPage = () => {
           </div>
         ),
         onConfirm: () => {
+          setIsConfirmLoading(ModalType.WITHDRAW_MODAL, true)
           unstakeMLPBoosted(
             {
               address: STAKE_B2_ADDRESS,
@@ -326,6 +332,7 @@ const StakePage: NextPage = () => {
                 toast.error(
                   (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
                 )
+                setIsConfirmLoading(ModalType.WITHDRAW_MODAL, false)
               }
             }
           )
@@ -392,6 +399,7 @@ const StakePage: NextPage = () => {
           return
         }
 
+        setIsConfirmLoading(ModalType.ACCELERATE_POOL_MODAL, true)
         approvePoolBMLP(
           {
             address: mlpTokenAddress as Address,
@@ -407,6 +415,7 @@ const StakePage: NextPage = () => {
               toast.error(
                 (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
               )
+              setIsConfirmLoading(ModalType.ACCELERATE_POOL_MODAL, false)
             }
           }
         )
@@ -470,6 +479,7 @@ const StakePage: NextPage = () => {
           return
         }
 
+        setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, true)
         approvePoolBNFT(
           {
             address: mlpTokenAddress as Address,
@@ -485,6 +495,7 @@ const StakePage: NextPage = () => {
               toast.error(
                 (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
               )
+              setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, false)
             }
           }
         )
@@ -869,6 +880,7 @@ const StakePage: NextPage = () => {
       refetchNftBalances()
       refetchUserRewardsSummary()
       onCloseChangeStakeConfirm()
+      setIsStakeConfirmLoading(false)
     }
   }, [
     stakeReceipt,
@@ -917,28 +929,40 @@ const StakePage: NextPage = () => {
 
   useEffect(() => {
     if (address && approvePoolBNFTReceipt && stakingAmountRef.current) {
+      setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, true)
       const amount = parseUnits(
         stakingAmountRef.current,
         mlpTokenDecimals as number
       )
 
-      getStakeB1Signature(address).then((res) => {
-        stakePoolBNFT(
-          {
-            address: STAKE_B1_ADDRESS,
-            abi: STAKE_B1_ABI,
-            functionName: 'stakeNFTBoosted',
-            args: [amount, true, res.signature]
-          },
-          {
-            onError: (error) => {
-              console.error('Error staking to Pool B:', error)
+      getStakeB1Signature(address)
+        .then((res) => {
+          stakePoolBNFT(
+            {
+              address: STAKE_B1_ADDRESS,
+              abi: STAKE_B1_ABI,
+              functionName: 'stakeNFTBoosted',
+              args: [amount, true, res.signature]
+            },
+            {
+              onError: (error) => {
+                console.error('Error staking to Pool B:', error)
+                setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, false)
+              }
             }
-          }
-        )
-      })
+          )
+        })
+        .catch(() => {
+          setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, false)
+        })
     }
-  }, [address, approvePoolBNFTReceipt, mlpTokenDecimals, stakePoolBNFT])
+  }, [
+    address,
+    approvePoolBNFTReceipt,
+    mlpTokenDecimals,
+    setIsConfirmLoading,
+    stakePoolBNFT
+  ])
 
   const { data: stakePoolBNFTReceipt, isLoading: isWaitingStakePoolBNFT } =
     useWaitForTransactionReceipt({
@@ -952,6 +976,7 @@ const StakePage: NextPage = () => {
 
   useEffect(() => {
     if (stakePoolBNFTReceipt) {
+      setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, false)
       stakingAmountRef.current = null
       refetchUserRewardsSummary()
       refetchPoolB1StakingList()
@@ -963,30 +988,7 @@ const StakePage: NextPage = () => {
     hideModal,
     refetchPoolB1StakingList,
     queryClient,
-    address
-  ])
-
-  useEffect(() => {
-    const isStakePoolBNFTLoading =
-      isStakingPoolBNFT ||
-      isWaitingStakePoolBNFT ||
-      isApprovingPoolBNFT ||
-      isWaitingApprovePoolBNFT
-    if (
-      isStakePoolBNFTLoading !==
-      isConfirmLoading?.[ModalType.ACCELERATE_NFT_POOL_MODAL]
-    ) {
-      setIsConfirmLoading(
-        ModalType.ACCELERATE_NFT_POOL_MODAL,
-        isStakePoolBNFTLoading
-      )
-    }
-  }, [
-    isApprovingPoolBNFT,
-    isConfirmLoading,
-    isStakingPoolBNFT,
-    isWaitingApprovePoolBNFT,
-    isWaitingStakePoolBNFT,
+    address,
     setIsConfirmLoading
   ])
 
@@ -1032,6 +1034,7 @@ const StakePage: NextPage = () => {
         mlpTokenDecimals as number
       )
 
+      setIsConfirmLoading(ModalType.ACCELERATE_POOL_MODAL, true)
       stakePoolBMLP(
         {
           address: STAKE_B2_ADDRESS,
@@ -1046,11 +1049,17 @@ const StakePage: NextPage = () => {
         {
           onError: (error) => {
             console.error('Error staking MLP to Pool B:', error)
+            setIsConfirmLoading(ModalType.ACCELERATE_POOL_MODAL, false)
           }
         }
       )
     }
-  }, [approvePoolBMLPReceipt, mlpTokenDecimals, stakePoolBMLP])
+  }, [
+    approvePoolBMLPReceipt,
+    mlpTokenDecimals,
+    stakePoolBMLP,
+    setIsConfirmLoading
+  ])
 
   const { data: stakePoolBMLPReceipt, isLoading: isWaitingStakePoolBMLP } =
     useWaitForTransactionReceipt({
@@ -1070,45 +1079,19 @@ const StakePage: NextPage = () => {
       refetchUserRewardsSummary()
       refetchPoolB2StakingList()
       hideModal()
+      setIsConfirmLoading(ModalType.ACCELERATE_POOL_MODAL, false)
     }
   }, [
     stakePoolBMLPReceipt,
     refetchUserRewardsSummary,
     hideModal,
-    refetchPoolB2StakingList
-  ])
-
-  // Effect to update loading state for MLP Pool acceleration modal
-  useEffect(() => {
-    const isStakePoolBMLPLoading =
-      isStakingPoolBMLP ||
-      isWaitingStakePoolBMLP ||
-      isApprovingPoolBMLP ||
-      isWaitingApprovePoolBMLP
-    if (
-      isStakePoolBMLPLoading !==
-      isConfirmLoading?.[ModalType.ACCELERATE_POOL_MODAL]
-    ) {
-      setIsConfirmLoading(
-        ModalType.ACCELERATE_POOL_MODAL,
-        isStakePoolBMLPLoading
-      )
-    }
-  }, [
-    isApprovingPoolBMLP,
-    isConfirmLoading,
-    isStakingPoolBMLP,
-    isWaitingApprovePoolBMLP,
-    isWaitingStakePoolBMLP,
+    refetchPoolB2StakingList,
     setIsConfirmLoading
   ])
 
   /** unstake nft boosted */
-  const {
-    data: unstakeNFTBoostedHash,
-    writeContract: unstakeNFTBoosted,
-    isPending: isUnstakingNFTBoosted
-  } = useWriteContract()
+  const { data: unstakeNFTBoostedHash, writeContract: unstakeNFTBoosted } =
+    useWriteContract()
   const {
     data: unstakeNFTBoostedReceipt,
     isLoading: isWaitingUnstakeNFTBoosted
@@ -1122,6 +1105,7 @@ const StakePage: NextPage = () => {
       refetchUserData()
       refetchPoolB1StakingList()
       hideModal()
+      setIsConfirmLoading(ModalType.WITHDRAW_MODAL, false)
     }
   }, [
     unstakeNFTBoostedReceipt,
@@ -1129,15 +1113,13 @@ const StakePage: NextPage = () => {
     refetchUserRewardsSummary,
     hideModal,
     refetchPoolB1StakingList,
-    refetchUserData
+    refetchUserData,
+    setIsConfirmLoading
   ])
 
   /** unstake mlp boosted */
-  const {
-    data: unstakeMLPBoostedHash,
-    writeContract: unstakeMLPBoosted,
-    isPending: isUnstakingMLPBoosted
-  } = useWriteContract()
+  const { data: unstakeMLPBoostedHash, writeContract: unstakeMLPBoosted } =
+    useWriteContract()
   const {
     data: unstakeMLPBoostedReceipt,
     isLoading: isWaitingUnstakeMLPBoosted
@@ -1151,6 +1133,7 @@ const StakePage: NextPage = () => {
       refetchPoolB2StakingList()
       refetchUserData()
       hideModal()
+      setIsConfirmLoading(ModalType.WITHDRAW_MODAL, false)
     }
   }, [
     unstakeMLPBoostedReceipt,
@@ -1158,27 +1141,8 @@ const StakePage: NextPage = () => {
     refetchUserRewardsSummary,
     hideModal,
     refetchPoolB2StakingList,
-    refetchUserData
-  ])
-
-  useEffect(() => {
-    const isUnstakeBoostedLoading =
-      isUnstakingMLPBoosted ||
-      isWaitingUnstakeMLPBoosted ||
-      isUnstakingNFTBoosted ||
-      isWaitingUnstakeNFTBoosted
-    if (
-      isUnstakeBoostedLoading !== isConfirmLoading?.[ModalType.WITHDRAW_MODAL]
-    ) {
-      setIsConfirmLoading(ModalType.WITHDRAW_MODAL, isUnstakeBoostedLoading)
-    }
-  }, [
-    isUnstakingMLPBoosted,
-    isWaitingUnstakeMLPBoosted,
-    isConfirmLoading,
-    setIsConfirmLoading,
-    isUnstakingNFTBoosted,
-    isWaitingUnstakeNFTBoosted
+    refetchUserData,
+    setIsConfirmLoading
   ])
 
   const {
@@ -1247,12 +1211,20 @@ const StakePage: NextPage = () => {
                 ? 3
                 : 4
 
-      stakeToken({
-        address: STAKE_A_ADDRESS,
-        abi: STAKE_ABI,
-        functionName: 'stakeNFT',
-        args: [nftType, selectedToken?.id]
-      })
+      setIsStakeConfirmLoading(true)
+      stakeToken(
+        {
+          address: STAKE_A_ADDRESS,
+          abi: STAKE_ABI,
+          functionName: 'stakeNFT',
+          args: [nftType, selectedToken?.id]
+        },
+        {
+          onError() {
+            setIsStakeConfirmLoading(false)
+          }
+        }
+      )
     }
   }, [
     approveReceipt,
@@ -1276,12 +1248,20 @@ const StakePage: NextPage = () => {
               ? AI_AGENT_PRO_ADDRESS
               : AI_AGENT_ULTRA_ADDRESS
 
-    approveStake({
-      address: contractAddress,
-      abi: NFT_ABI,
-      functionName: 'approve',
-      args: [STAKE_A_ADDRESS, token.id]
-    })
+    setIsStakeConfirmLoading(true)
+    approveStake(
+      {
+        address: contractAddress,
+        abi: NFT_ABI,
+        functionName: 'approve',
+        args: [STAKE_A_ADDRESS, token.id]
+      },
+      {
+        onError() {
+          setIsStakeConfirmLoading(false)
+        }
+      }
+    )
   }
 
   const {
@@ -1299,6 +1279,7 @@ const StakePage: NextPage = () => {
       refetchNftBalances()
       refetchUserRewardsSummary()
       onCloseChangeStakeConfirm()
+      setIsStakeConfirmLoading(false)
     }
   }, [
     unstakeReceipt,
@@ -1321,6 +1302,7 @@ const StakePage: NextPage = () => {
               ? 3
               : 4
 
+    setIsStakeConfirmLoading(true)
     unstakeToken(
       {
         address: STAKE_A_ADDRESS,
@@ -1335,6 +1317,7 @@ const StakePage: NextPage = () => {
           toast.error(
             (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
           )
+          setIsStakeConfirmLoading(false)
         }
       }
     )
@@ -3164,7 +3147,8 @@ const StakePage: NextPage = () => {
           isWaitingStakingToken ||
           isStakingToken ||
           isWaitingUnstakingToken ||
-          isUnstakingToken
+          isUnstakingToken ||
+          isStakeConfirmLoading
         }
         type={stakeType}
         isOpen={isOpenStakeConfirm}
