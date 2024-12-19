@@ -96,8 +96,9 @@ export const ClaimButton = (props: ClaimButtonProps) => {
     const claimSignature = await getClaimSignature({
       address: address as Address,
       type: props.type
-    }).finally(() => {
+    }).catch((err) => {
       setLoading(false)
+      throw err
     })
     console.log(claimSignature)
 
@@ -123,9 +124,11 @@ export const ClaimButton = (props: ClaimButtonProps) => {
         toast.error(
           (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
         )
+        setLoading(false)
       },
       onSuccess() {
         toast.success('Claim success')
+        setLoading(false)
       }
     })
   }
