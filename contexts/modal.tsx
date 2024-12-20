@@ -155,15 +155,18 @@ export const ModalProvider: React.FC<{ children?: ReactNode }> = ({
 
   const setIsConfirmLoading = useCallback(
     (type: ModalType, loading: boolean) => {
-      if (isConfirmLoading?.[type] === loading) {
-        return
-      }
-      setIsConfirmLoadingOriginal((prev) => ({
-        ...((prev ?? {}) as Record<ModalType, boolean>),
-        [type]: loading
-      }))
+      setIsConfirmLoadingOriginal((prev) => {
+        if (prev?.[type] === loading) {
+          return prev
+        }
+
+        return {
+          ...((prev ?? {}) as Record<ModalType, boolean>),
+          [type]: loading
+        }
+      })
     },
-    [isConfirmLoading]
+    []
   )
 
   return (

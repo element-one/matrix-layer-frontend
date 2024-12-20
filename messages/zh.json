@@ -404,7 +404,8 @@
     },
     "minimumStakingPeriodNotReached": "质押时间未到不能取消质押",
     "claimReward": "领取奖励",
-    "balance": "余额"
+    "balance": "余额",
+    "pleaseRefreshPage": "请刷新页面"
   },
   "ReferralCodeModal": {
     "referralCode": "邀请码",

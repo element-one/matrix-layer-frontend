@@ -113,7 +113,7 @@ const StakePage: NextPage = () => {
   } = useDisclosure()
 
   const [isStakeConfirmLoading, setIsStakeConfirmLoading] = useState(false)
-  const { setIsConfirmLoading } = useModal()
+  const { setIsConfirmLoading, showModal, hideModal } = useModal()
   const [stakeType, setStakeType] = useState<StakeTypeEnum | null>(null)
 
   const [tokenOwned, setTokenOwned] = useState<StakeToken[]>([])
@@ -156,7 +156,6 @@ const StakePage: NextPage = () => {
 
   const stakeSectionRef = useRef<HTMLDivElement | null>(null)
 
-  const { showModal, hideModal } = useModal()
   const [isShowDetails, setIsShowDetails] = useState(false)
   const [isShowNFTDetails, setIsShowNFTDetails] = useState(false)
 
@@ -496,6 +495,10 @@ const StakePage: NextPage = () => {
                 (serializedError?.data as any)?.originalError?.shortMessage // eslint-disable-line
               )
               setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, false)
+            },
+            onSuccess() {
+              console.log('********* approve pool b success')
+              refetchUserAndMlpBalance()
             }
           }
         )
@@ -897,38 +900,24 @@ const StakePage: NextPage = () => {
   } = useWriteContract()
 
   /** pool b nft */
-  const {
-    data: approvePoolBNFTData,
-    writeContract: approvePoolBNFT,
-    isPending: isApprovingPoolBNFT
-  } = useWriteContract()
-  useEffect(() => {
-    console.log('approvePoolBNFTData', approvePoolBNFTData, isApprovingPoolBNFT)
-  }, [approvePoolBNFTData, isApprovingPoolBNFT])
+  const { data: approvePoolBNFTData, writeContract: approvePoolBNFT } =
+    useWriteContract()
 
   const { data: approvePoolBNFTReceipt, isLoading: isWaitingApprovePoolBNFT } =
     useWaitForTransactionReceipt({
       hash: approvePoolBNFTData
     })
-  useEffect(() => {
-    console.log(
-      'approvePoolBNFTReceipt',
-      approvePoolBNFTReceipt,
-      isWaitingApprovePoolBNFT
-    )
-  }, [approvePoolBNFTReceipt, isWaitingApprovePoolBNFT])
 
-  const {
-    data: stakePoolBNFTData,
-    writeContract: stakePoolBNFT,
-    isPending: isStakingPoolBNFT
-  } = useWriteContract()
-  useEffect(() => {
-    console.log('stakePoolBNFTData', stakePoolBNFTData, isStakingPoolBNFT)
-  }, [stakePoolBNFTData, isStakingPoolBNFT])
+  const { data: stakePoolBNFTData, writeContract: stakePoolBNFT } =
+    useWriteContract()
 
   useEffect(() => {
-    if (address && approvePoolBNFTReceipt && stakingAmountRef.current) {
+    if (
+      address &&
+      approvePoolBNFTReceipt &&
+      !isWaitingApprovePoolBNFT &&
+      stakingAmountRef.current
+    ) {
       setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, true)
       const amount = parseUnits(
         stakingAmountRef.current,
@@ -961,74 +950,53 @@ const StakePage: NextPage = () => {
     approvePoolBNFTReceipt,
     mlpTokenDecimals,
     setIsConfirmLoading,
-    stakePoolBNFT
+    stakePoolBNFT,
+    isWaitingApprovePoolBNFT
   ])
 
   const { data: stakePoolBNFTReceipt, isLoading: isWaitingStakePoolBNFT } =
     useWaitForTransactionReceipt({
       hash: stakePoolBNFTData
     })
-  console.log(
-    'stakePoolBNFTReceipt',
-    stakePoolBNFTReceipt,
-    isWaitingStakePoolBNFT
-  )
 
   useEffect(() => {
-    if (stakePoolBNFTReceipt) {
+    if (stakePoolBNFTReceipt && !isWaitingStakePoolBNFT) {
       setIsConfirmLoading(ModalType.ACCELERATE_NFT_POOL_MODAL, false)
       stakingAmountRef.current = null
       refetchUserRewardsSummary()
       refetchPoolB1StakingList()
       hideModal()
+      refetchUserAndMlpBalance()
     }
   }, [
     stakePoolBNFTReceipt,
     refetchUserRewardsSummary,
     hideModal,
     refetchPoolB1StakingList,
-    queryClient,
-    address,
-    setIsConfirmLoading
+    setIsConfirmLoading,
+    isWaitingStakePoolBNFT,
+    refetchUserAndMlpBalance
   ])
 
   /** pool a mlp */
-  const {
-    data: approvePoolBMLPData,
-    writeContract: approvePoolBMLP,
-    isPending: isApprovingPoolBMLP
-  } = useWriteContract()
-
-  useEffect(() => {
-    console.log('approvePoolBMLPData', approvePoolBMLPData, isApprovingPoolBMLP)
-  }, [approvePoolBMLPData, isApprovingPoolBMLP])
+  const { data: approvePoolBMLPData, writeContract: approvePoolBMLP } =
+    useWriteContract()
 
   const { data: approvePoolBMLPReceipt, isLoading: isWaitingApprovePoolBMLP } =
     useWaitForTransactionReceipt({
       hash: approvePoolBMLPData
     })
 
-  useEffect(() => {
-    console.log(
-      'approvePoolBMLPReceipt',
-      approvePoolBMLPReceipt,
-      isWaitingApprovePoolBMLP
-    )
-  }, [approvePoolBMLPReceipt, isWaitingApprovePoolBMLP])
-
-  const {
-    data: stakePoolBMLPData,
-    writeContract: stakePoolBMLP,
-    isPending: isStakingPoolBMLP
-  } = useWriteContract()
-
-  useEffect(() => {
-    console.log('stakePoolBMLPData', stakePoolBMLPData, isStakingPoolBMLP)
-  }, [stakePoolBMLPData, isStakingPoolBMLP])
+  const { data: stakePoolBMLPData, writeContract: stakePoolBMLP } =
+    useWriteContract()
 
   // Add effect to handle Pool B MLP staking after approval
   useEffect(() => {
-    if (approvePoolBMLPReceipt && stakingPoolBMLPAmountRef.current) {
+    if (
+      approvePoolBMLPReceipt &&
+      !isWaitingApprovePoolBMLP &&
+      stakingPoolBMLPAmountRef.current
+    ) {
       const amount = parseUnits(
         stakingPoolBMLPAmountRef.current.amount,
         mlpTokenDecimals as number
@@ -1058,35 +1026,32 @@ const StakePage: NextPage = () => {
     approvePoolBMLPReceipt,
     mlpTokenDecimals,
     stakePoolBMLP,
-    setIsConfirmLoading
+    setIsConfirmLoading,
+    isWaitingApprovePoolBMLP
   ])
 
   const { data: stakePoolBMLPReceipt, isLoading: isWaitingStakePoolBMLP } =
     useWaitForTransactionReceipt({
       hash: stakePoolBMLPData
     })
-  useEffect(() => {
-    console.log(
-      'stakePoolBMLPReceipt',
-      stakePoolBMLPReceipt,
-      isWaitingStakePoolBMLP
-    )
-  }, [stakePoolBMLPReceipt, isWaitingStakePoolBMLP])
 
   useEffect(() => {
-    if (stakePoolBMLPReceipt) {
+    if (stakePoolBMLPReceipt && !isWaitingStakePoolBMLP) {
       stakingPoolBMLPAmountRef.current = null
       refetchUserRewardsSummary()
       refetchPoolB2StakingList()
       hideModal()
       setIsConfirmLoading(ModalType.ACCELERATE_POOL_MODAL, false)
+      refetchUserAndMlpBalance()
     }
   }, [
     stakePoolBMLPReceipt,
+    isWaitingStakePoolBMLP,
     refetchUserRewardsSummary,
     hideModal,
     refetchPoolB2StakingList,
-    setIsConfirmLoading
+    setIsConfirmLoading,
+    refetchUserAndMlpBalance
   ])
 
   /** unstake nft boosted */

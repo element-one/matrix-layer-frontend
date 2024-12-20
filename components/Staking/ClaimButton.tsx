@@ -14,7 +14,7 @@ import STAKE_B2_ADDRESS_ABI from '@abis/StakeB2.json'
 import STAKE_C_ADDRESS_ABI from '@abis/StakeC.json'
 import STAKE_PHONE_ADDRESS_ABI from '@abis/StakePhone.json'
 import { Button } from '@components/Button'
-import { MiningType } from '@services/api'
+import { MiningType, usePollingUsersCheckMLpClaimed } from '@services/api'
 import { getClaimSignature } from '@services/api/staking'
 import { formatCurrency } from '@utils/currency'
 import { serializeError } from 'eth-rpc-errors'
@@ -79,16 +79,26 @@ export const ClaimButton = (props: ClaimButtonProps) => {
       }
     })
   const { isDisabled, refetchUserData } = props
+
+  const { data, stopPolling, startPolling, timeout } =
+    usePollingUsersCheckMLpClaimed(txRewardMLP?.transactionHash)
+
+  useEffect(() => {
+    if (!data?.claimed && timeout) {
+      toast.error(t('pleaseRefreshPage'))
+    }
+
+    if (data?.claimed) {
+      stopPolling()
+      refetchUserData()
+    }
+  }, [data, stopPolling, refetchUserData, timeout, t])
+
   useEffect(() => {
     if (txRewardMLP && !isWaitingClaimMLPReceipt) {
-      setTimeout(() => {
-        refetchUserData()
-      }, 2 * 1000)
-      setTimeout(() => {
-        refetchUserData()
-      }, 4 * 1000)
+      startPolling()
     }
-  }, [txRewardMLP, isWaitingClaimMLPReceipt, refetchUserData])
+  }, [txRewardMLP, isWaitingClaimMLPReceipt, startPolling])
   const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
