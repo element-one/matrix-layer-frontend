@@ -404,7 +404,8 @@
     },
     "minimumStakingPeriodNotReached": "Cannot unstake before minimum staking period is reached",
     "claimReward": "Claim Reward",
-    "balance": "Balance"
+    "balance": "Balance",
+    "pleaseRefreshPage": "Refresh Page Please"
   },
   "ReferralCodeModal": {
     "referralCode": "Referral Code",

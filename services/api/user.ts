@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react'
 import {
   useMutation,
   UseMutationOptions,
@@ -399,4 +400,64 @@ export const useGetUserReferralRewards = (
     enabled: !!params.address,
     ...options
   })
+}
+
+interface ApiGetUserCheckMlpClaimedResponse {
+  claimed: boolean
+}
+
+export const getUsersCheckMlpClaimed = async (txID: string) => {
+  const url = `/users/check-mlp-claimed/${txID}`
+  const { data } = await axios.get<ApiGetUserCheckMlpClaimedResponse>(url)
+
+  return data
+}
+
+export const usePollingUsersCheckMLpClaimed = (
+  txID: string | undefined,
+  options?: Partial<UseQueryOptions<ApiGetUserCheckMlpClaimedResponse, Error>>
+) => {
+  const [refetchInterval, setRefetchInterval] = useState<number | false>(2000)
+  const [timeout, setTimeout] = useState<boolean>(false)
+  const [refetchCount, setRefetchCount] = useState(0)
+
+  useEffect(() => {
+    setRefetchInterval(2000)
+    setTimeout(false)
+    setRefetchCount(0)
+  }, [txID])
+
+  const stopPolling = useCallback(() => {
+    setRefetchInterval(false)
+  }, [])
+
+  const startPolling = useCallback(() => {
+    setRefetchInterval(2000)
+  }, [])
+
+  const query = useQuery({
+    queryKey: ['users', 'check-mlp-claimed', txID],
+    queryFn: () => {
+      setRefetchCount((count) => {
+        if (count >= 15) {
+          setTimeout(true)
+          setRefetchInterval(false)
+        }
+
+        return count + 1
+      })
+      return getUsersCheckMlpClaimed(txID!)
+    },
+    refetchInterval,
+    enabled: !!txID && !!refetchInterval,
+    ...options
+  })
+
+  return {
+    ...query,
+    stopPolling,
+    startPolling,
+    timeout,
+    refetchCount
+  }
 }
