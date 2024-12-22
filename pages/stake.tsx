@@ -2737,7 +2737,7 @@ const StakePage: NextPage = () => {
               className='w-full mt-5 lg:gap-4 lg:mt-20 flex flex-col lg:flex-row lg:items-center
                 justify-between'
             >
-              <div className='flex flex-col lg:flex-row items-center lg:items-start gap-3 mb-4 lg:mb-0'>
+              <div className='flex flex-col lg:flex-row items-center gap-3 mb-4 lg:mb-0'>
                 <Text
                   className={clsx(
                     'text-[16px] w-[150px] md:w-full md:text-[28px] text-center font-bold',
