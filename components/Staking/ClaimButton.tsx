@@ -86,11 +86,13 @@ export const ClaimButton = (props: ClaimButtonProps) => {
   useEffect(() => {
     if (!data?.claimed && timeout) {
       toast.error(t('pleaseRefreshPage'))
+      setLoading(false)
     }
 
     if (data?.claimed) {
       stopPolling()
       refetchUserData()
+      setLoading(false)
     }
   }, [data, stopPolling, refetchUserData, timeout, t])
 
@@ -138,7 +140,6 @@ export const ClaimButton = (props: ClaimButtonProps) => {
       },
       onSuccess() {
         toast.success('Claim success')
-        setLoading(false)
       }
     })
   }
