@@ -2661,7 +2661,7 @@ const StakePage: NextPage = () => {
                               {dayjs(item.createdAt).format('YYYY.M.D')}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {formatCurrency(item.stakedTokenAmount)}
+                              {formatCurrency(item.stakedTokenAmount, 18, true)}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                               {formatCurrency(item.accumulatedRewardAmount)}
@@ -2901,7 +2901,7 @@ const StakePage: NextPage = () => {
                             {item.contractDays}
                           </TableCell>
                           <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                            {formatCurrency(item.stakedTokenAmount)}
+                            {formatCurrency(item.stakedTokenAmount, 18, true)}
                           </TableCell>
                           <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                             {formatCurrency(item.estimatedRewardAmount)}
