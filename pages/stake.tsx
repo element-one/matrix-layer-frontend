@@ -2482,7 +2482,9 @@ const StakePage: NextPage = () => {
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
                   <span>MLP {t('balance')}</span>
                   <span>
-                    {mlpBalance ? formatCurrency(mlpBalance as string) : '--'}
+                    {mlpBalance
+                      ? formatCurrency(mlpBalance as string, 18, true)
+                      : '--'}
                   </span>
                   {/* <span
                     onClick={handlePoolBHistoryClick}
