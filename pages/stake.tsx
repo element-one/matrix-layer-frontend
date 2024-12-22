@@ -2482,7 +2482,9 @@ const StakePage: NextPage = () => {
                 <div className='flex gap-2 md:gap-10 items-center flex-col md:flex-row'>
                   <span>MLP {t('balance')}</span>
                   <span>
-                    {mlpBalance ? formatCurrency(mlpBalance as string) : '--'}
+                    {mlpBalance
+                      ? formatCurrency(mlpBalance as string, 18, true)
+                      : '--'}
                   </span>
                   {/* <span
                     onClick={handlePoolBHistoryClick}
@@ -2659,7 +2661,7 @@ const StakePage: NextPage = () => {
                               {dayjs(item.createdAt).format('YYYY.M.D')}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                              {formatCurrency(item.stakedTokenAmount)}
+                              {formatCurrency(item.stakedTokenAmount, 18, true)}
                             </TableCell>
                             <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                               {formatCurrency(item.accumulatedRewardAmount)}
@@ -2899,7 +2901,7 @@ const StakePage: NextPage = () => {
                             {item.contractDays}
                           </TableCell>
                           <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
-                            {formatCurrency(item.stakedTokenAmount)}
+                            {formatCurrency(item.stakedTokenAmount, 18, true)}
                           </TableCell>
                           <TableCell className='text-gray-150 text-[14px] md:text-[16px]'>
                             {formatCurrency(item.estimatedRewardAmount)}

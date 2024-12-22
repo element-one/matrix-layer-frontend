@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 import { formatUnits } from 'ethers'
 
 const MATRIX_AMOUNT = process.env.NEXT_PUBLIC_MATRIX_AMOUNT ?? '100*1e18'
+const ROUND_DOWN_PRECISION = 10000
 
 export const formatCurrency = (
   amount: string | number = 0,
@@ -15,7 +16,10 @@ export const formatCurrency = (
     )
 
     if (roundDown) {
-      return Math.floor(Number(formattedAmount)).toString()
+      return (
+        Math.floor(Number(formattedAmount) * ROUND_DOWN_PRECISION) /
+        ROUND_DOWN_PRECISION
+      ).toString()
     }
     return parseFloat(formattedAmount).toFixed(2)
   } catch (error) {
