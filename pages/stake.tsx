@@ -124,20 +124,28 @@ const StakePage: NextPage = () => {
     return stakedTokens.filter(
       (token) =>
         !(
-          token.name === 'AI Agent Pro' &&
-          Number(token.id) >= 3534 &&
-          Number(token.id) <= 3547
+          (token.name === 'AI Agent Pro' &&
+            Number(token.id) >= 3534 &&
+            Number(token.id) <= 3547) ||
+          (token.name === 'AI Agent Ultra' &&
+            Number(token.id) >= 5392 &&
+            Number(token.id) <= 5561)
         )
     )
   }, [stakedTokens])
+
+  console.log(stakedTokens)
 
   const filteredTokenOwned = useMemo(() => {
     return tokenOwned.filter(
       (token) =>
         !(
-          token.name === 'AI Agent Pro' &&
-          Number(token.id) >= 3534 &&
-          Number(token.id) <= 3547
+          (token.name === 'AI Agent Pro' &&
+            Number(token.id) >= 3534 &&
+            Number(token.id) <= 3547) ||
+          (token.name === 'AI Agent Ultra' &&
+            Number(token.id) >= 5392 &&
+            Number(token.id) <= 5561)
         )
     )
   }, [tokenOwned])
