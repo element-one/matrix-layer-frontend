@@ -77,9 +77,7 @@ body {
   }
   .border-referral-gradient {
     border: 1px solid transparent;
-    background:
-      linear-gradient(#151515, #151515) padding-box,
-      linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box;
+    @apply [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(#151515,#151515)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box];
     backdrop-filter: blur(10px);
   }
 }
@@ -97,7 +95,7 @@ input {
 }
 
 .accelerate-checkbox {
-  @apply border-co-stake-box-bg h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none rounded-md border bg-cover bg-no-repeat checked:!bg-[url("/images/checkout/term_checked.svg")] dark:border-transparent dark:bg-[url("/images/checkout/accelerate_unchecked.svg")];
+  @apply h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none rounded-md border border-co-stake-box-bg bg-cover bg-no-repeat checked:!bg-[url("/images/checkout/term_checked.svg")] dark:border-transparent dark:bg-[url("/images/checkout/accelerate_unchecked.svg")];
 }
 
 .clip-text {
