@@ -28,7 +28,7 @@ const Selection: FC<SelectionProps> = ({
       selectorIcon={<SelectArrowIcon className='!w-[24px] !h-[13px]' />}
       classNames={{
         trigger:
-          'px-[24px] py-[16px] min-h-[20px] h-fit rounded-[16px] bg-black-28 data-[hover=true]:bg-black-28',
+          'px-[24px] py-[16px] min-h-[20px] h-fit rounded-[16px] dark:bg-black-28 dark:data-[hover=true]:bg-black-28',
         innerWrapper: 'min-h-[20px] h-fit'
       }}
       renderValue={(items: SelectedItems<SelectionItemProps>) => {

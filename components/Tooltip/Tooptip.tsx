@@ -4,7 +4,8 @@ export const Tooltip = extendVariants(NextTooltip, {
   variants: {
     color: {
       default: {
-        content: 'bg-co-gray-1 dark:bg-co-gray-5 text-white max-w-[400px]',
+        content:
+          'bg-co-gray-1 dark:bg-co-gray-5 text-co-text-primary max-w-[400px]',
         base: 'before:bg-co-gray-1 dark:before:bg-co-gray-5'
       }
     }

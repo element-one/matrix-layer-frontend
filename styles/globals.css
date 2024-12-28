@@ -97,7 +97,7 @@ input {
 }
 
 .accelerate-checkbox {
-  @apply h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none bg-[url("/images/checkout/accelerate_unchecked.svg")] bg-cover bg-no-repeat checked:bg-[url("/images/checkout/term_checked.svg")];
+  @apply border-co-stake-box-bg h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none rounded-md border bg-cover bg-no-repeat checked:!bg-[url("/images/checkout/term_checked.svg")] dark:border-transparent dark:bg-[url("/images/checkout/accelerate_unchecked.svg")];
 }
 
 .clip-text {
@@ -125,4 +125,8 @@ input {
 .text-break-word {
   white-space: normal;
   word-break: break-word;
+}
+
+.table-th-bg {
+  @apply [background:linear-gradient(180deg,_#E789FF_0%,_#9299FF_100%)] dark:[background:black];
 }

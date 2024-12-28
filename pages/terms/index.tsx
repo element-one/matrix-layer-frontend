@@ -9,13 +9,13 @@ const TermsPage = () => {
   const t = useTranslations('Terms')
 
   return (
-    <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
+    <Layout className='overflow-y-hidden relative bg-co-bg-default max-w-screen'>
       <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>
         <Content>
           <div className='flex flex-col items-center justify-center pt-[150px] md:pt-[220px] pb-[100px]'>
             <Text
               as='h1'
-              className='text-4xl md:text-5xl font-bold mb-8 text-white'
+              className='text-4xl md:text-5xl font-bold mb-8 text-co-text-primary'
             >
               {t('termsAndConditions')}
             </Text>
@@ -23,7 +23,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-1.title')}
                 </Text>
@@ -33,7 +33,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-2.title')}
                 </Text>
@@ -43,7 +43,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-3.title')}
                 </Text>
@@ -53,7 +53,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-4.title')}
                 </Text>
@@ -63,7 +63,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-5.title')}
                 </Text>
@@ -73,7 +73,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-6.title')}
                 </Text>
@@ -83,7 +83,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-7.title')}
                 </Text>
@@ -93,7 +93,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-8.title')}
                 </Text>
@@ -103,7 +103,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-9.title')}
                 </Text>
@@ -113,7 +113,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-10.title')}
                 </Text>
@@ -123,7 +123,7 @@ const TermsPage = () => {
               <section className='mb-8'>
                 <Text
                   as='h2'
-                  className='text-2xl font-semibold mb-4 text-white'
+                  className='text-2xl font-semibold mb-4 text-co-text-primary'
                 >
                   {t('term-11.title')}
                 </Text>

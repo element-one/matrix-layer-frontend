@@ -472,7 +472,7 @@ const CheckoutPage = () => {
           <div className='hidden lg:block absolute bottom-[100px] left-0 w-screen object-cover h-[1200px]'>
             <video
               className='w-fit absolute left-1/2 top-0 translate-x-[-50%] h-[1200px] object-cover
-                opacity-15'
+                dark:opacity-15 opacity-[0.01] dark:mix-blend-normal mix-blend-exclusion'
               autoPlay
               muted
               loop
@@ -481,7 +481,7 @@ const CheckoutPage = () => {
               <source src='/images/home/home_video_1.mp4' type='video/mp4' />
               your browser does not support video tag.
             </video>
-            <div className='absolute inset-0 w-full h-full bg-gradient-home-section-1'></div>
+            <div className='absolute inset-0 w-full h-full dark:bg-gradient-home-section-1'></div>
           </div>
           <img
             className='hidden md:block absolute bottom-[120px] left-[-10px] w-[310px] h-[353px]'

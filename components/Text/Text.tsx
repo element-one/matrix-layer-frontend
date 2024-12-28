@@ -8,7 +8,7 @@ const text = tv(
     base: 'font-chakraPetch text-left leading-none',
     variants: {
       color: {
-        primary: 'text-white',
+        primary: 'text-co-text-primary',
         secondary: 'text-co-gray-2',
         light: 'text-co-gray-3',
         purple: 'text-co-purple-1'

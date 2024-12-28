@@ -142,10 +142,10 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
                 key={item.day}
                 className={clsx(
                   `flex flex-col h-[120px] md:h-[252px] px-6 py-4 md:pt-12 pt-6 items-center gap-3
-                    bg-black rounded-[16px] border cursor-pointer`,
+                    bg-co-bg-default rounded-[16px] border cursor-pointer`,
                   item.day === stakeDay
                     ? 'border-skate-day-item-active-gradient'
-                    : 'border-transparent'
+                    : 'dark:border-transparent border-co-stake-box-bg'
                 )}
                 onClick={() => {
                   setStakeDay(stakeDay === item.day ? '' : item.day)
@@ -171,7 +171,10 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
             })}
           </div>
           <div className='flex flex-col w-full'>
-            <div className='w-full p-4 py-2 md:px-8 md:py-4 bg-black rounded-[16px] flex justify-between'>
+            <div
+              className='w-full p-4 py-2 md:px-8 md:py-4 bg-co-bg-default rounded-[16px] flex
+                justify-between dark:border-none border border-black'
+            >
               <Text className='text-[10px] md:text-[24px] text-co-gray-7 font-bold w-[100px] md:w-auto'>
                 <span className='hidden md:inline-block'>
                   {t('AccelerateNFTBoostedPool.input')}{' '}
@@ -179,8 +182,8 @@ export const AcceleratePoolModal: FC<AcceleratePoolModalProps> = ({
                 {t('AccelerateNFTBoostedPool.amount')} :
               </Text>
               <input
-                className='flex-1 bg-transparent text-right text-[16px] md:text-[24px] text-white font-bold
-                  placeholder:text-co-gray-8'
+                className='flex-1 bg-transparent text-right text-[16px] md:text-[24px] text-co-text-primary
+                  font-bold placeholder:text-co-gray-8'
                 placeholder={`$MLP ${t('AccelerateNFTBoostedPool.amount')}`}
                 value={amount}
                 onChange={(e) => {

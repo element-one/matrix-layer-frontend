@@ -25,8 +25,8 @@ const CompensationPlan = () => {
   if (isLoading) {
     return (
       <Layout
-        className='overflow-y-hidden relative bg-black max-w-screen h-screen flex flex-col gap-4
-          items-center justify-center'
+        className='overflow-y-hidden relative bg-co-bg-default max-w-screen h-screen flex flex-col
+          gap-4 items-center justify-center'
       >
         <Spinner color='white' />
       </Layout>

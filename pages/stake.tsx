@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { NextPage } from 'next'
 import { useTranslations } from 'next-intl'
+import { useTheme } from 'next-themes'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import {
   Spinner,
@@ -71,7 +72,7 @@ import { serializeError } from 'eth-rpc-errors'
 const GradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 const GradientBorderClass =
-  'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
+  'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,white,white),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)] dark:bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
 
 const USDT_ADDRESS = process.env.NEXT_PUBLIC_USDT_ADDRESS
 const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL
@@ -142,6 +143,7 @@ const StakePage: NextPage = () => {
     )
   }, [tokenOwned])
 
+  const { theme } = useTheme()
   const [currentTab, setCurrentTab] = useState<'stake' | 'unstake'>('stake')
   const { address } = useAccount()
 
@@ -176,14 +178,19 @@ const StakePage: NextPage = () => {
         <div className='text-[14px] md:text-[18px] text-gray-a5'>
           <div className='mb-4'>
             {t.rich('withdrawDesc', {
-              text1: (chunks) => <span className='text-white'>{chunks}</span>,
+              text1: (chunks) => (
+                <span className='text-co-text-primary'>{chunks}</span>
+              ),
               amount: formatCurrency(options.stakedTokenAmount),
               accumulatedRewardAmount: formatCurrency(
                 options.accumulatedRewardAmount
               )
             })}
           </div>
-          <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
+          <div
+            className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4
+              text-co-text-primary'
+          >
             <span className=''>
               {formatCurrency(options.accumulatedRewardAmount)} $MLP
             </span>
@@ -291,11 +298,16 @@ const StakePage: NextPage = () => {
           <div className='text-[14px] md:text-[18px] text-gray-a5'>
             <div className='mb-4'>
               {t.rich('withdrawDesc', {
-                text1: (chunks) => <span className='text-white'>{chunks}</span>,
+                text1: (chunks) => (
+                  <span className='text-co-text-primary'>{chunks}</span>
+                ),
                 amount: formatCurrency(options.stakedTokenAmount)
               })}
             </div>
-            <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
+            <div
+              className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4
+                text-co-text-primary'
+            >
               <span className=''>
                 {formatCurrency(options.rewardAmount)} $MLP
               </span>
@@ -1310,7 +1322,7 @@ const StakePage: NextPage = () => {
     'p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]'
 
   return (
-    <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
+    <Layout className='overflow-y-hidden relative bg-co-bg-default max-w-screen'>
       <Container
         className='overflow-visible pb-[38px] border-b-0 sm:border-b
           border-[rgba(102,102,102,0.40)]'
@@ -1318,7 +1330,7 @@ const StakePage: NextPage = () => {
         <TopSectionBackground />
         <Content>
           <div className='flex flex-col items-center justify-center pt-[122px] sm:pt-[320px]'>
-            <Text className='mb-[17px] sm:mb-5 font-pressStart2P text-white text-2xl'>
+            <Text className='mb-[17px] sm:mb-5 font-pressStart2P text-co-text-primary text-2xl'>
               {t('skateTitle')}
             </Text>
           </div>
@@ -1347,15 +1359,15 @@ const StakePage: NextPage = () => {
                 {t('referralCode')}
               </Text>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
-                  justify-between gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex
+                  items-center justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
                   {userData?.referralCode}
                 </div>
                 <Button
-                  className='shrink-0 h-10 rounded-[35px] min-w-fit bg-transparent border-[#666] text-white
-                    text-base font-semibold'
+                  className='shrink-0 h-10 rounded-[35px] min-w-fit bg-transparent border-[#666]
+                    text-co-text-primary text-base font-semibold'
                   variant='bordered'
                   onClick={handleCopy(userData?.referralCode || '')}
                 >
@@ -1372,15 +1384,15 @@ const StakePage: NextPage = () => {
                 {t('referralLink')}
               </Text>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
-                  justify-between gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex
+                  items-center justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
                   {WEB_URL + '/referral?code=' + userData?.referralCode ?? ''}
                 </div>
                 <Button
-                  className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
-                    text-base font-semibold'
+                  className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666]
+                    text-co-text-primary text-base font-semibold'
                   variant='bordered'
                   onClick={handleCopy(
                     WEB_URL + '/referral?code=' + userData?.referralCode ?? ''
@@ -1398,15 +1410,15 @@ const StakePage: NextPage = () => {
               >
                 {t('inviteSystem')}
 
-                <span className='text-white text-[14px]'>
+                <span className='text-co-text-primary text-[14px]'>
                   {userData?.referrerReferralCode
                     ? `${t('referrerInviteCode')}: ${userData?.referrerReferralCode}`
                     : ''}
                 </span>
               </Text>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
-                  justify-between md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex
+                  items-center justify-between md:gap-[62px]'
               >
                 {!userData?.referredByUserAddress && (
                   <>
@@ -1441,8 +1453,8 @@ const StakePage: NextPage = () => {
                       </Tooltip>
                     </div>
                     <Button
-                      className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
-                        text-base font-semibold'
+                      className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666]
+                        text-co-text-primary text-base font-semibold'
                       variant='bordered'
                       onClick={handleCopy(userData.referredByUserAddress)}
                     >
@@ -1493,9 +1505,12 @@ const StakePage: NextPage = () => {
                       MLPhone NFT
                       <Tooltip
                         placement='bottom'
-                        className='bg-co-bg-black'
+                        className='bg-co-bg-default'
                         content={
-                          <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                          <span
+                            className='max-w-[300px] text-[12px] text-center bg-co-bg-co-stake-box-bg text-co-text-3
+                              px-2 py-3'
+                          >
                             {t('phoneInfo')}
                           </span>
                         }
@@ -1515,8 +1530,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   {t('ordinary')}
@@ -1526,8 +1541,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   {t('stake')}
@@ -1556,9 +1571,12 @@ const StakePage: NextPage = () => {
                       Matrix
                       <Tooltip
                         placement='bottom'
-                        className='bg-co-bg-black'
+                        className='bg-co-bg-default'
                         content={
-                          <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                          <span
+                            className='max-w-[300px] text-[12px] text-center bg-co-bg-co-stake-box-bg text-co-text-3
+                              px-2 py-3'
+                          >
                             {t('matrixInfo')}
                           </span>
                         }
@@ -1579,8 +1597,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   {t('ordinary')}
@@ -1590,8 +1608,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   {t('stake')}
@@ -1624,8 +1642,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   {t('ordinary')}
@@ -1635,8 +1653,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   {t('stake')}
@@ -1669,8 +1687,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   {t('ordinary')}
@@ -1680,8 +1698,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   {t('stake')}
@@ -1714,8 +1732,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold'>
                   {t('ordinary')}
@@ -1725,8 +1743,8 @@ const StakePage: NextPage = () => {
                 </div>
               </div>
               <div
-                className='bg-black mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center justify-between
-                  gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-4 pl-6 pr-4 rounded-2xl h-[55px] flex items-center
+                  justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='text-gray-a5 text-[18px] font-bold flex items-center gap-2'>
                   {t('stake')}
@@ -1980,35 +1998,35 @@ const StakePage: NextPage = () => {
                 </div>
                 <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-2'>
                   <div
-                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                    className='bg-co-stake-box-bg rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix Phone</div>
                     <span>{phoneStaked?.length}</span>
                   </div>
                   <div
-                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                    className='bg-co-stake-box-bg rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>Matrix NFT</div>
                     <span>{matrixStaked?.length}</span>
                   </div>
                   <div
-                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                    className='bg-co-stake-box-bg rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent One</div>
                     <span>{agentOneStaked?.length}</span>
                   </div>
                   <div
-                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                    className='bg-co-stake-box-bg rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Pro</div>
                     <span>{agentProStaked?.length}</span>
                   </div>
                   <div
-                    className='bg-black rounded-md flex items-center text-[18px] flex-col px-4 py-2
+                    className='bg-co-stake-box-bg rounded-md flex items-center text-[18px] flex-col px-4 py-2
                       text-gray-a5'
                   >
                     <div className='text-center'>AI Agent Ultra</div>
@@ -2034,11 +2052,11 @@ const StakePage: NextPage = () => {
                   </span>
                 </div>
                 <div
-                  className='bg-black h-[96px] mt-2 rounded-md flex items-center justify-center text-[18px]
-                    flex-col px-4 py-2 text-gray-a5'
+                  className='bg-co-stake-box-bg h-[96px] mt-2 rounded-md flex items-center justify-center
+                    text-[18px] flex-col px-4 py-2 text-gray-a5'
                 >
                   <div className='text-center'>{t('staking')}</div>
-                  <span className='text-white'>
+                  <span className='text-co-text-primary'>
                     {formatUSDT(
                       userRewardsSummary?.currentDayAllPoolTotalStakingAmount ??
                         0
@@ -2052,16 +2070,20 @@ const StakePage: NextPage = () => {
           <div
             ref={stakeSectionRef}
             className={clsx(
-              `py-8 border-2 mt-8 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]`,
+              `pb-8 border-2 mt-8 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]
+                overflow-hidden`,
               GradientBorderClass
             )}
           >
             <div className='flex'>
               <div
                 className={clsx(
-                  `flex-1 flex items-center justify-center flex-col font-bold text-center
+                  `pt-8 flex-1 flex items-center justify-center flex-col font-bold text-center
                     cursor-pointer`,
-                  currentTab === 'stake' && GradientTextClass
+                  currentTab === 'stake' &&
+                    (theme === 'dark'
+                      ? GradientTextClass
+                      : '[background:linear-gradient(180deg,_#E789FF_0%,_#9299FF_100%)] text-white')
                 )}
                 onClick={() => setCurrentTab('stake')}
               >
@@ -2075,9 +2097,12 @@ const StakePage: NextPage = () => {
               </div>
               <div
                 className={clsx(
-                  `flex-1 flex items-center justify-center flex-col font-bold text-center
+                  `pt-8 flex-1 flex items-center justify-center flex-col font-bold text-center
                     cursor-pointer`,
-                  currentTab === 'unstake' && GradientTextClass
+                  currentTab === 'unstake' &&
+                    (theme === 'dark'
+                      ? GradientTextClass
+                      : '[background:linear-gradient(180deg,_#E789FF_0%,_#9299FF_100%)] text-white')
                 )}
                 onClick={() => setCurrentTab('unstake')}
               >
@@ -2100,7 +2125,7 @@ const StakePage: NextPage = () => {
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
-                      transparent-scrollbar`,
+                      transparent-scrollbar bg-co-stake-box-bg dark:bg-transparent`,
                     !!filteredTokenOwned?.length && 'grid-cols-1 md:grid-cols-2'
                   )}
                 >
@@ -2163,7 +2188,7 @@ const StakePage: NextPage = () => {
                 <div
                   className={clsx(
                     `grid gap-y-4 gap-x-4 p-2 md:p-8 max-h-[437px] overflow-y-auto
-                      transparent-scrollbar`,
+                      transparent-scrollbar bg-co-stake-box-bg dark:bg-transparent`,
                     !!filteredStakedTokens?.length &&
                       'grid-cols-1 md:grid-cols-2'
                   )}
@@ -2248,9 +2273,12 @@ const StakePage: NextPage = () => {
                     {t('MLPhoneRewardsPool')}
                     <Tooltip
                       placement='bottom'
-                      className='bg-co-bg-black'
+                      className='bg-co-bg-default'
                       content={
-                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                        <span
+                          className='max-w-[300px] text-[12px] text-center bg-co-bg-co-stake-box-bg text-co-text-3
+                            px-2 py-3'
+                        >
                           {t('phonePoolInfo')}
                         </span>
                       }
@@ -2294,8 +2322,8 @@ const StakePage: NextPage = () => {
             <div className='grid grid-cols-1 md:grid-cols-2 items-center justify-around gap-2 md:gap-8 mt-4'>
               <div className='grid grid-cols-2 gap-2'>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                    py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-8 py-4'
                 >
                   <span className='text-[14px] text-center text-gray-a5 font-bold'>
                     {t('holdingMLPhoneNFT')}
@@ -2305,8 +2333,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[14px] text-center text-gray-a5 font-bold'>
                     {t('dailyMLPRewards')}
@@ -2321,8 +2349,8 @@ const StakePage: NextPage = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
                 <div className='flex-1 hidden md:block'></div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                    py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-8 py-4'
                 >
                   <span className='text-[14px] text-gray-a5 font-bold'>
                     {t('TotalMLPRewards')}
@@ -2357,9 +2385,12 @@ const StakePage: NextPage = () => {
                     {t('basicPool')}
                     <Tooltip
                       placement='bottom'
-                      className='bg-co-bg-black'
+                      className='bg-co-bg-default'
                       content={
-                        <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                        <span
+                          className='max-w-[300px] text-[12px] text-center bg-co-bg-co-stake-box-bg text-co-text-3
+                            px-2 py-3'
+                        >
                           {t('basicPoolInfo')}
                         </span>
                       }
@@ -2402,8 +2433,8 @@ const StakePage: NextPage = () => {
             <div className='grid grid-cols-1 md:grid-cols-2 items-center justify-around gap-2 md:gap-8 mt-4'>
               <div className='grid grid-cols-2 gap-2'>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                    py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-8 py-4'
                 >
                   <span className='text-[14px] text-center text-gray-a5 font-bold'>
                     {t('yesterdayRewards')}
@@ -2414,8 +2445,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[14px] text-center text-gray-a5 font-bold'>
                     {t('NFTComputingPower')}
@@ -2430,8 +2461,8 @@ const StakePage: NextPage = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
                 <div className='flex-1 hidden md:block'></div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-8
-                    py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-8 py-4'
                 >
                   <span className='text-[14px] text-gray-a5 font-bold'>
                     {t('TotalMLPRewards')}
@@ -2465,9 +2496,9 @@ const StakePage: NextPage = () => {
                 {t('BalancePool.title')}
                 {/* <Tooltip
                   placement='bottom'
-                  className='bg-co-bg-black'
+                  className='bg-co-bg-default'
                   content={
-                    <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                    <span className='max-w-[300px] text-[12px] text-center bg-co-bg-co-stake-box-bg text-co-text-3 px-2 py-3'>
                       {t('AccelerationPool.info')}
                     </span>
                   }
@@ -2562,7 +2593,7 @@ const StakePage: NextPage = () => {
             </div>
             {!POOL_B_ENABLE && (
               <div
-                className='bg-black mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
+                className='bg-co-stake-box-bg mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
                   text-gray-a5'
               >
                 Coming soon
@@ -2571,8 +2602,8 @@ const StakePage: NextPage = () => {
             {POOL_B_ENABLE && (
               <div className='grid grid-cols-2 md:grid-cols-4 justify-around gap-2 md:gap-8 mt-4'>
                 <div
-                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg flex-1 w-full rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold text-center'>
                     {t('yesterdayStakingRewards')}
@@ -2583,8 +2614,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg flex-1 w-full rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('acceleratedMLP')}
@@ -2596,8 +2627,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg flex-1 w-full rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('holdingNFT')}
@@ -2607,8 +2638,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg flex-1 w-full rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                     {t('totalMLPRewards')}
@@ -2626,10 +2657,10 @@ const StakePage: NextPage = () => {
                   aria-label='Details'
                   classNames={{
                     wrapper:
-                      'rounded-[12px] border border-purple-500 bg-black-15 backdrop-blur-[6px] p-0 w-full',
-                    th: 'bg-black text-white text-[18px] font-bold text-white text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
+                      'rounded-[12px] border border-purple-500 bg-co-stake-box-bg-15 backdrop-blur-[6px] p-0 w-full',
+                    th: 'table-th-bg text-co-text-primary text-[18px] font-bold text-co-text-primary text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
                     td: ' py-5 px-3 text-[14px] font-medium text-center',
-                    tr: 'odd:bg-black-15 even:bg-black-19 hover:bg-black-15 font-chakraPetch'
+                    tr: 'odd:bg-co-stake-box-bg-15 even:bg-co-stake-box-bg-19 hover:bg-co-stake-box-bg-15 font-chakraPetch'
                   }}
                 >
                   <TableHeader>
@@ -2674,7 +2705,7 @@ const StakePage: NextPage = () => {
                                     clsx(
                                       'rounded-full text-[12px] h-8 w-[152px] font-bold',
                                       !item.isActive &&
-                                        'bg-co-gray-7 text-white'
+                                        'bg-co-gray-7 text-co-text-primary'
                                     )
                                   )}
                                   onClick={() =>
@@ -2692,7 +2723,7 @@ const StakePage: NextPage = () => {
                                 <button
                                   className={twMerge(
                                     clsx(
-                                      'bg-transparent underline text-white font-bold'
+                                      'bg-transparent underline text-co-text-primary font-bold'
                                     )
                                   )}
                                   onClick={() =>
@@ -2791,7 +2822,7 @@ const StakePage: NextPage = () => {
 
             {!POOL_B_ENABLE && (
               <div
-                className='bg-black mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
+                className='bg-co-stake-box-bg mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
                   text-gray-a5'
               >
                 Coming soon
@@ -2801,8 +2832,8 @@ const StakePage: NextPage = () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8 mt-4'>
                 <div className='grid grid-cols-2 gap-2 md:gap-8'>
                   <div
-                    className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                      md:px-8 py-4'
+                    className='bg-co-stake-box-bg flex-1 w-full rounded-xl flex flex-col items-center
+                      justify-center px-2 md:px-8 py-4'
                   >
                     <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                       {t('yesterdayStakingRewards')}
@@ -2815,8 +2846,8 @@ const StakePage: NextPage = () => {
                     </div>
                   </div>
                   <div
-                    className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-2
-                      md:px-8 py-4'
+                    className='bg-co-stake-box-bg flex-1 w-full rounded-xl flex flex-col items-center
+                      justify-center px-2 md:px-8 py-4'
                   >
                     <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                       {t('acceleratedMLP')}
@@ -2831,8 +2862,8 @@ const StakePage: NextPage = () => {
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8'>
                   <div className='flex-1 hidden md:block'></div>
                   <div
-                    className='bg-black flex-1 w-full rounded-xl flex flex-col items-center justify-center px-8
-                      py-4'
+                    className='bg-co-stake-box-bg flex-1 w-full rounded-xl flex flex-col items-center
+                      justify-center px-8 py-4'
                   >
                     <span className='text-[12px] md:text-[14px] text-gray-a5 font-bold'>
                       {t('TotalMLPRewards')}
@@ -2851,10 +2882,10 @@ const StakePage: NextPage = () => {
                   aria-label='Details'
                   classNames={{
                     wrapper:
-                      'rounded-[12px] border border-purple-500 bg-black-15 backdrop-blur-[6px] p-0 w-full',
-                    th: 'bg-black text-white text-[18px] font-bold text-white text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
+                      'rounded-[12px] border border-purple-500 bg-co-stake-box-bg-15 backdrop-blur-[6px] p-0 w-full',
+                    th: 'table-th-bg text-co-text-primary text-[18px] font-bold text-co-text-primary text-center py-5 px-3 !rounded-none font-chakraPetch whitespace-normal',
                     td: ' py-5 px-3 text-[14px] font-medium text-center',
-                    tr: 'odd:bg-black-15 even:bg-black-19 hover:bg-black-15 font-chakraPetch'
+                    tr: 'odd:bg-co-stake-box-bg-15 even:bg-co-stake-box-bg-19 hover:bg-co-stake-box-bg-15 font-chakraPetch'
                   }}
                 >
                   <TableHeader>
@@ -2924,7 +2955,8 @@ const StakePage: NextPage = () => {
                                 className={twMerge(
                                   clsx(
                                     'rounded-full text-[12px] h-8 w-[152px] font-bold',
-                                    !isCanWithdraw && 'bg-co-gray-7 text-white'
+                                    !isCanWithdraw &&
+                                      'bg-co-gray-7 text-co-text-primary'
                                   )
                                 )}
                                 onClick={() =>
@@ -2937,7 +2969,7 @@ const StakePage: NextPage = () => {
                               <button
                                 className={twMerge(
                                   clsx(
-                                    'bg-transparent underline text-white font-bold'
+                                    'bg-transparent underline text-co-text-primary font-bold'
                                   )
                                 )}
                                 onClick={() =>
@@ -2998,9 +3030,12 @@ const StakePage: NextPage = () => {
                   {t('promotionPool')}
                   <Tooltip
                     placement='bottom'
-                    className='bg-co-bg-black'
+                    className='bg-co-bg-default'
                     content={
-                      <span className='max-w-[300px] text-[12px] text-center bg-co-bg-black text-co-text-3 px-2 py-3'>
+                      <span
+                        className='max-w-[300px] text-[12px] text-center bg-co-bg-co-stake-box-bg text-co-text-3
+                          px-2 py-3'
+                      >
                         {t('promotionPoolInfo')}
                       </span>
                     }
@@ -3044,7 +3079,7 @@ const StakePage: NextPage = () => {
             </div>
             {!POOL_C_ENABLE && (
               <div
-                className='bg-black mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
+                className='bg-co-stake-box-bg mt-6 text-center leading-[64px] w-full rounded-xl text-[18px]
                   text-gray-a5'
               >
                 Coming soon
@@ -3053,8 +3088,8 @@ const StakePage: NextPage = () => {
             {POOL_C_ENABLE && (
               <div className='grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-8 mt-4'>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                     {t('yesterdayRewards')}
@@ -3065,8 +3100,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                     {t('totalPerformance')}
@@ -3076,8 +3111,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                     {t('dailyAverage')}
@@ -3089,8 +3124,8 @@ const StakePage: NextPage = () => {
                   </div>
                 </div>
                 <div
-                  className='bg-black w-full flex-1 rounded-xl flex flex-col items-center justify-center px-2
-                    md:px-8 py-4'
+                  className='bg-co-stake-box-bg w-full flex-1 rounded-xl flex flex-col items-center
+                    justify-center px-2 md:px-8 py-4'
                 >
                   <span className='text-[12px] md:text-[14px] text-center text-gray-a5 font-bold'>
                     {t('totalMLPRewards')}

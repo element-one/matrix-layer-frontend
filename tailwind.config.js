@@ -12,24 +12,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'black-15': '#151515',
-        'black-17': '#171717',
-        'black-19': '#191919',
-        'black-20': '#1a1a1a',
-        'black-25': '#2B2B2B',
-        'black-28': '#282828',
-        'black-140': '#92008C',
-        'gray-42': '#2A2A2A',
-        'gray-57': '#575757',
-        'gray-666': '#666666',
-        'gray-78': '#787878',
-        'gray-90': '#919090',
-        'gray-130': '#ACACAC',
-        'gray-150': '#A7A7A7',
-        'gray-180': '#BCBCBC',
-        'red-255': '#FF6363',
-        'purple-500': "#E789FF",
-        "gray-32": "#323232"
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui'],
@@ -65,10 +47,30 @@ module.exports = {
       light: {
         colors: {
           'gray-a5': '#666',
+          'black-15': '#EAEAEA',
+          'black-17': '#E8E8E8', 
+          'black-19': '#E6E6E6',
+          'black-20': '#E5E5E5',
+          'black-25': '#D4D4D4',
+          'black-28': '#D7D7D7',
+          'black-140': '#6DFFF3',
+          'gray-42': '#D5D5D5',
+          'gray-57': '#A8A8A8',
+          'gray-666': '#999999',
+          'gray-78': '#878787',
+          'gray-90': '#6E6F6F',
+          'gray-130': '#535353',
+          'gray-150': '#585858',
+          'gray-180': '#434343',
+          'red-255': '#009C9C',
+          'purple-500': '#187600',
+          'gray-32': '#CDCDCD',
           'co-bg': {
             default: '#FFFFFF',
             1: '#FFFFFF',
             2: '#333333',
+            5: '#a5a5a5',
+            black: '#ffffff'
           },
           'co-gray': {
             1: '#EDEDED',
@@ -89,7 +91,7 @@ module.exports = {
           },
           'co-green': {
             1: '#01C521',
-            2: '#71FF81',
+            2: '#009B6F',
             3: '#34D399',
             4: '#047857',
             5: '#D1FAE5'
@@ -121,15 +123,36 @@ module.exports = {
           },
           'co-text-primary': '#000000',
           'co-text-secondary': '#ffffff',
+          'co-stake-box-bg': '#C5C5C54D'
         }
       },
       dark: {
         colors: {
           'gray-a5': '#A5A5A5',
+          'black-15': '#151515',
+          'black-17': '#171717',
+          'black-19': '#191919',
+          'black-20': '#1a1a1a',
+          'black-25': '#2B2B2B',
+          'black-28': '#282828',
+          'black-140': '#92008C',
+          'gray-42': '#2A2A2A',
+          'gray-57': '#575757',
+          'gray-666': '#666666',
+          'gray-78': '#787878',
+          'gray-90': '#919090',
+          'gray-130': '#ACACAC',
+          'gray-150': '#A7A7A7',
+          'gray-180': '#BCBCBC',
+          'red-255': '#FF6363',
+          'purple-500': "#E789FF",
+          "gray-32": "#323232",
           'co-bg': {
             default: '#000000',
             1: '#1E1E1E',
             2: '#333333',
+            5: '#a5a5a5',
+            black: '#000000'
           },
           'co-gray': {
             1: '#EDEDED',
@@ -182,6 +205,7 @@ module.exports = {
           },
           'co-text-primary': '#ffffff',
           'co-text-secondary': '#000000',
+          'co-stake-box-bg': '#000000'
         }
       }
     }

@@ -53,7 +53,7 @@ const STAKE_A_ADDRESS = process.env.NEXT_PUBLIC_STAKE_A_ADDRESS as Address
 const gradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 const gradientBorderClass =
-  'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
+  'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,white,white),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)] dark:bg-[linear-gradient(to_right,#151515,#151515),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
 
 const statusCommonClass =
   'w-[103px] h-[34px] rounded-[24px] flex items-center justify-center font-semibold capitalize text-sm border'
@@ -344,7 +344,7 @@ const MyAccount = () => {
   }
 
   return (
-    <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
+    <Layout className='overflow-y-hidden relative bg-co-bg-default max-w-screen'>
       <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>
         <TopSectionBackground />
         <Content className='pt-[150px] md:pt-[220px] md:pb-[97px]'>
@@ -373,15 +373,15 @@ const MyAccount = () => {
                 {t('referralCode')}
               </Text>
               <div
-                className='bg-black pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
+                className='bg-co-stake-box-bg pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
                   justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
                   {userData?.referralCode}
                 </div>
                 <Button
-                  className='shrink-0 h-10 rounded-[35px] min-w-fit bg-transparent border-[#666] text-white
-                    text-base font-semibold'
+                  className='shrink-0 h-10 rounded-[35px] min-w-fit bg-transparent border-[#666]
+                    text-co-text-primary text-base font-semibold'
                   variant='bordered'
                   onClick={handleCopy(userData?.referralCode || '')}
                 >
@@ -401,15 +401,15 @@ const MyAccount = () => {
                 {t('referralLink')}
               </Text>
               <div
-                className='bg-black pl-6 pr-4 rounded-[10px] md:rounded-2xl h-[60px] md:h-[72px] flex
-                  items-center justify-between gap-[20px] md:gap-[62px]'
+                className='bg-co-stake-box-bg pl-6 pr-4 rounded-[10px] md:rounded-2xl h-[60px] md:h-[72px]
+                  flex items-center justify-between gap-[20px] md:gap-[62px]'
               >
                 <div className='min-w-0 text-[18px] font-semibold truncate'>
                   {WEB_URL + '/referral?code=' + userData?.referralCode ?? ''}
                 </div>
                 <Button
-                  className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
-                    text-base font-semibold'
+                  className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666]
+                    text-co-text-primary text-base font-semibold'
                   variant='bordered'
                   onClick={handleCopy(
                     WEB_URL + '/referral?code=' + userData?.referralCode ?? ''
@@ -430,15 +430,15 @@ const MyAccount = () => {
               >
                 {t('inviteSystem')}
 
-                <span className='text-white text-[14px]'>
+                <span className='text-co-text-primary text-[14px]'>
                   {userData?.referrerReferralCode
                     ? `${t('referrerInviteCode')}: ${userData?.referrerReferralCode}`
                     : ''}
                 </span>
               </Text>
               <div
-                className='bg-black mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex items-center
-                  justify-between md:gap-[62px]'
+                className='bg-co-stake-box-bg mt-6 pl-6 pr-4 rounded-2xl h-[60px] md:h-[72px] flex
+                  items-center justify-between md:gap-[62px]'
               >
                 {!userData?.referredByUserAddress && (
                   <>
@@ -473,8 +473,8 @@ const MyAccount = () => {
                       </Tooltip>
                     </div>
                     <Button
-                      className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666] text-white
-                        text-base font-semibold'
+                      className='shrink-0 rounded-[35px] min-w-fit h-10 bg-transparent border-[#666]
+                        text-co-text-primary text-base font-semibold'
                       variant='bordered'
                       onClick={handleCopy(userData.referredByUserAddress)}
                     >
@@ -523,7 +523,7 @@ const MyAccount = () => {
       <Container className='mb-[200px]'>
         <ImagesField>
           <img
-            className='w-screen absolute -top-[120px] left-0'
+            className='w-screen absolute -top-[120px] left-0 dark:opacity-100 opacity-[0.02]'
             src='/images/product/product-content-mask.png'
             alt='product-content-mask'
           />
@@ -557,8 +557,8 @@ const MyAccount = () => {
             aria-label='Example table with dynamic content'
             classNames={{
               wrapper:
-                'rounded-[32px] border-2 border-[#666] bg-[#151515] backdrop-blur-[6px] p-[40px_48px]',
-              th: 'bg-transparent text-white text-[18px] font-semibold',
+                'rounded-[32px] border-2 border-gray-666 backdrop-blur-[6px] p-[40px_48px]',
+              th: 'bg-transparent text-co-text-primary text-[18px] font-semibold',
               td: 'px-4 py-8 text-[18px] font-medium border-b border-[#666]'
             }}
             bottomContent={
@@ -571,9 +571,9 @@ const MyAccount = () => {
                   disableAnimation
                   classNames={{
                     cursor: 'bg-transparent',
-                    item: 'text-base text-white !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
-                    next: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
-                    prev: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
+                    item: 'text-base text-co-text-primary !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
+                    next: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
+                    prev: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
                   }}
                   onChange={setPage}
                 />

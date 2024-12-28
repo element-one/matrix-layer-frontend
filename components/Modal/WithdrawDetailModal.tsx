@@ -73,8 +73,8 @@ export const WithdrawDetailModal: FC<WithdrawDetailModalProps> = ({
         <ModalFooter className='flex justify-center gap-6'>
           <Button
             className='px-3 h-[40px] py-2 md:p-[10px] w-[120px] rounded-[32px] text-[12px]
-              md:text-[16px] font-bold !bg-transparent !bg-img-inherit text-white border-[2px]
-              border-solid border-white'
+              md:text-[16px] font-bold !bg-transparent !bg-img-inherit text-co-text-primary
+              border-[2px] border-solid border-white'
             onClick={handleClose}
           >
             {t('close')}

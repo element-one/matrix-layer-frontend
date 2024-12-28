@@ -86,7 +86,7 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
     >
       <ModalContent className='bg-black-15 md:border md:border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-6 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
-          <Text className='text-white text-[24px] md:text-[32px] font-bold'>
+          <Text className='text-co-text-primary text-[24px] md:text-[32px] font-bold'>
             {title[poolType]} {t('title')}
           </Text>
           <Table
@@ -94,7 +94,7 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
             classNames={{
               wrapper:
                 'rounded-[12px] border-2 border-[#666] bg-black-15 backdrop-blur-[6px] p-0',
-              th: 'bg-black text-white text-[20px] font-bold text-white text-center py-3 !rounded-none font-chakraPetch',
+              th: 'table-th-bg text-co-text-primary text-[20px] font-bold text-co-text-primary text-center py-3 !rounded-none font-chakraPetch',
               td: 'p-4 text-[18px] font-medium text-center whitespace-nowrap',
               tr: 'odd:bg-black-20 even:bg-black-15 hover:bg-black-15 font-chakraPetch'
             }}
@@ -147,9 +147,9 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
               disableAnimation
               classNames={{
                 cursor: 'bg-transparent',
-                item: 'text-base text-white !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
-                next: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
-                prev: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
+                item: 'text-base text-co-text-primary !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
+                next: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
+                prev: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
               }}
               onChange={setPage}
             />
