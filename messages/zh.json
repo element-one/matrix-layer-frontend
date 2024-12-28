@@ -504,8 +504,19 @@
         "justNow": "刚刚",
         "minuteAgo": "分钟前"
       },
-      "sentenceHere": "请输入您的对话内容..."
-    }
+      "sentenceHere": "请输入您的对话内容...",
+      "typeYourQuestionHere": "在这里输入您的问题"
+    },
+    "totalNetworkDeposits": "全网充值",
+    "totalNetworkUsageCount": "全网使用次数",
+    "totalTokensConsumed": "全网消耗代币",
+    "totalDepositsVolume": "充值总量",
+    "tokensConsumed": "已消耗代币",
+    "usageCount": "已消耗次数",
+    "remainingTokens": "剩余代币",
+    "remainingUsageCount": "剩余次数",
+    "deposit": "充值",
+    "withdraw": "提现"
   },
   "CompensationPlan": {
     "notEligible": "您不具备此计划的资格",
