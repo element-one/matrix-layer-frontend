@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
+import { useTheme } from 'next-themes'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAccount } from 'wagmi'
 
@@ -38,12 +39,12 @@ const pageTransition = {
 const gradientTextClass = 'bg-clip-text text-transparent bg-gradient-text-1'
 
 const gradientBorderClass =
-  'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box] bg-[linear-gradient(to_right,#000,#000),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
+  'border-transparent [background-clip:padding-box,border-box] [background-origin:padding-box,border-box]  bg-[linear-gradient(to_right,#fff,#fff),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)] dark:bg-[linear-gradient(to_right,#000,#000),linear-gradient(to_bottom,rgba(231,137,255,1)_0%,rgba(146,153,255,1)_100%)]'
 
 const ProductPage = () => {
   const searchParams = useSearchParams()
   const tab = searchParams.get('tab')
-
+  const { theme } = useTheme()
   const t = useTranslations('Presale')
 
   const [currentPage, setCurrentPage] = useState<'product' | 'ai-agent-nft'>(
@@ -105,7 +106,7 @@ const ProductPage = () => {
           variant={currentPage === page ? 'faded' : 'light'}
           className={`focus:bg-gradient-button-1 border-none rounded-[30px] min-w-[140px] flex-1
             w-auto sm:w-[200px] h-[33px] sm:h-12 text-[18px] sm:text-[22px] font-semibold ${
-              currentPage === page ? 'text-black' : 'text-white'
+              currentPage === page ? 'text-black' : 'text-co-text-primary'
             }`}
           onClick={() => paginate(page)}
         >
@@ -117,7 +118,7 @@ const ProductPage = () => {
   )
 
   return (
-    <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
+    <Layout className='overflow-y-hidden relative bg-co-bg-default max-w-screen'>
       <Container
         className='overflow-visible pb-[38px] border-b-0 sm:border-b
           border-[rgba(102,102,102,0.40)]'
@@ -125,7 +126,7 @@ const ProductPage = () => {
         <TopSectionBackground />
         <Content>
           <div className='flex flex-col items-center justify-center pt-[122px] sm:pt-[220px]'>
-            <Text className='mb-[17px] sm:mb-5 font-pressStart2P text-white text-2xl'>
+            <Text className='mb-[17px] sm:mb-5 font-pressStart2P text-co-text-primary text-2xl'>
               PRE-SALE
             </Text>
             <div
@@ -146,12 +147,12 @@ const ProductPage = () => {
                   <div className='flex justify-between items-center pt-6 lg:pt-[171px]'>
                     <div className='flex flex-col gap-2.5 lg:gap-5 max-w-[153px] lg:max-w-[612px]'>
                       <Text
-                        className='text-white text-[14px] sm:text-[28px] font-semibold leading-normal
+                        className='text-co-text-primary text-[14px] sm:text-[28px] font-semibold leading-normal
                           tracking-[2.8px] uppercase whitespace-nowrap'
                       >
                         {t('product.section1.subtitle')}
                       </Text>
-                      <Text className='text-white text-[18px] sm:text-7xl font-semibold'>
+                      <Text className='text-co-text-primary text-[18px] sm:text-7xl font-semibold'>
                         MATRIX <br />
                         LAYER PHONE
                       </Text>
@@ -191,7 +192,7 @@ const ProductPage = () => {
                         src='/images/product/phone21.png'
                         alt='phone21'
                       />
-                      <div className='absolute inset-0 bg-gradient-to-b from-transparent to-black/90'></div>
+                      <div className='absolute inset-0 bg-gradient-to-b from-transparent to-white/90 dark:to-black/90'></div>
                     </div>
                   </div>
                 </Content>
@@ -398,19 +399,31 @@ const ProductPage = () => {
                       {[
                         {
                           key: 'tokens',
-                          img: '/images/svg/building-token.svg'
+                          img:
+                            theme === 'dark'
+                              ? '/images/svg/building-token.svg'
+                              : '/images/svg/building-token_light.svg'
                         },
                         {
                           key: 'experience',
-                          img: '/images/svg/mining-experience.svg'
+                          img:
+                            theme === 'dark'
+                              ? '/images/svg/mining-experience.svg'
+                              : '/images/svg/mining-experience_light.svg'
                         },
                         {
                           key: 'airdrops',
-                          img: '/images/svg/bitcoin.svg'
+                          img:
+                            theme === 'dark'
+                              ? '/images/svg/bitcoin.svg'
+                              : '/images/svg/bitcoin_light.svg'
                         },
                         {
                           key: 'node',
-                          img: '/images/svg/platform-node.svg'
+                          img:
+                            theme === 'dark'
+                              ? '/images/svg/platform-node.svg'
+                              : '/images/svg/platform-node_light.svg'
                         }
                       ].map((item) => (
                         <div
@@ -432,7 +445,7 @@ const ProductPage = () => {
                             </Text>
                             <Text
                               size='extrabold'
-                              className='text-[12px] sm:text-base'
+                              className='text-[12px] sm:text-base text-co-text-primary'
                             >
                               {t(
                                 `product.benefits.${item.key}.description` as any
@@ -443,8 +456,8 @@ const ProductPage = () => {
                       ))}
                     </div>
                     <Text
-                      className='text-center text-[12px] sm:text-[22px] mt-5 sm:mt-10 max-w-[1107px]
-                        shadow-[0px_4px_4px_rgba(0,0,0,0.25)] pb-32'
+                      className='text-center text-co-text-primary text-[12px] sm:text-[22px] mt-5 sm:mt-10
+                        max-w-[1107px] dark:shadow-[0px_4px_4px_rgba(0,0,0,0.25)] pb-32'
                       size='bold'
                     >
                       {t('product.benefits.bottom')}
@@ -461,8 +474,8 @@ const ProductPage = () => {
               <Container className='pt-6 lg:pt-[160px] pb-[200px]'>
                 <Content>
                   <Text
-                    className='font-pressStart2P mb-[60px] lg:mb-[78px] text-center text-white text-[24px]
-                      lg:text-7xl'
+                    className='font-pressStart2P mb-[60px] lg:mb-[78px] text-center text-co-text-primary
+                      text-[24px] lg:text-7xl'
                     size='bold'
                   >
                     AI AGENT

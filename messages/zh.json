@@ -49,6 +49,7 @@
     },
     "section3": {
       "imgSrc": "/images/home/home_image_6_zh.webp",
+      "imgSrcLight": "/images/home/home_image_6_zh_light.png",
       "title": "智能手机助手",
       "info": "追随 Sam Altman 的思想，让科技服务生活"
     },
@@ -56,7 +57,9 @@
       "title1": "一部手机，",
       "title2": "六大好处",
       "imgSrc": "/images/home/home_image_7_zh.webp",
-      "mobileImgSrc": "/images/home/home_image_7_mobile_zh.webp"
+      "imgSrcLight": "/images/home/home_image_7_zh_light.png",
+      "mobileImgSrc": "/images/home/home_image_7_mobile_zh.webp",
+      "mobileImgSrcLight": "/images/home/home_image_7_mobile_zh_light.png"
     },
     "section4": {
       "title1": "如何加入",

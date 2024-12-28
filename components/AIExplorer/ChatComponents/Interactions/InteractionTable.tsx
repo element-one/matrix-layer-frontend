@@ -28,8 +28,8 @@ export const ChatTable: React.FC<TableProps> = ({ data }) => {
           className='max-w-full'
           classNames={{
             wrapper: 'border-2 border-[#666] bg-[#151515]',
-            th: 'bg-transparent !text-white',
-            td: '!text-white'
+            th: 'bg-transparent !text-co-text-primary',
+            td: '!text-co-text-primary'
           }}
         >
           <TableHeader>

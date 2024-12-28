@@ -29,7 +29,6 @@ module.exports = {
         'gray-180': '#BCBCBC',
         'red-255': '#FF6363',
         'purple-500': "#E789FF",
-        'gray-a5': '#A5A5A5',
         "gray-32": "#323232"
       },
       fontFamily: {
@@ -65,23 +64,28 @@ module.exports = {
     themes: {
       light: {
         colors: {
-          primary: '#C4F360',
+          'gray-a5': '#666',
+          'co-bg': {
+            default: '#FFFFFF',
+            1: '#FFFFFF',
+            2: '#333333',
+          },
           'co-gray': {
-            1: '#333333',
-            2: '#666666',
-            3: '#999999',
-            4: '#EDEDED',
-            5: '#F9FAFB',
-            6: '#FFFFFF',
-            7: '#A5A5A5',
+            1: '#EDEDED',
+            2: '#999999',
+            3: '#666666',
+            4: '#474747',
+            5: '#333333',
+            6: '#212121',
+            7: '#666666',
             8: '#3A3A3A'
           },
           'co-purple': {
             1: '#4E46DC',
             2: '#716BE3',
-            3: '#F0EDFD',
-            4: '#F5F4FA',
-            5: '#F5F4FA',
+            3: '#9A96EB',
+            4: '#F0EDFD',
+            5: '#3F3D54',
           },
           'co-green': {
             1: '#01C521',
@@ -90,11 +94,7 @@ module.exports = {
             4: '#047857',
             5: '#D1FAE5'
           },
-          'co-red': {
-            1: '#E33636',
-            3: '#FF9D9D',
-          },
-          'co-light-green': '#93E7A1',
+          'co-light-green': '#00550E',
           'co-alert': '#EC5C5C',
           'co-tag': {
             'bg-1': '#183E38',
@@ -103,64 +103,31 @@ module.exports = {
             'text-2': '#FF8E8E',
             'bg-3': '#4D3C28',
             'text-3': '#FDA948',
-            'bg-4': '#EDFAF2',
-            'text-4': '#007012',
-            'bg-5': '#FEF7ED',
+            'bg-4': '#183E38',
+            'text-4': '#85D3C3',
+            'bg-5': '#4D3C28',
             'text-5': '#FDA948',
           },
-          'co-card': {
-            title: '#4E46DC',
-          },
-
-          'co-primary': '#C4F360',
-          'co-primary-opacity-60': '#99C4F360',
-          'co-text': {
-            1: '#FFFFFF',
-            2: '#9D9E9D',
-            3: '#DBDBDB',
-            4: '#C4F360',
-            5: 'rgba(255,255,255, 0.6)',
-            6: '#F3C160',
-            7: '#7C7C7C',
-            error: '#FF3838',
-            shadow: '#161471',
-            black: '#000000',
-            success: '#0FB277',
-            gray: '#BCBCBC',
-          },
-          'co-bg': {
-            1: '#0B0C09',
-            2: '#191A16',
-            3: '#1E1E1E',
-            black: '#000000',
-            white: '#FFFFFF'
-          },
           'co-button': {
-            'primary-bg': '#C4F360',
+            'primary-bg': '#4E46DC',
             'primary-text': '#FFFFFF',
-            'default-bg': '#FFFFFF',
-            'default-border': '#EDEDED',
-            'default-text': '#333333',
-            'ghost-text': '#C4F360',
-            'ghost-border': '#C4F360',
-            'dark-bg': '#0B0C09',
-            'dark-text': '#FFFFFF',
-            'light-bg': 'transparent',
-            'light-text': '#FFFFFF',
-            'gradient-to': '#12FEE2',
-            'gradient-from': '#FE37F1',
+            'default-bg': 'transparent',
+            'default-border': '#474747',
+            'default-text': '#E4E4E4',
+            'ghost-text': '#716BE3',
           },
-          'co-border': {
-            1: '#A2A2A2',
-            gray: '#787878'
+          'co-card': {
+            title: '#9A96EB',
           },
-          'co-bg-gradient-to': '#57F1BC',
-          'co-bg-gradient-from': '#C4F360'
+          'co-text-primary': '#000000',
+          'co-text-secondary': '#ffffff',
         }
       },
       dark: {
         colors: {
+          'gray-a5': '#A5A5A5',
           'co-bg': {
+            default: '#000000',
             1: '#1E1E1E',
             2: '#333333',
           },
@@ -213,6 +180,8 @@ module.exports = {
           'co-card': {
             title: '#9A96EB',
           },
+          'co-text-primary': '#ffffff',
+          'co-text-secondary': '#000000',
         }
       }
     }

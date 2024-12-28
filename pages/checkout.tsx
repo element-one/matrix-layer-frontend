@@ -319,14 +319,20 @@ const CheckoutPage = () => {
     isWaitingPayingReceipt
 
   return (
-    <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
+    <Layout className='overflow-y-hidden relative bg-co-bg-default max-w-screen'>
       <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>
         <ImagesField>
-          <img
-            className='w-screen absolute top-0 left-0'
-            src='/images/product/product-top.png'
-            alt='product-top'
-          />
+          <div className='w-screen absolute top-0 left-0'>
+            <img
+              className='w-screen relative dark:bottom-0 sm:bottom-[400px]'
+              src='/images/product/product-top.png'
+              alt='product-top'
+            />
+            <div
+              className='absolute inset-0 w-screen bg-gradient-to-b from-transparent to-white
+                dark:to-black dark:bottom-0 sm:bottom-[400px]'
+            ></div>
+          </div>
           <img
             className='rotate-[276deg] absolute md:top-[140px] md:-right-[28px] md:w-[156px]
               md:h-[156px] w-[80px] h-[80px] top-[140px] right-0'
@@ -345,7 +351,7 @@ const CheckoutPage = () => {
         </ImagesField>
         <Content>
           <div className='flex flex-col items-center justify-center pt-[150px] md:pt-[220px]'>
-            <Text className='mb-5 font-pressStart2P text-white text-[24px] md:text-[36px]'>
+            <Text className='mb-5 font-pressStart2P text-co-text-primary text-[24px] md:text-[36px]'>
               {t('checkout')}
             </Text>
           </div>
@@ -451,7 +457,7 @@ const CheckoutPage = () => {
                 ))}
               </div>
               <Text
-                className='text-[24px] md:text-[32px] font-semibold md:font-semibold text-white
+                className='text-[24px] md:text-[32px] font-semibold md:font-semibold text-co-text-primary
                   leading-none text-right'
               >
                 {amountInUSDT}

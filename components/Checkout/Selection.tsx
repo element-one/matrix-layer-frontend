@@ -39,7 +39,7 @@ const Selection: FC<SelectionProps> = ({
               className='flex-shrink-0 w-[24px] h-[24px]'
               src={item.data?.icon}
             />
-            <Text className='text-white font-bold text-[20px]'>
+            <Text className='text-co-text-primary font-bold text-[20px]'>
               {item.data?.name}
             </Text>
           </div>

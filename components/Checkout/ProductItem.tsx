@@ -64,7 +64,7 @@ const ProductItem: FC<ProductItemProps> = ({
     >
       <div className='w-[80%] lg:w-[430px]'>
         <div className='flex flex-row justify-between items-center mb-[14px]'>
-          <Text className='text-[20px] md:text-[32px] font-bold text-white'>
+          <Text className='text-[20px] md:text-[32px] font-bold text-co-text-primary'>
             {product.name}
           </Text>
         </div>
@@ -103,7 +103,7 @@ const ProductItem: FC<ProductItemProps> = ({
                 <PlusIcon className={clsx('fill-black')} />
               </div>
             </div>
-            <Text className='text-[24px] md:text-[32px] text-white font-bold'>
+            <Text className='text-[24px] md:text-[32px] text-co-text-primary font-bold'>
               ${product.priceInUsdt}&nbsp;
               <span className='text-[16px] text-co-gray-7'>/{t('item')}</span>
             </Text>

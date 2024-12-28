@@ -98,10 +98,10 @@ export const MultiLanguageMobile = () => {
         className='flex items-center gap-x-3'
       >
         <GlobeAltIcon className='w-7 h-7 text-co-text-1' />
-        <Text className='text-xl'>{t(locale as any)}</Text>
+        <Text className='text-xl text-co-text-primary'>{t(locale as any)}</Text>
       </div>
       {isChoosing && (
-        <div className='absolute top-0 left-0 right-0 bottom-0 z-[1000] bg-black'>
+        <div className='absolute top-0 left-0 right-0 bottom-0 z-[1000] bg-co-bg-default'>
           <div onClick={() => setIsChoosing(false)} className='p-5 pb-4'>
             <ArrowLeftIcon className='w-6 h-6' />
           </div>
