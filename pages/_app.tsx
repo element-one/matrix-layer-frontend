@@ -135,7 +135,7 @@ export default function App({ Component, pageProps }: AppProps) {
               timeZone='asia/shanghai'
             >
               <NextUIProvider>
-                <NextThemesProvider attribute='class' defaultTheme='light'>
+                <NextThemesProvider attribute='class' defaultTheme='dark'>
                   <UserProvider>
                     <ModalProvider>
                       <Head>
