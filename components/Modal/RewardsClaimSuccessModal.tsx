@@ -51,13 +51,13 @@ export const RewardsClaimSuccessModal: FC<ClaimRewardsSuccessModalProps> = ({
             src='/images/account/claim-success.png'
             alt='claim-success'
           />
-          <Text className='text-white text-[24px] font-chakraPetch'>
+          <Text className='text-co-text-primary text-[24px] font-chakraPetch'>
             {t('title')}
           </Text>
-          <Text className='text-white text-[48px] font-bold font-chakraPetch'>
+          <Text className='text-co-text-primary text-[48px] font-bold font-chakraPetch'>
             {t('success')}
           </Text>
-          <Text className='text-white text-[24px] font-chakraPetch'>
+          <Text className='text-co-text-primary text-[24px] font-chakraPetch'>
             {count} {t('second')}
           </Text>
         </ModalBody>

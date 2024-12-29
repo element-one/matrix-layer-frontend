@@ -14,7 +14,7 @@ export const BaseInput = extendVariants(Input, {
           'data-[hover=true]:bg-co-bg-1',
           'group-data-[focus=true]:bg-co-bg-1'
         ],
-        input: ['text-white', 'placeholder:text-co-text-5']
+        input: ['text-co-text-primary', 'placeholder:text-co-text-5']
       }
     },
     size: {

@@ -19,6 +19,7 @@ import {
   MultiLanguageMobile,
   MultiLanguagePC
 } from '@components/MultiLanguage/MultiLanguage'
+import { ThemeSwitch } from '@components/ThemeSwitch/main'
 import { ModalType, useModal } from '@contexts/modal'
 import { useGetCompensateList } from '@services/api'
 
@@ -83,16 +84,24 @@ const Header: FC<HeaderProps> = ({ className }) => {
   return (
     <div
       className={clsx(
-        `flex items-center w-full border-co-border-1 bg-opacity-5 backdrop-blur-md py-3
-          lg:py-6 px-4 lg:px-[60px] justify-between rounded-[32px] border`,
+        `flex items-center w-full border-co-border-1 dark:bg-opacity-5 backdrop-blur-md
+          py-3 lg:py-6 px-4 lg:px-[60px] justify-between rounded-[32px] border bg-white
+          dark:bg-transparent`,
         className
       )}
     >
       <div className=''>
         <Link href='/'>
           <img
+            className='dark:block hidden'
             width={'w-[172px] h-[53px]'}
             src='/images/svg/logo_matrix.svg'
+            alt='worldphone'
+          />
+          <img
+            className='block dark:hidden'
+            width={'w-[172px] h-[53px]'}
+            src='/images/svg/logo_matrix_light.svg'
             alt='worldphone'
           />
         </Link>
@@ -114,6 +123,9 @@ const Header: FC<HeaderProps> = ({ className }) => {
         })}
       </div>
       <div className='flex items-center justify-end gap-2'>
+        <div className='hidden md:block'>
+          <ThemeSwitch />
+        </div>
         <MultiLanguagePC />
         <ConnectWalletButton />
         <Popover
@@ -123,7 +135,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
           offset={20}
           classNames={{
             base: 'ml-[-12px]',
-            content: 'left-0 bg-transparent rounded-none text-white'
+            content: 'left-0 bg-transparent rounded-none text-co-text-primary'
           }}
           triggerType='menu'
           isOpen={menuVisible}
@@ -131,7 +143,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
         >
           <PopoverTrigger className='lg:hidden'>
             <div onClick={() => setMenuVisible(true)}>
-              <MenuItemIcon />
+              <MenuItemIcon className='text-co-text-primary' />
             </div>
           </PopoverTrigger>
           <PopoverContent className='w-screen left-0 relative md:px-10'>
@@ -157,6 +169,7 @@ const Header: FC<HeaderProps> = ({ className }) => {
                   )
                 })}
                 <MultiLanguageMobile />
+                <ThemeSwitch showText />
               </div>
 
               {isConnected ? (

@@ -1,6 +1,7 @@
 import { FC, Key, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
+import { useTheme } from 'next-themes'
 import {
   Dropdown,
   DropdownItem,
@@ -28,6 +29,7 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
   const { showModal } = useModal()
   const { isConnected, isConnecting, isReconnecting, address } = useAccount()
   const { disconnect } = useDisconnect()
+  const { theme } = useTheme()
 
   const t = useTranslations('Navigation')
 
@@ -103,7 +105,15 @@ export const ConnectWalletButton: FC<ConnectWalletButtonProps> = ({
                 )}
                 {formatWalletAddress(address)}
               </div>
-              <img src='/images/svg/user-icon.svg' alt='user' width={48} />
+              <img
+                src={
+                  theme === 'dark'
+                    ? '/images/svg/user-icon.svg'
+                    : '/images/svg/user-icon_light.svg'
+                }
+                alt='user'
+                width={48}
+              />
             </div>
           </DropdownTrigger>
           <DropdownMenu

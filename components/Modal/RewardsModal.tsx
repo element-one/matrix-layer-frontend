@@ -174,10 +174,10 @@ export const RewardsModal: FC<RewardsModalProps> = ({
     >
       <ModalContent className='bg-black-15 border border-co-border-gray backdrop-blur-[10px]'>
         <ModalBody className='flex flex-col gap-0 px-2 pt-10 pb-5 md:py-10 md:px-8 text-co-text-1'>
-          <Text className='text-white text-[32px] md:text-[48px] font-bold'>
+          <Text className='text-co-text-primary text-[32px] md:text-[48px] font-bold'>
             {t('title')}
           </Text>
-          <Text className='text-white text-[12px] md:text-[22px]'>
+          <Text className='text-co-text-primary text-[12px] md:text-[22px]'>
             {t('info')}
           </Text>
           <div
@@ -207,8 +207,8 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                   </Text>
                 </div>
                 <Button
-                  className='shrink-0 rounded-[35px] bg-transparent border-[#666] text-white text-[12px]
-                    md:text-[14px] py-2 md:py-3 px-4 md:px-8 md:w-[154px]'
+                  className='shrink-0 rounded-[35px] bg-transparent border-[#666] text-co-text-primary
+                    text-[12px] md:text-[14px] py-2 md:py-3 px-4 md:px-8 md:w-[154px]'
                   variant='bordered'
                   onClick={handleShowHistoryModal}
                 >
@@ -244,7 +244,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
           </div>
           <Divider className='bg-gray-a5/20 mt-8 mb-4' />
           <div className='flex flex-col gap-y-8 h-fit transition-height'>
-            <Text className='text-white text-[16px] md:text-[24px] font-bold'>
+            <Text className='text-co-text-primary text-[16px] md:text-[24px] font-bold'>
               {t('invitationRewardsHistory')}
             </Text>
             <Table
@@ -252,7 +252,7 @@ export const RewardsModal: FC<RewardsModalProps> = ({
               classNames={{
                 wrapper:
                   'rounded-[12px] border-2 border-[#666] bg-black-15 backdrop-blur-[6px] p-0',
-                th: 'bg-black text-white text-[20px] font-bold text-white text-center py-3 !rounded-none font-chakraPetch',
+                th: 'table-th-bg text-co-text-primary text-[20px] font-bold text-co-text-primary text-center py-3 !rounded-none font-chakraPetch',
                 td: 'p-4 text-[18px] font-medium text-center whitespace-nowrap',
                 tr: 'odd:bg-black-20 even:bg-black-15 hover:bg-black-15 font-chakraPetch'
               }}
@@ -296,9 +296,9 @@ export const RewardsModal: FC<RewardsModalProps> = ({
                 disableAnimation
                 classNames={{
                   cursor: 'bg-transparent',
-                  item: 'text-base text-white !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
-                  next: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
-                  prev: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
+                  item: 'text-base text-co-text-primary !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
+                  next: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
+                  prev: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
                 }}
                 onChange={setPage}
               />

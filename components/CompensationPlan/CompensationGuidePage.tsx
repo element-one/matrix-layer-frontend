@@ -26,8 +26,8 @@ export const CompensationGuidePage = () => {
 
   return (
     <Layout
-      className='overflow-y-hidden relative bg-black max-w-screen h-screen flex flex-col gap-4
-        items-center justify-center'
+      className='overflow-y-hidden relative bg-co-bg-default max-w-screen h-screen flex flex-col
+        gap-4 items-center justify-center'
     >
       <div className='text-center text-lg font-pressStart2P leading-none'>
         {t('notEligible')}

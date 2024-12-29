@@ -29,11 +29,12 @@ export interface ShippingAddressModalProps {
 }
 
 const inputStyles = {
-  label: 'text-[12px] font-semibold !text-white',
+  label: 'text-[12px] font-semibold !text-co-text-primary',
   mainWrapper: 'border border-gray-666 rounded-[12px]',
   inputWrapper:
     'bg-black-15 group-data-[focus=true]:bg-black-15 data-[hover=true]:bg-black-15',
-  input: 'font-chakraPetch text-[12px] group-data-[has-value=true]:text-white'
+  input:
+    'font-chakraPetch text-[12px] group-data-[has-value=true]:text-co-text-primary'
 }
 
 const DEFAULT_FORM_DATA = {

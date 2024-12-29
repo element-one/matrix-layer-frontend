@@ -49,6 +49,7 @@
     },
     "section3": {
       "imgSrc": "/images/home/home_image_6.webp",
+      "imgSrcLight": "/images/home/home_image_6_light.png",
       "title": "smartphone assistant",
       "info": "Follow Sam Altman's thoughts and let technology serve life"
     },
@@ -56,7 +57,9 @@
       "title1": "One Mobile Phone, ",
       "title2": "6 Benefits",
       "imgSrc": "/images/home/home_image_7.webp",
-      "mobileImgSrc": "/images/home/home_image_7_mobile.webp"
+      "imgSrcLight": "/images/home/home_image_7_light.png",
+      "mobileImgSrc": "/images/home/home_image_7_mobile.webp",
+      "mobileImgSrcLight": "/images/home/home_image_7_mobile_light.png"
     },
     "section4": {
       "title1": "How to join",

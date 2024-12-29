@@ -143,14 +143,14 @@ export const ManageAddressModal: FC<ManageAddressModalProps> = ({
                     onClick={handleChangeAddress(address.id)}
                   >
                     <div className='flex flex-row justify-between items-center'>
-                      <Text className='text-[14px] md:text-[18px] font-bold text-white leading-[1.5]'>
+                      <Text className='text-[14px] md:text-[18px] font-bold text-co-text-primary leading-[1.5]'>
                         {address.firstName} {address.lastName}
                       </Text>
-                      <Text className='text-[14px] md:text-[18px] font-bold text-white'>
+                      <Text className='text-[14px] md:text-[18px] font-bold text-co-text-primary'>
                         {address.areaCode} {address.phoneNumber}
                       </Text>
                     </div>
-                    <Text className='text-[12px] md:text-[16px] font-bold text-white'>
+                    <Text className='text-[12px] md:text-[16px] font-bold text-co-text-primary'>
                       {address.address},&nbsp;{address.city},&nbsp;
                       {address.country},&nbsp;
                       {address.province}

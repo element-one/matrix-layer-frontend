@@ -92,8 +92,8 @@ const PaymentField: FC<PaymentFieldProps> = ({
           <Selection disabledValues={['BNB']} selectionItems={Chains} />
         </div>
         <Text
-          className='text-[24px] md:text-[32px] font-semibold md:font-bold text-white leading-none
-            text-right'
+          className='text-[24px] md:text-[32px] font-semibold md:font-bold text-co-text-primary
+            leading-none text-right'
         >
           {amount}
           &nbsp;USDT

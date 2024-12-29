@@ -28,7 +28,7 @@ const Selection: FC<SelectionProps> = ({
       selectorIcon={<SelectArrowIcon className='!w-[24px] !h-[13px]' />}
       classNames={{
         trigger:
-          'px-[24px] py-[16px] min-h-[20px] h-fit rounded-[16px] bg-black-28 data-[hover=true]:bg-black-28',
+          'px-[24px] py-[16px] min-h-[20px] h-fit rounded-[16px] dark:bg-black-28 dark:data-[hover=true]:bg-black-28',
         innerWrapper: 'min-h-[20px] h-fit'
       }}
       renderValue={(items: SelectedItems<SelectionItemProps>) => {
@@ -39,7 +39,7 @@ const Selection: FC<SelectionProps> = ({
               className='flex-shrink-0 w-[24px] h-[24px]'
               src={item.data?.icon}
             />
-            <Text className='text-white font-bold text-[20px]'>
+            <Text className='text-co-text-primary font-bold text-[20px]'>
               {item.data?.name}
             </Text>
           </div>

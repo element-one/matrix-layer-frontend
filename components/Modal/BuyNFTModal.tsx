@@ -68,8 +68,8 @@ export const BuyNFTModal: FC<BuyNFTModalProps> = ({ onClose }) => {
 
             <div className='w-full gap-4 flex items-center justify-center'>
               <button
-                className='rounded-full border-1 text-white text-[16px] h-[48px] w-[300px] uppercase
-                  bg-img-inherit !bg-black !bg-opacity-0 border-white border-opacity-60'
+                className='rounded-full border-1 text-co-text-primary text-[16px] h-[48px] w-[300px]
+                  uppercase bg-img-inherit !bg-black !bg-opacity-0 border-white border-opacity-60'
                 onClick={handleClose}
               >
                 {t('cancel')}

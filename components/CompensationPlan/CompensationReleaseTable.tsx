@@ -70,7 +70,7 @@ export const CompensationReleaseTable: FC<{
       classNames={{
         wrapper:
           'rounded-2xl border-2 border-[#666] bg-[#151515] backdrop-blur-[6px] p-6',
-        th: 'bg-trans parent text-white text-[14px] md:text-[18px] font-semibold border-b border-[#666]',
+        th: 'bg-trans parent text-co-text-primary text-[14px] md:text-[18px] font-semibold border-b border-[#666]',
         td: 'p-2 md:p-4 text-[14px] md:text-[18px] font-medium whitespace-nowrap text-center md:text-left'
       }}
       bottomContent={
@@ -81,9 +81,9 @@ export const CompensationReleaseTable: FC<{
             disableAnimation
             classNames={{
               cursor: 'bg-transparent',
-              item: 'text-base text-white !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
-              next: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
-              prev: 'text-white !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
+              item: 'text-base text-co-text-primary !bg-transparent data-[active=true]:text-[rgba(102,102,102,1)] [&[data-hover=true]:not([data-active=true])]:bg-transparent',
+              next: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]',
+              prev: 'text-co-text-primary !bg-transparent data-[disabled=true]:text-[rgba(102,102,102,1)]'
             }}
             page={page}
             total={pages}

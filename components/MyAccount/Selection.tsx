@@ -45,7 +45,7 @@ const Selection: FC<SelectionProps> = ({
         return items.map((item) => (
           <div key={item.key} className='flex items-center gap-x-[8px]'>
             <Text className='text-[20px]'>{item.data?.flag}</Text>
-            <Text className='text-white text-[12px]'>
+            <Text className='text-co-text-primary text-[12px]'>
               {item.data?.dial_code}
             </Text>
           </div>

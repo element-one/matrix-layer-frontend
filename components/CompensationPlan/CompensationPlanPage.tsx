@@ -144,7 +144,7 @@ export const CompensationPlanPage = () => {
   }
 
   return (
-    <Layout className='overflow-y-hidden relative bg-black max-w-screen'>
+    <Layout className='overflow-y-hidden relative bg-co-bg-default max-w-screen'>
       {/* title */}
       <Container className='overflow-visible pb-[38px] border-b border-[rgba(102,102,102,0.40)]'>
         <TopSectionBackground />

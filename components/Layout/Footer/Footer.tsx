@@ -2,6 +2,9 @@ import { FC } from 'react'
 import { useTranslations } from 'next-intl'
 import clsx from 'clsx'
 
+import { TelegramIcon } from '@components/Icon/TelegramIcon'
+import { XIcon } from '@components/Icon/XIcon'
+
 export interface FooterProps {
   className?: string
 }
@@ -22,7 +25,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
           target='_blank'
           className='flex items-center justify-center gap-2'
         >
-          <img src='/images/svg/x.svg' alt='x' width={18} />
+          <XIcon className='dark:fill-co-text-primary' />
           <span>MatrixLayerProtocol_MLP</span>
         </a>
         <a
@@ -30,7 +33,7 @@ const Footer: FC<FooterProps> = ({ className }) => {
           target='_blank'
           className='flex items-center justify-center gap-2'
         >
-          <img src='/images/svg/telegram.svg' alt='x' width={18} />
+          <TelegramIcon className='dark:fill-co-text-primary' />
           <span>MatrixLayerCommunity</span>
         </a>
       </div>

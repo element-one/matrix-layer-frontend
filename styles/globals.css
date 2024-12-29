@@ -15,92 +15,69 @@ body {
 .border-gradient,
 .border-gradient-desktop {
   border: 1px solid transparent;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box;
+  @apply rounded-md [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box];
   backdrop-filter: blur(10px);
 }
 
 .border-header-gradient {
   border: 1px solid transparent;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to left, #4d4d4d 0%, #a2a2a2 50%, #2f2f2f 100%) border-box;
+  @apply [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_left,#4d4d4d_0%,#a2a2a2_50%,#2f2f2f_100%)_border-box];
   backdrop-filter: blur(10px);
 }
 
 .card-border-gradient {
-  border: 1px solid #0000;
-  border-radius: 32px;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to right, #ff30fa 0%, #00ffe5 50%, #ffffff 100%) border-box;
+  border: 1px solid transparent;
+  @apply rounded-[32px] [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_right,#ff30fa_0%,#00ffe5_50%,#ffffff_100%)_border-box];
   backdrop-filter: blur(10px);
 }
 
 .border-product-item-gradient {
   border: 1px solid transparent;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to right, #4d4d4d, #a2a2a2, #2f2f2f) border-box;
+  @apply rounded-[32px] [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_right,#4d4d4d,#a2a2a2,#2f2f2f)_border-box];
   backdrop-filter: blur(5px);
-  border-radius: 32px;
 }
 
 .border-product-item-active-gradient {
   border: 3px solid transparent;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to right, #e789ff, #9299ff) border-box;
+  @apply rounded-[32px] [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_right,#e789ff,#9299ff)_border-box];
   backdrop-filter: blur(5px);
-  border-radius: 32px;
 }
 
 .border-address-item-gradient {
   border: 1px solid transparent;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to right, #4d4d4d, #a2a2a2, #2f2f2f) border-box;
+  @apply rounded-[16px] [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_right,#4d4d4d,#a2a2a2,#2f2f2f)_border-box];
   backdrop-filter: blur(5px);
-  border-radius: 16px;
 }
 
 .border-address-item-active-gradient {
   border: 1px solid transparent;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to right, #e789ff, #9299ff) border-box;
+  @apply rounded-[16px] [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_right,#e789ff,#9299ff)_border-box];
   backdrop-filter: blur(5px);
-  border-radius: 16px;
 }
 
 .border-skate-day-item-active-gradient {
   border: 3px solid transparent;
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(to right, #e789ff, #9299ff) border-box;
+  @apply [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_right,#e789ff,#9299ff)_border-box];
   backdrop-filter: blur(5px);
 }
 
 .border-accelerate-modal-gradient {
   border: 1px solid transparent;
-  background:
-    linear-gradient(#151515, #151515) padding-box,
-    linear-gradient(to right, #e789ff, #9299ff) border-box;
+  @apply [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(#151515,#151515)_padding-box,linear-gradient(to_right,#e789ff,#9299ff)_border-box];
   backdrop-filter: blur(5px);
 }
 
 @media only screen and (max-width: 768px) {
   .border-gradient {
+    @apply rounded-md [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(black,black)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box];
+    /* 
     background:
       linear-gradient(black, black) padding-box,
-      linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box;
+      linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box; */
   }
   .border-referral-gradient {
     border: 1px solid transparent;
-    background:
-      linear-gradient(#151515, #151515) padding-box,
-      linear-gradient(to bottom, #e789ff 0%, #9299ff 100%) border-box;
+    @apply [background:linear-gradient(white,white)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box] dark:[background:linear-gradient(#151515,#151515)_padding-box,linear-gradient(to_bottom,#e789ff_0%,#9299ff_100%)_border-box];
     backdrop-filter: blur(10px);
   }
 }
@@ -118,7 +95,7 @@ input {
 }
 
 .accelerate-checkbox {
-  @apply h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none bg-[url("/images/checkout/accelerate_unchecked.svg")] bg-cover bg-no-repeat checked:bg-[url("/images/checkout/term_checked.svg")];
+  @apply h-[22px] w-[22px] shrink-0 cursor-pointer appearance-none rounded-md border border-co-stake-box-bg bg-cover bg-no-repeat checked:!bg-[url("/images/checkout/term_checked.svg")] dark:border-transparent dark:bg-[url("/images/checkout/accelerate_unchecked.svg")];
 }
 
 .clip-text {
@@ -146,4 +123,8 @@ input {
 .text-break-word {
   white-space: normal;
   word-break: break-word;
+}
+
+.table-th-bg {
+  @apply [background:linear-gradient(180deg,_#E789FF_0%,_#9299FF_100%)] dark:[background:black];
 }

@@ -64,7 +64,7 @@ const ProductItem: FC<ProductItemProps> = ({
     >
       <div className='w-[80%] lg:w-[430px]'>
         <div className='flex flex-row justify-between items-center mb-[14px]'>
-          <Text className='text-[20px] md:text-[32px] font-bold text-white'>
+          <Text className='text-[20px] md:text-[32px] font-bold text-co-text-primary'>
             {product.name}
           </Text>
         </div>
@@ -76,14 +76,17 @@ const ProductItem: FC<ProductItemProps> = ({
                 className={clsx(
                   'p-[12px] border border-white rounded-[16px]',
                   !product.quantity
-                    ? 'bg-black cursor-not-allowed'
-                    : 'bg-white cursor-pointer'
+                    ? 'dark:bg-black bg-co-bg-5 cursor-not-allowed'
+                    : `dark:[background:white]
+                      [background:linear-gradient(180deg,_#E789FF_0%,_#9299FF_100%)] cursor-pointer`
                 )}
                 onClick={handleProductQuantityMinus}
               >
                 <MinusIcon
                   className={clsx(
-                    !product.quantity ? 'fill-white' : 'fill-black'
+                    !product.quantity
+                      ? 'dark:fill-white fill-black'
+                      : 'fill-black'
                   )}
                 />
               </div>
@@ -96,14 +99,15 @@ const ProductItem: FC<ProductItemProps> = ({
               <div
                 className={clsx(
                   'p-[12px] border border-white rounded-[16px] cursor-pointer',
-                  'bg-white'
+                  `dark:[background:white]
+                    [background:linear-gradient(180deg,_#E789FF_0%,_#9299FF_100%)]`
                 )}
                 onClick={handleProductQuantityPlus}
               >
                 <PlusIcon className={clsx('fill-black')} />
               </div>
             </div>
-            <Text className='text-[24px] md:text-[32px] text-white font-bold'>
+            <Text className='text-[24px] md:text-[32px] text-co-text-primary font-bold'>
               ${product.priceInUsdt}&nbsp;
               <span className='text-[16px] text-co-gray-7'>/{t('item')}</span>
             </Text>
