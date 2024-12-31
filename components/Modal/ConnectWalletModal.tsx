@@ -10,6 +10,9 @@ export interface ConnectWalletModalProps {
   onClose?: () => void
 }
 
+const buttonClass =
+  'py-4 w-full h-[56px] md:h-[64px] hover:bg-gray-200 disabled:bg-gray-200'
+
 export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
   const { isModalShown, hideModal } = useModal()
 
@@ -37,12 +40,12 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
       isOpen={isModalShown(ModalType.CONNECT_WALLET_MODAL)}
       classNames={{
         closeButton:
-          'right-12 top-12 text-co-text-1 text-lg hover:bg-co-bg-3 bg-co-bg-1 active:bg-co-bg-3'
+          'right-12 top-12 text-gray-800 text-lg hover:bg-co-bg-3 active:bg-co-bg-3'
       }}
     >
-      <ModalContent className='bg-co-bg-1 border border-co-border-gray'>
+      <ModalContent className='bg-slate-100 border border-co-border-gray'>
         <ModalBody>
-          <div className='flex flex-col gap-5 items-center py-10 px-6 text-co-text-1'>
+          <div className='flex flex-col gap-5 items-center py-10 px-6 text-gray-800'>
             <div className='text-xl leading-9'>Connect Wallet</div>
 
             <WalletButton.Custom wallet='metamask'>
@@ -52,7 +55,7 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
                     disabled={!ready}
                     onClick={connect}
                     color='default'
-                    className='py-4 w-full h-[56px] md:h-[64px]'
+                    className={buttonClass}
                   >
                     <img
                       src='/images/png/metamask.png'
@@ -71,7 +74,7 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
                     disabled={!ready}
                     onClick={connect}
                     color='default'
-                    className='py-4 w-full h-[56px] md:h-[64px]'
+                    className={buttonClass}
                   >
                     <img
                       src='/images/png/binance.png'
@@ -88,7 +91,7 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
                 return (
                   <Button
                     color='default'
-                    className='py-4 w-full h-[56px] md:h-[64px]'
+                    className={buttonClass}
                     disabled={!ready}
                     onClick={connect}
                   >
@@ -109,7 +112,7 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
                     disabled={!ready}
                     onClick={connect}
                     color='default'
-                    className='py-4 w-full h-[56px] md:h-[64px]'
+                    className={buttonClass}
                   >
                     <img src='/images/png/okx.png' alt='okx' height={32} />
                   </Button>
