@@ -301,7 +301,8 @@ const StakePage: NextPage = () => {
                 text1: (chunks) => (
                   <span className='text-co-text-primary'>{chunks}</span>
                 ),
-                amount: formatCurrency(options.stakedTokenAmount)
+                amount: formatCurrency(options.stakedTokenAmount),
+                accumulatedRewardAmount: formatCurrency(options.rewardAmount)
               })}
             </div>
             <div
