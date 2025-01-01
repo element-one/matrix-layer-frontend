@@ -2933,7 +2933,7 @@ const StakePage: NextPage = () => {
                           <TableCell className='text-gray-150'>
                             {item.isActive ? (
                               <Button
-                                // isDisabled={!isCanWithdraw}
+                                isDisabled={!isCanWithdraw}
                                 className={twMerge(
                                   clsx(
                                     'rounded-full text-[12px] h-8 w-[152px] font-bold',
