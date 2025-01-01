@@ -309,6 +309,7 @@ export interface ApiGetUserRewardDetailsResponse {
     userStakingIds: string[]
     totalHoldings: number
     holdingsByType: Record<string, unknown>
+    isLock?: boolean
   }[]
   total: number
   page: number
