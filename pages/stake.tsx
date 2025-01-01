@@ -65,7 +65,6 @@ import {
 import { getStakeB1Signature } from '@services/api/staking'
 import { formatCurrency, formatForMatrix, formatUSDT } from '@utils/currency'
 import { statusClass } from '@utils/stake'
-import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
 import { serializeError } from 'eth-rpc-errors'
 
@@ -194,15 +193,6 @@ const StakePage: NextPage = () => {
             <span className=''>
               {formatCurrency(options.accumulatedRewardAmount)} $MLP
             </span>
-            <span className='text-2xl'>=</span>
-            <div>
-              {formatCurrency(
-                new BigNumber(options.stakedTokenAmount)
-                  .plus(options.accumulatedRewardAmount)
-                  .toString()
-              )}{' '}
-              $MLP <span className='text-[18px]'>{t('inTotal')}</span>
-            </div>
           </div>
           <div className='text-[14px] md:text-[18px] text-gray-150'>
             {t('doYouContinue')}
@@ -301,7 +291,8 @@ const StakePage: NextPage = () => {
                 text1: (chunks) => (
                   <span className='text-co-text-primary'>{chunks}</span>
                 ),
-                amount: formatCurrency(options.stakedTokenAmount)
+                amount: formatCurrency(options.stakedTokenAmount),
+                accumulatedRewardAmount: formatCurrency(options.rewardAmount)
               })}
             </div>
             <div
@@ -311,15 +302,6 @@ const StakePage: NextPage = () => {
               <span className=''>
                 {formatCurrency(options.rewardAmount)} $MLP
               </span>
-              <span className='text-2xl'>=</span>
-              <div>
-                {formatCurrency(
-                  new BigNumber(options.stakedTokenAmount)
-                    .plus(options.rewardAmount)
-                    .toString()
-                )}{' '}
-                $MLP <span className='text-[18px]'>in total</span>
-              </div>
             </div>
             <div className='text-[14px] md:text-[18px] text-gray-150'>
               {t('doYouContinue')}
