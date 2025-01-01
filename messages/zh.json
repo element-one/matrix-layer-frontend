@@ -387,8 +387,8 @@
       "bestRate": "最佳加速率"
     },
     "warnContent": "质押期限尚未到期。如果您现在提取，您的收益将转换为",
-    "doYouContinue": "您确定要继续吗？",
-    "withdrawDesc": "您将收回质押的 <text1>{amount} $MLP</text1>. 您的奖励 <text1> {rewardAmount} $MLP</text1> 将会被释放并且稍后可在奖励提领处提取，你您定要继续吗",
+    "doYouContinue": "代币撤回后, 三天冷静期结束后才可被提取, 您确定要继续吗？",
+    "withdrawDesc": "您将收回质押的 <text1>{amount} $MLP</text1>. 您的奖励 <text1> {accumulatedRewardAmount} $MLP</text1> 将会被释放并且稍后可在奖励提领处提取",
     "inTotal": "总计",
     "totalPerformance": "算力值",
     "dailyAverage": "日均（30天）",

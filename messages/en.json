@@ -387,8 +387,8 @@
       "bestRate": "Best Acceleration Rate"
     },
     "warnContent": "The staking period has not yet expired. If you withdraw, your earnings will be converted to",
-    "doYouContinue": "Do you choose to continue?",
-    "withdrawDesc": "You will get back your staked <text1>{amount} $MLP</text1>. Your rewards <text1>{rewardAmount} $MLP</text1> will be released and can be claimed later in the rewards section, do you want to continue?",
+    "doYouContinue": "After the withdrawal of batch deleted tokens, they can only be withdrawn after a cooling-off period of three days, are you sure you want to continue?",
+    "withdrawDesc": "You will get back your staked <text1>{amount} $MLP</text1>. Your rewards <text1>{accumulatedRewardAmount} $MLP</text1> will be released and can be claimed later in the rewards section",
     "inTotal": "in total",
     "totalPerformance": "Computing Power",
     "dailyAverage": "Daily average (30D)",

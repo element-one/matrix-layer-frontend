@@ -300,7 +300,8 @@ const StakePage: NextPage = () => {
             <div className='mb-4'>
               {t.rich('withdrawDesc', {
                 text1: (chunks) => <span className='text-white'>{chunks}</span>,
-                amount: formatCurrency(options.stakedTokenAmount)
+                amount: formatCurrency(options.stakedTokenAmount),
+                accumulatedRewardAmount: formatCurrency(options.rewardAmount)
               })}
             </div>
             <div className='mb-4 text-[24px] md:text-[32px] font-semibold flex items-center gap-4 text-white'>
