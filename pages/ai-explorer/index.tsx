@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useTranslations } from 'next-intl'
 import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react'
@@ -243,13 +243,16 @@ const AIExplorer = () => {
     setDepositModalVisible(true)
   }
 
-  const calculateUsageCount = (usageCount: number) => {
-    if (usageCount < 10) {
+  const totalNetworkUsageCount = useMemo(() => {
+    if (
+      !userAiBalance?.totalNetworkUsageCount ||
+      userAiBalance.totalNetworkUsageCount < 10
+    ) {
       return Math.round(Math.random() * 350) + 50
     }
 
-    return usageCount
-  }
+    return userAiBalance?.totalNetworkUsageCount
+  }, [userAiBalance?.totalNetworkUsageCount])
 
   const isConfirmButtonLoading =
     isApprovingContract ||
@@ -284,9 +287,7 @@ const AIExplorer = () => {
               text-co-gray-7 flex justify-between items-center'
           >
             <span className=''>{t('totalNetworkUsageCount')}</span>
-            <span>
-              {calculateUsageCount(userAiBalance?.totalNetworkUsageCount ?? 0)}
-            </span>
+            <span>{totalNetworkUsageCount}</span>
           </div>
         </div>
         <div className='w-full h-[55vh] relative overflow-hidden rounded-[32px]'>
