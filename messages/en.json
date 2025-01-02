@@ -507,8 +507,26 @@
         "justNow": "Just Now",
         "minuteAgo": "minutes ago"
       },
-      "sentenceHere": "Your Sentence Here..."
-    }
+      "sentenceHere": "Your Sentence Here...",
+      "typeYourQuestionHere": "Type your question here"
+    },
+    "totalNetworkDeposits": "Total Network Deposits",
+    "totalNetworkUsageCount": "Total Network Usage Count",
+    "totalTokensConsumed": "Total Tokens Consumed",
+    "totalDepositsVolume": "Total Deposits Volume",
+    "tokensConsumed": "Tokens Consumed",
+    "usageCount": "Usage Count",
+    "remainingTokens": "Remaining Tokens",
+    "remainingUsageCount": "Remaining Usage Count",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "totalDepositMLP": "Total deposit MLP",
+    "totalUsage": "Total usage",
+    "remainingUsage": "Remaining Usage",
+    "enableYourAIInvestmentAdvisor": "Enable Your AI Investment Advisor",
+    "confirm": "Confirm",
+    "usage": "Usage",
+    "for": "for"
   },
   "CompensationPlan": {
     "notEligible": "You're not eligible for this plan",
