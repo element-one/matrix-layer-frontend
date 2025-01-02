@@ -87,8 +87,9 @@ const AIExplorer = () => {
 
   useEffect(() => {
     if (!isWaitingForDepositingReceipt && depositTransHash) {
-      refetchUserAiBalance()
       setDepositModalVisible(false)
+      setTimeout(refetchUserAiBalance, 1000)
+      setTimeout(refetchUserAiBalance, 3000)
     }
   }, [isWaitingForDepositingReceipt, depositTransHash, refetchUserAiBalance])
 
@@ -108,9 +109,8 @@ const AIExplorer = () => {
       },
       {
         onError(err) {
-          console.log(err)
           console.log(err.message)
-          toast.error('Deposit Failed: ' + err.message)
+          toast.error('Deposit Failed')
         }
       }
     )
@@ -341,7 +341,6 @@ const AIExplorer = () => {
               size='sm'
               className='w-full h-[32px] rounded-full'
               onClick={handleDepositButtonClick}
-              isLoading={isDepositing || isWaitingForDepositingReceipt}
             >
               {t('deposit')}
             </Button>
