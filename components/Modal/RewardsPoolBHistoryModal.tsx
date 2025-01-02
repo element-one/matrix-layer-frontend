@@ -133,6 +133,7 @@ export const RewardsPoolBHistoryModal: FC<RewardsPoolBHistoryModalProps> = ({
                   </TableCell>
                   <TableCell className='flex flex-row justify-center'>
                     {formatCurrency(item.amount)}
+                    {poolType === 'pool_b1' && item.isLock && ' (Locked)'}
                   </TableCell>
                 </TableRow>
               ))}
