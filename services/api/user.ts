@@ -462,3 +462,27 @@ export const usePollingUsersCheckMLpClaimed = (
     refetchCount
   }
 }
+
+export interface ApiGetUsersAiBalanceResponse {
+  tokenAmount: string
+  totalTimes: number
+  totalUsage: number
+  remainingTimes: number
+  totalNetworkDeposit: string
+  totalNetworkUsageCount: number
+}
+
+export const getUsersAiBalance = async (address: string) => {
+  const url = `/users/ai-balance/${address}`
+  const { data } = await axios.get<ApiGetUsersAiBalanceResponse>(url)
+
+  return data
+}
+
+export const useGetUsersAiBalance = (address?: string) => {
+  return useQuery({
+    queryKey: ['get', 'users', 'ai-balance', address],
+    queryFn: () => getUsersAiBalance(address!),
+    enabled: !!address
+  })
+}

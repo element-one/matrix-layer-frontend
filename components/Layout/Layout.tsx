@@ -50,7 +50,6 @@ const Layout: FC<LayoutProps> = ({ children, className }) => {
               max-w-[1440px]'
           >
             <Footer />
-            AiComponent
           </div>
         </div>
       </main>
