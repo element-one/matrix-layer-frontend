@@ -120,37 +120,6 @@ const StakePage: NextPage = () => {
   const [stakedTokens, setStakedTokens] = useState<StakeToken[]>([])
   const [selectedToken, setSelectedToken] = useState<StakeToken | null>(null)
 
-  // 千万别动这里
-  const blacklist = [
-    '0x22d76d2874798a703a827e8fbb47c6ece5a4bb27',
-    '0x763a2e7f67464a609bea5b2f53464d57da9002dd',
-    '0x048606d441d9e6cf80ef238beae27cc12a13c5ab',
-    '0x08db909fc5c903cbfaa4a47f67b1bc0a36bd88bc',
-    '0x3ff6b832662810f86a8884e374758ce1fb10d1fd',
-    '0xb6f3ffc6b9be6df179864c475efb7dbaabb2ed8c',
-    '0x5b5dd8424159557d52a8dd7acec1723fc6db1c25',
-    '0x5ac8f3e5321badafdcb1965f6674a89d441ff26b',
-    '0xd3f7b41084dbec0c6fc7076a5ae1efd2853fcb67',
-    '0x7dc7f3b65b5be2155efe84010f6480135f9d149f',
-    '0x1029f2235fcb9667e92d8777cd44b6c3fb871688',
-    '0x6ca755ac364131666b2e7181332a80c110f1e970',
-    '0x59d0871d4182f43d167b7701d2675de9930e9fb1',
-    '0x5e9ea4192b5ac74c87747f9272f22975ed0bb934',
-    '0x6667c9812e25145627fbf1e861aec14d897efc84',
-    '0x91f77a46aec8a78f82129d9e0f02bb6115470e21',
-    '0x0b2be211b28644d084c48dbf6f0e57e8d5ada889',
-    '0xf8314386c876edcd3c30e62cb2e114ae5200e961',
-    '0xd3d3dcc7dbda8f6cb639c97ce44a2f0078fd3dee',
-    '0x0b90ebbe735d363988971f52739a8a186bd3c3ca',
-    '0xc235e5518a53ac1001647817d3c8d1a2499afe9f',
-    '0x974e282a66e4e95dd96e043963bea83305e2f0d6',
-    '0xbb44c0523ce9f5753e8e22fa962aebdac90a672b',
-    '0xa60446705d3693ee309eebaf0d72ab0ea9066c3b',
-    '0x1201fe464604d49c8a2a7da1dac3525f86e0737d',
-    '0xe923ead9eccff480f63bacadcad6c19ac5d33018',
-    '0xe273f8beeb0ca112292c4ac407c35ee604e54cd2'
-  ]
-
   const filteredStakedTokens = useMemo(() => {
     return stakedTokens.filter(
       (token) =>
@@ -182,8 +151,38 @@ const StakePage: NextPage = () => {
   })
 
   const isBlacklisted = useMemo(() => {
-    return blacklist.includes(address as Address)
-  }, [address, blacklist])
+    // 千万别动这里
+    const blacklist = [
+      '0x22d76d2874798a703a827e8fbb47c6ece5a4bb27',
+      '0x763a2e7f67464a609bea5b2f53464d57da9002dd',
+      '0x048606d441d9e6cf80ef238beae27cc12a13c5ab',
+      '0x08db909fc5c903cbfaa4a47f67b1bc0a36bd88bc',
+      '0x3ff6b832662810f86a8884e374758ce1fb10d1fd',
+      '0xb6f3ffc6b9be6df179864c475efb7dbaabb2ed8c',
+      '0x5b5dd8424159557d52a8dd7acec1723fc6db1c25',
+      '0x5ac8f3e5321badafdcb1965f6674a89d441ff26b',
+      '0xd3f7b41084dbec0c6fc7076a5ae1efd2853fcb67',
+      '0x7dc7f3b65b5be2155efe84010f6480135f9d149f',
+      '0x1029f2235fcb9667e92d8777cd44b6c3fb871688',
+      '0x6ca755ac364131666b2e7181332a80c110f1e970',
+      '0x59d0871d4182f43d167b7701d2675de9930e9fb1',
+      '0x5e9ea4192b5ac74c87747f9272f22975ed0bb934',
+      '0x6667c9812e25145627fbf1e861aec14d897efc84',
+      '0x91f77a46aec8a78f82129d9e0f02bb6115470e21',
+      '0x0b2be211b28644d084c48dbf6f0e57e8d5ada889',
+      '0xf8314386c876edcd3c30e62cb2e114ae5200e961',
+      '0xd3d3dcc7dbda8f6cb639c97ce44a2f0078fd3dee',
+      '0x0b90ebbe735d363988971f52739a8a186bd3c3ca',
+      '0xc235e5518a53ac1001647817d3c8d1a2499afe9f',
+      '0x974e282a66e4e95dd96e043963bea83305e2f0d6',
+      '0xbb44c0523ce9f5753e8e22fa962aebdac90a672b',
+      '0xa60446705d3693ee309eebaf0d72ab0ea9066c3b',
+      '0x1201fe464604d49c8a2a7da1dac3525f86e0737d',
+      '0xe923ead9eccff480f63bacadcad6c19ac5d33018',
+      '0xe273f8beeb0ca112292c4ac407c35ee604e54cd2'
+    ]
+    return blacklist.includes(address?.toLowerCase() as Address)
+  }, [address])
 
   const [referralCode, setReferralCode] = useState('')
   const { signMessage } = useSignMessage()
