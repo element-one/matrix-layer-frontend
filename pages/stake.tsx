@@ -1304,7 +1304,6 @@ const StakePage: NextPage = () => {
     total: string | undefined,
     unclaimable: string | undefined
   ) => {
-    console.log(total, unclaimable)
     if (!total || !unclaimable) {
       return total
     }
