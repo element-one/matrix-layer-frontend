@@ -1300,6 +1300,17 @@ const StakePage: NextPage = () => {
     }
   }
 
+  const calculateTokenAmount = (
+    total: string | undefined,
+    unclaimable: string | undefined
+  ) => {
+    console.log(total, unclaimable)
+    if (!total || !unclaimable) {
+      return total
+    }
+
+    return (BigInt(total) - BigInt(unclaimable)).toString()
+  }
   const cardClsx =
     'p-5 md:p-8 border-2 rounded-[20px] md:backdrop-filter md:backdrop-blur-[10px]'
 
@@ -2535,7 +2546,10 @@ const StakePage: NextPage = () => {
                 </Text>
                 <ClaimButton
                   type='pool_b1'
-                  amount={userData?.mlpTokenAmountPoolB1}
+                  amount={calculateTokenAmount(
+                    userData?.mlpTokenAmountPoolB1,
+                    userData?.unclaimableB1Tokens
+                  )}
                   refetchUserData={refetchUserAndMlpBalance}
                 />
               </div>
@@ -2763,7 +2777,10 @@ const StakePage: NextPage = () => {
                 </Text>
                 <ClaimButton
                   type='pool_b2'
-                  amount={userData?.mlpTokenAmountPoolB2}
+                  amount={calculateTokenAmount(
+                    userData?.mlpTokenAmountPoolB2,
+                    userData?.unclaimableB2Tokens
+                  )}
                   refetchUserData={refetchUserAndMlpBalance}
                 />
               </div>

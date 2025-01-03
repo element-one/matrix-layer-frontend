@@ -46,6 +46,8 @@ export type ApiUser = {
   stakingNoncePoolC: number
   stakingNoncePoolPhone: number
   merchantAddress: string | null
+  unclaimableB1Tokens: string
+  unclaimableB2Tokens: string
 }
 
 export type ApiWalletLoginParams = {
