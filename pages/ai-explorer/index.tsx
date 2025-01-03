@@ -260,6 +260,11 @@ const AIExplorer = () => {
     isDepositing ||
     isWaitingForDepositingReceipt
 
+  const handleChatComplete = useCallback(() => {
+    setTimeout(refetchUserAiBalance, 1000)
+    setTimeout(refetchUserAiBalance, 3000)
+  }, [refetchUserAiBalance])
+
   return (
     <Layout className='flex justify-center'>
       <Container
@@ -299,7 +304,10 @@ const AIExplorer = () => {
             isSidebarOpen={isSidebarOpen}
             onSidebarChange={onSidebarChange}
           />
-          <ConversationComponent conversationId={activeConversationId} />
+          <ConversationComponent
+            conversationId={activeConversationId}
+            onChatComplete={handleChatComplete}
+          />
         </div>
         <div
           className={clsx(

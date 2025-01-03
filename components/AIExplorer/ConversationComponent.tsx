@@ -17,6 +17,7 @@ import {
 import { messageToChatMessage } from '@helpers/dto/conversation/chat/request'
 import { chatMessageToMessage } from '@helpers/dto/conversation/chat/response'
 import { useLazySubscription } from '@hooks/useLazySubscription'
+import { getUsersAIToken } from '@services/api'
 import { useStore } from '@store/store'
 import {
   AgentStatus,
@@ -51,10 +52,12 @@ import ChatBox from './ChatBox'
 
 interface ConversationComponentProps {
   conversationId: string
+  onChatComplete?: () => void
 }
 
 const ConversationComponent: FC<ConversationComponentProps> = ({
-  conversationId
+  conversationId,
+  onChatComplete
 }) => {
   const { isConnected, address } = useAccount()
 
@@ -293,6 +296,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
       setShowFollowUpQuestions(false)
       setUserIdle(false)
       debouncedUserIdle(true)
+      onChatComplete?.()
     }
     // eslint-disable-next-line
   }, [streamingMessage, chatComplete])
@@ -318,6 +322,7 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
   const handleSend = async (text: string) => {
     const pageUrl = await getCurrentUrl()
     const pageContent = await getCurrentPageContent()
+    const aiToken = await getUsersAIToken(address ?? '')
     const quotes = getFormattedQuotes(messageSelections)
 
     const lastAiMessage = getLastAiMessage(conversations, conversationId)
@@ -342,7 +347,11 @@ const ConversationComponent: FC<ConversationComponentProps> = ({
         : [])
     ]
 
-    const sendMessage = createMessage(interactions, { messageSelections })
+    const sendMessage = createMessage(
+      interactions,
+      { messageSelections },
+      { 'ai-token': aiToken?.token }
+    )
 
     const sendMessageMerged = mergeRequestMessages(sendMessage, lastAiMessage)
 
