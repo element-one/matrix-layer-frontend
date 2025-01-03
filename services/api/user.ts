@@ -486,3 +486,14 @@ export const useGetUsersAiBalance = (address?: string) => {
     enabled: !!address
   })
 }
+export interface ApiGetUsersAIToken {
+  nonce: number
+  token: string
+}
+
+export const getUsersAIToken = async (address: string) => {
+  const url = `/users/ai-token/${address}`
+  const { data } = await axios.get<ApiGetUsersAIToken>(url)
+
+  return data
+}

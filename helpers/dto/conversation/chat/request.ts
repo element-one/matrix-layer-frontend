@@ -316,7 +316,8 @@ export function messageToChatMessage(
     input: {
       user_id: userId, //TODO:
       conversation_id: conversationId,
-      interactions: transformInteractions(message.interactions)
+      interactions: transformInteractions(message.interactions),
+      metadata: message.metaData
     }
   }
 }

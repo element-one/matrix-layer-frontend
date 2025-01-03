@@ -46,7 +46,7 @@ export enum Role {
 }
 
 // For future metadata of messages.
-export type MetaData = never
+export type MetaData = Record<string, unknown>
 
 export type InternalMetaData = {
   isFinishedMessage?: boolean
