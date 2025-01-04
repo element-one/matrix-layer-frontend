@@ -1,9 +1,13 @@
 import { FC, useCallback, useEffect } from 'react'
+import { useTheme } from 'next-themes'
 import { Modal, ModalBody, ModalContent } from '@nextui-org/react'
 import { WalletButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 
 import { Button } from '@components/Button'
+import { MetamaskIcon } from '@components/Icon/MetamaskIcon'
+import { OKXIcon } from '@components/Icon/OKXIcon'
+import { WalletConnectIcon } from '@components/Icon/WalletConnectIcon'
 import { ModalType, useModal } from '@contexts/modal'
 
 export interface ConnectWalletModalProps {
@@ -11,12 +15,13 @@ export interface ConnectWalletModalProps {
 }
 
 const buttonClass =
-  'py-4 w-full h-[56px] md:h-[64px] hover:bg-gray-200 disabled:bg-gray-200'
+  'py-4 w-full h-[56px] md:h-[64px] hover:bg-gray-42 disabled:bg-purple-500'
 
 export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
   const { isModalShown, hideModal } = useModal()
 
   const { isConnected } = useAccount()
+  const { theme } = useTheme()
 
   const handleClose = useCallback(() => {
     hideModal()
@@ -40,12 +45,12 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
       isOpen={isModalShown(ModalType.CONNECT_WALLET_MODAL)}
       classNames={{
         closeButton:
-          'right-12 top-12 text-gray-800 text-lg hover:bg-co-bg-3 active:bg-co-bg-3'
+          'right-12 top-12 text-gray-90 text-lg hover:bg-co-bg-3 active:bg-co-bg-3'
       }}
     >
-      <ModalContent className='bg-slate-100 border border-co-border-gray'>
+      <ModalContent className='bg-co-bg-default border border-gray-32'>
         <ModalBody>
-          <div className='flex flex-col gap-5 items-center py-10 px-6 text-gray-800'>
+          <div className='flex flex-col gap-5 items-center py-10 px-6 text-co-text-primary'>
             <div className='text-xl leading-9'>Connect Wallet</div>
 
             <WalletButton.Custom wallet='metamask'>
@@ -57,11 +62,11 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
                     color='default'
                     className={buttonClass}
                   >
-                    <img
-                      src='/images/png/metamask.png'
-                      alt='metamask'
-                      height={32}
-                    />
+                    <div>
+                      <MetamaskIcon
+                        color={theme === 'dark' ? '#fff' : '#000'}
+                      />
+                    </div>
                   </Button>
                 )
               }}
@@ -95,11 +100,9 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
                     disabled={!ready}
                     onClick={connect}
                   >
-                    <img
-                      src='/images/png/wallet-connect.png'
-                      alt='wallet connect'
-                      height={32}
-                    />
+                    <div>
+                      <WalletConnectIcon />
+                    </div>
                   </Button>
                 )
               }}
@@ -114,7 +117,9 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = () => {
                     color='default'
                     className={buttonClass}
                   >
-                    <img src='/images/png/okx.png' alt='okx' height={32} />
+                    <div>
+                      <OKXIcon color={theme === 'dark' ? '#fff' : '#000'} />
+                    </div>
                   </Button>
                 )
               }}
